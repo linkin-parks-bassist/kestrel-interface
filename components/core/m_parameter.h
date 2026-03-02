@@ -6,6 +6,9 @@
 #define PARAMETER_SCALE_LINEAR		0
 #define PARAMETER_SCALE_LOGARITHMIC	1
 
+#define M_STANDARD_GAIN_MIN -24
+#define M_STANDARD_GAIN_MAX  24
+
 typedef struct m_parameter_id
 {
 	uint16_t profile_id;

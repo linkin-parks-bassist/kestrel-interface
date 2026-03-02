@@ -69,6 +69,7 @@ void m_parser_warn_at_node		(m_eff_parsing_state *ps, m_ast_node *node, const ch
 void m_parser_error_at_node  	(m_eff_parsing_state *ps, m_ast_node *node, const char *error_msg, ...);
 
 int m_eff_parser_init_mempool();
+int m_eff_parser_reset_mempool();
 int m_eff_parser_deinit_mempool();
 
 void *m_parser_alloc(size_t size);

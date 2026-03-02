@@ -6,6 +6,26 @@
 
 #include "m_int.h"
 
+#define M_EXPRESSION_CONST(x) { \
+	.type = M_EXPR_CONST,		\
+	.val = {.val_float = x},	\
+	.constant = 1,				\
+	.cached = 1,				\
+	.cached_val = x				\
+};
+
+m_expression m_expression_standard_gain_min = M_EXPRESSION_CONST(M_STANDARD_GAIN_MIN);
+m_expression m_expression_standard_gain_max = M_EXPRESSION_CONST(M_STANDARD_GAIN_MAX);
+m_expression m_expression_zero 				= M_EXPRESSION_CONST(0);
+m_expression m_expression_one 				= M_EXPRESSION_CONST(1);
+m_expression m_expression_minus_one 		= M_EXPRESSION_CONST(-1);
+m_expression m_expression_pi 				= M_EXPRESSION_CONST(M_PI);
+m_expression m_expression_e 				= M_EXPRESSION_CONST(exp(1));
+m_expression m_expression_sample_rate 		= M_EXPRESSION_CONST(M_FPGA_SAMPLE_RATE);
+m_expression m_expression_int_max			= M_EXPRESSION_CONST( pow(2, M_FPGA_DATA_WIDTH - 1) - 1);
+m_expression m_expression_int_min			= M_EXPRESSION_CONST(-pow(2, M_FPGA_DATA_WIDTH - 1));
+m_expression m_expression_freq_max 			= M_EXPRESSION_CONST(M_FPGA_SAMPLE_RATE / 2 - 50);
+
 char *m_expression_type_to_str(int type)
 {
 	switch (type)
@@ -466,7 +486,7 @@ int m_expression_references_param(m_expression *expr, m_parameter *param)
 	return m_expression_references_param_rec(expr, param, 0);
 }
 
-m_expression m_expression_const_float(float v)
+m_expression m_expression_const(float v)
 {
 	m_expression result;
 	result.type = M_EXPR_CONST;
@@ -483,7 +503,7 @@ m_expression *new_m_expression_const(float v)
 	
 	if (!result) return NULL;
 	
-	*result = m_expression_const_float(v);
+	*result = m_expression_const(v);
 	
 	return result;
 }

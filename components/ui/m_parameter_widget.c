@@ -351,6 +351,14 @@ int parameter_widget_create_ui_no_callback(m_parameter_widget *pw, lv_obj_t *par
 	pw->container = lv_obj_create(parent);
 	lv_obj_remove_style_all(pw->container);
 	
+	printf("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
+		pw->param->id.profile_id, 
+		pw->param->id.transformer_id, 
+		pw->param->id.parameter_id, 
+		pw->param->name, 
+		pw->param->name_internal, 
+		pw->param->min_expr, 
+		pw->param->max_expr);
 	switch (pw->param->widget_type)
 	{	
 		case PARAM_WIDGET_HSLIDER:
@@ -936,7 +944,6 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 			}
 			
 			lv_dropdown_close(sw->obj);
-			
 			break;
 			
 		case SETTING_WIDGET_SWITCH:
@@ -946,7 +953,6 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 			lv_obj_set_layout(sw->container, LV_LAYOUT_FLEX);
 			lv_obj_set_flex_flow(sw->container, LV_FLEX_FLOW_ROW);
 			lv_obj_set_flex_align(sw->container, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-			
 			
 			printf("Creating label for setting %s\n", sw->setting->name);
 			sw->label = lv_label_create(sw->container);
@@ -965,8 +971,8 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 			break;
 	}
 	
+	printf("setting_widget_create_ui_no_callback nearly finished\n");
 	setting_widget_update_value(sw);
-	//setting_widget_request_value(sw);
 	
 	return NO_ERROR;
 }

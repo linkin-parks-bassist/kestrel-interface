@@ -38,10 +38,13 @@
 	#include <esp_log.h>
 #endif
 
+#define M_USE_FREERTOS
+
 #ifdef M_USE_FREERTOS
-#include <freertos/FreeRTOS.h>
-#include <freertos/semphr.h>
-#include <freertos/queue.h>
+#include "FreeRTOSConfig.h"
+#include <FreeRTOS.h>
+#include <semphr.h>
+#include <queue.h>
 #endif
 
 #include <stdint.h>
@@ -51,9 +54,6 @@
 #include <math.h>
 #include <unistd.h>
 #include <lvgl.h>
-
-#define LL_MALLOC m_alloc
-#define LL_FREE   m_free
 
 #ifndef m_printf
  #define m_printf printf
@@ -111,5 +111,15 @@ typedef char_pll string_ll;
 #include "m_reg_format.h"
 #include "m_fpga_encoding.h"
 #include "m_dict_extract.h"
+
+#define xTaskCreatePinnedToCore( \
+    task_func,                   \
+    name,                        \
+    stack,                       \
+    param,                       \
+    priority,                    \
+    handle,                      \
+    core_id                      \
+) xTaskCreate(task_func, name, stack, param, priority, handle)
 
 #endif

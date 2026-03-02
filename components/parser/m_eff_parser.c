@@ -20,6 +20,17 @@ int m_eff_parser_init_mempool()
 	return ret_val;
 }
 
+
+int m_eff_parser_reset_mempool()
+{
+	if (!m_parser_mempool_initialised)
+		return ERR_BAD_ARGS;
+	
+	m_bump_arena_reset(&m_eff_parser_mempool);
+	
+	return NO_ERROR;
+}
+
 int m_eff_parser_deinit_mempool()
 {
 	m_parser_mempool_initialised = 0;
@@ -407,7 +418,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	}
 	else
 	{
-		printf("File \"%s\" parsing failed. Error code: %d\n", fname, ret_val);
+		printf("File \"%s\" parsing failed. Error code: %s\n", fname, m_error_code_to_string(ret_val));
 	}
 	
 	result = m_alloc(sizeof(m_effect_desc));

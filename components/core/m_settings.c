@@ -80,9 +80,11 @@ void settings_save_task(void *arg)
 	{
 		if (global_cxt.settings.changed)
 		{
+			#ifndef M_DESKTOP
 			if (xSemaphoreTake(sd_mutex, 0) == pdTRUE)
 			{
 				xSemaphoreTake(settings_mutex, portMAX_DELAY);
+				#endif
 				copy_settings_struct(&local_copy, &global_cxt.settings);
 				global_cxt.settings.changed = 0;
 				xSemaphoreGive(settings_mutex);
@@ -91,9 +93,11 @@ void settings_save_task(void *arg)
 				do {
 					ret_val = safe_file_write((int (*)(void*, const char*))save_settings_to_file, &local_copy, SETTINGS_FNAME);
 					i++;
-				} while (ret_val != NO_ERROR && i < SETTINGS_SAVE_TRIES);
+				} while (ret_val != NO_ERROR && i < SETTINGS_SAVE_TRIES);;
+				#ifndef M_DESKTOP
 				xSemaphoreGive(sd_mutex);
 			}
+			#endif
 			
 		}
 		vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(100));

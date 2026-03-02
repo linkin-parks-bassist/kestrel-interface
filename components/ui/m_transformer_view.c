@@ -61,7 +61,10 @@ int init_transformer_view(m_ui_page *page)
 	page->enter_page 		 = enter_transformer_view;
 	
 	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
+	{
 		str->group_containers[i] = NULL;
+		str->group_inhabited[i] = 0;
+	}
 	
 	str->settings_page = malloc(sizeof(m_ui_page));
 	
@@ -122,6 +125,7 @@ int configure_transformer_view(m_ui_page *page, void *data)
 	m_parameter_pll *current_param = trans->parameters;
 	
 	int i = 0;
+	int group;
 	while (current_param)
 	{
 		if (current_param->data)
@@ -135,6 +139,11 @@ int configure_transformer_view(m_ui_page *page, void *data)
 			ret_val = configure_parameter_widget(pw, current_param->data, trans->profile, page);
 			
 			str->parameter_widgets = m_parameter_widget_pll_append(str->parameter_widgets, pw);
+			
+			group = current_param->data->group;
+			
+			if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
+				str->group_inhabited[group] = 1;
 		}
 		
 		current_param = current_param->next;
@@ -205,17 +214,20 @@ int create_transformer_view_ui(m_ui_page *page)
     lv_obj_set_flex_flow(page->container, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(page->container, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_SPACE_EVENLY);
 	
-	int group_inhabited[TRANSFORMER_VIEW_MAX_GROUPS];
-	
 	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
 	{
-		str->group_containers[i] = lv_obj_create(page->container);
-		lv_obj_remove_style_all(str->group_containers[i]);
-		lv_obj_set_flex_flow (str->group_containers[i], LV_FLEX_FLOW_ROW_WRAP);
-		lv_obj_set_flex_align(str->group_containers[i], LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_SPACE_EVENLY);
-		lv_obj_set_size(str->group_containers[i], 0, 0);
-		
-		group_inhabited[i] = 0;
+		if (str->group_inhabited[i])
+		{
+			str->group_containers[i] = lv_obj_create(page->container);
+			
+			if (!str->group_containers)
+				return ERR_ALLOC_FAIL;
+			
+			lv_obj_remove_style_all(str->group_containers[i]);
+			lv_obj_set_flex_flow (str->group_containers[i], LV_FLEX_FLOW_ROW_WRAP);
+			lv_obj_set_flex_align(str->group_containers[i], LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_SPACE_EVENLY);
+			lv_obj_set_size(str->group_containers[i], 0, 0);
+		}
 	}
 	
 	m_setting_widget_pll *current_setting = str->setting_widgets;
@@ -232,7 +244,6 @@ int create_transformer_view_ui(m_ui_page *page)
 				group = current_setting->data->setting->group;
 				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
 				{
-					group_inhabited[group] = 1;
 					setting_widget_create_ui(current_setting->data, str->group_containers[group]);
 				}
 				else
@@ -255,9 +266,10 @@ int create_transformer_view_ui(m_ui_page *page)
 			if (current_param->data->param)
 			{
 				group = current_param->data->param->group;
+				printf("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
+					current_param->data->param->name, current_param->data->param->name_internal, group);
 				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
 				{
-					group_inhabited[group] = 1;
 					parameter_widget_create_ui(current_param->data, str->group_containers[group]);
 				}
 				else
@@ -272,7 +284,7 @@ int create_transformer_view_ui(m_ui_page *page)
 	
 	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
 	{
-		if (str->group_containers[i] && group_inhabited[i])
+		if (str->group_containers[i] && str->group_inhabited[i])
 		{
 			lv_obj_set_width(str->group_containers[i],  LV_SIZE_CONTENT);
 			lv_obj_set_height(str->group_containers[i], LV_SIZE_CONTENT);

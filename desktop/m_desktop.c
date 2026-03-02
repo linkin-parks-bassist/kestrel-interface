@@ -7,14 +7,6 @@ int m_sd_mode_msc()  {return NO_ERROR;}
 int m_sd_mode_local(){return NO_ERROR;}
 int m_sd_toggle_msc(){return NO_ERROR;}
 
-int m_fpga_queue_transfer_batch(m_fpga_transfer_batch batch){return NO_ERROR;}
-int m_fpga_queue_program_batch (m_fpga_transfer_batch batch){return NO_ERROR;}
-
-int m_fpga_queue_input_gain_set(float gain_db) {return NO_ERROR;}
-int m_fpga_queue_output_gain_set(float gain_db){return NO_ERROR;}
-
-int m_fpga_queue_register_commit(){return NO_ERROR;}
-
 m_context global_cxt;
 
 static lv_display_t *disp;
@@ -49,7 +41,7 @@ static void mouse_read(lv_indev_t *indev, lv_indev_data_t *data)
         : LV_INDEV_STATE_RELEASED;
 }
 
-int main(int argc, char **argv)
+void main_task(void *arg)
 {
 	srand(time(0));
 	
@@ -87,13 +79,21 @@ int main(int argc, char **argv)
     // test object
     lv_obj_t *btn = lv_button_create(lv_screen_active());
     lv_obj_center(btn);
-
-	int running = 1;
-	SDL_Event e;
 	
 	m_init_context(&global_cxt);
 	m_context_init_effect_list(&global_cxt);
 	m_init_global_pages(&global_cxt.pages);
+	
+	xTaskCreate(
+		m_fpga_comms_task,
+		NULL,
+		4096,
+		NULL,
+		8,
+		NULL
+	);
+	xTaskCreate(m_param_update_task, NULL, 4096, NULL, 8, NULL);
+	
 	m_init_directories();
 	
 	if (load_settings_from_file(&global_cxt.settings, SETTINGS_FNAME) == ERR_FOPEN_FAIL)
@@ -105,9 +105,11 @@ int main(int argc, char **argv)
 	
 	m_create_ui(NULL);
 	
-    while (running)
-    {
-
+	int running = 1;
+	SDL_Event e;
+	
+	while (running)
+	{
 		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
@@ -115,15 +117,48 @@ int main(int argc, char **argv)
 				running = 0;
 			}
 		}
-
-		lv_tick_inc(1);
-		lv_timer_handler();
 		
+		lv_timer_handler();
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1);
+		SDL_Delay(5);
 	}
+	
+	SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+	
+	vTaskEndScheduler();
+	vTaskDelete(NULL);
+}
+
+int main(int argc, char **argv)
+{	
+	xTaskCreate(main_task,
+		NULL,
+		64 * 1024,
+		NULL,
+		8,
+		NULL);
+
+    vTaskStartScheduler();
     
     return 0;
+}
+
+void vApplicationMallocFailedHook(void)
+{
+    abort();
+}
+
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+{
+    printf("Stack overflow in %s\n", pcTaskName);
+    abort();
+}
+void vApplicationTickHook(void)
+{
+    lv_tick_inc(5);
 }

@@ -43,6 +43,8 @@ int init_transformer(m_transformer *trans)
 	
 	init_parameter(&trans->wet_mix, "Wet Mix", 1.0, 0.0, 1.0);
 	trans->wet_mix.id.parameter_id = TRANSFORMER_WET_MIX_PID;
+	trans->wet_mix.min_expr = &m_expression_zero;
+	trans->wet_mix.max_expr = &m_expression_one;
 	
 	init_setting(&trans->band_mode, "Apply to", TRANSFORMER_MODE_FULL_SPECTRUM);
 	trans->band_mode.id.setting_id = TRANSFORMER_BAND_MODE_SID;
@@ -68,10 +70,14 @@ int init_transformer(m_transformer *trans)
 	init_parameter(&trans->band_lp_cutoff, "Cutoff", 4000.0, 1, 4000);
 	trans->band_lp_cutoff.scale = PARAMETER_SCALE_LOGARITHMIC;
 	trans->band_lp_cutoff.id.parameter_id = TRANSFORMER_BAND_LP_CUTOFF_PID;
+	trans->band_lp_cutoff.min_expr = &m_expression_one;
+	trans->band_lp_cutoff.max_expr = &m_expression_freq_max;
 	
 	init_parameter(&trans->band_hp_cutoff, "Cutoff", 1.0, 1, 4000);
 	trans->band_hp_cutoff.scale = PARAMETER_SCALE_LOGARITHMIC;
 	trans->band_hp_cutoff.id.parameter_id = TRANSFORMER_BAND_HP_CUTOFF_PID;
+	trans->band_hp_cutoff.min_expr = &m_expression_one;
+	trans->band_hp_cutoff.max_expr = &m_expression_freq_max;
 	
 	trans->eff = NULL;
 	

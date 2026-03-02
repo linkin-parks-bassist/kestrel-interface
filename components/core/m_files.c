@@ -960,6 +960,7 @@ int load_effects(m_context *cxt)
 			}
 		}
 		
+		m_eff_parser_reset_mempool();
 		current = current->next;
 	}
 	

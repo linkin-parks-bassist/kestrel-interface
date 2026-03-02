@@ -1220,6 +1220,8 @@ int ui_page_create_container(m_ui_page *page)
 			tall = 0;
 	}
 	
+	printf("page->container_type = %d\n");
+	
 	switch (page->container_type)
 	{
 		case CONTAINER_TYPE_STD:

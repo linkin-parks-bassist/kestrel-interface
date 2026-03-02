@@ -18,6 +18,7 @@ typedef struct
 	
 	lv_obj_t *container;
 	
+	int group_inhabited[TRANSFORMER_VIEW_MAX_GROUPS];
 	lv_obj_t *group_containers[TRANSFORMER_VIEW_MAX_GROUPS];
 	
 	m_parameter_widget_pll *parameter_widgets;

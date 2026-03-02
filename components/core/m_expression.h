@@ -49,6 +49,7 @@ typedef struct m_expression
 	} val;
 } m_expression;
 
+m_expression m_expression_const(float v);
 m_expression *new_m_expression_const(float v);
 m_expression *new_m_expression_reference(char *ref_name);
 m_expression *new_m_expression_unary(int unary_type, m_expression *rhs);
@@ -82,5 +83,17 @@ m_interval m_expression_compute_range(m_expression *expr, m_expr_scope *scope);
 char *m_expression_type_to_str(int type);
 int m_expression_print(m_expression *expr);
 const char *m_expression_to_string(m_expression *expr);
+
+extern m_expression m_expression_standard_gain_min;
+extern m_expression m_expression_standard_gain_max;
+extern m_expression m_expression_zero;
+extern m_expression m_expression_one;
+extern m_expression m_expression_minus_one;
+extern m_expression m_expression_pi;
+extern m_expression m_expression_e;
+extern m_expression m_expression_sample_rate;
+extern m_expression m_expression_int_max;
+extern m_expression m_expression_int_min;
+extern m_expression m_expression_freq_max;
 
 #endif

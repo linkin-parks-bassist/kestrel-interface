@@ -12,6 +12,7 @@ m_dictionary *m_new_dictionary()
 	if (!dict)
 		return NULL;
 	
+	dict->name = NULL;
 	dict->entries = m_parser_alloc(sizeof(m_dictionary_entry) * 8);
 	
 	if (!dict->entries)
@@ -34,9 +35,12 @@ int m_dictionary_ensure_capacity(m_dictionary *dict)
 	
 	if (dict->n_entries == dict->entry_array_length)
 	{
-		na = malloc(sizeof(m_dictionary_entry) * dict->entry_array_length * 2);
+		na = m_parser_alloc(sizeof(m_dictionary_entry) * dict->entry_array_length * 2);
 		
 		if (!na) return ERR_ALLOC_FAIL;
+		
+		for (int i = 0; i < dict->n_entries; i++)
+			na[i] = dict->entries[i];
 		
 		dict->entries = na;
 		dict->entry_array_length *= 2;

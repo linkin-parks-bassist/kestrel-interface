@@ -41,15 +41,24 @@ int m_bump_arena_init(m_bump_arena *arena, size_t capacity)
 void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 {
 	if (!arena)
+	{
 		return NULL;
+	}
 	
 	if (!arena->arena || arena->capacity == 0 || size == 0)
+	{
+		printf("m_bump_arena ERROR: arena has no memory!\n");
 		return NULL;
+	}
 	
 	size = (size + (M_BUMP_ARENA_ALLOC_ALIGN - 1)) & ~(M_BUMP_ARENA_ALLOC_ALIGN - 1);
 	
 	if (size > arena->capacity - arena->pos)
+	{
+		printf("m_bump_arena ERROR: Arena exhausted. Capacity: %d bytes; consumed: %d bytes. Requested: %d bytes\n",
+			arena->capacity, arena->pos, size);
 		return NULL;
+	}
 	
 	uint8_t *ptr = (uint8_t*)arena->arena + arena->pos;
 	arena->pos += size;
