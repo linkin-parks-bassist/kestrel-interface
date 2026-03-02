@@ -317,7 +317,6 @@ int transformer_view_request_parameter_values(m_ui_page *page)
 	
 	while (current)
 	{
-		param_widget_request_value(current->data);
 		current = current->next;
 	}
 	

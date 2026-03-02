@@ -70,20 +70,6 @@ int m_context_init_effect_list(m_context *cxt)
 	return NO_ERROR;
 }
 
-int get_effect_desc(int id)
-{
-	/*m_effect_desc_pll *current = global_cxt.effects;
-	
-	while (current)
-	{
-		if (current->data && current->data->id == id)
-			return current->data;
-		current = current->next;
-	}*/
-	
-	return NULL;
-}
-
 int m_context_init_ui(m_context *cxt)
 {
 	if (!cxt)

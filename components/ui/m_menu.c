@@ -146,10 +146,12 @@ void parameter_widget_change_cb_settings_wrapper(lv_event_t *e)
 	if (!item)
 		return;
 	
+	#ifdef M_USE_FREERTOS
 	xSemaphoreTake(settings_mutex, portMAX_DELAY);
 	parameter_widget_change_cb_inner(item->data);
 	global_cxt.settings.changed = 1;
 	xSemaphoreGive(settings_mutex);
+	#endif
 }
 
 void danger_button_value_changed_cb(lv_event_t *e)
@@ -754,11 +756,11 @@ int init_main_menu(m_ui_page *page)
 	return NO_ERROR;
 }
 
-void m_msc_button_cb(void *arg)
+void m_msc_button_cb(lv_event_t *e)
 {
 	int ret_val = m_sd_toggle_msc();
 	
-	m_button *button = (m_button*)arg;
+	m_button *button = lv_event_get_user_data(e);//(m_button*)arg;
 	
 	if (sd_msc_mode)
 	{

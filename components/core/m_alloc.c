@@ -1,8 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <freertos/FreeRTOS.h>
-
 #include "m_int.h"
 
 static size_t total_current, total_peak;
@@ -82,11 +77,13 @@ char *m_strndup(const char *str, size_t n)
 
 void m_mem_monitor_task(void *param)
 {
+	#ifdef M_USE_FREERTOS
 	while (1)
 	{
 		print_memory_report();
 		vTaskDelay(pdMS_TO_TICKS(2000));
 	}
+	#endif
 }
 
 
@@ -94,6 +91,7 @@ void m_mem_init()
 {
 	printf("m_mem_init()");
 	#ifdef PRINT_MEMORY_USAGE
+	#ifdef M_USE_FREERTOS
 	printf("Spinning off memory printer task...\n");
 	xTaskCreate(
 		m_mem_monitor_task,
@@ -104,8 +102,10 @@ void m_mem_init()
 		NULL
 	);
 	#endif
+	#endif
 }
 
+#ifndef M_DESKTOP
 void lv_mem_init(void)
 {
 	return;
@@ -139,6 +139,7 @@ void m_lv_free(void *ptr)
 {
     heap_caps_free(ptr);
 }
+#endif
 
 void print_memory_report()
 {

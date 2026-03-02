@@ -81,6 +81,4 @@ int cxt_handle_hw_switch(m_context *cxt, int sw);
 
 m_profile *cxt_find_profile(m_context *cxt, const char *fname);
 
-int get_effect_desc(int id);
-
 #endif

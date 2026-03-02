@@ -204,7 +204,7 @@ void transformer_receive_id(m_message message, m_response response)
 	
 	if (!trans->profile || pid != trans->profile->id)
 	{
-		ESP_LOGE(TAG, "Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
+		printf("Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
 	}
 	else
 	{
@@ -485,4 +485,50 @@ m_expr_scope *m_transformer_create_scope(m_transformer *trans)
 	}
 	
 	return scope;
+}
+
+int m_transformer_set_parameter(m_transformer *trans, const char *name, float value)
+{
+	if (!trans)
+		return ERR_NULL_PTR;
+	
+	int ret_val;
+	
+	m_parameter_pll *current = trans->parameters;
+	
+	while (current)
+	{
+		if (current && current->data && current->data->name_internal && (strcmp(current->data->name_internal, name) == 0))
+		{
+			current->data->value = value;
+			return NO_ERROR;
+		}
+		
+		current = current->next;
+	}
+	
+	return ERR_BAD_ARGS;
+}
+
+int m_transformer_set_setting(m_transformer *trans, const char *name, int value)
+{
+	if (!trans)
+		return ERR_NULL_PTR;
+	
+	int ret_val;
+	
+	m_setting_pll *current = trans->settings;
+	
+	while (current)
+	{
+		if (current && current->data && current->data->name_internal && (strcmp(current->data->name_internal, name) == 0))
+		{
+			current->data->value = value;
+			return NO_ERROR;
+		}
+		
+		current = current->next;
+	}
+	
+	return ERR_BAD_ARGS;
 }

@@ -11,7 +11,7 @@ m_ui_page test_page;
 
 lv_obj_t *keyboard;
 
-int create_test_page_ui()
+int create_test_page_ui(m_ui_page *page)
 {
 	ui_page_create_base_ui(&test_page);
 	test_page_str *str = test_page.data_struct;

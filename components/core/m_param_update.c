@@ -1,5 +1,6 @@
 #include "m_int.h"
 
+#ifdef M_USE_FREERTOS
 #define UPDATE_QUEUE_LENGTH 64
 
 static m_parameter_update update_queue[UPDATE_QUEUE_LENGTH];
@@ -274,3 +275,15 @@ int m_parameter_trigger_update(m_parameter *param, float target)
 	
 	return NO_ERROR;
 }
+#else
+int m_parameter_trigger_update(m_parameter *param, float target)
+{
+	//printf("m_parameter_trigger_update, param = %p, target = %f\n", param, target);
+	if (!param)
+		return ERR_NULL_PTR;
+	
+	param->value = target;
+	
+	return NO_ERROR;
+}
+#endif

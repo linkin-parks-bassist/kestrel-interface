@@ -1,20 +1,16 @@
-#ifndef M_LIBRARY
-#ifdef M_DESKTOP
-#include "m_desktop.h"
-#else
-#ifndef M_INTERFACE_MAIN_H_
-#define M_INTERFACE_MAIN_H_
+#ifndef M_INTERFACE_DESKTOP_H_
+#define M_INTERFACE_DESKTOP_H_
 
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include <math.h>
 
 #define M_ENABLE_LV_LOGGING
 
 #define M_ENABLE_UI
-
 
 #define USE_DISPLAY
 #define M_ENABLE_SDCARD
@@ -24,20 +20,23 @@
 
 #define M_ENABLE_FPGA
 #define USE_FPGA
+#define M_FPGA_SIMULATED
 
 //#define USE_TEENSY
 //#define PRINT_MEMORY_USAGE
 
-#define M_ENABLE_REPRESENTATIONS
+//#define M_ENABLE_REPRESENTATIONS
 #define M_ENABLE_GLOBAL_CONTEXT
 #define M_ENABLE_SEQUENCES
 
-#define USE_5A
-#define USE_SGTL5000
-#define M_USE_FREERTOS
+#ifndef M_DESKTOP
+	#define USE_5A
+	#define USE_SGTL5000
+	#define M_USE_FREERTOS
 
-#include "driver/i2c_master.h"
-#include <esp_log.h>
+	#include "driver/i2c_master.h"
+	#include <esp_log.h>
+#endif
 
 #ifdef M_USE_FREERTOS
 #include <freertos/FreeRTOS.h>
@@ -45,13 +44,12 @@
 #include <freertos/queue.h>
 #endif
 
-
-
-
-#ifdef USE_5A
-#include "waveshare_dsi_touch_5_a.h"
-#endif
-
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <unistd.h>
 #include <lvgl.h>
 
 #define LL_MALLOC m_alloc
@@ -84,10 +82,7 @@ typedef char_pll string_ll;
 #include "m_alloc.h"
 #include "m_bump_arena.h"
 #include "m_hfunc.h"
-#include "m_i2c.h"
-#include "m_sgtl5000.h"
 #include "m_sd.h"
-#include "m_footswitch.h"
 #include "m_fpga_comms.h"
 #include "m_button.h"
 #include "m_ui.h"
@@ -117,8 +112,4 @@ typedef char_pll string_ll;
 #include "m_fpga_encoding.h"
 #include "m_dict_extract.h"
 
-#endif
-#endif
-#else
-#include "m_lib.h"
 #endif

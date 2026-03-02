@@ -13,14 +13,24 @@
 #define M_INT_WRITE_UNFINISHED_BYTE  		0xfe
 #define M_INT_WRITE_FINISHED_BYTE  			0xff
 
-#define MAIN_SEQUENCE_FNAME "/sdcard/MAIN_SEQ.MS"
-
+#ifdef M_DESKTOP
+#define MAIN_SEQUENCE_FNAME "./sdcard/ms.mseq"
+#define SETTINGS_FNAME 		"./sdcard/conf"
+#define M_PROFILES_DIR  	"./sdcard/prof/"
+#define M_SEQUENCES_DIR 	"./sdcard/seq/"
+#define M_EFFECT_DESC_DIR 	"./sdcard/eff/"
+#else
+#define MAIN_SEQUENCE_FNAME "/sdcard/ms.mseq"
+#define SETTINGS_FNAME 		"/sdcard/conf"
 #define M_PROFILES_DIR  	"/sdcard/prof/"
 #define M_SEQUENCES_DIR 	"/sdcard/seq/"
 #define M_EFFECT_DESC_DIR 	"/sdcard/eff/"
+#endif
 
-#define PROFILE_EXTENSION  ".MP"
-#define SEQUENCE_EXTENSION ".MS"
+
+#define PROFILE_EXTENSION  ".mprf"
+#define SEQUENCE_EXTENSION ".mseq"
+#define EFF_DESC_EXTENSION ".eff"
 
 int save_profile_as_file		(m_profile *profile, const char *fname);
 int save_profile_as_file_safe	(m_profile *profile, const char *fname);
@@ -45,6 +55,12 @@ int load_saved_sequences(m_context *cxt);
 
 int safe_file_write(int (*write_func)(void *arg, const char *fname), void *arg, const char *fname);
 
+
+string_ll *list_files_in_directory(char *dir);
+
 int m_init_directories();
+
+void erase_sd_card_void_cb(void *data);
+void erase_sd_card();
 
 #endif

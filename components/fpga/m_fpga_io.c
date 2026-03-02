@@ -73,13 +73,11 @@ int m_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 	#ifndef M_FPGA_SIMULATED
 	if (len == 0)
 		return 0;
-		
-	uint8_t reply_buf[len];
 	
     spi_transaction_t t = {
         .length = len * 8,
         .tx_buffer = tx,
-        .rx_buffer = reply_buf,
+        .rx_buffer = rx,
     };
 
 	esp_err_t err = spi_device_transmit(spi_handle, &t);
@@ -116,6 +114,14 @@ int m_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 int m_fpga_send_byte(uint8_t byte)
 {
 	return m_fpga_txrx(&byte, NULL, 1);
+}
+
+uint8_t m_fpga_read_byte()
+{
+	uint8_t tx = 0;
+	uint8_t rx;
+	m_fpga_txrx(&tx, &rx, 1);
+	return rx;
 }
 
 m_fpga_transfer_batch m_new_fpga_transfer_batch()

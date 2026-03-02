@@ -394,7 +394,7 @@ int m_profile_program_fpga(m_profile *profile)
 	return ERR_FEATURE_DISABLED;
 	#else
 	printf("Queueing transfer batch...\n");
-	if ((ret_val = m_fpga_queue_transfer_batch(batch)) != NO_ERROR)
+	if ((ret_val = m_fpga_queue_program_batch(batch)) != NO_ERROR)
 	{
 		printf("An error was encountered: %s\n", m_error_code_to_string(ret_val));
 		return ret_val;

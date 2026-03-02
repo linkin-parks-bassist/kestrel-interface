@@ -1,5 +1,6 @@
 #include "m_int.h"
 
+#ifdef M_USE_FREERTOS
 SemaphoreHandle_t m_lv_log_mutex;
 
 static char m_lv_log_buf[M_INT_LV_LOG_BUF_LEN];
@@ -39,7 +40,7 @@ void m_lv_log_flush()
 	
 	if (xSemaphoreTake(m_lv_log_mutex, pdMS_TO_TICKS(0)) != pdTRUE)
 	{
-		ESP_LOGE(TAG, "Failed to obtain log mutex");
+		printf("Failed to obtain log mutex");
 		return;
 	}
 	
@@ -143,3 +144,4 @@ void m_lv_log_flush_task(void *param)
 	vTaskDelete(NULL);
 }
 
+#endif

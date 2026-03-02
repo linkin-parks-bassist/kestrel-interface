@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifdef M_USE_FREERTOS
 SemaphoreHandle_t settings_mutex;
+#endif
 
 int init_settings(m_settings *settings)
 {
@@ -28,8 +30,10 @@ int init_settings(m_settings *settings)
 	settings->output_gain.min_expr = minus_24;
 	settings->output_gain.max_expr = plus_24;
 	
+	#ifdef M_USE_FREERTOS
 	settings_mutex = xSemaphoreCreateMutex();
 	assert(settings_mutex != NULL);
+	#endif
 	
 	return NO_ERROR;
 }
@@ -65,6 +69,7 @@ int copy_settings_struct(m_settings *dest, m_settings *src)
 
 void settings_save_task(void *arg)
 {
+	#ifdef M_USE_FREERTOS
 	TickType_t last_wake = xTaskGetTickCount();
 	int ret_val;
 	int i = 0;
@@ -95,10 +100,12 @@ void settings_save_task(void *arg)
 	}
 
 	vTaskDelete(NULL);
+	#endif
 }
 
 int init_settings_save_task()
 {
+	#ifdef M_USE_FREERTOS
 	xTaskCreatePinnedToCore(
 		settings_save_task,
 		"Teens Comms Task",
@@ -109,15 +116,18 @@ int init_settings_save_task()
 		1
 	);
 	
+	#endif
 	return NO_ERROR;
 }
 
 int settings_set_default_profile(m_profile *profile)
 {
+	#ifdef M_USE_FREERTOS
 	xSemaphoreTake(settings_mutex, portMAX_DELAY);
 	global_cxt.settings.default_profile = profile->fname;
 	global_cxt.settings.changed = 1;
 	xSemaphoreGive(settings_mutex);
+	#endif
 	
 	return NO_ERROR;
 }

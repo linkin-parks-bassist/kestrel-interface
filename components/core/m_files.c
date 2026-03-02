@@ -344,7 +344,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	}
 	
 	
-	ESP_LOGI(TAG, "Reading profile from %s", fname);
+	printf("Reading profile from %s", fname);
 	
 	uint8_t byte;
 	uint16_t arg16;
@@ -360,7 +360,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (byte != M_INT_PROFILE_MAGIC_BYTE)
 	{
-		ESP_LOGE(TAG, "Attempted load of profile from file \"%s\", whose first byte 0x%02x is not the profile magic byte 0x%02x",
+		printf("Attempted load of profile from file \"%s\", whose first byte 0x%02x is not the profile magic byte 0x%02x",
 			fname, byte, M_INT_PROFILE_MAGIC_BYTE);
 		ret_val = ERR_BAD_ARGS;
 		goto profile_read_bail;
@@ -371,7 +371,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (byte != M_INT_WRITE_FINISHED_BYTE)
 	{
-		ESP_LOGE(TAG, "Attempted load of profile from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
+		printf("Attempted load of profile from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
 			fname, byte);
 		ret_val = ERR_UNFINISHED_WRITE;
 		goto profile_read_bail;
@@ -382,7 +382,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (byte != M_INT_PROFILE_PIPELINE_LINEAR)
 	{
-		ESP_LOGE(TAG, "Attempted load of a non-linear profile from file \"%s\"; this is unimplemented", fname);
+		printf("Attempted load of a non-linear profile from file \"%s\"; this is unimplemented", fname);
 		goto profile_read_bail;
 	}
 	
@@ -391,13 +391,13 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	if (!name)
 	{
 		
-		ESP_LOGE(TAG, "Allocation fail allocating string of length %d for profile name from file %s", (int)byte, fname);
+		printf("Allocation fail allocating string of length %d for profile name from file %s", (int)byte, fname);
 		goto profile_read_bail;
 	}
 	
 	profile->name = name;
 	
-	ESP_LOGI(TAG, "Loaded name: %s", profile->name);
+	printf("Loaded name: %s", profile->name);
 	
 	read_short(n_transformers);
 	
@@ -409,21 +409,21 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		//Get transformer type
 		read_short(arg16);
 		
-		eff = get_effect_desc(arg16);
+		//eff = get_effect_desc(arg16); // broken rn
 		if (!eff)
 		{
-			ESP_LOGE(TAG, "Profile references non-existent effect. Aborting.\n");
+			printf("Profile references non-existent effect. Aborting.\n");
 			ret_val = ERR_MANGLED_FILE;
 			goto profile_read_bail;
 		}
 		
-		ESP_LOGI(TAG, "Encountered %s in position %d", eff->name, (int)i);
+		printf("Encountered %s in position %d", eff->name, (int)i);
 		
 		trans = m_profile_append_transformer_eff(profile, eff);
 		
 		if (!trans)
 		{
-			ESP_LOGE(TAG, "Failed to append effect \"%s\"", eff->name);
+			printf("Failed to append effect \"%s\"", eff->name);
 			ret_val = ERR_MANGLED_FILE;
 			goto profile_read_bail;
 		}
@@ -432,7 +432,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		read_short(arg16);
 		
 		
-		ESP_LOGI(TAG, "Transformer ID: %d\n", (int)arg16);
+		printf("Transformer ID: %d\n", (int)arg16);
 		trans->id = arg16;
 		
 		current_param = trans->parameters;
@@ -480,7 +480,7 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 		return ERR_FOPEN_FAIL;
 	}
 	
-	ESP_LOGI(TAG, "Reading sequence from %s", fname);
+	printf("Reading sequence from %s", fname);
 	
 	uint8_t byte;
 	uint16_t arg16;
@@ -497,13 +497,13 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 			break;
 		
 		case 1:
-			ESP_LOGE(TAG, "Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
+			printf("Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
 				fname, byte, M_INT_PROFILE_MAGIC_BYTE);
 			ret_val = ERR_BAD_ARGS;
 			goto sequence_read_bail;
 		
 		case 2:
-			ESP_LOGE(TAG, "Attempted load of sequence from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
+			printf("Attempted load of sequence from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
 				fname, byte);
 			ret_val = ERR_UNFINISHED_WRITE;
 			goto sequence_read_bail;
@@ -514,13 +514,13 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 	if (!name)
 	{
 		
-		ESP_LOGE(TAG, "Allocation fail allocating string of length %d for sequence name from file %s", (int)byte, fname);
+		printf("Allocation fail allocating string of length %d for sequence name from file %s", (int)byte, fname);
 		goto sequence_read_bail;
 	}
 	
 	sequence->name = name;
 	
-	ESP_LOGI(TAG, "Loaded name: %s", sequence->name);
+	printf("Loaded name: %s", sequence->name);
 	
 	read_short(n_profiles);
 	
@@ -539,7 +539,7 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 		}
 		else
 		{
-			ESP_LOGE(TAG, "Error: sequence %s contains profile %s, but no such profile found!\n", fname, string_read_buffer);
+			printf("Error: sequence %s contains profile %s, but no such profile found!\n", fname, string_read_buffer);
 		}
 	}
 	
@@ -566,35 +566,35 @@ int m_init_directories()
 
 	if (stat(M_PROFILES_DIR, &statbuf) == 0)
 	{
-		ESP_LOGI(TAG, "Profiles directory %s found", M_PROFILES_DIR);
+		printf("Profiles directory %s found", M_PROFILES_DIR);
 	}
 	else
 	{
-		ESP_LOGW(TAG, "Profiles directory %s doesn't exist. Creating...", M_PROFILES_DIR);
+		printf("Profiles directory %s doesn't exist. Creating...", M_PROFILES_DIR);
 		if (mkdir(M_PROFILES_DIR, 07777) != 0)
 		{
-			ESP_LOGE(TAG, "Failed to create profiles directory\n");
+			printf("Failed to create profiles directory\n");
 		}
 		else
 		{
-			ESP_LOGI(TAG, "Directory created sucessfully");
+			printf("Directory created sucessfully");
 		}
 	}
 
 	if (stat(M_SEQUENCES_DIR, &statbuf) == 0)
 	{
-		ESP_LOGI(TAG, "Sequences directory %s found", M_SEQUENCES_DIR);
+		printf("Sequences directory %s found", M_SEQUENCES_DIR);
 	}
 	else
 	{
-		ESP_LOGW(TAG, "Sequences directory %s doesn't exist. Creating...", M_SEQUENCES_DIR);
+		printf("Sequences directory %s doesn't exist. Creating...", M_SEQUENCES_DIR);
 		if (mkdir(M_SEQUENCES_DIR, 07777) != 0)
 		{
-			ESP_LOGE(TAG, "Failed to create sequences directory");
+			printf("Failed to create sequences directory");
 		}
 		else
 		{
-			ESP_LOGI(TAG, "Directory created sucessfully");
+			printf("Directory created sucessfully");
 		}
 	}
 	
@@ -967,3 +967,131 @@ int load_effects(m_context *cxt)
 	
 	return NO_ERROR;
 }
+
+
+string_ll *list_files_in_directory(char *dir)
+{
+	#ifndef USE_SDCARD
+	return NULL;
+	#endif
+	
+	if (!dir)
+		return NULL;
+	
+	printf("Generating list of files in %s\n", dir);
+	
+	char *fname = NULL;
+	
+	DIR *directory = opendir(dir);
+	
+	if (!directory)
+	{
+		printf("Failed to open directory!\n");
+		return NULL;
+	}
+	
+	struct dirent *directory_entry = readdir(directory);
+	
+	string_ll *list = NULL;
+	string_ll *nl;
+	
+	while (directory_entry)
+	{
+		printf("Directory entry: %s\n", directory_entry->d_name);
+		if (directory_entry->d_type == DT_DIR)
+		{
+			printf("... is itself a directory!\n");
+			directory_entry = readdir(directory);
+			continue;
+		}
+		
+		fname = m_alloc(strlen(dir) + 1 + 255);
+		
+		if (!fname)
+		{
+			printf("Error: couldn't allocate string to list directory entry %s/%s", dir, directory_entry->d_name);
+			return list;
+		}
+		
+		sprintf(fname, "%s%s", dir, directory_entry->d_name);
+		
+		nl = char_pll_append(list, fname);
+		
+		if (nl)
+		{
+			list = nl;
+		}
+		else
+		{
+						printf("Error: couldn't append linked list to list directory entry %s/%s", dir, directory_entry->d_name);
+			return list;
+		}
+		
+		directory_entry = readdir(directory);
+	}
+	
+	return list;
+}
+
+void erase_sd_card_void_cb(void *data)
+{
+	#ifdef USE_SDCARD
+	erase_sd_card();
+	#endif
+}
+
+int erase_folder(const char *dir)
+{
+	printf("Erasing directory %s...\n", dir);
+	
+	DIR *directory = opendir(dir);
+	
+	if (!directory)
+	{
+		printf("Failed to open directory!\n");
+		return ERR_BAD_ARGS;
+	}
+	
+	struct dirent *directory_entry = readdir(directory);
+	
+	int ret_val = NO_ERROR;
+	int bufsize = strlen(dir) + NAME_MAX + 1;
+	char *buf = m_alloc(sizeof(bufsize));
+	
+	if (!buf)
+		return ERR_ALLOC_FAIL;
+	
+	while (directory_entry)
+	{
+		printf("Directory entry: %s\n", directory_entry->d_name);
+		if (directory_entry->d_type == DT_DIR)
+		{
+			printf("... is itself a directory!\n");
+			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
+			printf("Full name: %s\n", buf);
+			m_free(buf);
+			ret_val = erase_folder(buf);
+			rmdir(buf);
+			buf = m_alloc(sizeof(bufsize));
+			if (!buf)
+				return ERR_ALLOC_FAIL;
+		}
+		else
+		{
+			printf("... is a file. Deleting...\n");
+			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
+			printf("Full name: %s\n", buf);
+			remove(buf);
+		}
+		
+		directory_entry = readdir(directory);
+	}
+	
+	return ret_val;
+}
+
+void erase_sd_card()
+{
+	erase_folder(MOUNT_POINT);
+}
+

@@ -17,6 +17,12 @@
 #define COMMAND_UPDATE_BLOCK_REG_1 	14
 #define COMMAND_COMMIT_REG_UPDATES 	15
 
+#define SPI_RESPONSE_OK 			0
+#define SPI_RESPONSE_INITIALISING	1
+#define SPI_RESPONSE_PROGRAMMING 	2
+#define SPI_RESPONSE_REJECTED		3
+#define SPI_RESPONSE_TIMEOUT		4
+
 #define M_FPGA_N_BLOCKS 256
 
 #if M_FPGA_N_BLOCKS > 256
@@ -50,6 +56,7 @@ int m_send_bytes_to_fpga(uint8_t *buf, int n);
 int m_send_byte_to_fpga(uint8_t byte);
 
 int m_fpga_send_byte(uint8_t byte);
+uint8_t m_fpga_read_byte();
 
 void m_fpga_set_input_gain (float gain_db);
 void m_fpga_set_output_gain(float gain_db);

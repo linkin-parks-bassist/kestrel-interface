@@ -92,4 +92,7 @@ int m_transformer_update_fpga_registers(m_transformer *trans);
 
 m_expr_scope *m_transformer_create_scope(m_transformer *trans);
 
+int m_transformer_set_parameter(m_transformer *trans, const char *name, float value);
+int m_transformer_set_setting(m_transformer *trans, const char *name, int value);
+
 #endif

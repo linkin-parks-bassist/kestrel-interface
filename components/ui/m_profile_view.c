@@ -384,7 +384,7 @@ int configure_profile_view(m_ui_page *page, void *data)
 				else
 				{
 					#ifndef M_SIMULATED
-					ESP_LOGE(TAG, "Erroe code %d encountered initialising transformer view page for transformer %d.%d\n", profile->id, i);
+					printf("Erroe code %d encountered initialising transformer view page for transformer %d.%d\n", profile->id, i);
 					#endif
 				}
 			}

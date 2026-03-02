@@ -24,6 +24,8 @@ int settings_set_default_profile(m_profile *profile);
 
 int init_settings(m_settings *settings);
 
+#ifdef M_USE_FREERTOS
 extern SemaphoreHandle_t settings_mutex;
+#endif
 
 #endif

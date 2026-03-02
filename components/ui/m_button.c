@@ -68,7 +68,7 @@ int create_button_ui(m_button *button, lv_obj_t *parent)
 	
 	if (button->obj)
 	{
-		ESP_LOGE("m_button.c", "WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
+		printf("WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
 		return ERR_BAD_ARGS;
 	}
 	
@@ -781,7 +781,7 @@ void m_active_button_clicked_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		ESP_LOGE(TAG, "Transformer widget long press callback triggered but pointer to struct not passed");
+		printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -802,7 +802,7 @@ void m_active_button_long_pressed_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		ESP_LOGE(TAG, "Transformer widget long press callback triggered but pointer to struct not passed");
+		printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -860,7 +860,7 @@ void m_active_button_pressing_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		ESP_LOGE(TAG, "Transformer widget long press callback triggered but pointer to struct not passed");
+		printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 
@@ -1023,7 +1023,7 @@ int m_active_button_add_del_button(m_active_button *button)
 	
 	if (button->del_button)
 	{
-		ESP_LOGE("m_button.c", "WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
+		printf("WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
 		return ERR_BAD_ARGS;
 	}
 	

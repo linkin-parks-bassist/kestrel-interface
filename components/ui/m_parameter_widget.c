@@ -222,9 +222,10 @@ int configure_parameter_widget(m_parameter_widget *pw, m_parameter *param, m_pro
 	
 	pw->parent = parent;
 	
+	#ifdef M_ENABLE_REPRESENTATIONS
 	m_representation_pll_safe_append(&param->reps, &pw->rep);
-	
 	pw->rep.representee = param;
+	#endif
 	
 	format_float(pw->val_label_text, pw->param->value, PARAM_WIDGET_LABEL_BUFSIZE);
 	
@@ -237,7 +238,7 @@ void parameter_widget_refresh_cb(lv_event_t *event)
 	
 	if (!pw)
 	{
-		ESP_LOGE(TAG, "NULL pw pointer");
+		printf("NULL pw pointer");
 		return;
 	}
 	
@@ -250,13 +251,13 @@ void parameter_widget_change_cb_inner(m_parameter_widget *pw)
 {
 	if (!pw)
 	{
-		ESP_LOGE(TAG, "NULL pw pointer passed to parameter_widget_change_cb_inner");
+		printf("NULL pw pointer passed to parameter_widget_change_cb_inner");
 		return;
 	}
 	
 	if (!pw->param)
 	{
-		ESP_LOGE(TAG, "parameter_widget_change_cb_inner called on parameter widget with NULL parameter");
+		printf("parameter_widget_change_cb_inner called on parameter widget with NULL parameter");
 		return;
 	}
 	
@@ -321,7 +322,7 @@ void parameter_widget_change_cb(lv_event_t *event)
 	
 	if (!pw)
 	{
-		ESP_LOGE(TAG, "NULL pw pointer passed to parameter_widget_change_cb");
+		printf("NULL pw pointer passed to parameter_widget_change_cb");
 		return;
 	}
 	
@@ -446,7 +447,7 @@ void param_widget_receive(m_message msg, m_response response)
 	if (response.type != M_RESPONSE_PARAM_VALUE)
 	{
 		#ifndef M_SIMULATED
-		ESP_LOGE(TAG, "Weird message (%d) send to parameter widget...\n", response.type);
+		printf("Weird message (%d) send to parameter widget...\n", response.type);
 		#endif
 		return;
 	}
@@ -470,7 +471,7 @@ void param_widget_receive(m_message msg, m_response response)
 	else
 	{
 		#ifndef M_SIMULATED
-		ESP_LOGE(TAG, "Data for parameter %d.%d.%d received by parameter %d.%d.%d...",
+		printf("Data for parameter %d.%d.%d received by parameter %d.%d.%d...",
 			profile_id, transformer_id, parameter_id, 
 			pw->param->id.profile_id, pw->param->id.transformer_id, pw->param->id.parameter_id); 
 		#endif
@@ -855,7 +856,7 @@ void setting_widget_change_cb(lv_event_t *event)
 	
 	if (!sw)
 	{
-		ESP_LOGE(TAG, "NULL virtual sw pointer");
+		printf("NULL virtual sw pointer");
 		return;
 	}
 	
@@ -983,7 +984,7 @@ void setting_widget_receive(m_message msg, m_response response)
 	if (response.type != M_RESPONSE_SETTING_VALUE)
 	{
 		#ifndef M_SIMULATED
-		ESP_LOGE(TAG, "Weird message (%d) send to setting widget...\n", response.type);
+		printf("Weird message (%d) send to setting widget...\n", response.type);
 		#endif
 		return;
 	}
@@ -1007,7 +1008,7 @@ void setting_widget_receive(m_message msg, m_response response)
 	else
 	{
 		#ifndef M_SIMULATED
-		ESP_LOGE(TAG, "Data for setting %d.%d.%d received by setting %d.%d.%d...",
+		printf("Data for setting %d.%d.%d received by setting %d.%d.%d...",
 			profile_id, transformer_id, setting_id, 
 			sw->setting->id.profile_id, sw->setting->id.transformer_id, sw->setting->id.setting_id); 
 		#endif
