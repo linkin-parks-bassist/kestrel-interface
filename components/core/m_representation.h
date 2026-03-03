@@ -1,5 +1,5 @@
-#ifndef M_INT_REPRESENTATION_H_
-#define M_INT_REPRESENTATION_H_
+#ifndef M_REPRESENTATION_H_
+#define M_REPRESENTATION_H_
 
 typedef struct
 {

@@ -15,6 +15,8 @@ int m_pipeline_move_transformer(m_pipeline *pipeline, int new_pos, int old_pos);
 int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id);
 int m_pipeline_get_n_transformers(m_pipeline *pipeline);
 
+m_transformer *m_pipeline_get_transformer_by_id(m_pipeline *pipeline, int id);
+
 int clone_pipeline(m_pipeline *dest, m_pipeline *src);
 void gut_pipeline(m_pipeline *pipeline);
 

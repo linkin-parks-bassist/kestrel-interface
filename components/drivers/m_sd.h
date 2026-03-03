@@ -2,7 +2,7 @@
 #define M_INT_SD_CARD_H_
 
 #ifdef M_DESKTOP
-#define MOUNT_POINT "~/M/"
+#define MOUNT_POINT "./sdcard"
 #else
 #define MOUNT_POINT "/sdcard"
 #endif

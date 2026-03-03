@@ -156,25 +156,25 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	if (!expr || depth > M_EXPR_REC_MAX_DEPTH)
 		return 1;
 	
-	//printf("The expression \"%s\" ", m_expression_to_string(expr));
+	//m_printf("The expression \"%s\" ", m_expression_to_string(expr));
 	
 	int ret_val = 1;
 	
 	if (expr->type == M_EXPR_CONST)
 	{
-		//printf("is a constant.\n");
+		//m_printf("is a constant.\n");
 		ret_val = 1;
 		goto detect_constants_finish;
 	}
 	
 	if (expr->type == M_EXPR_REF)
 	{
-		//printf("is a reference");
+		//m_printf("is a reference");
 		ret_val = m_expression_refers_constant(expr);
 		//if (ret_val)
-		//	printf(" to a constant.\n");
+		//	m_printf(" to a constant.\n");
 		//else
-		//	printf(" to a variable.\n");
+		//	m_printf(" to a variable.\n");
 		goto detect_constants_finish;
 	}
 	
@@ -183,11 +183,11 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	
 	if (arity > 0)
 	{
-		//printf("has top-level arity %d. To see if it's constant, we check its %d top-level sub-expressions.\n", arity, arity);
+		//m_printf("has top-level arity %d. To see if it's constant, we check its %d top-level sub-expressions.\n", arity, arity);
 		
 		if (!expr->val.sub_exprs)
 		{
-			//printf("Unfortunately, the data is corrupted, and no sub-expressions were found.\n");
+			//m_printf("Unfortunately, the data is corrupted, and no sub-expressions were found.\n");
 			ret_val = 1;
 			goto detect_constants_finish;
 		}
@@ -202,7 +202,7 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	
 detect_constants_finish:
 	expr->constant = ret_val;
-	//printf("Therefore, \"%s\" is %sconstant.\n", m_expression_to_string(expr), ret_val ? "" : "NOT ");
+	//m_printf("Therefore, \"%s\" is %sconstant.\n", m_expression_to_string(expr), ret_val ? "" : "NOT ");
 	
 	return ret_val;
 }
@@ -224,14 +224,14 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 	
 	if (depth > M_EXPR_REC_MAX_DEPTH)
 	{
-		printf("m_expression_evaluate(): Error: maximum recursion depth %d exceeded (possible dependency loop)\n", M_EXPR_REC_MAX_DEPTH);
+		m_printf("m_expression_evaluate(): Error: maximum recursion depth %d exceeded (possible dependency loop)\n", M_EXPR_REC_MAX_DEPTH);
 		ret_val = 0.0;
 		goto expr_compute_return;
 	}
 	
 	if (!expr)
 	{
-		printf("expr compute: NULL expr!\n");
+		m_printf("expr compute: NULL expr!\n");
 		return 0.0;
 	}
 	
@@ -276,7 +276,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 		
 		if (!scope)
 		{
-			printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but no scope given!\n",
+			m_printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but no scope given!\n",
 				m_expression_to_string(expr), expr->val.ref_name);
 			ret_val = 0.0;
 			goto expr_compute_return;
@@ -286,7 +286,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 		
 		if (!ref)
 		{
-			printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it isn't found in scope!\n",
+			m_printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it isn't found in scope!\n",
 				m_expression_to_string(expr), expr->val.ref_name);
 			ret_val = 0.0;
 			goto expr_compute_return;
@@ -301,7 +301,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 			case M_SCOPE_ENTRY_TYPE_PARAM:
 				if (!ref->val.param)
 				{
-					printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
+					m_printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
 						m_expression_to_string(expr), expr->val.ref_name);
 					ret_val = 0.0f;
 				}
@@ -314,7 +314,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 			case M_SCOPE_ENTRY_TYPE_SETTING:
 				if (!ref->val.setting)
 				{
-					printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
+					m_printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
 						expr, expr->val.ref_name);
 					ret_val = 0.0f;
 				}
@@ -325,7 +325,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 				break;
 				
 			default:
-				printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
+				m_printf("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
 					m_expression_to_string(expr), ref->type);
 				ret_val = 0.0;
 				break;
@@ -336,7 +336,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 	
 	if (!expr->val.sub_exprs)
 	{
-		printf("Error evaluating expression (%p): expression has arity > 0, but has no sub-expressions!\n",
+		m_printf("Error evaluating expression (%p): expression has arity > 0, but has no sub-expressions!\n",
 				expr->val.ref_name);
 		ret_val = 0.0;
 		goto expr_compute_return;
@@ -365,7 +365,7 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 			
 			if (fabsf(x) < 1e-20)
 			{
-				printf("expr compute: division by zero!\n");
+				m_printf("expr compute: division by zero!\n");
 				ret_val = 0.0;
 				goto expr_compute_return; // avoid division by zero by just returning 0 lol. idk. what else to do?
 			}
@@ -444,7 +444,7 @@ expr_compute_return:
 float m_expression_evaluate(m_expression *expr, m_expr_scope *scope)
 {
 	float ret_val = m_expression_evaluate_rec(expr, scope, 0);
-	//printf("Evaluating expression; %s = %.04f\n", m_expression_to_string(expr), ret_val);
+	//m_printf("Evaluating expression; %s = %.04f\n", m_expression_to_string(expr), ret_val);
 	return ret_val;
 }
 
@@ -628,7 +628,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 	int found;
 	
 	#ifdef M_BOUNDS_CHECK_VERBOSE
-	printf("[Depth: %d] Computing range for expression \"%s\"...\n", depth, m_expression_to_string(expr));
+	m_printf("[Depth: %d] Computing range for expression \"%s\"...\n", depth, m_expression_to_string(expr));
 	#endif
 	
 	float p1, p2, p3, p4;
@@ -657,7 +657,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 	if (expr->constant && expr->cached)
 	{
 		#ifdef M_BOUNDS_CHECK_VERBOSE
-		printf("[Depth: %d] Expression is constant (and cached!), with known value %.3f.\n", depth, expr->cached_val);
+		m_printf("[Depth: %d] Expression is constant (and cached!), with known value %.3f.\n", depth, expr->cached_val);
 		#endif
 		ret = m_interval_singleton(expr->cached_val);
 		goto expr_int_ret;
@@ -666,7 +666,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 	if (expr->type == M_EXPR_CONST)
 	{
 		#ifdef M_BOUNDS_CHECK_VERBOSE
-		printf("[Depth: %d] Expression is constant and cached, with value %.3f.\n", depth, expr->val.val_float);
+		m_printf("[Depth: %d] Expression is constant and cached, with value %.3f.\n", depth, expr->val.val_float);
 		#endif
 		ret = m_interval_singleton(expr->val.val_float);
 		goto expr_int_ret;
@@ -675,26 +675,26 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 	if (expr->type == M_EXPR_REF)
 	{
 		#ifdef M_BOUNDS_CHECK_VERBOSE
-		printf("[Depth: %d] Expression is a reference, to \"%s\". Therefore we must compute its range.\n", depth, expr->val.ref_name ? expr->val.ref_name : "(NULL)");
+		m_printf("[Depth: %d] Expression is a reference, to \"%s\". Therefore we must compute its range.\n", depth, expr->val.ref_name ? expr->val.ref_name : "(NULL)");
 		#endif
 		if (m_expression_refers_constant(expr))
 		{
 			#ifdef M_BOUNDS_CHECK_VERBOSE
-			printf("[Depth: %d] The referenced value is a constant,", depth);
+			m_printf("[Depth: %d] The referenced value is a constant,", depth);
 			#endif
 			if (expr->cached)
 				ret = m_interval_singleton(expr->cached_val);
 			else
 				ret = m_interval_singleton(m_expression_evaluate(expr, NULL));
 			#ifdef M_BOUNDS_CHECK_VERBOSE
-			printf(" with value %.4f\n", ret.a);
+			m_printf(" with value %.4f\n", ret.a);
 			#endif
 			goto expr_int_ret;
 		}
 		
 		if (!scope)
 		{
-			printf("Error estimating expression (%p): expression refers to non-constant \"%s\", but no scope given!\n",
+			m_printf("Error estimating expression (%p): expression refers to non-constant \"%s\", but no scope given!\n",
 				expr->val.ref_name);
 			ret = m_interval_real_line();
 			goto expr_int_ret;
@@ -704,7 +704,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 		
 		if (!ref)
 		{
-			printf("Error estimating expression (%p): expression refers to non-constant \"%s\", but it isn't found in scope!\n",
+			m_printf("Error estimating expression (%p): expression refers to non-constant \"%s\", but it isn't found in scope!\n",
 				expr, expr->val.ref_name);
 			ret = m_interval_real_line();
 			goto expr_int_ret;
@@ -714,7 +714,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 		{
 			case M_SCOPE_ENTRY_TYPE_EXPR:
 				#ifdef M_BOUNDS_CHECK_VERBOSE
-				printf("[Depth: %d] The referred quantity is an expression, so we recurse and compute its range!\n", depth);
+				m_printf("[Depth: %d] The referred quantity is an expression, so we recurse and compute its range!\n", depth);
 				#endif
 				ret = m_expression_compute_range_rec(ref->val.expr, scope, depth + 1);
 				break;
@@ -723,14 +723,14 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 				if (!ref->val.param)
 				{
 					#ifdef M_BOUNDS_CHECK_VERBOSE
-					printf("The reference is to a parameter, but, ultimately, it turned up NULL!\n");
+					m_printf("The reference is to a parameter, but, ultimately, it turned up NULL!\n");
 					#endif
 					ret = m_interval_real_line();
 				}
 				else
 				{
 					#ifdef M_BOUNDS_CHECK_VERBOSE
-					printf("[Depth: %d] The reference is to a parameter. We compute its range.\n", depth);
+					m_printf("[Depth: %d] The reference is to a parameter. We compute its range.\n", depth);
 					#endif
 					if (ref->val.param->min_expr)
 					{
@@ -750,13 +750,13 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 					}
 					
 					#ifdef M_BOUNDS_CHECK_VERBOSE
-					printf("[Depth: %d] Obtained parameter range [%.4f, %.4f].\n", depth, ret.a, ret.b);
+					m_printf("[Depth: %d] Obtained parameter range [%.4f, %.4f].\n", depth, ret.a, ret.b);
 					#endif
 				}
 				break;
 				
 			default:
-				printf("Error evaluating expression (%p): expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
+				m_printf("Error evaluating expression (%p): expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
 					expr->val.ref_name, ref->type);
 				ret = m_interval_real_line();
 				break;
@@ -780,7 +780,7 @@ m_interval m_expression_compute_range_rec(m_expression *expr, m_expr_scope *scop
 	}
 	
 	#ifdef M_BOUNDS_CHECK_VERBOSE
-	printf("[Depth: %d] The expression has top-level arity %d; therefore we recurse and compute ranges of its top-level sub-expressions.\n", depth, arity);
+	m_printf("[Depth: %d] The expression has top-level arity %d; therefore we recurse and compute ranges of its top-level sub-expressions.\n", depth, arity);
 	#endif
 	
 	if (arity >= 1) x_int = m_expression_compute_range_rec(expr->val.sub_exprs[0], scope, depth + 1);
@@ -1183,7 +1183,7 @@ expr_int_ret:
 	}
 	
 	#ifdef M_BOUNDS_CHECK_VERBOSE
-	printf("[Depth: %d] Therefore, the range of \"%s\" is [%.4f, %.4f].\n", depth, m_expression_to_string(expr), ret.a, ret.b);
+	m_printf("[Depth: %d] Therefore, the range of \"%s\" is [%.4f, %.4f].\n", depth, m_expression_to_string(expr), ret.a, ret.b);
 	#endif
 	
 	return ret;
@@ -1364,7 +1364,7 @@ int m_expression_print(m_expression *expr)
 	char buf[256];
 	
 	m_expression_print_rec(expr, buf, 256, 0);
-	printf("%s", buf);
+	m_printf("%s", buf);
 	
 	return NO_ERROR;
 }

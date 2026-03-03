@@ -6,7 +6,7 @@
 #define INITIAL_OPTION_ARRAY_LENGTH 	8
 #define OPTION_ARRAY_CHUNK_SIZE	 		8
 
-const char *TAG = "Transformer";
+static const char *FNAME = "m_transformer.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_transformer);
 
@@ -85,6 +85,14 @@ int init_transformer(m_transformer *trans)
 	trans->mutex = xSemaphoreCreateMutex();
 	#endif
 	
+	#ifdef M_ENABLE_REPRESENTATIONS
+	trans->reps = NULL;
+	trans->profile_rep.representer = NULL;
+	trans->profile_rep.representee = trans;
+	trans->profile_rep.update = m_transformer_profile_rep_update;
+	m_representation_pll_safe_append(&trans->reps, &trans->profile_rep);
+	#endif
+	
 	return NO_ERROR;
 }
 
@@ -98,7 +106,15 @@ int init_transformer_from_effect_desc(m_transformer *trans, m_effect_desc *eff)
 	
 	while (current_param)
 	{
-		m_parameter_pll_safe_append(&trans->parameters, m_parameter_make_clone(current_param->data));
+		m_parameter_pll_safe_append(&trans->parameters, m_parameter_make_clone_for_transformer(current_param->data, trans));
+		if (current_param->data)
+		{
+			current_param->data->trans_rep.representer = trans;
+			if (!current_param->data->reps)
+			{
+				m_representation_pll_safe_append(&current_param->data->reps, &current_param->data->trans_rep);
+			}
+		}
 		current_param = current_param->next;
 	}
 	
@@ -106,7 +122,15 @@ int init_transformer_from_effect_desc(m_transformer *trans, m_effect_desc *eff)
 	
 	while (current_setting)
 	{
-		m_setting_pll_safe_append(&trans->settings, m_setting_make_clone(current_setting->data));
+		m_setting_pll_safe_append(&trans->settings, m_setting_make_clone_for_transformer(current_setting->data, trans));
+		if (current_setting->data)
+		{
+			current_setting->data->trans_rep.representer = trans;
+			if (!current_setting->data->reps)
+			{
+				m_representation_pll_safe_append(&current_setting->data->reps, &current_setting->data->trans_rep);
+			}
+		}
 		current_setting = current_setting->next;
 	}
 	
@@ -197,7 +221,7 @@ int request_append_transformer(uint16_t type, m_transformer *local)
 #ifdef USE_TEENSY
 void transformer_receive_id(m_message message, m_response response)
 {
-	printf("Transformer receive ID!\n");
+	m_printf("Transformer receive ID!\n");
 	m_transformer *trans = message.cb_arg;
 	
 	if (!trans)
@@ -210,11 +234,11 @@ void transformer_receive_id(m_message message, m_response response)
 	
 	if (!trans->profile || pid != trans->profile->id)
 	{
-		printf("Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
+		m_printf("Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
 	}
 	else
 	{
-		printf("Transformer %p obtains id %d.%d\n", trans, pid, tid);
+		m_printf("Transformer %p obtains id %d.%d\n", trans, pid, tid);
 		trans->id = tid;
 		
 		transformer_rectify_param_ids(trans);
@@ -277,9 +301,10 @@ m_setting *transformer_add_setting(m_transformer *trans)
 }
 
 #ifdef M_ENABLE_UI
-int transformer_init_ui_page(m_transformer *trans, m_ui_page *parent)
+
+int m_transformer_init_view_page(m_transformer *trans, m_ui_page *parent)
 {
-	printf("transformer_init_ui_page. trans = %p, parent = %p\n", trans, parent);
+	m_printf("transformer_init_ui_page. trans = %p, parent = %p\n", trans, parent);
 	if (!trans)
 		return ERR_NULL_PTR;
 	
@@ -295,6 +320,38 @@ int transformer_init_ui_page(m_transformer *trans, m_ui_page *parent)
 	
 	return NO_ERROR;
 }
+/*
+int m_transformer_init_view_page(m_transformer *trans)
+{
+	m_printf("m_transformer_init_view_page(trans = %p)\n", trans);
+	
+	if (!trans)
+		return ERR_NULL_PTR;
+	
+	trans->view_page = m_alloc(sizeof(m_ui_page));
+	
+	if (!trans->view_page)
+		return ERR_ALLOC_FAIL;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = init_ui_page(trans->view_page)) != NO_ERROR) return ret_val;
+	if ((ret_val = init_transformer_view(trans->view_page)) != NO_ERROR) return ret_val;
+	if ((ret_val = configure_transformer_view(trans->view_page, trans)) != NO_ERROR) return ret_val;
+	
+	m_profile *profile = trans->profile;
+	
+	m_printf("trans->profile = %p\n", trans->profile);
+	
+	if (profile)
+	{
+		m_printf("trans->profile->view_page = %p\n", trans->profile->view_page);
+		trans->view_page->parent = profile->view_page;
+	}
+	
+	m_printf("m_transformer_init_view_page done\n");
+	return NO_ERROR;
+}*/
 #endif
 
 int clone_transformer(m_transformer *dest, m_transformer *src)
@@ -390,8 +447,8 @@ void free_transformer(m_transformer *trans)
 	if (!trans)
 		return;
 	
-	m_free(trans->parameters);
-	m_free(trans->settings);
+	destructor_free_m_parameter_pll(trans->parameters, m_parameter_free);
+	destructor_free_m_setting_pll(trans->settings, m_setting_free);
 	
 	#ifdef M_ENABLE_UI
 	free_transformer_view(trans->view_page);
@@ -537,4 +594,28 @@ int m_transformer_set_setting(m_transformer *trans, const char *name, int value)
 	}
 	
 	return ERR_BAD_ARGS;
+}
+
+
+void m_transformer_profile_rep_update(void *representer, void *representee)
+{
+	m_profile *profile = representer;
+	m_transformer *trans = representee;
+	
+	if (!representer || !representee)
+		return;
+	
+	save_profile(profile);
+	
+	return;
+}
+
+int m_transformer_update_reps(m_transformer *trans)
+{
+	if (!trans)
+		return ERR_NULL_PTR;
+	
+	queue_representation_list_update(trans->reps);
+	
+	return NO_ERROR;
 }

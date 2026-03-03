@@ -1,9 +1,11 @@
 #include "m_int.h"
 
-static const char *TAG = "m_transformer_view.c";
+static const char *FNAME = "m_transformer_view.c";
 
 m_ui_page *create_transformer_view_for(m_transformer *trans)
 {
+	m_printf("create_transformer_view_for(trans = %p)\n", trans);
+	
 	if (!trans)
 		return NULL;
 	
@@ -30,16 +32,22 @@ m_ui_page *create_transformer_view_for(m_transformer *trans)
 		return NULL;
 	}
 	
+	m_printf("create_transformer_view_for done\n");
 	return page;
 }
 
 int init_transformer_view(m_ui_page *page)
 {
-	//printf("Init transformer view...\n");
+	//m_printf("Init transformer view...\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
+	init_ui_page(page);
+	
+	page->type = M_UI_PAGE_TRANS_VIEW;
+	
 	page->panel = new_panel();
+	
 	if (!page->panel)
 		return ERR_ALLOC_FAIL;
 	
@@ -66,7 +74,7 @@ int init_transformer_view(m_ui_page *page)
 		str->group_inhabited[i] = 0;
 	}
 	
-	str->settings_page = malloc(sizeof(m_ui_page));
+	str->settings_page = m_alloc(sizeof(m_ui_page));
 	
 	if (!str->settings_page)
 		return ERR_ALLOC_FAIL;
@@ -93,7 +101,7 @@ void transformer_view_enter_settings_cb(lv_event_t *e)
 
 int configure_transformer_view(m_ui_page *page, void *data)
 {
-	printf("Conpfigure transformer view... page = %p, data = %p\n", page, data);
+	m_printf("Conpfigure transformer view... page = %p, data = %p\n", page, data);
 	if (!page || !data)
 	{
 		if (page)
@@ -149,24 +157,12 @@ int configure_transformer_view(m_ui_page *page, void *data)
 		current_param = current_param->next;
 	}
 	
-	printf("trans->settings = %p\n", trans->settings);
 	m_setting_pll *current_setting = trans->settings;
 	
 	while (current_setting)
 	{
-		printf("current_setting = %p...\n", current_setting);
-		printf("current_setting->data = %p...\n", current_setting->data);
-		
-		if (current_setting->data)
-		{
-			printf("current_setting->data->name = \"%s\", current_setting->data->name_internal = \"%s\", current_settung->data->page = %s\n",
-				current_setting->data->name, current_setting->data->name_internal,
-				current_setting->data->page == TRANSFORMER_SETTING_PAGE_MAIN ? "main" : "settings");
-		}
 		if (current_setting->data && current_setting->data->page == TRANSFORMER_SETTING_PAGE_MAIN)
 		{
-			printf(" current_setting->data = %p; current_setting->data->name = \"%s\"...",
-				current_setting->data, current_setting->data->name);
 			sw = m_alloc(sizeof(m_setting_widget));
 		
 			if (!sw)
@@ -191,7 +187,7 @@ int configure_transformer_view(m_ui_page *page, void *data)
 
 int create_transformer_view_ui(m_ui_page *page)
 {
-	printf("create_transformer_view_ui\n");
+	m_printf("create_transformer_view_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -219,9 +215,6 @@ int create_transformer_view_ui(m_ui_page *page)
 		if (str->group_inhabited[i])
 		{
 			str->group_containers[i] = lv_obj_create(page->container);
-			
-			if (!str->group_containers)
-				return ERR_ALLOC_FAIL;
 			
 			lv_obj_remove_style_all(str->group_containers[i]);
 			lv_obj_set_flex_flow (str->group_containers[i], LV_FLEX_FLOW_ROW_WRAP);
@@ -266,7 +259,7 @@ int create_transformer_view_ui(m_ui_page *page)
 			if (current_param->data->param)
 			{
 				group = current_param->data->param->group;
-				printf("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
+				m_printf("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
 					current_param->data->param->name, current_param->data->param->name_internal, group);
 				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
 				{
@@ -297,7 +290,7 @@ int create_transformer_view_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	printf("create_transformer_view_ui done\n");
+	m_printf("create_transformer_view_ui done\n");
 	return NO_ERROR;
 }
 
@@ -313,30 +306,6 @@ int clear_transformer_view()
 {
 	return ERR_UNIMPLEMENTED;
 }
-
-int transformer_view_request_parameter_values(m_ui_page *page)
-{
-	//printf("transformer_view_request_parameter_values...\n");
-	if (!page)
-		return ERR_NULL_PTR;
-	
-	m_transformer_view_str *str = (m_transformer_view_str*)page->data_struct;
-	
-	if (!str)
-		return ERR_BAD_ARGS;
-	
-	m_parameter_widget_pll *current = str->parameter_widgets;
-	
-	while (current)
-	{
-		current = current->next;
-	}
-	
-	//printf("done transformer_view_request_parameter_values\n");
-	
-	return NO_ERROR;
-}
-
 
 int free_transformer_view_ui(m_ui_page *page)
 {

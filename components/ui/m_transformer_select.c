@@ -1,6 +1,6 @@
 #include "m_int.h"
 
-static const char *TAG = "m_transformer_select.c";
+static const char *FNAME = "m_transformer_select.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_transformer_selector_button);
 
@@ -11,7 +11,7 @@ void enter_transformer_selector_cb(lv_event_t *e)
 
 int init_transformer_selector_eff(m_ui_page *page)
 {
-	printf("init_transformer_selector_eff\n");
+	m_printf("init_transformer_selector_eff\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -48,7 +48,7 @@ int init_transformer_selector_eff(m_ui_page *page)
 		i++;
 	}
 	
-	printf("Created %d buttons\n", i);
+	m_printf("Created %d buttons\n", i);
 	
 	page->configured = 1;
 	
@@ -57,7 +57,7 @@ int init_transformer_selector_eff(m_ui_page *page)
 
 int configure_transformer_selector(m_ui_page *page, void *data)
 {
-	//printf("configure_transformer_selector...\n");
+	//m_printf("configure_transformer_selector...\n");
 	if (!page || !data)
 		return ERR_NULL_PTR;
 	
@@ -69,7 +69,7 @@ int configure_transformer_selector(m_ui_page *page, void *data)
 	if (!ts)
 		return ERR_BAD_ARGS;
 	
-	printf("success\n");
+	m_printf("success\n");
 	return NO_ERROR;
 }
 
@@ -85,7 +85,7 @@ void add_transformer_from_menu_eff(lv_event_t *e)
 	// Should never happen
 	if (!button)
 	{
-		printf("User tried to add transformer from menu, but the pointer to the page struct is NULL!\n");
+		m_printf("User tried to add transformer from menu, but the pointer to the page struct is NULL!\n");
 		return;
 	}
 	
@@ -96,11 +96,11 @@ void add_transformer_from_menu_eff(lv_event_t *e)
 	
 	m_effect_desc *eff = button->eff;
 	
-	printf("User wishes to add a \"%s\"\n", button->name);
+	m_printf("User wishes to add a \"%s\"\n", button->name);
 	
 	if (!profile->view_page)
 	{
-		printf("Profile does not have a view page!\n");
+		m_printf("Profile does not have a view page!\n");
 	}
 	else
 	{
@@ -120,13 +120,13 @@ void add_transformer_from_menu_eff(lv_event_t *e)
 	m_profile_if_active_update_fpga(profile);
 	#endif
 	
-	transformer_init_ui_page(trans, pv);
+	m_transformer_init_view_page(trans, profile->view_page);
 	create_transformer_view_ui(trans->view_page);
 }
 
 int init_transformer_selector_button_from_effect(m_transformer_selector_button *button, m_effect_desc *eff)
 {
-	//printf("Init transformer selector button. Button = %p, index = %d, profile = %p\n", button, index, profile);
+	//m_printf("Init transformer selector button. Button = %p, index = %d, profile = %p\n", button, index, profile);
 	if (!button || !eff)
 		return ERR_NULL_PTR;
 	

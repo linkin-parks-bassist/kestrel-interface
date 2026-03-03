@@ -9,8 +9,10 @@ int m_init_effect_desc(m_effect_desc *eff)
 	eff->parameters = NULL;
 	eff->resources = NULL;
 	eff->settings = NULL;
-	eff->blocks = NULL;
-	eff->scope = NULL;
+	eff->blocks  = NULL;
+	eff->scope  = NULL;
+	eff->cname = NULL;
+	eff->name = NULL;
 	
 	return NO_ERROR;
 }

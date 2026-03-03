@@ -83,7 +83,7 @@ int m_settings_section_extract(m_eff_parsing_state *ps, m_setting_pll **list, m_
 			
 			if (setting)
 			{
-				printf("Obtained setting \"%s\"; adding to list...\n", setting->name_internal);
+				m_printf("Obtained setting \"%s\"; adding to list...\n", setting->name_internal);
 				m_setting_pll_safe_append(list, setting);
 			}
 		}

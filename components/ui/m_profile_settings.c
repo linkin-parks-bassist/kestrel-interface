@@ -115,13 +115,13 @@ void default_profile_button_cb(lv_event_t *e)
 
 int create_profile_settings_page_ui(m_ui_page *page)
 {
-	printf("create_profile_settings_page_ui\n");
+	m_printf("create_profile_settings_page_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	if (page->ui_created)
 	{
-		printf("Profile settings page: UI already created...\n");
+		m_printf("Profile settings page: UI already created...\n");
 		return NO_ERROR;
 	}
 	
@@ -129,13 +129,13 @@ int create_profile_settings_page_ui(m_ui_page *page)
 	
 	if (!str)
 	{
-		printf("Error! Profile settings page has no data struct!\n");
+		m_printf("Error! Profile settings page has no data struct!\n");
 		return ERR_BAD_ARGS;
 	}
 		
 	if (!str->profile)
 	{
-		printf("Error! Profile settings page has no profile!\n");
+		m_printf("Error! Profile settings page has no profile!\n");
 		return ERR_BAD_ARGS;
 	}
 	

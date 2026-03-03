@@ -1,6 +1,8 @@
 #ifndef M_MALLOC_WRAPPER_H_
 #define M_MALLOC_WRAPPER_H_
 
+//#define M_LOG_ALLOCS
+
 void *m_alloc(size_t size);
 void *m_realloc(void *ptr, size_t size);
 char *m_strndup(const char *str, size_t n);

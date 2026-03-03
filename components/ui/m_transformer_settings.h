@@ -5,6 +5,8 @@ typedef struct
 {
 	lv_obj_t *text;
 	
+	m_transformer *trans;
+	
 	m_setting_widget band_mode;
 	
 	m_parameter_widget band_lp_cutoff;

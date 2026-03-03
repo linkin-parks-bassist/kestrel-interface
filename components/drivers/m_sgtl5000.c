@@ -6,13 +6,14 @@
 #include "esp_log.h"
 
 #include "m_error_codes.h"
+#include "m_printf.h"
 
 #include "driver/spi_master.h"
 #include "driver/i2c_master.h"
 #include "driver/pulse_cnt.h"
 #include "driver/gpio.h"
 
-#include "m_sgtl5000.h"   // your register defines (CHIP_*, DAP_*, etc)
+#include "m_sgtl5000.h"
 
 #define SGTL5000_SDA 15
 #define SGTL5000_SCL 16
@@ -22,7 +23,7 @@ static const char *TAG = "sgtl5000";
 int sgtl5000_status = 0;
 
 static uint16_t ana_ctrl;
-static uint8_t  i2c_addr = 0x0A;   // default, you override with sgtl5000_set_address()
+static uint8_t  i2c_addr = 0x0A;
 
 static bool muted;
 static bool semi_automated;
@@ -144,7 +145,7 @@ int sgtl5000_enable(void)
 
     muted = true;
 	
-	printf("Send power sequence...\n");
+	m_printf("Send power sequence...\n");
 
 	int ret_val;
 
@@ -180,7 +181,7 @@ int sgtl5000_enable(void)
     if ((ret_val = sgtl5000_modify_reg(CHIP_ADCDAC_CTRL, 0, 0x0300, NULL)) != NO_ERROR)
 		return ret_val;
 	
-	printf("Done.\n");
+	m_printf("Done.\n");
 
     return NO_ERROR;
 }
@@ -217,10 +218,10 @@ static void read_and_print(uint16_t reg, const char *name)
     int ret_val = sgtl5000_read_reg(reg, &v);
     if (ret_val != NO_ERROR)
     {
-        printf("RD  %-18s (0x%04X): ERROR\n", name, reg);
+        m_printf("RD  %-18s (0x%04X): ERROR\n", name, reg);
         return;
     }
-    printf("RD  %-18s (0x%04X): 0x%04X\n", name, reg, v);
+    m_printf("RD  %-18s (0x%04X): 0x%04X\n", name, reg, v);
 }
 
 typedef struct {
@@ -257,7 +258,7 @@ void sgtl5000_readout_registers()
         { CHIP_SSS_CTRL, 	 "CHIP_SSS_CTRL"	    },
     };
 
-    printf("\n=== SGTL5000 READ DUMP ===\n");
+    m_printf("\n=== SGTL5000 READ DUMP ===\n");
     for (size_t i = 0; i < sizeof(reads)/sizeof(reads[0]); i++) {
         (void)read_and_print(reads[i].reg, reads[i].name);
     }
@@ -280,20 +281,20 @@ void m_sgtl5000_init(void *param)
 
     int ret_val;
     
-    printf("Initialise I2C bus with SGTL5000...\n");
+    m_printf("Initialise I2C bus with SGTL5000...\n");
     if ((ret_val = sgtl5000_i2c_init(&sgtl_i2c_cfg)) != NO_ERROR)
 	{
-		printf("Error initialising I2C bus with SGTL5000...\n");
+		m_printf("Error initialising I2C bus with SGTL5000...\n");
 		return;
 	}
     
     if ((ret_val = sgtl5000_set_address_level(0)) != NO_ERROR)
 		return;
     
-    printf("Initialising SGTL5000...\n");
+    m_printf("Initialising SGTL5000...\n");
     if ((ret_val = sgtl5000_enable()) != NO_ERROR)
 	{
-		printf("Error initialising SGTL5000...\n");
+		m_printf("Error initialising SGTL5000...\n");
 		return;
 	}
 	
@@ -302,7 +303,7 @@ void m_sgtl5000_init(void *param)
 	
 	sgtl5000_status = 1;
 	
-	printf("SGTL5000 Initialised\n");
+	m_printf("SGTL5000 Initialised\n");
 	
 	//sgtl5000_readout_registers();
 	

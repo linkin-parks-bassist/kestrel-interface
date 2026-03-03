@@ -3,6 +3,7 @@
 
 typedef struct {
 	const char *name;
+	const char *cname;
 	
 	m_block_pll *blocks;
 	m_setting_pll *settings;

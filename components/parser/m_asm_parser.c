@@ -135,8 +135,7 @@ int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_arg *arg)
 		
 		if (resource_found && arg)
 		{
-			printf("Resource found; name \"%s\", type %d, size %d, handle %d\n",
-				arg->res->name, arg->res->type, arg->res->size, arg->res->handle);
+			
 		}
 		else
 		{
@@ -155,7 +154,7 @@ int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_arg *arg)
 	}
 	else 
 	{
-		printf("Syntax error: \"%s\"\n", current->data);
+		m_printf("Syntax error: \"%s\"\n", current->data);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_parse_arg_fin;
 	}
@@ -576,7 +575,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	}
 	else
 	{
-		printf("Error: unknown instruction \"%s\"\n", current->data);
+		m_printf("Error: unknown instruction \"%s\"\n", current->data);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
@@ -621,13 +620,13 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	
 	if (n_args_read < n_args_expected)
 	{
-		printf("Error: too few arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
+		m_printf("Error: too few arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
 	else if (n_args_read > n_args_expected)
 	{
-		printf("Error: too many arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
+		m_printf("Error: too many arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
@@ -636,7 +635,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[dest_pos].type != M_ASM_ARG_CHANNEL)
 		{
-			printf("Error: destination must be a channel\n");
+			m_printf("Error: destination must be a channel\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}
@@ -650,7 +649,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[shift_pos].type != M_ASM_ARG_INT || args[shift_pos].val < 0 || args[shift_pos].val > 15)
 		{
-			printf("Error: shift value must be an integer between 0 and 15\n");
+			m_printf("Error: shift value must be an integer between 0 and 15\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}
@@ -679,7 +678,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				break;
 			
 			default:
-				printf("Error: wrong type given for arg a\n");
+				m_printf("Error: wrong type given for arg a\n");
 				break;
 		}
 	}
@@ -715,7 +714,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				break;
 			
 			default:
-				printf("Error: wrong type given for arg b\n");
+				m_printf("Error: wrong type given for arg b\n");
 				ret_val = ERR_BAD_ARGS;
 				goto asm_line_parse_fin;
 				break;
@@ -751,14 +750,14 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				}
 				else
 				{
-					printf("Error: too many constants\n");
+					m_printf("Error: too many constants\n");
 					ret_val = ERR_BAD_ARGS;
 					goto asm_line_parse_fin;
 				}
 				break;
 			
 			default:
-				printf("Error: wrong type given for arg c\n");
+				m_printf("Error: wrong type given for arg c\n");
 				ret_val = ERR_BAD_ARGS;
 				goto asm_line_parse_fin;
 				break;
@@ -769,7 +768,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[res_pos].type != M_ASM_ARG_RES)
 		{
-			printf("Error: resource must be a resource\n");
+			m_printf("Error: resource must be a resource\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}

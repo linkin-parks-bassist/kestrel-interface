@@ -30,7 +30,7 @@ m_menu_item *create_sequence_listing_menu_item(char *text, m_sequence *sequence,
 
 int sequence_listing_menu_item_refresh_active(m_menu_item *item)
 {
-	printf("sequence_listing_menu_item_refresh_active\n");
+	m_printf("sequence_listing_menu_item_refresh_active\n");
 	if (!item)
 		return ERR_NULL_PTR;
 	
@@ -42,7 +42,7 @@ int sequence_listing_menu_item_refresh_active(m_menu_item *item)
 	
 	if (item->data && ((m_sequence*)item->data)->active)
 	{
-		printf("sequence is active. going about it\n");
+		m_printf("sequence is active. going about it\n");
 		
 		if (item->extra && item->extra[0] && item->extra[1])
 		{
@@ -53,7 +53,7 @@ int sequence_listing_menu_item_refresh_active(m_menu_item *item)
 	}
 	else
 	{
-		printf("sequence is not active. hiding play\n");
+		m_printf("sequence is not active. hiding play\n");
 		if (item->extra && item->extra[0] && item->extra[1])
 		{
 			lv_label_set_text(item->extra[1], LV_SYMBOL_TRASH);
@@ -62,7 +62,7 @@ int sequence_listing_menu_item_refresh_active(m_menu_item *item)
 		}
 	}
 	
-	printf("sequence_listing_menu_item_refresh_active done\n");
+	m_printf("sequence_listing_menu_item_refresh_active done\n");
 	return NO_ERROR;
 }
 
@@ -86,12 +86,12 @@ int init_sequence_list(m_ui_page *page)
 	if (!page)
 		return ERR_NULL_PTR;
 	
-	//printf("init_sequence_list\n");
+	//m_printf("init_sequence_list\n");
 	init_menu_page(page);
 	
 	page->configure = configure_sequence_list;
 	
-	//printf("init_sequence_list done\n");
+	//m_printf("init_sequence_list done\n");
 	return NO_ERROR;
 }
 
@@ -111,7 +111,7 @@ void sequence_list_add_cb(lv_event_t *e)
 	
 	if (!new_sequence)
 	{
-		printf("ERROR: Couldn't create new sequence\n");
+		m_printf("ERROR: Couldn't create new sequence\n");
 		return;
 	}
 	
@@ -127,7 +127,7 @@ void sequence_list_add_cb(lv_event_t *e)
 	
 	if (!new_listing)
 	{
-		printf("Failed to create sequence listing menu item\n");
+		m_printf("Failed to create sequence listing menu item\n");
 		return;
 	}
 	
@@ -138,7 +138,7 @@ void sequence_list_add_cb(lv_event_t *e)
 
 int configure_sequence_list(m_ui_page *page, void *data)
 {
-	printf("Configure sequence list\n");
+	m_printf("Configure sequence list\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -163,18 +163,18 @@ int configure_sequence_list(m_ui_page *page, void *data)
 	ui_page_add_bottom_button(page, LV_SYMBOL_PLUS, sequence_list_add_cb);
 	
 	sequence_ll *current = global_cxt.sequences;
-	printf("current = global_cxt.sequences = %p\n", current);
+	m_printf("current = global_cxt.sequences = %p\n", current);
 	m_menu_item_pll *nl;
 	
 	int i = 0;
 	while (current)
 	{
-		printf("current = %p, current->data = %p\n",
+		m_printf("current = %p, current->data = %p\n",
 			current, current->data);
 		if (current->data)
 		{
-			printf("Add list item for sequence %d, %p = %s\n", i, current->data, current->data->name);
-			printf("Sequence view page pointer: %p, dbl ptr: %p\n", current->data->view_page, &current->data->view_page);
+			m_printf("Add list item for sequence %d, %p = %s\n", i, current->data, current->data->name);
+			m_printf("Sequence view page pointer: %p, dbl ptr: %p\n", current->data->view_page, &current->data->view_page);
 			menu_page_add_item(str, create_sequence_listing_menu_item(current->data->name, current->data, page));
 		}
 		
@@ -228,7 +228,7 @@ void disappear_sequence_listing_delete_button(lv_timer_t *timer)
 
 void menu_item_sequence_listing_released_cb(lv_event_t *e)
 {
-	printf("menu_item_sequence_listing_released_cb\n");
+	m_printf("menu_item_sequence_listing_released_cb\n");
 	m_menu_item *item = (m_menu_item*)lv_event_get_user_data(e);
 	
 	if (!item)
@@ -239,7 +239,7 @@ void menu_item_sequence_listing_released_cb(lv_event_t *e)
 	
 	if (!sequence)
 	{
-		printf("Error: sequence listing has no associated sequence!\n");
+		m_printf("Error: sequence listing has no associated sequence!\n");
 	}
 	
 	if (!item->long_pressed)
@@ -249,7 +249,7 @@ void menu_item_sequence_listing_released_cb(lv_event_t *e)
 			ret_val = create_sequence_view_for(sequence);
 			if (ret_val != NO_ERROR)
 			{
-				printf("Error creating sequence view for sequence: %s\n", m_error_code_to_string(ret_val));
+				m_printf("Error creating sequence view for sequence: %s\n", m_error_code_to_string(ret_val));
 				return;
 			}
 		}

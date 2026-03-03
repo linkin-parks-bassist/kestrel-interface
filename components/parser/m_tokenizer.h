@@ -1,6 +1,8 @@
 #ifndef TOK_H_
 #define TOK_H_
 
+int char_is_letter(char c);
+
 #define TOKENIZER_STATE_IDLE			0
 #define TOKENIZER_STATE_NAME			1
 #define TOKENIZER_STATE_NUMBER			2
@@ -28,7 +30,7 @@ typedef struct m_token_ll {
 
 struct m_eff_parsing_state;
 
-int m_tokenize_eff_file(struct m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens);
+int m_tokenize_content(struct m_eff_parsing_state *ps);
 
 int m_token_ll_safe_aappend(m_token_ll **list_ptr, char *x, int line, int index);
 

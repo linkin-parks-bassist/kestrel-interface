@@ -1,6 +1,7 @@
 #include "m_int.h"
 
 #ifdef M_USE_FREERTOS
+#ifdef M_ENABLE_LV_LOGGING
 SemaphoreHandle_t m_lv_log_mutex;
 
 static char m_lv_log_buf[M_INT_LV_LOG_BUF_LEN];
@@ -40,7 +41,7 @@ void m_lv_log_flush()
 	
 	if (xSemaphoreTake(m_lv_log_mutex, pdMS_TO_TICKS(0)) != pdTRUE)
 	{
-		printf("Failed to obtain log mutex");
+		m_printf("Failed to obtain log mutex");
 		return;
 	}
 	
@@ -77,19 +78,19 @@ void m_lv_log_flush()
 
 void m_lv_log_cb(lv_log_level_t level, const char *buf)
 {
-	//printf("m_lv_log_cb\n");
+	//m_printf("m_lv_log_cb\n");
 	if (!buf)
 	{
-		//printf("buf is NULL! returning\n");
+		//m_printf("buf is NULL! returning\n");
 		return;
 	}
 	
-	//printf("m_lv_log_cb. buf = %p", buf);
+	//m_printf("m_lv_log_cb. buf = %p", buf);
 	
 	//if (buf)
-	//	printf(" = %s", buf ? buf : "(NULL)");
+	//	m_printf(" = %s", buf ? buf : "(NULL)");
 	
-	//printf("\n");
+	//m_printf("\n");
 	if (waiting_buf)
 	{
 		char *local_waiting_buf = m_strndup(waiting_buf, M_INT_LV_LOG_BUF_LEN);
@@ -144,4 +145,5 @@ void m_lv_log_flush_task(void *param)
 	vTaskDelete(NULL);
 }
 
+#endif
 #endif

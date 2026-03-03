@@ -5,6 +5,8 @@
 
 #include "m_int.h"
 
+static const char *FNAME = "m_dictionary.c";
+
 m_dictionary *m_new_dictionary()
 {
 	m_dictionary *dict = m_parser_alloc(sizeof(m_dictionary));
@@ -257,50 +259,231 @@ void print_dict_entry(m_dictionary_entry *entry)
 {
 	if (!entry)
 	{
-		printf("(null)");
+		m_printf("(null)");
 		return;
 	}
-	printf("%s: ", entry->name);
+	m_printf("%s: ", entry->name);
 	
 	switch (entry->type)
 	{
 		case DICT_ENTRY_TYPE_STR:
-			printf("\"%s\"", entry->value.val_string);
+			m_printf("\"%s\"", entry->value.val_string);
 			break;
 		
 		case DICT_ENTRY_TYPE_INT:
-			printf("%d", entry->value.val_int);
+			m_printf("%d", entry->value.val_int);
 			break;
 		
 		case DICT_ENTRY_TYPE_FLOAT:
-			printf("%f", entry->value.val_float);
+			m_printf("%f", entry->value.val_float);
 			break;
 		
 		case DICT_ENTRY_TYPE_EXPR:
-			printf("(expression)");
+			m_printf("(expression)");
 			break;
 			
 		default:
-			printf("mangled !");
+			m_printf("mangled !");
 			break;
 	}
 }
 
 void print_dict(m_dictionary *dict)
 {
-	printf("Dictionary ");
+	m_printf("Dictionary ");
 	if (!dict)
 	{
-		printf("(null)\n");
+		m_printf("(null)\n");
 		return;
 	}
 	
-	printf("\"%s\" (%d entries):\n", dict->name, dict->n_entries);
+	m_printf("\"%s\" (%d entries):\n", dict->name, dict->n_entries);
 	
 	for (int i = 0; i < dict->n_entries; i++)
 	{
-		printf("\t");
+		m_printf("\t");
 		print_dict_entry(&dict->entries[i]);
-		printf("\n");
+		m_printf("\n");
 	}
+}
+
+int m_parse_dict_val(m_eff_parsing_state *ps, m_dictionary_entry *result)
+{
+	if (!ps || !result)
+		return ERR_NULL_PTR;
+	
+	m_token_ll **next_token = &ps->current_token;
+	m_token_ll *current = ps->current_token;
+	
+	if (!current)
+		return ERR_BAD_ARGS;
+	
+	if (!current->data)
+		return ERR_BAD_ARGS;
+	
+	m_token_ll *end = current;
+	
+	int ret_val = NO_ERROR;
+	int len;
+	
+	int paren_cnt = 0;
+	int n_tokens = 0;
+	
+	while (end)
+	{
+		if (strcmp(end->data, "(") == 0)
+		{
+			paren_cnt++;
+		}
+		else if (strcmp(end->data, ")") == 0)
+		{
+			if (paren_cnt > 0)
+				paren_cnt--;
+			else
+				break;
+		}
+		
+		if (paren_cnt == 0 && token_is_dict_entry_seperator(end->data))
+			break;
+		
+		end = end->next;
+		n_tokens++;
+	}
+	
+	if (current->data[0] == '"')
+	{
+		result->type = DICT_ENTRY_TYPE_STR;
+		
+		len = strlen(current->data) - 2;
+		if (n_tokens > 1)
+		{
+			m_printf("Syntax error (line %d): excess tokens following string %s\n", current->line, current->data);
+			ret_val = ERR_BAD_ARGS;
+			goto parse_dict_val_fin;
+		}
+		
+		result->value.val_string = m_parser_strndup(&current->data[1], len);
+		
+		goto parse_dict_val_fin;
+	}
+	else if (strcmp(current->data, "(") == 0)
+	{
+		result->type = DICT_ENTRY_TYPE_SUBDICT;
+		ps->current_token = current->next;
+		ret_val = m_parse_dictionary(ps, &result->value.val_dict, result->name);
+		
+		goto parse_dict_val_fin;
+	}
+	else
+	{
+		result->type = DICT_ENTRY_TYPE_EXPR;
+		result->value.val_expr = m_parse_expression(ps, current, end);
+		
+		if (!result->value.val_expr)
+		{
+			result->type = DICT_ENTRY_TYPE_NOTHING;
+			ret_val = ERR_BAD_ARGS;
+		}
+		
+		goto parse_dict_val_fin;
+	}
+	
+parse_dict_val_fin:
+	
+	if (end)
+		end = end->next;
+	
+	if (next_token)
+		*next_token = end;
+	
+	return ret_val;
+}
+
+int m_parse_dictionary(m_eff_parsing_state *ps, m_dictionary **result, const char *name)
+{
+	if (!ps || !result)
+		return ERR_NULL_PTR;
+	
+	m_token_ll **next_token = &ps->current_token;
+	m_token_ll *current = ps->current_token;
+	m_token_ll *nt = NULL;
+	
+	if (!current)
+		return ERR_BAD_ARGS;
+	
+	m_dictionary_entry centry;
+	
+	int ret_val = NO_ERROR;
+
+	m_dictionary *dict = NULL;
+	
+	dict = m_new_dictionary();
+	
+	if (!dict)
+	{
+		ret_val = ERR_ALLOC_FAIL;
+		goto parse_dict_fin;
+	}
+	
+	char *cname;
+	dict->name = m_parser_strndup(name, 128);
+	
+	m_token_ll_skip_ws(&current);
+	
+	while (current)
+	{
+		if (!token_is_name(current->data))
+		{
+			m_parser_error_at(ps, current, "Expected name, got \"%s\"", current->data);
+			ret_val = ERR_BAD_ARGS;
+			goto parse_dict_fin;
+		}
+		
+		cname = m_parser_strndup(current->data, 64);
+		
+		if (!cname)
+		{
+			ret_val = ERR_ALLOC_FAIL;
+			goto parse_dict_fin;
+		}
+		
+		centry.name = cname;
+		
+		m_token_ll_advance(&current);
+		
+		if (!current || (strcmp(current->data, ":") != 0 && strcmp(current->data, "=") != 0))
+		{
+			m_parser_error_at(ps, current, "Expected \":\" or \"=\", got \"%s\"", current->data);
+			ret_val = ERR_BAD_ARGS;
+			goto parse_dict_fin;
+		}
+		m_token_ll_advance(&current);
+		
+		ps->current_token = current;
+		if ((ret_val = m_parse_dict_val(ps, &centry)) != NO_ERROR)
+		{
+			m_parser_error(ps, "Error parsing attribute %s.%s", dict->name, cname);
+			goto parse_dict_fin;
+		}
+		else
+		{
+			m_dictionary_add_entry(dict, centry);
+		}
+		current = ps->current_token;
+		
+		m_token_ll_skip_ws(&current);
+		if (!current || strcmp(current->data, ")") == 0)
+			break;
+	}
+	
+	*result = dict;
+
+parse_dict_fin:
+	if (current)
+		current = current->next;
+	
+	if (next_token)
+		*next_token = current;
+	
+	return ret_val;
 }

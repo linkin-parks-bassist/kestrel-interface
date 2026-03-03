@@ -47,7 +47,7 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	
 	if (!arena->arena || arena->capacity == 0 || size == 0)
 	{
-		printf("m_bump_arena ERROR: arena has no memory!\n");
+		m_printf("m_bump_arena ERROR: arena has no memory!\n");
 		return NULL;
 	}
 	
@@ -55,7 +55,7 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	
 	if (size > arena->capacity - arena->pos)
 	{
-		printf("m_bump_arena ERROR: Arena exhausted. Capacity: %d bytes; consumed: %d bytes. Requested: %d bytes\n",
+		m_printf("m_bump_arena ERROR: Arena exhausted. Capacity: %d bytes; consumed: %d bytes. Requested: %d bytes\n",
 			arena->capacity, arena->pos, size);
 		return NULL;
 	}

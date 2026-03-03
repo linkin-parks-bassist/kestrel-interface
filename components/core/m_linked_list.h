@@ -2,11 +2,11 @@
 #define LINKED_LIST_H
 
 #ifndef LL_FREE
-#define LL_FREE free
+#define LL_FREE m_free
 #endif
 
 #ifndef LL_MALLOC
-#define LL_MALLOC malloc
+#define LL_MALLOC m_alloc
 #endif
 
 #define DECLARE_LINKED_LIST(X) struct X##_ll;																											\

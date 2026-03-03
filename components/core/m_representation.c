@@ -1,9 +1,12 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_representation.c";
+
 IMPLEMENT_LINKED_PTR_LIST(m_representation);
 
 #ifdef M_USE_FREERTOS
 QueueHandle_t m_rep_update_queue;
+int rep_updated_initd = 0;
 #endif
 
 void m_representation_pll_update_all(m_representation_pll *reps)
@@ -19,30 +22,39 @@ void m_representation_pll_update_all(m_representation_pll *reps)
 		
 		current = current->next;
 	}
+	
+	return;
 }
 
 #ifdef M_ENABLE_REPRESENTATIONS
 void update_queued_representations_cb(lv_timer_t *timer)
 {
+	//FUNCTION_START();
+	
 	m_representation_pll *list;
 	
 	while (xQueueReceive(m_rep_update_queue, &list, 0) == pdTRUE)
 	{
-		if (list)
-			m_representation_pll_update_all(list);
+		if (list) m_representation_pll_update_all(list);
 	}
+	
+	//return;
 }
 
 int init_representation_updater()
 {
 	m_rep_update_queue = xQueueCreate(16, sizeof(m_representation_pll*));
 	lv_timer_t * timer = lv_timer_create(update_queued_representations_cb, 1,  NULL);
+	rep_updated_initd = 1;
 	return NO_ERROR;
 }
 #endif
 
 int queue_representation_list_update(m_representation_pll *reps)
 {
+	if (!rep_updated_initd)
+		return ERR_CURRENTLY_EXHAUSTED;
+	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	#ifdef M_USE_FREERTOS
 	if (xQueueSend(m_rep_update_queue, (void*)&reps, (TickType_t)10) != pdPASS)

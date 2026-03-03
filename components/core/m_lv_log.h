@@ -1,7 +1,7 @@
 #ifndef M_INT_LOGGING_H_
 #define M_INT_LOGGING_H_
 
-#define M_INT_LV_LOG_BUF_LEN 4096
+#define M_INT_LV_LOG_BUF_LEN 1024
 
 int m_log_init();
 

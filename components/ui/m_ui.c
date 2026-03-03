@@ -2,6 +2,8 @@
 
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 
+static const char *FNAME = "m_ui.c";
+
 typedef struct
 {
 	m_active_button_array *array;
@@ -77,8 +79,10 @@ int m_init_global_pages(m_global_pages *pages)
 	
 	//init_profile_list(&pages->profile_list);
 	init_sequence_list(&pages->sequence_list);
+	pages->sequence_list.type = M_UI_PAGE_SEQ_LIST;
 	
 	init_sequence_view(&pages->main_sequence_view);
+	pages->main_sequence_view.type = M_UI_PAGE_MSV;
 	
 	return NO_ERROR;
 }
@@ -133,7 +137,10 @@ void m_create_ui(lv_disp_t *disp)
 	//create_test_page_ui();
 	//enter_ui_page(&test_page);
 	
-	enter_ui_page(&global_cxt.pages.main_sequence_view);
+	if (global_cxt.pages.current_page)
+		enter_ui_page(global_cxt.pages.current_page);
+	else
+		enter_ui_page(&global_cxt.pages.main_sequence_view);
 }
 
 int init_ui_page(m_ui_page *page)
@@ -183,30 +190,30 @@ m_ui_page *create_ui_page()
 
 int configure_ui_page(m_ui_page *page, void *data)
 {
-	//printf("configure_ui_page\n");
+	//m_printf("configure_ui_page\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	if (page->configured)
 	{
-		//printf("page already configured\n");
+		//m_printf("page already configured\n");
 		return NO_ERROR;
 	}
 	
 	if (page->configure)
 	{
-		//printf("Function pointer exists\n");
+		//m_printf("Function pointer exists\n");
 		page->configure(page, data);
 	}
 	else
 	{
-		//printf("No configure function pointer!\n");
+		//m_printf("No configure function pointer!\n");
 		return ERR_BAD_ARGS;
 	}
 	
 	page->configured = 1;
 	
-	//printf("configure_ui_page done\n");
+	//m_printf("configure_ui_page done\n");
 	return NO_ERROR;
 }
 
@@ -232,7 +239,7 @@ int enter_ui_page(m_ui_page *page)
 {
 	if (!page)
 	{
-		//printf("Error! No page!\n");
+		m_printf("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -240,43 +247,45 @@ int enter_ui_page(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			//printf("Error! Page is unconfigured\n");
+			m_printf("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			//printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		//printf("Page has not created its UI yet. Creating now...\n");
+		m_printf("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		//printf("page has refresh; calling\n");
+		m_printf("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		//printf("page has 'enter_page'; calling\n");
+		m_printf("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 
 	if (!page->screen)
 	{
-		//printf("Error! Page has no screen!\n");
+		m_printf("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
 	lv_scr_load(page->screen);
 
 	global_cxt.pages.current_page = page;
+	
+	m_cxt_queue_save_state(&global_cxt);
 	
 	return NO_ERROR;
 }
@@ -285,7 +294,7 @@ int enter_ui_page_forwards(m_ui_page *page)
 {
 	if (!page)
 	{
-		//printf("Error! No page!\n");
+		m_printf("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -293,43 +302,45 @@ int enter_ui_page_forwards(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			//printf("Error! Page is unconfigured\n");
+			m_printf("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			//printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		//printf("Page has not created its UI yet. Creating now...\n");
+		m_printf("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		//printf("page has refresh; calling\n");
+		m_printf("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		//printf("page has 'enter_page'; calling\n");
+		m_printf("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 
 	if (!page->screen)
 	{
-		//printf("Error! Page has no screen!\n");
+		m_printf("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
 	lv_scr_load_anim(page->screen, LV_SCR_LOAD_ANIM_OUT_LEFT, UI_PAGE_TRANSITION_ANIM_MS, 0, false);
 	
 	global_cxt.pages.current_page = page;
+	
+	m_cxt_queue_save_state(&global_cxt);
 	
 	return NO_ERROR;
 }
@@ -338,7 +349,7 @@ int enter_ui_page_backwards(m_ui_page *page)
 {
 	if (!page)
 	{
-		//printf("Error! No page!\n");
+		m_printf("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -346,44 +357,47 @@ int enter_ui_page_backwards(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			//printf("Error! Page is unconfigured\n");
+			m_printf("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			//printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		//printf("Page has not created its UI yet. Creating now...\n");
+		m_printf("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		//printf("page has refresh; calling\n");
+		m_printf("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		//printf("page has 'enter_page'; calling\n");
+		m_printf("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 	
 	if (!page->screen)
 	{
-		//printf("Error! Page has no screen!\n");
+		m_printf("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
-	//printf("lv_scr_load...\n");
+	m_printf("lv_scr_load...\n");
 	lv_scr_load_anim(page->screen, LV_SCR_LOAD_ANIM_OUT_RIGHT, UI_PAGE_TRANSITION_ANIM_MS, 0, false);
 
 	global_cxt.pages.current_page = page;
+	
+	
+	m_cxt_queue_save_state(&global_cxt);
 	
 	return NO_ERROR;
 }
@@ -420,39 +434,39 @@ int enter_ui_page_backwardindirect_s(m_ui_page **_page)
 
 void enter_ui_page_cb(lv_event_t *e)
 {
-	//printf("enter ui page callback triggered\n");
+	//m_printf("enter ui page callback triggered\n");
 	m_ui_page *page = (m_ui_page*)lv_event_get_user_data(e);
-	//printf("Given page: %p\n", page);
+	//m_printf("Given page: %p\n", page);
 	if (page)
 		enter_ui_page(page);
 }
 
 void enter_ui_page_forwards_cb(lv_event_t *e)
 {
-	//printf("enter ui page callback triggered\n");
+	//m_printf("enter ui page callback triggered\n");
 	m_ui_page *page = (m_ui_page*)lv_event_get_user_data(e);
-	//printf("Given page: %p\n", page);
+	//m_printf("Given page: %p\n", page);
 	if (page)
 		enter_ui_page_forwards(page);
 }
 
 void enter_ui_page_backwards_cb(lv_event_t *e)
 {
-	//printf("enter ui page callback triggered\n");
+	//m_printf("enter ui page callback triggered\n");
 	m_ui_page *page = (m_ui_page*)lv_event_get_user_data(e);
-	//printf("Given page: %p\n", page);
+	//m_printf("Given page: %p\n", page);
 	if (page)
 		enter_ui_page_backwards(page);
 }
 
 void enter_parent_page_cb(lv_event_t *e)
 {
-	//printf("enter_parent_page_cb\n");
+	//m_printf("enter_parent_page_cb\n");
 	m_ui_page *page = lv_event_get_user_data(e);
 	
 	if (!page)
 	{
-		//printf("No page !\n");
+		//m_printf("No page !\n");
 		return;
 	}
 	
@@ -738,12 +752,12 @@ void spawn_keyboard(lv_obj_t *parent, lv_obj_t *text_area, void (*ok_cb)(lv_even
 
 void spawn_numerical_keyboard(lv_obj_t *parent, lv_obj_t *text_area, void (*ok_cb)(lv_event_t*), void *ok_arg, void (*cancel_cb)(lv_event_t*), void *cancel_arg)
 {
-	//printf("spawn_numerical_keyboard\n");
+	//m_printf("spawn_numerical_keyboard\n");
 	
 	spawn_keyboard(parent, text_area, ok_cb, ok_arg, cancel_cb, cancel_arg);
 	
 	lv_keyboard_set_mode(keyboard, LV_KEYBOARD_MODE_NUMBER);
-	//printf("spawn_numerical_keyboard done\n");
+	//m_printf("spawn_numerical_keyboard done\n");
 }
 
 void hide_keyboard()
@@ -970,7 +984,7 @@ int init_panel(m_ui_page_panel *panel)
 
 m_ui_page_panel *new_panel()
 {
-	m_ui_page_panel *panel = malloc(sizeof(m_ui_page_panel));
+	m_ui_page_panel *panel = m_alloc(sizeof(m_ui_page_panel));
 	
 	if (!panel)
 		return NULL;
@@ -1220,7 +1234,7 @@ int ui_page_create_container(m_ui_page *page)
 			tall = 0;
 	}
 	
-	printf("page->container_type = %d\n");
+	m_printf("page->container_type = %d\n", page->container_type);
 	
 	switch (page->container_type)
 	{

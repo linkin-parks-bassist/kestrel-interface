@@ -9,6 +9,7 @@ idf_component_register(SRCS "m_button.c"
 							"m_transformer_select.c"
 							"m_transformer_settings.c"
 							"m_transformer_view.c"
+							"m_page_id.c"
 							"m_ui.c"
 					REQUIRES
 							driver

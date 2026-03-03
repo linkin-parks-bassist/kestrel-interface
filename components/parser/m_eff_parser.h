@@ -1,6 +1,8 @@
 #ifndef M_PARSER_H_
 #define M_PARSER_H_
 
+#define M_EFF_PARSER_MEM_POOL_SIZE_KB 512
+
 #define M_AST_NODE_ROOT		0
 #define M_AST_NODE_SECTION	1
 #define M_AST_NODE_DICT		2
@@ -17,9 +19,13 @@ typedef struct m_ast_node {
 typedef struct m_eff_parsing_state {
 	const char *fname;
 	const char *name;
-	char *contents;
+	const char *cname;
+	char *content;
+	int file_size;
+	char **lines;
 	
 	int len;
+	int n_lines;
 	int current_line;
 	
 	char *version_string;

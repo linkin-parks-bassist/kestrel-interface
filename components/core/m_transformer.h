@@ -46,6 +46,11 @@ typedef struct m_transformer
 	#ifdef M_USE_FREERTOS
 	SemaphoreHandle_t mutex;
 	#endif
+	
+	#ifdef M_ENABLE_REPRESENTATIONS
+	m_representation_pll *reps;
+	m_representation profile_rep;
+	#endif
 } m_transformer;
 
 const char *m_transformer_name(m_transformer *trans);
@@ -94,5 +99,11 @@ m_expr_scope *m_transformer_create_scope(m_transformer *trans);
 
 int m_transformer_set_parameter(m_transformer *trans, const char *name, float value);
 int m_transformer_set_setting(m_transformer *trans, const char *name, int value);
+
+int m_transformer_update_reps(m_transformer *trans);
+void m_transformer_profile_rep_update(void *representer, void *representee);
+
+struct m_ui_page;
+int m_transformer_init_view_page(m_transformer *trans, struct m_ui_page *parent);
 
 #endif

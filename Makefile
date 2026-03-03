@@ -17,11 +17,13 @@ app_cfiles := 	core/m_error_codes.c	\
 				core/m_param_update.c	\
 				core/m_transformer.c	\
 				core/m_pipeline.c		\
-				core/m_settings.c		\
+				core/m_state.c			\
 				core/m_sequence.c		\
 				core/m_profile.c		\
 				core/m_resource.c		\
 				core/m_representation.c	\
+				core/m_printf.c			\
+				core/m_log.c			\
 				ui/m_button.c			\
 				ui/m_home_view.c		\
 				ui/m_menu.c				\
@@ -33,6 +35,7 @@ app_cfiles := 	core/m_error_codes.c	\
 				ui/m_transformer_select.c	\
 				ui/m_transformer_settings.c	\
 				ui/m_transformer_view.c	\
+				ui/m_page_id.c			\
 				ui/m_ui.c				\
 				fpga/m_fpga_encoding.c	\
 				fpga/m_fpga_comms.c		\

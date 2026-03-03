@@ -7,6 +7,7 @@ idf_component_register(SRCS "m_alloc.c"
 							"m_files.c"
 							"m_hfunc.c"
 							"m_lv_log.c"
+							"m_printf.c"
 							"m_resource.c"
 							"m_parameter.c"
 							"m_expression.c"
@@ -16,7 +17,7 @@ idf_component_register(SRCS "m_alloc.c"
 							"m_profile.c"
 							"m_representation.c"
 							"m_sequence.c"
-							"m_settings.c"
+							"m_state.c"
 							"m_transformer.c"
 							"m_transformer_enum.c"
 							"m_transformer_init.c"
@@ -26,4 +27,5 @@ idf_component_register(SRCS "m_alloc.c"
 							drivers
 							ui
 							fpga
+							esp_timer
 					INCLUDE_DIRS "." "../../main" "../" "../ui" "../drivers" "../parser")

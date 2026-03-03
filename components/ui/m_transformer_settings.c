@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_transformer_settings.c";
+
 int init_transformer_settings_page(m_ui_page *page)
 {
 	if (!page)
@@ -7,15 +9,21 @@ int init_transformer_settings_page(m_ui_page *page)
 	
 	init_ui_page(page);
 	
+	page->type = M_UI_PAGE_TRANS_SET;
+	
 	page->configure = configure_transformer_settings_page;
 	page->create_ui = create_transformer_settings_page_ui;
 	
 	page->panel = new_panel();
 	
 	if (!page->panel)
+	{
 		return ERR_NULL_PTR;
+	}
 	
-	page->data_struct = malloc(sizeof(trans_settings_page_str));
+	m_printf("Created a panel; %p\n", page->panel);
+	
+	page->data_struct = m_alloc(sizeof(trans_settings_page_str));
 	
 	if (!page->data_struct)
 		return ERR_ALLOC_FAIL;
@@ -35,32 +43,56 @@ int init_transformer_settings_page(m_ui_page *page)
 
 int configure_transformer_settings_page(m_ui_page *page, void *data)
 {
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	ui_page_add_back_button(page);
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	m_transformer *trans = (m_transformer*)data;
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	if (!data)
 		return ERR_NULL_PTR;
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	char title_buf[128];
 	
-	snprintf(title_buf, 128, "%s Settings", m_transformer_name(trans));
-	page->panel->text = m_strndup(title_buf, 128);
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	
+	m_printf("m_transformer_name(trans) = %s\n", m_transformer_name(trans));
+	snprintf(title_buf, 128, "%s Settings", m_transformer_name(trans));
+	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
+	char *title =  m_strndup(title_buf, 128);
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
+	page->panel->text = title;
+	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	trans_settings_page_str *str = (trans_settings_page_str*)page->data_struct;
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	if (!str)
+	{
 		return ERR_BAD_ARGS;
+	}
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
+	str->trans = trans;
+	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	configure_parameter_widget(&str->band_lp_cutoff, &trans->band_lp_cutoff, trans->profile, page);
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	configure_parameter_widget(&str->band_hp_cutoff, &trans->band_hp_cutoff, trans->profile, page);
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	configure_setting_widget(&str->band_mode, &trans->band_mode, trans->profile, page);
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	page->configured = 1;
 	
+	m_printf("configure_transformer_settings_page... line %d\n", __LINE__);
 	return NO_ERROR;
 }
 
@@ -86,7 +118,7 @@ void band_control_value_changed_cb(lv_event_t *e)
 	
 	lv_dropdown_get_selected_str(str->band_mode.obj, dd_value, 128);
 	
-	printf("Selected band mode: %s\n", dd_value);
+	m_printf("Selected band mode: %s\n", dd_value);
 	
 	int found = 0;
 	for (int i = 0; i < setting->n_options; i++)
@@ -104,7 +136,7 @@ void band_control_value_changed_cb(lv_event_t *e)
 		return;
 	}
 	
-	printf("The associated value is %d\n", value);
+	m_printf("The associated value is %d\n", value);
 	setting->value = value;
 	
 	refresh_transformer_settings_page(page);
@@ -118,7 +150,7 @@ void band_control_value_changed_cb(lv_event_t *e)
 
 int create_transformer_settings_page_ui(m_ui_page *page)
 {
-	printf("create_transformer_settings_page_ui\n");
+	m_printf("create_transformer_settings_page_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -133,7 +165,7 @@ int create_transformer_settings_page_ui(m_ui_page *page)
 	if (!str)
 		return ERR_BAD_ARGS;
 	
-	printf("page->container = %p\n", page->container);
+	m_printf("page->container = %p\n", page->container);
 	
 	//parameter_widget_create_ui(&str->cutoff_freq, page->container);
 	
@@ -156,7 +188,7 @@ int create_transformer_settings_page_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	printf("create_transformer_settings_page_ui done\n");
+	m_printf("create_transformer_settings_page_ui done\n");
 	return NO_ERROR;
 }
 

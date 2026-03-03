@@ -35,7 +35,6 @@ int refresh_profile_view	(m_ui_page *page);
 int profile_view_recalculate_indices(m_ui_page *page);
 
 int profile_view_append_transformer(m_ui_page *page, m_transformer *trans);
-int profile_view_reorder_tw_list(m_ui_page *page);
 int profile_view_populate_index_pos_array(m_ui_page *page);
 
 int profile_view_index_y_position(int index);

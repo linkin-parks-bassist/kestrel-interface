@@ -14,9 +14,10 @@ struct m_sequence;
 typedef struct m_profile
 {
 	char *name;
-	char *fname;
+	char fname[M_FILENAME_LEN];
 	uint16_t id;
 	
+	int has_fname;
 	m_pipeline pipeline;
 	
 	#ifdef M_ENABLE_SEQUENCES
@@ -28,6 +29,7 @@ typedef struct m_profile
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	m_representation_pll *representations;
+	m_representation file_rep;
 	#endif
 	
 	#ifdef M_ENABLE_UI
@@ -50,7 +52,6 @@ int profile_set_id(m_profile *profile, uint16_t id);
 
 int m_profile_set_default_name_from_id(m_profile *profile);
 
-m_transformer *m_profile_append_transformer_type(m_profile *profile, uint16_t type);
 m_transformer *m_profile_append_transformer_eff(m_profile *profile, m_effect_desc *eff);
 int m_profile_remove_transformer(m_profile *profile, uint16_t id);
 
@@ -59,6 +60,7 @@ int m_profile_move_transformer(m_profile *profile, int new_pos, int old_pos);
 int clone_profile(m_profile *dest, m_profile *src);
 void gut_profile(m_profile *profile);
 void free_profile(m_profile *profile);
+void m_free_profile(m_profile *profile);
 
 int m_profile_set_active(m_profile *profile);
 int m_profile_set_inactive(m_profile *profile);
@@ -87,5 +89,9 @@ int m_profile_update_id_representations		(m_profile *profile);
 int m_profile_create_fpga_transfer_batch(m_profile *profile, m_fpga_transfer_batch *batch);
 int m_profile_if_active_update_fpga(m_profile *profile);
 int m_profile_program_fpga(m_profile *profile);
+
+void m_profile_file_rep_update(void *representer, void *representee);
+
+m_transformer *m_profile_get_transformer_by_id(m_profile *profile, int id);
 
 #endif

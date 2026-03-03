@@ -57,14 +57,12 @@
 #define LL_MALLOC m_alloc
 #define LL_FREE   m_free
 
-#ifndef m_printf
- #define m_printf printf
-#endif
-
 #include "m_linked_list.h"
 
 DECLARE_LINKED_PTR_LIST(char);
 typedef char_pll string_ll;
+
+#define M_FILENAME_LEN 32
 
 #include "m_error_codes.h"
 #include "m_representation.h"
@@ -101,7 +99,7 @@ typedef char_pll string_ll;
 #include "m_profile_settings.h"
 #include "m_profile_view.h"
 #include "m_sequence_view.h"
-#include "m_settings.h"
+#include "m_page_id.h"
 #include "m_context.h"
 #include "m_files.h"
 #include "m_sequence_list.h"
@@ -116,6 +114,8 @@ typedef char_pll string_ll;
 #include "m_reg_format.h"
 #include "m_fpga_encoding.h"
 #include "m_dict_extract.h"
+#include "m_printf.h"
+#include "m_state.h"
 
 #endif
 #endif

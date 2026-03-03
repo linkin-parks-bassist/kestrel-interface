@@ -13,11 +13,11 @@
 #include <string.h>
 #include "bsp/esp32_p4_nano.h"
 
-static const char *TAG = "m_sd.c";
+static const char *FNAME = "m_sd.c";
 
 #include "m_int.h"
 
-#define MAX_PARALLEL_FILES 5
+#define MAX_PARALLEL_FILES 12
 
 const int mount_point_strlen = strlen(MOUNT_POINT);
 
@@ -71,7 +71,7 @@ int init_sd_card()
 
 	if (ret != ESP_OK)
 	{
-		printf("Failed to create a new on-chip LDO power control driver");
+		m_printf("Failed to create a new on-chip LDO power control driver");
 		return ERR_SD_INIT_FAIL;
 	}
 	host.pwr_ctrl_handle = pwr_ctrl_handle;
@@ -99,21 +99,21 @@ int init_sd_card()
 	ret = sdmmc_host_init();
 	if (ret != ESP_OK)
 	{
-		printf("Failed to initialise SDMMC host: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to initialise SDMMC host: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 
 	ret = sdmmc_host_init_slot(host.slot, &slot_config);   // or SDMMC_HOST_SLOT_1 depending on your target
 	if (ret != ESP_OK)if (ret != ESP_OK)
 	{
-		printf("Failed to initialise SDMMC host slot: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to initialise SDMMC host slot: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 
 	ret = sdmmc_card_init(&host, card);
 	if (ret != ESP_OK)if (ret != ESP_OK)
 	{
-		printf("Failed to initialise SDMMC card: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to initialise SDMMC card: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 	
@@ -125,7 +125,7 @@ int init_sd_card()
 	
 	if (ret != ESP_OK)
 	{
-		printf("Failed to installed tinyusb driver: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to installed tinyusb driver: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 
@@ -133,7 +133,7 @@ int init_sd_card()
 
 	if (ret != ESP_OK)
 	{
-		printf("Failed to installed tinyusb MSC driver: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to installed tinyusb MSC driver: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 
@@ -141,7 +141,7 @@ int init_sd_card()
 	
 	if (ret != ESP_OK)
 	{
-		printf("Failed to create tinyusb MSC SDMMC storage decide: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to create tinyusb MSC SDMMC storage decide: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 	
@@ -167,7 +167,7 @@ int m_sd_mode_msc()
 	
 	if (ret != NO_ERROR)
 	{
-		printf("Failed to set SD storage point to USB\n");
+		m_printf("Failed to set SD storage point to USB\n");
 		return ERR_SD_MOUNT_FAIL;
 	}
 	
@@ -182,7 +182,7 @@ int m_sd_mode_local()
 	
 	if (ret != ESP_OK)
 	{
-		printf("Failed to uninstall tinyusb driver: %s\n", esp_err_to_name(ret));
+		m_printf("Failed to uninstall tinyusb driver: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 	
@@ -202,71 +202,7 @@ int m_sd_toggle_msc()
 	
 	tinyusb_msc_mount_point_t mp;
 	tinyusb_msc_get_storage_mount_point(storage_handle, &mp);
-	printf("MSC mount point now: %d");
+	m_printf("MSC mount point now: %d");
 	
 	return ret_val;
-}
-
-string_ll *list_files_in_directory(char *dir)
-{
-	#ifndef USE_SDCARD
-	return NULL;
-	#endif
-	
-	if (!dir)
-		return NULL;
-	
-	printf("Generating list of files in %s\n", dir);
-	
-	char *fname = NULL;
-	
-	DIR *directory = opendir(dir);
-	
-	if (!directory)
-	{
-		printf("Failed to open directory!\n");
-		return NULL;
-	}
-	
-	struct dirent *directory_entry = readdir(directory);
-	
-	string_ll *list = NULL;
-	string_ll *nl;
-	
-	while (directory_entry)
-	{
-		printf("Directory entry: %s\n", directory_entry->d_name);
-		if (directory_entry->d_type == DT_DIR)
-		{
-			printf("... is itself a directory!\n");
-			directory_entry = readdir(directory);
-			continue;
-		}
-		
-		fname = m_alloc(strlen(dir) + 1 + 255);
-		
-		if (!fname)
-		{
-			printf("Error: couldn't allocate string to list directory entry %s/%s", dir, directory_entry->d_name);
-			return list;
-		}
-		
-		sprintf(fname, "%s%s", dir, directory_entry->d_name);
-		
-		nl = char_pll_append(list, fname);
-		
-		if (nl)
-		{
-			list = nl;
-		}
-		else
-		{
-						printf("Error: couldn't append linked list to list directory entry %s/%s", dir, directory_entry->d_name);
-			return list;
-		}
-		
-		directory_entry = readdir(directory);
-	}
-	
-	return list;
 }

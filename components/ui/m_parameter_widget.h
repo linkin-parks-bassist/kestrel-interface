@@ -34,7 +34,7 @@
 #define VSLIDER_TALL_SIZE_H ((int)((300.0 / 1024.0) * DISPLAY_VRES))
 #define VSLIDER_TALL_SIZE_W ((int)((15.0  / 600.0)  * DISPLAY_HRES))
 
-#define VSLIDER_TALL_PAD_H  ((int)((120.0 / 1024.0) * DISPLAY_VRES))
+#define VSLIDER_TALL_PAD_H  ((int)((130.0 / 1024.0) * DISPLAY_VRES))
 #define VSLIDER_TALL_PAD_W  ((int)((80.0  / 600.0)  * DISPLAY_HRES))
 
 struct m_profile;

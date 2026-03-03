@@ -1,9 +1,10 @@
 #include "m_int.h"
 
-static const char *TAG = "m_profile_view.c";
+static const char *FNAME = "m_profile_view.c";
 
 m_ui_page *create_profile_view_for(m_profile *profile)
 {
+	m_printf("create_profile_view_for(profile = %p)\n", profile);
 	if (!profile)
 		return NULL;
 	
@@ -12,8 +13,10 @@ m_ui_page *create_profile_view_for(m_profile *profile)
 	if (!page)
 		return NULL;
 	
+	m_printf("Calling init_ui_page...\n");
 	init_ui_page(page);
 	
+	m_printf("Calling init_profile_view...\n");
 	int ret_val = init_profile_view(page);
 	
 	if (ret_val != NO_ERROR)
@@ -22,6 +25,7 @@ m_ui_page *create_profile_view_for(m_profile *profile)
 		return NULL;
 	}
 	
+	m_printf("Calling configure_profile_view...\n");
 	ret_val = configure_profile_view(page, profile);
 	
 	if (ret_val != NO_ERROR)
@@ -32,6 +36,7 @@ m_ui_page *create_profile_view_for(m_profile *profile)
 	
 	profile->view_page = page;
 	
+	m_printf("create_profile_view_for done\n");
 	return page;
 }
 
@@ -43,6 +48,15 @@ int profile_view_transformer_click_cb(m_active_button *button)
 	if (!button->data)
 		return ERR_BAD_ARGS;
 	
+	m_transformer *trans = (m_transformer*)button->data;
+	
+	/*
+	if (!trans->view_page)
+	{
+		m_printf("Trnasformer's view page existn't; creating now\n");
+		m_transformer_init_view_page(trans);
+	}
+	*/
 	enter_ui_page_forwards(((m_transformer*)button->data)->view_page);
 	
 	return NO_ERROR;
@@ -74,7 +88,7 @@ int profile_view_transformer_moved_cb(m_active_button *button)
 
 int profile_view_transformer_delete_cb(m_active_button *button)
 {
-	printf("profile_view_transformer_delete_cb\n");
+	m_printf("profile_view_transformer_delete_cb\n");
 	if (!button)
 		return ERR_NULL_PTR;
 	
@@ -91,18 +105,19 @@ int profile_view_transformer_delete_cb(m_active_button *button)
 	#ifdef USE_FPGA
 	ret_val = m_profile_if_active_update_fpga(trans->profile);
 	#endif
-	
-	printf("profile_view_transformer_delete_cb done\n");
+	m_printf("profile_view_transformer_delete_cb done\n");
 	return ret_val;
 }
 
 int init_profile_view(m_ui_page *page)
 {
-	//printf("init_profile_view...\n");
+	//m_printf("init_profile_view...\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	init_ui_page(page);
+	
+	page->type = M_UI_PAGE_PROF_VIEW;
 	
 	m_profile_view_str *str = m_alloc(sizeof(m_profile_view_str));
 	
@@ -176,7 +191,7 @@ static void save_button_cb(lv_event_t *e)
 	if (!str)
 		return;
 	
-	//printf("Saving profile...\n");
+	//m_printf("Saving profile...\n");
 	int ret_val;
 	
 	if ((ret_val = m_profile_save(str->profile)) == NO_ERROR)
@@ -185,7 +200,7 @@ static void save_button_cb(lv_event_t *e)
 
 static void menu_button_cb(lv_event_t *e)
 {
-	printf("menu_button_cb\n");
+	m_printf("menu_button_cb\n");
 	m_ui_page *page = lv_event_get_user_data(e);
 	
 	if (!page)
@@ -203,12 +218,12 @@ static void menu_button_cb(lv_event_t *e)
 	
 	if (profile->sequence)
 	{
-		printf("profile has a sequence; enter sequence view %p\n", profile->sequence->view_page);
+		m_printf("profile has a sequence; enter sequence view %p\n", profile->sequence->view_page);
 		enter_ui_page_backwards(profile->sequence->view_page);
 	}
 	else
 	{
-		printf("profile has no sequence. enter ... whatevery. %p\n", page->parent);
+		m_printf("profile has no sequence. enter ... whatevery. %p\n", page->parent);
 		enter_ui_page_backwards(page->parent);
 	}
 }
@@ -285,7 +300,7 @@ void profile_view_enter_main_menu_cb(lv_event_t *e)
 
 void profile_view_play_button_cb(lv_event_t *e)
 {
-	printf("profile_view_play_button_cb\n");
+	m_printf("profile_view_play_button_cb\n");
 	m_ui_page *page = (m_ui_page*)lv_event_get_user_data(e);
 	
 	if (!page)
@@ -298,7 +313,7 @@ void profile_view_play_button_cb(lv_event_t *e)
 	
 	if (!str->profile)
 	{
-		printf("Profile is NULL\n");
+		m_printf("Profile is NULL\n");
 		set_active_profile(NULL);
 		return;
 	}
@@ -315,6 +330,7 @@ void profile_view_play_button_cb(lv_event_t *e)
 
 int configure_profile_view(m_ui_page *page, void *data)
 {
+	m_printf("configure_profile_view(page = %p, data = %p)\n", page, data);
 	if (!page || !data)
 		return ERR_NULL_PTR;
 	
@@ -342,51 +358,18 @@ int configure_profile_view(m_ui_page *page, void *data)
 	int i = 0;
 	m_transformer_pll *current = profile->pipeline.transformers;
 	
+	m_printf("Entering while(current)\n");
 	while (current)
 	{
 		trans = current->data;
 		
 		m_active_button_array_append_new(str->array, trans, m_transformer_name(trans));
-		
-		/*
-		tw = m_alloc(sizeof(m_transformer_widget));
-		
-		if (!tw)
-			return ERR_ALLOC_FAIL;
-		
-		ret_val = init_transformer_widget(tw, page, trans, i);
-		
-		if (ret_val != NO_ERROR)
-			return ret_val;
-		
-		nl = m_transformer_widget_pll_append(str->tws, tw);
-		
-		if (!nl)
-		{
-			free_m_transformer_widget_pll(str->tws);
-			str->tws = NULL;
-			return ERR_ALLOC_FAIL;
-		}
-		str->tws = nl;
-		
-		str->n_transformer_widgets++;
-		
 		if (trans && !trans->view_page)
 		{
-			ret_val = transformer_init_ui_page(trans, page);
-			
+			ret_val = m_transformer_init_view_page(trans, page);
 			if (ret_val != NO_ERROR)
 			{
-				if (ret_val == ERR_ALLOC_FAIL)
-				{
-					alloc_fail = 1;
-				}
-				else
-				{
-					#ifndef M_SIMULATED
-					printf("Erroe code %d encountered initialising transformer view page for transformer %d.%d\n", profile->id, i);
-					#endif
-				}
+				// kill self
 			}
 			else
 			{
@@ -395,7 +378,6 @@ int configure_profile_view(m_ui_page *page, void *data)
 		}
 		
 		current = current->next;
-		i++;*/
 	}
 	
 	configure_profile_settings_page(str->settings_page, profile);
@@ -420,8 +402,11 @@ int configure_profile_view(m_ui_page *page, void *data)
 	
 	m_profile_add_representation(profile, &str->rep);
 	
-	page->configured = 1;
-	return alloc_fail ? ERR_ALLOC_FAIL : NO_ERROR;
+	ret_val = NO_ERROR;
+	if (alloc_fail)	ret_val = ERR_ALLOC_FAIL;
+	else page->configured = 1;
+	
+	return ret_val;
 }
 
 int create_profile_view_ui(m_ui_page *page)
@@ -452,18 +437,18 @@ int create_profile_view_ui(m_ui_page *page)
 	
 	if (!profile->name)
 	{
-		printf("create_profile_view_ui. profile->name = NULL\n");
+		m_printf("create_profile_view_ui. profile->name = NULL\n");
 		m_profile_set_default_name_from_id(profile);
 	}
 	
-	printf("create_profile_view_ui. profile->name = %s\n", profile->name);
+	m_printf("create_profile_view_ui. profile->name = %s\n", profile->name);
 	
 	page->panel->text = profile->name;
 	
 	ui_page_create_base_ui(page);
 	m_active_button_array_create_ui(str->array, page->container);
 	
-	printf("profile->active = %d\n", profile->active);
+	m_printf("profile->active = %d\n", profile->active);
 	
 	if (profile->active)
 	{
@@ -482,7 +467,7 @@ int create_profile_view_ui(m_ui_page *page)
 
 int enter_profile_view(m_ui_page *page)
 {
-	printf("enter_profile_view\n");
+	m_printf("enter_profile_view\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -490,41 +475,15 @@ int enter_profile_view(m_ui_page *page)
 	
 	if (str)
 		global_cxt.working_profile = str->profile;
-	printf("set working profile\n");
+	m_printf("set working profile\n");
 	global_cxt.pages.transformer_selector.parent = page;
-	printf("enter_profile_view done\n");
-	return NO_ERROR;
-}
-
-int profile_view_reorder_tw_list(m_ui_page *page)
-{
-	if (!page)
-		return ERR_NULL_PTR;
-	
-	m_profile_view_str *str = page->data_struct;
-	
-	
-	
-	return NO_ERROR;
-}
-
-int profile_view_print_tw_list(m_ui_page *page)
-{
-	if (!page)
-		return ERR_NULL_PTR;
-	
-	m_profile_view_str *str = page->data_struct;
-	
-	if (!str)
-		return ERR_BAD_ARGS;
-	
-
-	
+	m_printf("enter_profile_view done\n");
 	return NO_ERROR;
 }
 
 int profile_view_append_transformer(m_ui_page *page, m_transformer *trans)
 {
+	m_printf("profile_view_append_transformer\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -540,9 +499,7 @@ int profile_view_append_transformer(m_ui_page *page, m_transformer *trans)
 		m_active_button_create_ui(button, page->container);
 	}
 	
-	
-	
-	
+	m_printf("profile_view_append_transformer done; trans->view_page = %p\n", trans->view_page);
 	return NO_ERROR;
 }
 
@@ -615,7 +572,7 @@ int profile_view_set_left_button_mode(m_ui_page *page, int mode)
 
 void profile_view_rep_update(void *representer, void *representee)
 {
-	printf("profile_view_rep_update. representer = %p, representee = %p\n", representer, representee);
+	m_printf("profile_view_rep_update. representer = %p, representee = %p\n", representer, representee);
 	
 	m_ui_page *page = (m_ui_page*)representer;
 	m_profile *profile = (m_profile*)representee;
@@ -626,7 +583,7 @@ void profile_view_rep_update(void *representer, void *representee)
 	ui_page_set_title(page, profile->name);
 	
 	m_profile_view_str *str = (m_profile_view_str*)page->data_struct;
-	printf("profile->active = %d,  str = %p, \n", profile->active, str);
+	m_printf("profile->active = %d,  str = %p, \n", profile->active, str);
 	if (!str)
 		return;
 	
@@ -650,5 +607,5 @@ void profile_view_rep_update(void *representer, void *representee)
 	}
 	#endif
 	
-	printf("profile_view_rep_update done\n");
+	m_printf("profile_view_rep_update done\n");
 }

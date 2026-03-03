@@ -22,12 +22,16 @@ typedef struct m_sequence
 	#endif
 	
 	struct m_menu_item_pll *listings;
-	char *fname;
+	char fname[M_FILENAME_LEN];
+	int has_fname;
 	
 	int unsaved_changes;
 	int main_sequence;
 	
+	#ifdef M_ENABLE_REPRESENTATIONS
 	m_representation_pll *representations;
+	m_representation file_rep;
+	#endif
 } m_sequence;
 
 DECLARE_LINKED_PTR_LIST(m_sequence);
@@ -38,7 +42,10 @@ int init_m_sequence(m_sequence *sequence);
 
 int sequence_append_profile(m_sequence *sequence, m_profile *profile);
 seq_profile_ll *sequence_append_profile_rp(m_sequence *sequence, m_profile *profile);
-int sequence_move_profile(m_sequence *sequence, int pos, int new_pos);
+int m_sequence_move_profile(m_sequence *sequence, int pos, int new_pos);
+
+int m_sequence_remove_profile(m_sequence *sequence, m_profile *profile);
+int m_sequence_delete_profile(m_sequence *sequence, m_profile *profile);
 
 int m_sequence_add_menu_listing(m_sequence *sequence, struct m_menu_item *listing);
 
@@ -55,5 +62,7 @@ int m_sequence_activate_at(m_sequence *sequence, m_profile *profile);
 
 int m_sequence_add_representation(m_sequence *sequence, m_representation *rep);
 int m_sequence_update_representations(m_sequence *sequence);
+
+void m_sequence_file_rep_update(void *representer, void *representee);
 
 #endif

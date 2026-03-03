@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_fpga_comms.c";
+
 #define M_FPGA_MSG_TYPE_BATCH 			0
 #define M_FPGA_MSG_TYPE_PROGRAM_BATCH 	1
 #define M_FPGA_MSG_TYPE_SET_INPUT_GAIN 	2
@@ -35,10 +37,10 @@ void m_fpga_comms_task(void *param)
 	uint8_t byte;
 	byte = m_fpga_read_byte();
 	
-	printf("Starting FPGA comms. FPGA reports status code %d\n", byte);
+	m_printf("Starting FPGA comms. FPGA reports status code %d\n", byte);
 	
-	m_fpga_set_input_gain(global_cxt.settings.input_gain.value);
-	m_fpga_set_output_gain(global_cxt.settings.output_gain.value);
+	m_fpga_set_input_gain(global_cxt.input_gain.value);
+	m_fpga_set_output_gain(global_cxt.output_gain.value);
 	
 	int program_check_ms = 5;
 	int program_check_ticks = 5 / portTICK_PERIOD_MS;
@@ -65,11 +67,11 @@ void m_fpga_comms_task(void *param)
 					
 					if (byte != SPI_RESPONSE_OK)
 					{
-						printf("FPGA responded with code %d after programming. Retrying...\n", byte);
+						m_printf("FPGA responded with code %d after programming. Retrying...\n", byte);
 					}
 					else
 					{
-						printf("FPGA accepted the new pipeline :)\n");
+						m_printf("FPGA accepted the new pipeline :)\n");
 						break;
 					}
 				}
@@ -95,7 +97,7 @@ void m_fpga_comms_task(void *param)
 				
 			case M_FPGA_MSG_TYPE_COMMAND:
 				#ifdef PRINT_COMMANDS
-				printf("send FPGA command %s\n", m_fpga_command_to_string(msg.data.command));
+				m_printf("send FPGA command %s\n", m_fpga_command_to_string(msg.data.command));
 				#endif
 				m_fpga_send_byte(msg.data.command);
 				break;

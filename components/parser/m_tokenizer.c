@@ -495,9 +495,9 @@ int tokenizer_policy(char c, int *state_ptr)
 	return TOKENIZER_POLICY_SINGULAR;
 }
 
-int m_tokenize_eff_file(m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens)
+int m_tokenize_content(m_eff_parsing_state *ps)
 {
-	if (!file || !tokens || !ps)
+	if (!ps)
 		return ERR_NULL_PTR;
 	
 	char buf[256];
@@ -510,30 +510,32 @@ int m_tokenize_eff_file(m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens
 	char c;
 	int C;
 	int policy;
+	int file_pos = 0;
 	
 	int state = TOKENIZER_STATE_IDLE;
 	
-	buf[0] = fgetc(file);
-	buf[1] = fgetc(file);
-	buf[2] = fgetc(file);
-	buf[3] = fgetc(file);
+	buf[0] = ps->content[file_pos++];
+	buf[1] = ps->content[file_pos++];
+	buf[2] = ps->content[file_pos++];
+	buf[3] = ps->content[file_pos++];
 	buf[4] = 0;
 	
 	if (strcmp(ver_str, buf) != 0)
 	{
-		m_parser_error_at_line(ps, 1, "Version string \"%s\" required at start of file");
+		m_printf("'%c' (%d), '%c' (%d), '%c' (%d), '%c' (%d)\n", buf[0], buf[0], buf[1], buf[1], buf[2], buf[2], buf[3], buf[3]);
+		m_parser_error_at_line(ps, 1, "Version string \"%s\" required at start of file; instead, file starts with \"%s\"", ver_str, buf);
 		return ERR_BAD_ARGS;
 	}
 
 	
-	m_token_ll_safe_aappend(tokens, m_parser_strndup(ver_str, 4), line, 0);
+	m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(ver_str, 4), line, 0);
 	
 	while (state != TOKENIZER_STATE_DONE)
 	{
-		C = fgetc(file);
+		C = ps->content[file_pos++];
 		c = (char)C;
 		
-		if (C == EOF)
+		if (c == 0)
 		{
 			state = TOKENIZER_STATE_DONE;
 			policy = TOKENIZER_POLICY_DISCARD;
@@ -555,13 +557,13 @@ int m_tokenize_eff_file(m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens
 				if (buf_pos)
 				{
 					buf[buf_pos++] = 0;
-					m_token_ll_safe_aappend(tokens, m_parser_strndup(buf, buf_pos), line, token_index);
+					m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(buf, buf_pos), line, token_index);
 					token_index += buf_pos;
 					buf_pos = 0;
 				}
 				buf[0] = c;
 				buf[1] = 0;
-				m_token_ll_safe_aappend(tokens, m_parser_strndup(buf, 1), line, token_index);
+				m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(buf, 1), line, token_index);
 				token_index += 1;
 				break;
 			case TOKENIZER_POLICY_BEGIN:
@@ -572,7 +574,7 @@ int m_tokenize_eff_file(m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens
 				buf[buf_pos++] = c;
 			case TOKENIZER_POLICY_END_DISCARD:
 				buf[buf_pos++] = 0;
-				m_token_ll_safe_aappend(tokens, m_parser_strndup(buf, buf_pos), line, token_index);
+				m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(buf, buf_pos), line, token_index);
 				token_index += buf_pos;
 				buf_pos = 0;
 				break;
@@ -604,8 +606,10 @@ int m_tokenize_eff_file(m_eff_parsing_state *ps, FILE *file, m_token_ll **tokens
 	if (buf_pos)
 	{
 		buf[buf_pos++] = 0;
-		m_token_ll_safe_aappend(tokens, m_parser_strndup(buf, buf_pos), line, token_index);
+		m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(buf, buf_pos), line, token_index);
 	}
+	
+	ps->n_lines = line;
 	
 	return NO_ERROR;
 }

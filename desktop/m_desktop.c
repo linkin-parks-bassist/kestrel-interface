@@ -2,6 +2,9 @@
 #include <SDL2/SDL.h>
 #include <time.h>
 
+static const char *FNAME = "m_desktop.c";
+#define VOICE M_VOICE_MAIN
+
 int init_sd_card()   {return NO_ERROR;}
 int m_sd_mode_msc()  {return NO_ERROR;}
 int m_sd_mode_local(){return NO_ERROR;}
@@ -43,13 +46,29 @@ static void mouse_read(lv_indev_t *indev, lv_indev_data_t *data)
 
 void main_task(void *arg)
 {
+	int ret_val;
+	
 	srand(time(0));
 	
+	xTaskCreate(m_log_task,
+		"m_log_task",
+		4 * 1024,
+		NULL,
+		8,
+		NULL);
+	
     lv_init();
+    
+    m_mute_all_voices();
+    m_unmute_voice(M_VOICE_LOG);
+    m_unmute_voice(M_VOICE_FILES);
+	//m_unmute_voice(M_VOICE_STATE);
+    //m_unmute_voice(M_VOICE_CONTEXT);
+    //m_unmute_voice(M_VOICE_PROFILE);
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    window = SDL_CreateWindow("LVGL 9.5 Desktop",
+    window = SDL_CreateWindow("M",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               DISPLAY_HRES, DISPLAY_VRES,
@@ -79,7 +98,8 @@ void main_task(void *arg)
     // test object
     lv_obj_t *btn = lv_button_create(lv_screen_active());
     lv_obj_center(btn);
-	
+    
+	init_representation_updater();
 	m_init_context(&global_cxt);
 	m_context_init_effect_list(&global_cxt);
 	m_init_global_pages(&global_cxt.pages);
@@ -96,14 +116,29 @@ void main_task(void *arg)
 	
 	m_init_directories();
 	
-	if (load_settings_from_file(&global_cxt.settings, SETTINGS_FNAME) == ERR_FOPEN_FAIL)
-		save_settings_to_file(&global_cxt.settings, SETTINGS_FNAME);
+	//if (load_state_from_file(&global_cxt.state, SETTINGS_FNAME) == ERR_FOPEN_FAIL)
+	//		save_state_to_file(&global_cxt.state, SETTINGS_FNAME);
 	
 	load_effects(&global_cxt);
 	init_transformer_selector_eff(&global_cxt.pages.transformer_selector);
+	load_saved_profiles(&global_cxt);
 	load_saved_sequences(&global_cxt);
 	
 	m_create_ui(NULL);
+	
+	m_state state;
+	ret_val = load_state_from_file(&state, SETTINGS_FNAME);
+	
+	if (ret_val == NO_ERROR)
+	{
+		ret_val = m_cxt_restore_state(&global_cxt, &state);
+		
+		m_vprintf(VOICE, "Restored state from disk with error code \"%s\"\n", m_error_code_to_string(ret_val));
+	}
+	else
+	{
+		m_vprintf(VOICE, "Unable to restore state from disk: \"%s\"\n", m_error_code_to_string(ret_val));
+	}
 	
 	int running = 1;
 	SDL_Event e;
@@ -122,7 +157,7 @@ void main_task(void *arg)
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(5);
+		SDL_Delay(1);
 	}
 	
 	SDL_DestroyTexture(texture);
@@ -160,5 +195,5 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 }
 void vApplicationTickHook(void)
 {
-    lv_tick_inc(5);
+    lv_tick_inc(1);
 }

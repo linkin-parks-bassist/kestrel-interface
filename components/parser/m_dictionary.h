@@ -52,4 +52,9 @@ int m_dictionary_lookup_dict (m_dictionary *dict, const char *name, m_dictionary
 
 void print_dict(m_dictionary *dict);
 
+struct m_eff_parsing_state;
+
+int m_parse_dict_val(struct m_eff_parsing_state *ps, m_dictionary_entry *result);
+int m_parse_dictionary(struct m_eff_parsing_state *ps, m_dictionary **result, const char *name);
+
 #endif

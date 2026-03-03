@@ -21,16 +21,11 @@
 
 #include "m_error_codes.h"
 
-#define ROUND_UP_64(x)   (((x) + (64 - 1)) & ~(64 - 1))
-
 int waveshare_dsi_touch_5_a_init(lv_disp_t **disp)
 {
-	int bufsize = ROUND_UP_64(BSP_LCD_DRAW_BUFF_SIZE);
-	
-	printf("bufsize = 0x%x\n", bufsize);
 	bsp_display_cfg_t cfg = {
         .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
-        .buffer_size = bufsize,
+        .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
         .double_buffer = BSP_LCD_DRAW_BUFF_DOUBLE,
         .flags = {
             .buff_dma = true,

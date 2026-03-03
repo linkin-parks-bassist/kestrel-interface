@@ -140,17 +140,16 @@ int refresh_menu_item(m_menu_item *item)
 
 void parameter_widget_change_cb_settings_wrapper(lv_event_t *e)
 {
-	printf("parameter_widget_change_cb_settings_wrapper\n");
+	m_printf("parameter_widget_change_cb_settings_wrapper\n");
 	m_menu_item *item = lv_event_get_user_data(e);
 	
 	if (!item)
 		return;
 	
 	#ifdef M_USE_FREERTOS
-	xSemaphoreTake(settings_mutex, portMAX_DELAY);
+	xSemaphoreTake(state_mutex, portMAX_DELAY);
 	parameter_widget_change_cb_inner(item->data);
-	global_cxt.settings.changed = 1;
-	xSemaphoreGive(settings_mutex);
+	xSemaphoreGive(state_mutex);
 	#endif
 }
 
@@ -228,7 +227,7 @@ m_menu_item *create_profile_listing_menu_item(char *text, m_profile *profile, m_
 
 int profile_listing_menu_item_refresh_active(m_menu_item *item)
 {
-	printf("profile_listing_menu_item_refresh_active\n");
+	m_printf("profile_listing_menu_item_refresh_active\n");
 	if (!item)
 		return ERR_NULL_PTR;
 	
@@ -240,20 +239,20 @@ int profile_listing_menu_item_refresh_active(m_menu_item *item)
 	
 	if (item->data && ((m_profile*)item->data)->active)
 	{
-		printf("profile is active. going about it\n");
+		m_printf("profile is active. going about it\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_PLAY);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	else
 	{
-		printf("profile is not active. hiding play\n");
+		m_printf("profile is not active. hiding play\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_TRASH);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	
-	printf("profile_listing_menu_item_refresh_active done\n");
+	m_printf("profile_listing_menu_item_refresh_active done\n");
 	return NO_ERROR;
 }
 
@@ -457,7 +456,7 @@ m_menu_item *create_page_link_menu_item(char *text, m_ui_page *linked_page, m_ui
 	if (!item)
 		return NULL;
 	
-	printf("create_page_link_menu_item. parent = %p\n", parent);
+	m_printf("create_page_link_menu_item. parent = %p\n", parent);
 	
 	init_menu_item(item);
 	
@@ -578,7 +577,7 @@ int init_menu_page(m_ui_page *page)
 
 int configure_menu_page(m_ui_page *page, void *data)
 {
-	printf("configure_menu_page\n");
+	m_printf("configure_menu_page\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -611,13 +610,13 @@ int configure_menu_page(m_ui_page *page, void *data)
 	
 	page->configured = (ret_val == NO_ERROR);
 	
-	printf("configure_menu_page done\n");
+	m_printf("configure_menu_page done\n");
 	return ret_val;
 }
 
 int create_menu_page_ui(m_ui_page *page)
 {
-	printf("create_menu_page_ui\n");
+	m_printf("create_menu_page_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -640,7 +639,7 @@ int create_menu_page_ui(m_ui_page *page)
 	int i = 0;
 	while (current)
 	{
-		printf("Create menu item %d ui\n", i);
+		m_printf("Create menu item %d ui\n", i);
 		create_menu_item_ui(current->data, page->container);
 		current = current->next;
 		i++;
@@ -651,7 +650,7 @@ int create_menu_page_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	printf("create_menu_page_ui done\n");
+	m_printf("create_menu_page_ui done\n");
 	return NO_ERROR;
 }
 
@@ -669,16 +668,16 @@ int enter_menu_page(m_ui_page *page)
 	{
 		m_menu_item_pll *current = str->items;
 		
-		printf("Menu page menu items:\n");
+		m_printf("Menu page menu items:\n");
 		
 		while (current)
 		{
 			if (current->data)
 			{
-				printf("Type %d\n", current->data->type);
+				m_printf("Type %d\n", current->data->type);
 				if (current->data->type == MENU_ITEM_PARAMETER_WIDGET)
 				{
-					printf("Requesting value for menu page parameter widget...\n");
+					m_printf("Requesting value for menu page parameter widget...\n");
 					//param_widget_request_value(current->data->data);
 				}
 			}
@@ -726,7 +725,7 @@ int menu_page_add_item(m_menu_page_str *str, m_menu_item *item)
 	if (!str || !item)
 		return ERR_NULL_PTR;
 	
-	//printf("menu_page_add_item(%p, %p). str->items = %p\n", str, item, str->items);
+	//m_printf("menu_page_add_item(%p, %p). str->items = %p\n", str, item, str->items);
 	
 	m_menu_item_pll *nl = m_menu_item_pll_append(str->items, item);
 	
@@ -752,6 +751,8 @@ int init_main_menu(m_ui_page *page)
 	page->enter_page = enter_main_menu;
 	
 	page->data_struct = NULL;
+	
+	page->type = M_UI_PAGE_MAIN_MENU;
 	
 	return NO_ERROR;
 }
@@ -792,13 +793,11 @@ int configure_main_menu(m_ui_page *page, void *data)
 	page->panel->text = "Main Menu";
 	page->container_type = CONTAINER_TYPE_STD_BTN_LIST;
 	
-	ui_page_add_back_button(page);
-	
 	nullify_parameter_widget(&str->input_gain);
 	nullify_parameter_widget(&str->output_gain);
 	
-	configure_parameter_widget( &str->input_gain,  &global_cxt.settings.input_gain, NULL, page);
-	configure_parameter_widget(&str->output_gain, &global_cxt.settings.output_gain, NULL, page);
+	configure_parameter_widget( &str->input_gain,  &global_cxt.input_gain, NULL, page);
+	configure_parameter_widget(&str->output_gain, &global_cxt.output_gain, NULL, page);
 	
 	init_button(&str->profiles_button);
 	init_button(&str->sequences_button);
@@ -822,10 +821,10 @@ int configure_main_menu(m_ui_page *page, void *data)
 	m_menu_item *item = create_pad_menu_item(20);
 	menu_page_add_item(str, item);
 	
-	item = create_parameter_widget_menu_item(&global_cxt.settings.input_gain, page);
+	item = create_parameter_widget_menu_item(&global_cxt.state.input_gain, page);
 	menu_page_add_item(str, item);
 	
-	item = create_parameter_widget_menu_item(&global_cxt.settings.output_gain, page);
+	item = create_parameter_widget_menu_item(&global_cxt.state.output_gain, page);
 	menu_page_add_item(str, item);
 	
 	m_ui_page *profile_list = &global_cxt.pages.main_sequence_view;

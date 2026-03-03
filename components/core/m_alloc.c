@@ -1,16 +1,33 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_alloc.c";
+
 static size_t total_current, total_peak;
 
 void *m_alloc(size_t size)
 {
+	#ifdef M_LOG_ALLOCS
+	#endif
+	
 	if (size == 0)
+	{
+		#ifdef M_LOG_ALLOCS
 		return NULL;
+		#else
+		return NULL;
+		#endif
+    }
 	
     uint8_t *ptr = malloc(size + sizeof(size_t));
     
     if (!ptr)
+    {
+		#ifdef M_LOG_ALLOCS
 		return NULL;
+		#else
+		return NULL;
+		#endif
+    }
     
     *(size_t*)ptr = size;
     
@@ -19,13 +36,26 @@ void *m_alloc(size_t size)
     if (total_current > total_peak)
         total_peak = total_current;
     
+    #ifdef M_LOG_ALLOCS
     return ptr + sizeof(size_t);
+    #else
+    return ptr + sizeof(size_t);
+    #endif
 }
 
 void m_free(void *ptr)
 {
+	#ifdef M_LOG_ALLOCS
+	#endif
+	
     if (!ptr)
+	{
+		#ifdef M_LOG_ALLOCS
 		return;
+		#else
+		return;
+		#endif
+    }
     
     uint8_t *base_ptr = (uint8_t*)ptr - sizeof(size_t);
     
@@ -34,12 +64,25 @@ void m_free(void *ptr)
     total_current -= size;
     
     free(base_ptr);
+    
+	#ifdef M_LOG_ALLOCS
+	return;
+	#endif
 }
 
 void *m_realloc(void *ptr, size_t size)
 {
+	#ifdef M_LOG_ALLOCS
+	#endif
+	
 	if (!ptr)
+	{
+		#ifdef M_LOG_ALLOCS
 		return m_alloc(size);
+		#else
+		return m_alloc(size);
+		#endif
+	}
 	
 	if (size == 0)
 		m_free(ptr);
@@ -50,7 +93,13 @@ void *m_realloc(void *ptr, size_t size)
     uint8_t *new_ptr = realloc(base_ptr, size + sizeof(size_t));
     
     if (!new_ptr)
+    {
+		#ifdef M_LOG_ALLOCS
 		return NULL;
+		#else
+		return NULL;
+		#endif
+	}
     
     *(size_t*)new_ptr = size;
     
@@ -59,20 +108,48 @@ void *m_realloc(void *ptr, size_t size)
     if (total_current > total_peak)
         total_peak = total_current;
     
+    #ifdef M_LOG_ALLOCS
     return new_ptr + sizeof(size_t);
+    #else
+    return new_ptr + sizeof(size_t);
+    #endif
 }
 
 char *m_strndup(const char *str, size_t n)
 {
+	#ifdef M_LOG_ALLOCS
+	#endif
+	
+	if (!str)
+	{
+		#ifdef M_LOG_ALLOCS
+		return NULL;
+		#else
+		return NULL;
+		#endif
+	}
+	
     size_t len = strnlen(str, n);
     
     char *new_str = m_alloc(len + 1);
     
-    if (!new_str) return NULL;
-    memcpy(new_str, str, len);
+    if (!new_str)
+    {
+		#ifdef M_LOG_ALLOCS
+		return NULL;
+		#else
+		return NULL;
+		#endif
+	}
+	
+	memcpy(new_str, str, len);
     new_str[len] = '\0';
     
-    return new_str;
+	#ifdef M_LOG_ALLOCS
+	return new_str;
+	#else
+	return new_str;
+	#endif
 }
 
 void m_mem_monitor_task(void *param)
@@ -89,10 +166,10 @@ void m_mem_monitor_task(void *param)
 
 void m_mem_init()
 {
-	printf("m_mem_init()");
+	m_printf("m_mem_init()");
 	#ifdef PRINT_MEMORY_USAGE
 	#ifdef M_USE_FREERTOS
-	printf("Spinning off memory printer task...\n");
+	m_printf("Spinning off memory printer task...\n");
 	xTaskCreate(
 		m_mem_monitor_task,
 		"memory_log",
@@ -143,5 +220,5 @@ void m_lv_free(void *ptr)
 
 void print_memory_report()
 {
-    printf("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
+    m_printf("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
 }

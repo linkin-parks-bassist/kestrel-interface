@@ -3,6 +3,8 @@
 #define INITIAL_PROFILE_ARRAY_LENGTH 8
 #define PROFILE_ARRAY_CHUNK_SIZE	 8
 
+static const char *FNAME = "m_context.c";
+
 int m_init_context(m_context *cxt)
 {
 	if (!cxt)
@@ -24,12 +26,36 @@ int m_init_context(m_context *cxt)
 	cxt->saved_profiles_loaded  = 0;
 	cxt->saved_sequences_loaded = 0;
 	
-	init_settings(&cxt->settings);
-	
 	cxt->pages.backstage = NULL;
 	cxt->pages.current_page = NULL;
 	
 	cxt->effects = NULL;
+	
+	init_parameter(&cxt->input_gain, "Input Gain", -100, -30.0, 30.0);
+	cxt->input_gain.units = " dB";
+	cxt->input_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .transformer_id = 0, .parameter_id = INPUT_GAIN_PID};
+	cxt->input_gain.max_velocity = 0.4;
+	cxt->input_gain.min_expr = &m_expression_standard_gain_min;
+	cxt->input_gain.max_expr = &m_expression_standard_gain_max;
+	
+	init_parameter(&cxt->output_gain, "Output Gain", -100, -30.0, 30.0);
+	cxt->output_gain.units = " dB";
+	cxt->output_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .transformer_id = 0, .parameter_id = OUTPUT_GAIN_PID};
+	cxt->output_gain.max_velocity = 0.4;
+	cxt->output_gain.min_expr = &m_expression_standard_gain_min;
+	cxt->output_gain.max_expr = &m_expression_standard_gain_max;
+	
+	#ifdef M_ENABLE_REPRESENTATIONS
+	cxt->state_rep.representer = NULL;
+	cxt->state_rep.representee = cxt;
+	cxt->state_rep.update = m_state_representation_update;
+	cxt->state_rep_lstub.data = &cxt->state_rep;
+	cxt->state_rep_lstub.next = NULL;
+	#endif
+	
+	#ifdef M_USE_FREERTOS
+	cxt->mutex = xSemaphoreCreateMutex();
+	#endif
 	
 	return NO_ERROR;
 }
@@ -43,7 +69,19 @@ int m_context_init_main_sequence(m_context *cxt)
 	
 	cxt->main_sequence.name = "Profiles";
 	cxt->main_sequence.view_page = &cxt->pages.main_sequence_view;
-	cxt->main_sequence.fname = MAIN_SEQUENCE_FNAME;
+	
+	for (int k = 0; k < M_FILENAME_LEN; k++)
+	{
+		if (!MAIN_SEQUENCE_FNAME[k])
+		{
+			cxt->main_sequence.fname[k] = 0;
+			break;
+		}
+		
+		cxt->main_sequence.fname[k] = MAIN_SEQUENCE_FNAME[k];
+	}
+	
+	cxt->main_sequence.has_fname = 1;
 	cxt->main_sequence.main_sequence = 1;
 	
 	return NO_ERROR;
@@ -51,21 +89,9 @@ int m_context_init_main_sequence(m_context *cxt)
 
 int m_context_init_effect_list(m_context *cxt)
 {
-	printf("m_context_init_effect_list\n");
+	m_printf("m_context_init_effect_list\n");
 	if (!cxt)
 		return ERR_NULL_PTR;
-	
-	/*cxt->effects = m_effect_desc_pll_append(cxt->effects, create_gain_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_distortion_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_arctan_distortion_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_tube_distortion_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_comb_filter_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_flanger_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_smoother_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_unsmoother_eff_desc());
-	
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_lpf_eff_desc());
-	cxt->effects = m_effect_desc_pll_append(cxt->effects, create_hpf_eff_desc());*/
 	
 	return NO_ERROR;
 }
@@ -78,41 +104,6 @@ int m_context_init_ui(m_context *cxt)
 	cxt->pages.backstage = NULL;
 	cxt->pages.current_page = NULL;
 	
-	return NO_ERROR;
-}
-
-int context_no_default_profile(m_context *cxt)
-{
-	if (!cxt)
-		return ERR_NULL_PTR;
-	/*
-	cxt->active_profile = m_alloc(sizeof(m_profile));
-	cxt->working_profile = cxt->active_profile;
-	cxt->default_profile = cxt->active_profile;
-	
-	if (!cxt->active_profile)
-		return ERR_ALLOC_FAIL;
-	
-	init_m_profile(cxt->active_profile);
-	create_profile_view_for(cxt->active_profile);
-	m_profile_set_default_name_from_id(cxt->active_profile);
-	
-	cxt->active_profile->active = 1;
-	
-	printf("Created profile, %p. Name: %s\n", cxt->active_profile, cxt->active_profile->name);
-	profile_ll *nl = m_profile_pll_append(NULL, cxt->active_profile);
-	
-	if (!nl)
-	{
-		free_profile(cxt->active_profile);
-		return ERR_ALLOC_FAIL;
-	}
-	
-	nl->next = cxt->profiles;
-	cxt->profiles = nl;
-	
-	cxt->active_profile->default_profile = 1;
-	*/
 	return NO_ERROR;
 }
 
@@ -148,19 +139,19 @@ m_profile *m_context_add_profile_rp(m_context *cxt)
 	if (!cxt)
 		return NULL;
 	
-	printf("m_context_add_profile_rp\n");
+	m_printf("m_context_add_profile_rp\n");
 	
 	m_profile *profile = m_alloc(sizeof(m_profile));
 	
 	if (!profile)
 		return NULL;
 	
-	printf("profile = %p\n", profile);
+	m_printf("profile = %p\n", profile);
 	
 	init_m_profile(profile);
 	
-	printf("profile->name = %p\n", profile->name);
-	printf("\t\t\t= %s\n", profile->name ? profile->name : "(NULL)");
+	m_printf("profile->name = %p\n", profile->name);
+	m_printf("\t\t\t= %s\n", profile->name ? profile->name : "(NULL)");
 	
 	profile_ll *nl = m_profile_pll_append(cxt->profiles, profile);
 	
@@ -276,11 +267,11 @@ int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m
 			switch (id.parameter_id)
 			{
 				case INPUT_GAIN_PID:
-					*pp = &global_cxt.settings.input_gain;
+					*pp = &global_cxt.input_gain;
 					return NO_ERROR;
 					
 				case OUTPUT_GAIN_PID:
-					*pp = &global_cxt.settings.output_gain;
+					*pp = &global_cxt.output_gain;
 					return NO_ERROR;
 				
 				default:
@@ -388,7 +379,7 @@ int cxt_remove_profile(m_context *cxt, m_profile *profile)
 	profile_ll *current = cxt->profiles;
 	profile_ll *prev = NULL;
 	
-	if (profile && profile->fname)
+	if (profile && profile->has_fname)
 		remove(profile->fname);
 	
 	while (current)
@@ -429,7 +420,7 @@ int cxt_remove_sequence(m_context *cxt, m_sequence *sequence)
 	sequence_ll *current = cxt->sequences;
 	sequence_ll *prev = NULL;
 	
-	if (sequence && sequence->fname)
+	if (sequence && sequence->has_fname)
 		remove(sequence->fname);
 	
 	while (current)
@@ -485,7 +476,7 @@ int set_active_profile(m_profile *profile)
 	
 	if (profile && profile->sequence)
 	{
-		printf("profile has a sequence. call m_sequence_activate_at\n");
+		m_printf("profile has a sequence. call m_sequence_activate_at\n");
 		m_sequence_activate_at(profile->sequence, profile);
 	}
 	
@@ -506,7 +497,7 @@ int set_active_profile(m_profile *profile)
 // tell the sequence about it; it is handled from the caller
 int set_active_profile_from_sequence(m_profile *profile)
 {
-	printf("set_active_profile_from_sequence, profile = %p\n", profile);
+	m_printf("set_active_profile_from_sequence, profile = %p\n", profile);
 	if (profile)
 		m_profile_set_active(profile);
 	
@@ -539,87 +530,12 @@ int set_working_profile(m_profile *profile)
 	return NO_ERROR;
 }
 
-int resolve_default_profile(m_context *cxt)
-{
-	if (!cxt)
-		return ERR_NULL_PTR;
-	/*
-	profile_ll *current = cxt->profiles;
-	profile_ll *prev = NULL;
-	
-	printf("resolve default profile. cxt->settings.default_profile = %s\n", cxt->settings.default_profile ? cxt->settings.default_profile : "(NULL)!");
-	if (!cxt->settings.default_profile)
-	{
-		return NO_ERROR;
-	}
-	
-	while (current)
-	{
-		if (current->data && current->data->fname && strcmp(current->data->fname, cxt->settings.default_profile) == 0)
-		{
-			profile_set_id(current->data, 0);
-			current->data->default_profile = 1;
-			
-			// Put the default first in the list
-			if (prev)
-			{
-				prev->next = current->next;
-				current->next = cxt->profiles;
-				cxt->profiles = current;
-			}
-			
-			cxt->active_profile  = current->data;
-			cxt->working_profile = current->data;
-			cxt->default_profile = current->data;
-			m_profile_set_active(current->data);
-			
-			cxt->default_profile_exists = 1;
-			
-			printf("Found it!\n");
-			return NO_ERROR;
-		}
-		
-		prev = current;
-		current = current->next;
-	}
-	*/
-	return NO_ERROR;
-}
-
-int set_profile_as_default(m_context *cxt, m_profile *profile)
-{
-	if (!cxt || !profile)
-		return ERR_NULL_PTR;
-	
-	/*
-	if (!profile->fname)
-	{
-		save_profile(profile);
-		
-		if (cxt->default_profile)
-		{
-			cxt->default_profile->default_profile = 0;
-		}
-	}
-	
-	cxt->default_profile = profile;
-	profile->default_profile = 1;
-	
-	xSemaphoreTake(settings_mutex, portMAX_DELAY);
-	cxt->settings.default_profile = profile->fname;
-	cxt->settings.changed = 1;
-	xSemaphoreGive(settings_mutex);
-	*/
-	
-	return NO_ERROR;
-}
-
 void context_print_profiles(m_context *cxt)
 {
 	if (!cxt)
 		return;
 		
-	printf("Printing profiles...\n");
+	m_printf("Printing profiles...\n");
 	
 	profile_ll *current = global_cxt.profiles;
 	
@@ -627,7 +543,7 @@ void context_print_profiles(m_context *cxt)
 	int i = 0;
 	while (current)
 	{
-		printf("Profile %d, stored at %p, ", i, current->data);
+		m_printf("Profile %d, stored at %p, ", i, current->data);
 		
 		if (current->data)
 		{
@@ -639,24 +555,23 @@ void context_print_profiles(m_context *cxt)
 				ct = ct->next;
 				j++;
 			}
-			printf("has name %s, and has %d transformers%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
+			m_printf("has name %s, and has %d transformers%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
 			
 			ct = current->data->pipeline.transformers;
 			
 			while (ct)
 			{
-				printf("\t%s,\n", (ct->data && m_transformer_name(ct->data)) ? m_transformer_name(ct->data) : "UNKNOWN");
+				m_printf("\t%s,\n", (ct->data && m_transformer_name(ct->data)) ? m_transformer_name(ct->data) : "UNKNOWN");
 				ct = ct->next;
 			}
 		}
-		//printf("it is%s the default profile.\n", current->data->default_profile ? "" : " NOT");
 		current = current->next;
 		i++;
 	}
 	
 	if (i == 0)
 	{
-		printf("There are none!\n");
+		m_printf("There are none!\n");
 	}
 }
 
@@ -685,7 +600,7 @@ int cxt_handle_hw_switch(m_context *cxt, int sw)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	printf("cxt_handle_hw_switch, sw = %d\n", sw);
+	m_printf("cxt_handle_hw_switch, sw = %d\n", sw);
 	
 	if (cxt->sequence)
 	{
@@ -705,18 +620,18 @@ m_profile *cxt_find_profile(m_context *cxt, const char *fname)
 	
 	profile_ll *current = cxt->profiles;
 	
-	printf("Searching for profile with fname %s...\n", fname);
+	m_printf("Searching for profile with fname %s...\n", fname);
 	while (current)
 	{
-		if (current->data && current->data->fname)
+		if (current->data && current->data->has_fname)
 		{
-			printf("Check %s\n", current->data->fname);
+			m_printf("Check %s\n", current->data->fname);
 			if (strncmp(current->data->fname, fname, PROFILE_NAME_MAX_LEN) == 0)
 			{
-				printf("Match!\n");
+				m_printf("Match!\n");
 				return current->data;
 			}
-			printf("No match\n");
+			m_printf("No match\n");
 		}
 		
 		current = current->next;
@@ -743,4 +658,152 @@ int cxt_save_all_profiles(m_context *cxt)
 	}
 	
 	return NO_ERROR;
+}
+
+int m_cxt_obtain_mutex(m_context *cxt)
+{
+	if (!cxt)
+		return ERR_NULL_PTR;
+	
+	#ifdef M_USE_FREERTOS
+	if (xSemaphoreTake(cxt->mutex, 0) != pdTRUE) return ERR_MUTEX_UNAVAILABLE;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
+	
+	return NO_ERROR;
+}
+
+int m_cxt_obtain_mutex_wait_forever(m_context *cxt)
+{
+	if (!cxt)
+		return ERR_NULL_PTR;
+	
+	#ifdef M_USE_FREERTOS
+	if (xSemaphoreTake(cxt->mutex, portMAX_DELAY) != pdTRUE)
+		return ERR_MUTEX_UNAVAILABLE;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
+	
+	return NO_ERROR;
+}
+
+
+int m_cxt_release_mutex(m_context *cxt)
+{
+	if (!cxt)
+		return ERR_NULL_PTR;
+	
+	#ifdef M_USE_FREERTOS
+	xSemaphoreGive(cxt->mutex);
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
+	
+	return NO_ERROR;
+}
+
+int m_cxt_queue_save_state(m_context *cxt)
+{
+	if (!cxt)
+		return ERR_NULL_PTR;
+	
+	queue_representation_list_update(&cxt->state_rep_lstub);
+	
+	return NO_ERROR;
+}
+
+m_profile *cxt_get_profile_by_fname(m_context *cxt, const char *fname)
+{
+	m_printf("cxt_get_profile_by_fname(cxt = %p, fname = %s)\n", cxt, fname ? fname : "(NULL)");
+	
+	if (!cxt || !fname)
+		return NULL;
+	
+	m_profile_pll *current = cxt->profiles;
+	
+	m_printf("Searching the list. %s\n", !current ? "... but it is empty!" : "");
+	int i = 0;
+	while (current)
+	{
+		m_printf("Profile %d ", i);
+		if (current->data)
+		{
+			m_printf("has fname \"%s\".\n", current->data->has_fname ? current->data->fname : "(NULL)");
+		}
+		else
+		{
+			m_printf("... doesn't exist???\n");
+		}
+		if (current->data && current->data->has_fname && fnames_agree(current->data->fname, fname))
+		{
+			m_printf("That's the one :) returning it\n");
+			return current->data;
+		}
+		
+		current = current->next;
+		i++;
+	}
+	
+	return NULL;
+}
+
+m_sequence *cxt_get_sequence_by_fname(m_context *cxt, const char *fname)
+{
+	if (!cxt || !fname)
+		return NULL;
+	
+	m_sequence_pll *current = cxt->sequences;
+	
+	while (current)
+	{
+		if (current->data && current->data->has_fname && fnames_agree(current->data->fname, fname))
+			return current->data;
+		
+		current = current->next;
+	}
+	
+	return NULL;
+}
+
+int m_cxt_set_input_gain(m_context *cxt, float gain)
+{
+	m_printf("m_cxt_set_input_gain\n");
+	
+	if (!cxt) return ERR_NULL_PTR;
+	
+	int ret_val = m_parameter_trigger_update(&cxt->input_gain, gain);
+	
+	m_printf("m_cxt_set_input_gain done\n");
+	return ret_val;
+}
+
+int m_cxt_set_output_gain(m_context *cxt, float gain)
+{
+	m_printf("m_cxt_set_output_gain\n");
+	if (!cxt) return ERR_NULL_PTR;
+	
+	int ret_val = m_parameter_trigger_update(&cxt->output_gain, gain);
+	
+	m_printf("m_cxt_set_input_gain done\n");
+	return ret_val;
+}
+
+m_effect_desc *m_cxt_get_effect_desc_from_cname(m_context *cxt, const char *cname)
+{
+	if (!cxt || !cname)
+		return NULL;
+	
+	m_effect_desc_pll *current = cxt->effects;
+	
+	while (current)
+	{
+		if (current->data && current->data->cname && strcmp(current->data->cname, cname) == 0)
+			return current->data;
+		
+		current = current->next;
+	}
+	
+	return NULL;
 }

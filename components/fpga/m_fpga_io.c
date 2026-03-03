@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_fpga_io.c";
+
 #ifndef M_FPGA_SIMULATED
 #include <driver/spi_master.h>
 
@@ -91,10 +93,10 @@ int m_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 		buf_index += 10;
 	}
 	print_buf[buf_index] = 0;
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\nSPI send to FPGA (%d bytes):\n", len);
-	printf(print_buf);
+	m_printf("\n\n\n\n\n\n\n\n\n\n\n\n\nSPI send to FPGA (%d bytes):\n", len);
+	m_printf(print_buf);
 	
-	printf("FPGA replied with\n");
+	m_printf("FPGA replied with\n");
 	buf_index = 0;
 	for (int i = 0; i < len; i++)
 	{
@@ -102,7 +104,7 @@ int m_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 		buf_index += 10;
 	}
 	print_buf[buf_index] = 0;
-	printf(print_buf);
+	m_printf(print_buf);
 	#endif
 	
 	return (err == ESP_OK) ? NO_ERROR : ERR_SPI_FAIL;

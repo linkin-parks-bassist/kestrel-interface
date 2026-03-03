@@ -2,7 +2,7 @@
 
 IMPLEMENT_LINKED_PTR_LIST(m_active_button);
 
-static const char *TAG = "m_active_button.c";
+static const char *FNAME = "m_active_button.c";
 
 int init_button(m_button *button)
 {
@@ -49,7 +49,7 @@ int init_button(m_button *button)
 
 m_button *new_button(const char *label)
 {
-	m_button *button = malloc(sizeof(m_button));
+	m_button *button = m_alloc(sizeof(m_button));
 	
 	if (!button)
 		return NULL;
@@ -68,7 +68,7 @@ int create_button_ui(m_button *button, lv_obj_t *parent)
 	
 	if (button->obj)
 	{
-		printf("WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
+		m_printf("WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
 		return ERR_BAD_ARGS;
 	}
 	
@@ -91,7 +91,7 @@ int create_button_ui(m_button *button, lv_obj_t *parent)
 	if (!(button->flags & M_BUTTON_FLAG_NO_ALIGN))
 		lv_obj_align(button->obj, button->alignment, button->align_offs_x, button->align_offs_y);
 	
-	//printf("create_button_ui: button->obj = %p\n", button->obj);
+	//m_printf("create_button_ui: button->obj = %p\n", button->obj);
 	
 	button->label = lv_label_create(button->obj);
 	
@@ -282,43 +282,43 @@ int m_button_add_sub_button(m_button *button, m_button *sub_button)
 
 int m_button_hide(m_button *button)
 {
-	//printf("m_button_hide. button = %p\n", button);
+	//m_printf("m_button_hide. button = %p\n", button);
 	if (!button)
 	{
-		//printf("bailing\n");
+		//m_printf("bailing\n");
 		return ERR_NULL_PTR;
 	}
 	
-	//printf("set hidden flag...\n");
+	//m_printf("set hidden flag...\n");
 	button->flags |= M_BUTTON_FLAG_HIDDEN;
 	
 	if (button->obj)
 	{
-		//printf("set hidden lv flag\n");
+		//m_printf("set hidden lv flag\n");
 		lv_obj_add_flag(button->obj, LV_OBJ_FLAG_HIDDEN);
 	}
 	
-	//printf("m_button_hide done\n");
+	//m_printf("m_button_hide done\n");
 	return NO_ERROR;
 }
 
 int m_button_unhide(m_button *button)
 {
-	//printf("m_button_unhide. button = %p\n", button);
+	//m_printf("m_button_unhide. button = %p\n", button);
 	if (!button)
 	{
-		//printf("bailing\n");
+		//m_printf("bailing\n");
 		return ERR_NULL_PTR;
 	}
 	
-	//printf("unset hidden flag...\n");
+	//m_printf("unset hidden flag...\n");
 	button->flags &= (~M_BUTTON_FLAG_HIDDEN);
 	
 	if (button->obj)
 	{
-		//printf("unset hidden lv flag\n");
+		//m_printf("unset hidden lv flag\n");
 		lv_obj_clear_flag(button->obj, LV_OBJ_FLAG_HIDDEN);
-		//printf("restore opacity %d\n", button->opacity);
+		//m_printf("restore opacity %d\n", button->opacity);
 		lv_obj_set_style_opa(button->obj, button->opacity, 0);
 	}
 	
@@ -355,29 +355,29 @@ int m_button_set_unclickable(m_button *button)
 
 int m_button_set_opacity(m_button *button, int opacity)
 {
-	//printf("m_button_set_opacity. button = %p, opacity = %d\n", button, opacity);
+	//m_printf("m_button_set_opacity. button = %p, opacity = %d\n", button, opacity);
 	if (!button)
 	{
-		//printf("bailing\n");
+		//m_printf("bailing\n");
 		return ERR_NULL_PTR;
 	}
 	
-	//printf("store new opacity...\n");
+	//m_printf("store new opacity...\n");
 	button->opacity = opacity;
 	
 	if (button->flags & M_BUTTON_FLAG_HIDDEN)
 	{
-		//printf("Button is hidden. Exit\n");
+		//m_printf("Button is hidden. Exit\n");
 		return NO_ERROR;
 	}
 	
 	if (button->obj)
 	{
-		//printf("button has UI and it is not hidden. apply to lv_obj...\n");
+		//m_printf("button has UI and it is not hidden. apply to lv_obj...\n");
 		lv_obj_set_style_opa(button->obj, button->opacity, 0);
 	}
 	
-	//printf("m_button_set_opacity done\n");
+	//m_printf("m_button_set_opacity done\n");
 	return NO_ERROR;
 }
 
@@ -396,7 +396,7 @@ int m_button_enable(m_button *button)
 
 int m_button_disable(m_button *button)
 {
-	//printf("m_button_disable\n");
+	//m_printf("m_button_disable\n");
 	
 	if (!button)
 		return ERR_NULL_PTR;
@@ -408,7 +408,7 @@ int m_button_disable(m_button *button)
 		lv_obj_add_state(button->obj, LV_STATE_DISABLED);
 	}
 	
-	//printf("m_button_disable done\n");
+	//m_printf("m_button_disable done\n");
 	return NO_ERROR;
 }
 
@@ -526,18 +526,18 @@ void m_danger_button_value_changed_cb(lv_event_t *e)
 
 void m_danger_button_activate_popup_cb(lv_event_t *e)
 {
-	//printf("m_danger_button_activate_popup_cb\n");
+	//m_printf("m_danger_button_activate_popup_cb\n");
 	m_danger_button *button = lv_event_get_user_data(e);
 	
 	if (!button)
 	{
-		//printf("button is NULL! returning...\n");
+		//m_printf("button is NULL! returning...\n");
 		return;
 	}
 	
 	if (!button->parent)
 	{
-		//printf("Button's parent is NULL! Returning\n");
+		//m_printf("Button's parent is NULL! Returning\n");
 		return;
 	}
 	
@@ -557,7 +557,7 @@ void m_danger_button_activate_popup_cb(lv_event_t *e)
 	
 	lv_obj_set_size(button->popup, DANGER_BUTTON_POPUP_WIDTH, DANGER_BUTTON_POPUP_HEIGHT);
 	
-	//printf("m_danger_button_activate_popup_cb done\n");
+	//m_printf("m_danger_button_activate_popup_cb done\n");
 }
 
 void m_active_button_scale_cb(void *data, int32_t value)
@@ -570,7 +570,7 @@ void m_active_button_scale_cb(void *data, int32_t value)
 	int32_t new_height = ((float)value / 1000.0) * button->button.height;
 	int32_t new_width  = ((float)value / 1000.0) * button->button.width;
 	
-	//printf("m_active_button_scale_cb. new_height = %d. new_width = %d\n", new_height, new_width);
+	//m_printf("m_active_button_scale_cb. new_height = %d. new_width = %d\n", new_height, new_width);
 	
 	lv_obj_set_height(button->button.obj, new_height);
 	lv_obj_set_width (button->button.obj, new_width);
@@ -594,7 +594,7 @@ void m_active_button_glide_cb(void *data, int32_t value)
 
 void m_active_button_del_button_fade_cb(void *data, int32_t value)
 {
-	//printf("m_active_button_del_button_fade_cb. data = %p\n", data);
+	//m_printf("m_active_button_del_button_fade_cb. data = %p\n", data);
 	if (!data)
 		return;
 	
@@ -603,10 +603,10 @@ void m_active_button_del_button_fade_cb(void *data, int32_t value)
 	if (!button->del_button)
 		return;
 	
-	//printf("button->del_button->obj = %p\n", button->del_button->obj);
+	//m_printf("button->del_button->obj = %p\n", button->del_button->obj);
 	
 	m_button_set_opacity(button->del_button, value);
-	//printf("m_active_button_del_button_fade_cb done\n");
+	//m_printf("m_active_button_del_button_fade_cb done\n");
 }
 
 void m_active_button_del_button_faded_out_cb(lv_anim_t *anim)
@@ -674,7 +674,7 @@ void m_active_button_trigger_del_button_fade_in(m_active_button *button)
 	
 	if (!button->del_button)
 	{
-		//printf("no del button...\n");
+		//m_printf("no del button...\n");
 		return;
 	}
 	
@@ -774,14 +774,14 @@ void m_active_button_del_button_remain_timer_cb(lv_timer_t *timer)
 
 void m_active_button_clicked_cb(lv_event_t *e)
 {
-	//printf("m_active_button_clicked_cb\n");
+	m_printf("m_active_button_clicked_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
-	//printf("button->long_pressed = %d\n", button->long_pressed);
+	m_printf("button->long_pressed = %d\n", button->long_pressed);
 	
 	if (!button)
 	{
-		printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -797,19 +797,19 @@ void m_active_button_clicked_cb(lv_event_t *e)
 
 void m_active_button_long_pressed_cb(lv_event_t *e)
 {
-	//printf("m_active_button_long_pressed_cb\n");
+	//m_printf("m_active_button_long_pressed_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
 	if (!button)
 	{
-		printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
 	button->long_pressed = 1;
 	
 	
-	//printf("long press detected... button->index = %d, button->prev_index = %d\n", button->index, button->prev_index);
+	//m_printf("long press detected... button->index = %d, button->prev_index = %d\n", button->index, button->prev_index);
 	
 	if (button->array)
 	{
@@ -851,7 +851,7 @@ void m_active_button_long_pressed_cb(lv_event_t *e)
 	}
 	
 	
-	//printf("m_active_button_long_pressed_cb done\n");
+	//m_printf("m_active_button_long_pressed_cb done\n");
 }
 
 void m_active_button_pressing_cb(lv_event_t *e)
@@ -860,7 +860,7 @@ void m_active_button_pressing_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 
@@ -922,18 +922,18 @@ void m_active_button_pressing_cb(lv_event_t *e)
 		m_active_button_set_index(button, new_index);
 	}
 	
-	//printf("new index: %d. The current array:\n", new_index);
+	//m_printf("new index: %d. The current array:\n", new_index);
 	
 	for (int i = 0; i < button->array->n_buttons; i++)
 	{
-		//printf("\t buttons[%d] = %p%s\n", i, button->array->buttons[i], (button->array->buttons[i] == button) ? " (this)" : "");
+		//m_printf("\t buttons[%d] = %p%s\n", i, button->array->buttons[i], (button->array->buttons[i] == button) ? " (this)" : "");
 	}
 }
 
 
 void m_active_button_release_cb(lv_event_t *e)
 {
-	//printf("m_active_button_release_cb\n");
+	m_printf("m_active_button_release_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
 	if (!button)
@@ -942,7 +942,10 @@ void m_active_button_release_cb(lv_event_t *e)
 	}
 	
 	if (!button->array)
+	{
+		m_printf("button has no array :(\n");
 		return;
+	}
 	
 	if (button->long_pressed)
 	{
@@ -976,7 +979,7 @@ void m_active_button_release_cb(lv_event_t *e)
 
 void m_active_button_del_cb(lv_event_t *e)
 {
-	//printf("m_active_button_del_cb\n");
+	m_printf("m_active_button_del_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
 	m_active_button_trigger_delete_anim(button);
@@ -1017,13 +1020,13 @@ int m_active_button_init(m_active_button *button)
 
 int m_active_button_add_del_button(m_active_button *button)
 {
-	//printf("m_active_button_add_del_button, button = %p\n", button);
+	//m_printf("m_active_button_add_del_button, button = %p\n", button);
 	if (!button)
 		return ERR_NULL_PTR;
 	
 	if (button->del_button)
 	{
-		printf("WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
+		m_printf("WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
 		return ERR_BAD_ARGS;
 	}
 	
@@ -1043,7 +1046,7 @@ int m_active_button_add_del_button(m_active_button *button)
 	
 	button_set_clicked_cb(button->del_button, m_active_button_del_cb, button);
 	
-	//printf("m_active_button_add_del_button done\n");
+	//m_printf("m_active_button_add_del_button done\n");
 	return NO_ERROR;
 }
 
@@ -1176,45 +1179,45 @@ int m_active_button_swap_del_button_for_persistent_unclickable(m_active_button *
 
 int m_active_button_reset_del_button(m_active_button *button)
 {
-	//printf("m_active_button_reset_del_button. button = %p\n", button);
+	//m_printf("m_active_button_reset_del_button. button = %p\n", button);
 	if (!button)
 		return ERR_NULL_PTR;
 	
 	if (!button->del_button)
 	{
-		//printf("del button doesn't exist. bailing\n");
+		//m_printf("del button doesn't exist. bailing\n");
 		return ERR_BAD_ARGS;
 	}
 	
 	if (!button->del_button->obj)
 	{
-		//printf("del button lv_obj not created. not my job. bailing\n");
+		//m_printf("del button lv_obj not created. not my job. bailing\n");
 		return ERR_BAD_ARGS;
 	}
 	
-	//printf("make it hidden...\n");
+	//m_printf("make it hidden...\n");
 	m_button_hide(button->del_button);
 	
 	if (!button->del_button->label)
 	{
-		//printf("del button label doesn't exist. creating...\n");
+		//m_printf("del button label doesn't exist. creating...\n");
 		m_button_create_label_ui(button->del_button);
 	}
 	
-	//printf("delete buttons's animations...\n");
+	//m_printf("delete buttons's animations...\n");
 	lv_anim_del(button, m_active_button_del_button_fade_cb);
 	
-	//printf("reset button's state...\n");
+	//m_printf("reset button's state...\n");
 	m_button_reset_state(button->del_button);
-	//printf("set label to %s\n", LV_SYMBOL_TRASH);
+	//m_printf("set label to %s\n", LV_SYMBOL_TRASH);
 	m_button_set_label(button->del_button, LV_SYMBOL_TRASH);
-	//printf("make it clickable\n");
+	//m_printf("make it clickable\n");
 	m_button_set_clickable(button->del_button);
 	
-	//printf("activate animations...\n");
+	//m_printf("activate animations...\n");
 	button->del_button_anims = 1;
 	
-	//printf("m_active_button_reset_del_button done\n");
+	//m_printf("m_active_button_reset_del_button done\n");
 	return NO_ERROR;
 }
 
@@ -1270,7 +1273,7 @@ int m_active_button_array_set_length(m_active_button_array *array, int n)
 
 m_active_button_array *m_active_button_array_new()
 {
-	m_active_button_array *array = malloc(sizeof(m_active_button_array));
+	m_active_button_array *array = m_alloc(sizeof(m_active_button_array));
 	
 	if (!array)
 		return NULL;
@@ -1282,9 +1285,10 @@ m_active_button_array *m_active_button_array_new()
 
 m_active_button *m_active_button_array_append_new(m_active_button_array *array, void *data, char *label)
 {
+	m_printf("m_active_button_array_append_new\n");
 	if (!array)
 	{
-		//printf("Returning NULL cause array = %p\n", array);
+		//m_printf("Returning NULL cause array = %p\n", array);
 		return NULL;
 	}
 	
@@ -1292,7 +1296,7 @@ m_active_button *m_active_button_array_append_new(m_active_button_array *array, 
 	
 	if (!button)
 	{
-		//printf("returning NULL cause button = %p\n", button);
+		//m_printf("returning NULL cause button = %p\n", button);
 		return NULL;
 	}
 	
@@ -1306,7 +1310,7 @@ m_active_button *m_active_button_array_append_new(m_active_button_array *array, 
 	if ((ret_val = m_active_button_array_append(button, array)) != NO_ERROR)
 	{
 		m_free(button);
-		//printf("Failed to add button to array: %s\n", m_error_code_to_string(ret_val));
+		//m_printf("Failed to add button to array: %s\n", m_error_code_to_string(ret_val));
 		return NULL;
 	}
 	
@@ -1315,7 +1319,8 @@ m_active_button *m_active_button_array_append_new(m_active_button_array *array, 
 		m_active_button_add_del_button(button);
 	}
 	
-	//printf("returning %p\n", button);
+	//m_printf("returning %p\n", button);
+	m_printf("m_active_button_array_append_new done\n");
 	return button;
 }
 

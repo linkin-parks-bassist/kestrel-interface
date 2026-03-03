@@ -52,7 +52,7 @@ int m_resources_assign_handles(m_dsp_resource_pll *list)
 			switch (current->data->type)
 			{
 				case M_DSP_RESOURCE_DELAY:
-					printf("Assigning \"%s\" handle %d...\n", current->data->name, next_delay_handle);
+					m_printf("Assigning \"%s\" handle %d...\n", current->data->name, next_delay_handle);
 					current->data->handle = next_delay_handle;
 					next_delay_handle += 1;
 					break;

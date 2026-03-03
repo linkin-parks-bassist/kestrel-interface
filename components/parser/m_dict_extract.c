@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+static const char *FNAME = "m_dict_extract.c";
+
 m_parameter *m_extract_parameter_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_dictionary *dict)
 {
 	if (!dict)
@@ -25,7 +27,7 @@ m_parameter *m_extract_parameter_from_dict(m_eff_parsing_state *ps, m_ast_node *
 	if ((ret_val = m_dictionary_lookup_str(dict, "name", (void*)&str)) == NO_ERROR)
 	{
 		param->name = m_strndup(str, 128);
-		printf("Obtained parameter name; \"%s\"\n", param->name);
+		m_printf("Obtained parameter name; \"%s\"\n", param->name);
 	}
 	else
 	{
@@ -142,16 +144,16 @@ m_parameter *m_extract_parameter_from_dict(m_eff_parsing_state *ps, m_ast_node *
 		param->group = (int)(roundf(m_expression_evaluate(expr, NULL)));
 	}
 	
-	printf("Extracted a parameter;\n");
-	printf("\tname: \"%s\"\n", param->name);
-	printf("\tname_internal: \"%s\"\n", param->name_internal);
-	printf("\tvalue: %f\n", param->value);
-	printf("\tmin_expr: %s\n", m_expression_to_string(param->min_expr));
-	printf("\tmax_expr: %s\n",  m_expression_to_string(param->max_expr));
-	printf("\tscale: %d\n", param->scale);
-	printf("\tmax_velocity: %f\n", param->max_velocity);
-	printf("\twidget_type: %d\n", param->widget_type);
-	printf("\tgroup: %d\n", param->group);
+	m_printf("Extracted a parameter;\n");
+	m_printf("\tname: \"%s\"\n", param->name);
+	m_printf("\tname_internal: \"%s\"\n", param->name_internal);
+	m_printf("\tvalue: %f\n", param->value);
+	m_printf("\tmin_expr: %s\n", m_expression_to_string(param->min_expr));
+	m_printf("\tmax_expr: %s\n",  m_expression_to_string(param->max_expr));
+	m_printf("\tscale: %d\n", param->scale);
+	m_printf("\tmax_velocity: %f\n", param->max_velocity);
+	m_printf("\twidget_type: %d\n", param->widget_type);
+	m_printf("\tgroup: %d\n", param->group);
 	
 	return param;
 	
@@ -291,7 +293,7 @@ m_setting *m_extract_setting_from_dict(m_eff_parsing_state *ps, m_ast_node *dict
 	if ((ret_val = m_dictionary_lookup_str(dict, "name", (void*)&str)) == NO_ERROR)
 	{
 		setting->name = m_strndup(str, 128);
-		printf("Obtained setting name; \"%s\"\n", setting->name);
+		m_printf("Obtained setting name; \"%s\"\n", setting->name);
 	}
 	else
 	{
@@ -302,7 +304,7 @@ m_setting *m_extract_setting_from_dict(m_eff_parsing_state *ps, m_ast_node *dict
 	setting->type = TRANSFORMER_SETTING_ENUM;
 	if ((ret_val = m_dictionary_lookup_str(dict, "type", (void*)&str)) == NO_ERROR)
 	{
-		printf("Obtained setting type; \"%s\"\n", str);
+		m_printf("Obtained setting type; \"%s\"\n", str);
 		
 		if (strcmp(str, "enum") == 0)
 		{
@@ -358,7 +360,7 @@ m_setting *m_extract_setting_from_dict(m_eff_parsing_state *ps, m_ast_node *dict
 	
 	if ((ret_val = m_dictionary_lookup_str(dict, "page", (void*)&str)) == NO_ERROR)
 	{
-		printf("Obtained setting page; \"%s\"\n", str);
+		m_printf("Obtained setting page; \"%s\"\n", str);
 		
 		if (strcmp(str, "main") == 0)
 			setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
@@ -379,10 +381,10 @@ m_setting *m_extract_setting_from_dict(m_eff_parsing_state *ps, m_ast_node *dict
 		setting->group = (int)(roundf(m_expression_evaluate(expr, NULL)));
 	}
 	
-	printf("Extracted a setting;\n");
-	printf("\tname: \"%s\"\n", setting->name);
-	printf("\tname_internal: \"%s\"\n", setting->name_internal);
-	printf("\tpage: %s\n", (setting->page == TRANSFORMER_SETTING_PAGE_MAIN) ? "main" : "settings");
+	m_printf("Extracted a setting;\n");
+	m_printf("\tname: \"%s\"\n", setting->name);
+	m_printf("\tname_internal: \"%s\"\n", setting->name_internal);
+	m_printf("\tpage: %s\n", (setting->page == TRANSFORMER_SETTING_PAGE_MAIN) ? "main" : "settings");
 	
 	return setting;
 	
@@ -429,7 +431,7 @@ int m_extract_delay_buffer_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_n
 		return ERR_BAD_ARGS;
 	}
 
-	printf("Found delay \"%s\", size %p, delay %p\n", res->name, res->size, res->delay);
+	m_printf("Found delay \"%s\", size %p, delay %p\n", res->name, res->size, res->delay);
 	
 	return NO_ERROR;
 }

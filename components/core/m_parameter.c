@@ -6,6 +6,8 @@
 IMPLEMENT_LINKED_PTR_LIST(m_parameter);
 IMPLEMENT_LINKED_PTR_LIST(m_setting);
 
+static const char *FNAME = "m_parameter.c";
+
 int init_parameter_str(m_parameter *param)
 {
 	if (!param)
@@ -28,16 +30,21 @@ int init_parameter_str(m_parameter *param)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
+	param->trans_rep.representer = NULL;
+	param->trans_rep.representee = param;
+	param->trans_rep.update = m_parameter_transformer_rep_update;
+	m_representation_pll_safe_append(&param->reps, &param->trans_rep);
 	#endif
+	
 	return NO_ERROR;
 }
 
 int init_parameter(m_parameter *param, const char *name, float level, float min, float max)
 {
-	if (!param)
-		return ERR_NULL_PTR;
+	if (!param) return ERR_NULL_PTR;
 	
 	param->name = name;
+	param->name_internal = NULL;
 	param->units = NULL;
 	param->value = level;
 	param->min = min;
@@ -51,6 +58,10 @@ int init_parameter(m_parameter *param, const char *name, float level, float min,
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
+	param->trans_rep.representer = NULL;
+	param->trans_rep.representee = param;
+	param->trans_rep.update = m_parameter_transformer_rep_update;
+	m_representation_pll_safe_append(&param->reps, &param->trans_rep);
 	#endif
 	return NO_ERROR;
 }
@@ -84,6 +95,7 @@ int init_setting_str(m_setting *setting)
 	setting->type = TRANSFORMER_SETTING_INT;
 	
 	setting->name = NULL;
+	setting->name_internal = NULL;
 	setting->value = 0;
 	
 	setting->n_options = 0;
@@ -95,6 +107,10 @@ int init_setting_str(m_setting *setting)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	setting->reps = NULL;
+	setting->trans_rep.representer = NULL;
+	setting->trans_rep.representee = setting;
+	setting->trans_rep.update = m_setting_transformer_rep_update;
+	m_representation_pll_safe_append(&setting->reps, &setting->trans_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -117,6 +133,10 @@ int init_setting(m_setting *setting, const char *name, uint16_t level)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	setting->reps = NULL;
+	setting->trans_rep.representer = NULL;
+	setting->trans_rep.representee = setting;
+	setting->trans_rep.update = m_setting_transformer_rep_update;
+	m_representation_pll_safe_append(&setting->reps, &setting->trans_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -124,7 +144,23 @@ int init_setting(m_setting *setting, const char *name, uint16_t level)
 
 void gut_parameter(m_parameter *param)
 {
+	if (!param)
+		return;
 	
+	
+	
+	return;
+}
+
+void m_parameter_free(m_parameter *param)
+{
+	if (!param)
+		return;
+	
+	gut_parameter(param);
+	m_free(param);
+	
+	return;
 }
 
 int parameter_set_id(m_parameter *param, uint16_t pid, uint16_t tid, uint16_t ppid)
@@ -143,6 +179,8 @@ void clone_parameter(m_parameter *dest, m_parameter *src)
 {
 	if (!dest || !src)
 		return;
+	
+	init_parameter_str(dest);
 	
 	dest->value = src->value;
 	dest->min = src->min;
@@ -165,9 +203,7 @@ void clone_parameter(m_parameter *dest, m_parameter *src)
 	
 	dest->id.parameter_id = src->id.parameter_id;
 	
-	#ifdef M_ENABLE_REPRESENTATIONS
-	dest->reps = NULL;
-	#endif
+	return;
 }
 
 m_parameter *m_parameter_make_clone(m_parameter *src)
@@ -185,10 +221,29 @@ m_parameter *m_parameter_make_clone(m_parameter *src)
 	return param;
 }
 
+m_parameter *m_parameter_make_clone_for_transformer(m_parameter *src, m_transformer *trans)
+{
+	if (!src)
+		return NULL;
+	
+	m_parameter *param = m_alloc(sizeof(m_parameter));
+	
+	if (!param)
+		return NULL;
+	
+	clone_parameter(param, src);
+	
+	param->trans_rep.representer = (void*)trans;
+	
+	return param;
+}
+
 int clone_setting(m_setting *dest, m_setting *src)
 {
 	if (!dest || !src)
 		return ERR_NULL_PTR;
+	
+	init_setting_str(dest);
 	
 	dest->id = src->id;
 	
@@ -249,21 +304,52 @@ m_setting *m_setting_make_clone(m_setting *src)
 	return setting;
 }
 
+m_setting *m_setting_make_clone_for_transformer(m_setting *src, m_transformer *trans)
+{
+	if (!src)
+		return NULL;
+	
+	m_setting *setting = m_alloc(sizeof(m_setting));
+	
+	if (!setting)
+		return NULL;
+	
+	clone_setting(setting, src);
+	
+	setting->trans_rep.representer = (void*)trans;
+	
+	return setting;
+}
+
 void gut_setting(m_setting *setting)
 {
 	if (!setting)
 		return;
 	
-	if (!setting->n_options || !setting->options)
+	if (setting->options)
+	{
+		m_free(setting->options);
+	}
+	
+	return;
+}
+
+
+void m_setting_free(m_setting *setting)
+{
+	if (!setting)
 		return;
 	
-	m_free(setting->options);
+	gut_setting(setting);
+	m_free(setting);
+	
+	return;
 }
 
 int m_parameters_assign_ids(m_parameter_pll *list)
 {
 	int next_parameter_id = 0;
-	printf("m_parameters_assign_ids\n");
+	m_printf("m_parameters_assign_ids\n");
 	
 	m_parameter_pll *current = list;
 	
@@ -271,21 +357,21 @@ int m_parameters_assign_ids(m_parameter_pll *list)
 	{
 		if (current->data)
 		{
-			printf("Assigning ID %d...\n",
+			m_printf("Assigning ID %d...\n",
 				next_parameter_id);
 			current->data->id.parameter_id = next_parameter_id++;
 		}
 		current = current->next;
 	}
 	
-	printf("m_parameters_assign_ids done\n");
+	m_printf("m_parameters_assign_ids done\n");
 	return NO_ERROR;
 }
 
 int m_settings_assign_ids(m_setting_pll *list)
 {
 	int next_setting_id = 0;
-	printf("m_settings_assign_ids\n");
+	m_printf("m_settings_assign_ids\n");
 	
 	m_setting_pll *current = list;
 	
@@ -293,14 +379,14 @@ int m_settings_assign_ids(m_setting_pll *list)
 	{
 		if (current->data)
 		{
-			printf("Assigning ID %d...\n",
+			m_printf("Assigning ID %d...\n",
 				next_setting_id);
 			current->data->id.setting_id = next_setting_id++;
 		}
 		current = current->next;
 	}
 	
-	printf("m_settings_assign_ids done\n");
+	m_printf("m_settings_assign_ids done\n");
 	return NO_ERROR;
 }
 
@@ -315,7 +401,7 @@ m_interval m_parameter_get_range(m_parameter *param)
 	
 	if (trans && !trans->scope)
 	{
-		printf("transformer is not in posession of a scope... strange. generate it\n");
+		m_printf("transformer is not in posession of a scope... strange. generate it\n");
 		trans->scope = m_transformer_create_scope(trans);
 	}
 	
@@ -369,3 +455,51 @@ m_interval m_parameter_get_range(m_parameter *param)
 	return i;
 }
 #endif
+
+void m_parameter_transformer_rep_update(void *representer, void *representee)
+{
+	m_transformer *trans = (m_transformer*)representer;
+	m_parameter *param = (m_parameter*)representee;
+	
+	m_printf("m_parameter_transformer_rep_update(trans = %p, param = %p)\n", trans, param);
+	if (!trans || !param)
+		return;
+	
+	
+	m_printf("trans rep list looks like\n");
+	
+	int k = 0;
+	m_representation_pll *current = trans->reps;
+	
+	if (!current)
+	{
+		m_printf("Nothing!\n");
+	}
+	else
+	{
+		while (current)
+		{
+			m_printf("Rep %d: {.representer = %p, representee = %p, update = %p},\n", k, current->data->representer, current->data->representee,
+				current->data->update);
+			current = current->next;
+			k++;
+		}
+	}
+	
+	m_transformer_update_reps(trans);
+	
+	return;
+}
+
+void m_setting_transformer_rep_update(void *representer, void *representee)
+{
+	m_transformer *trans = (m_transformer*)representer;
+	m_setting *setting = (m_setting*)representee;
+	
+	if (!trans || !setting)
+		return;
+	
+	m_transformer_update_reps(trans);
+	
+	return;
+}

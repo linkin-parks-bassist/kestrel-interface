@@ -72,14 +72,19 @@ m_ui_page_panel *new_panel();
 #define CONTAINER_TYPE_STD_BTN_LIST 		1
 #define CONTAINER_TYPE_STD_MENU				2
 
-#define M_UI_PAGE_GENERIC			0
-#define M_UI_PAGE_MAIN_MENU			1
-#define M_UI_PAGE_PROFILE_SETTINGS	2
-#define M_UI_PAGE_SEQ_VIEW			3
+#define M_UI_PAGE_GENERIC	 0
+#define M_UI_PAGE_MAIN_MENU  1
+#define M_UI_PAGE_SEQ_LIST 	 2
+#define M_UI_PAGE_MSV		 3
+#define M_UI_PAGE_SEQ_VIEW	 4
+#define M_UI_PAGE_PROF_VIEW	 5
+#define M_UI_PAGE_TRANS_VIEW 6
+#define M_UI_PAGE_TRANS_SET	 7
 
 typedef struct m_ui_page
 {
 	int type;
+	int id;
 	
 	lv_obj_t *screen;
 	
@@ -192,7 +197,6 @@ typedef struct
 	lv_obj_t *backstage;
 	
 	m_ui_page main_menu;
-	//m_ui_page profile_list;
 	m_ui_page sequence_list;
 	m_ui_page main_sequence_view;
 	

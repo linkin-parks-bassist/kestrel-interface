@@ -40,7 +40,7 @@ void footswitch_task(void *arg)
         {
             TickType_t now = xTaskGetTickCount();
 
-			printf("now = %d, last_event_tick[n] = %d; now - last_event_tick[n] = %d, debounce_ticks = %d\n", now, last_event_tick[n],
+			m_printf("now = %d, last_event_tick[n] = %d; now - last_event_tick[n] = %d, debounce_ticks = %d\n", now, last_event_tick[n],
 				now - last_event_tick[n], debounce_ticks);
             if ((now - last_event_tick[n]) >= debounce_ticks)
             {
