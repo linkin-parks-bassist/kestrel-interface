@@ -6,10 +6,7 @@
 
 ## Overview
 
-
 M-interface is the control system and compiler for M: The Everything Pedal. It uses FreeRTOS and LVGL to provide a graphical user interface for M (The Everything Pedal). It allows users to create, edit, manage, apply and sequence presets using effects from a local library of effects stored in text files on the local SD card. 
-
----
 
 ## Features
 
@@ -21,8 +18,6 @@ M-interface is the control system and compiler for M: The Everything Pedal. It u
 - Symbolic math engine with range estimation for fixed-point format control
 - High performance, lightweight UI: framerates over 100fps at 720p on esp32-p4
 - Input transmitted to FPGA in milliseconds
-
----
 
 ## Components
 
@@ -101,8 +96,6 @@ Additionally, there are hooks for the UI framework in the .eff parser. For insta
 - Named expressions and custom function definition
 - More UI control; widget size, placement
 
----
-
 
 ## Getting Started
 
@@ -147,7 +140,6 @@ and to install the libM.so to /usr/lib/ and the headers to /usr/include/libM, ru
 as root. Then you can #include <libM/m_lib.h> and link with "-lM" (if using ld)
 
 
----
 
 ## Repository Structure
 
@@ -165,8 +157,6 @@ The repo is structured as an ESP-IDF project currently. Future plans include sup
 /desktop        Headers and 'main.c' for desktop demo
 ```
 
----
-
 ## Future Plans
 - Support for STM32h743
 - Better coverage for pre-allocation and memory pools
@@ -174,13 +164,10 @@ The repo is structured as an ESP-IDF project currently. Future plans include sup
 - Support for (not-yet-implemented) biquad and IIR filter modules on FPGA
 - Various optimisations
 
----
 
 ## Contact
 
 I'd love to hear from you! email: davidjfarrell96@gmail.com
-
----
 
 ## License
 
