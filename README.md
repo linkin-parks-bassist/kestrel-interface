@@ -1,10 +1,8 @@
-# M-interface
-
 <p align="center">
   <img src="docs/resources/image.png" alt="Demo Screenshots" width="100%">
 </p>
 
-## Overview
+# M-interface
 
 M-interface is the control system and compiler for M: The Everything Pedal. It uses FreeRTOS and LVGL to provide a graphical user interface for M (The Everything Pedal). It allows users to create, edit, manage, apply and sequence presets using effects from a local library of effects stored in text files on the local SD card. 
 
@@ -51,9 +49,17 @@ cutoff: (name: "Cutoff",
          scale = "logarithmic")
 Q: (name: "Resonance", default: 1 / sqrt(2), min: 0.1, max: 3)
 
+.DEFS
+
+omega: 2 * pi * cutoff / sample_rate
+alpha: sin(omega) / (2 * Q)
+
 .RESOURCES
 
-x1: (type: "mem"), x2: (type: "mem"), y1: (type: "mem"), y2: (type: "mem")
+x1: (type: "mem")
+x2: (type: "mem")
+y1: (type: "mem")
+y2: (type: "mem")
 
 .CODE
 
@@ -62,11 +68,11 @@ mem_read c2 $x2
 mem_read c3 $y1
 mem_read c4 $y2
 
-macz [((1 - cos((2 * pi * cutoff) / sample_rate)) / 2) / (1 + (sin((2 * pi * cutoff) / sample_rate) / (2 * Q)))] c0
-mac  [ (1 - cos((2 * pi * cutoff) / sample_rate))      / (1 + (sin((2 * pi * cutoff) / sample_rate) / (2 * Q)))] c1
-mac  [((1 - cos((2 * pi * cutoff) / sample_rate)) / 2) / (1 + (sin((2 * pi * cutoff) / sample_rate) / (2 * Q)))] c2
-mac  [ (2 * cos((2 * pi * cutoff) / sample_rate))      / (1 + (sin((2 * pi * cutoff) / sample_rate) / (2 * Q)))] c3
-mac  [((sin((2 * pi * cutoff) / sample_rate) / (2 * Q)) - 1) / (1 + (sin((2 * pi * cutoff) / sample_rate) / (2 * Q)))] c4
+macz [(1/2) * (1 - cos(omega)) / (1 + alpha)] c0
+mac  [        (1 - cos(omega)) / (1 + alpha)] c1
+mac  [(1/2) * (1 - cos(omega)) / (1 + alpha)] c2
+mac  [        (2 * cos(omega)) / (1 + alpha)] c3
+mac  [             (alpha - 1) / (1 + alpha)] c4
 
 mem_write $x2 c1
 mem_write $x1 c0
