@@ -23,7 +23,6 @@ app_cfiles := 	core/m_error_codes.c	\
 				core/m_resource.c		\
 				core/m_representation.c	\
 				core/m_printf.c			\
-				core/m_log.c			\
 				ui/m_button.c			\
 				ui/m_home_view.c		\
 				ui/m_menu.c				\
@@ -148,14 +147,20 @@ appclean_full:
 fullclean:
 	rm -r $(top_objdir)
 	
-M: $(ALL_APP_OBJ)
+M: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/core $(app_objdir)/desktop
 	gcc -o $@ $^ `sdl2-config --libs` -lm -lpthread
+
+all : M app
+	idf.py build
 
 $(app_objdir)/%.o: %.c $(app_hdrs) | $(app_objdir)
 	mkdir -p $(dir $@)
 	gcc $(CFLAGS_APP) `sdl2-config --cflags` -c $< -o $@
 
 $(app_objdir)/%.o : components/%.c | $(app_objdir)
+	gcc $(CFLAGS_APP) -c $< -o $@
+
+$(app_objdir)/desktop/%.o : desktop/%.c | $(app_objdir)/desktop
 	gcc $(CFLAGS_APP) -c $< -o $@
 
 $(app_objdir)/lvgl/%.o: $(LVGL_DIR)/src/%.c | $(app_objdir)
@@ -184,7 +189,14 @@ $(top_objdir):
 
 $(app_objdir): | $(top_objdir)
 	mkdir $(app_objdir)
-	mkdir $(app_objdir)/core
+	mkdir $(app_objdir)/components
+	mkdir $(app_objdir)/components/core
+	mkdir $(app_objdir)/components/parser
+	mkdir $(app_objdir)/components/fpga
+	mkdir $(app_objdir)/components/ui
+
+$(app_objdir)/desktop : | $(app_objdir)
+	mkdir $(app_objdir)/desktop
 
 $(lib_objdir):  | $(top_objdir)
 	mkdir $(lib_objdir)
