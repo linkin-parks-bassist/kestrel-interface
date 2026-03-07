@@ -1,7 +1,8 @@
-
 #include "m_int.h"
 
-static const char *TAG = "m_menu.c";
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_menu.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_menu_item);
 
@@ -140,7 +141,7 @@ int refresh_menu_item(m_menu_item *item)
 
 void parameter_widget_change_cb_settings_wrapper(lv_event_t *e)
 {
-	m_printf("parameter_widget_change_cb_settings_wrapper\n");
+	M_PRINTF("parameter_widget_change_cb_settings_wrapper\n");
 	m_menu_item *item = lv_event_get_user_data(e);
 	
 	if (!item)
@@ -227,7 +228,7 @@ m_menu_item *create_profile_listing_menu_item(char *text, m_profile *profile, m_
 
 int profile_listing_menu_item_refresh_active(m_menu_item *item)
 {
-	m_printf("profile_listing_menu_item_refresh_active\n");
+	M_PRINTF("profile_listing_menu_item_refresh_active\n");
 	if (!item)
 		return ERR_NULL_PTR;
 	
@@ -239,20 +240,20 @@ int profile_listing_menu_item_refresh_active(m_menu_item *item)
 	
 	if (item->data && ((m_profile*)item->data)->active)
 	{
-		m_printf("profile is active. going about it\n");
+		M_PRINTF("profile is active. going about it\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_PLAY);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	else
 	{
-		m_printf("profile is not active. hiding play\n");
+		M_PRINTF("profile is not active. hiding play\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_TRASH);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	
-	m_printf("profile_listing_menu_item_refresh_active done\n");
+	M_PRINTF("profile_listing_menu_item_refresh_active done\n");
 	return NO_ERROR;
 }
 
@@ -456,7 +457,7 @@ m_menu_item *create_page_link_menu_item(char *text, m_ui_page *linked_page, m_ui
 	if (!item)
 		return NULL;
 	
-	m_printf("create_page_link_menu_item. parent = %p\n", parent);
+	M_PRINTF("create_page_link_menu_item. parent = %p\n", parent);
 	
 	init_menu_item(item);
 	
@@ -577,7 +578,7 @@ int init_menu_page(m_ui_page *page)
 
 int configure_menu_page(m_ui_page *page, void *data)
 {
-	m_printf("configure_menu_page\n");
+	M_PRINTF("configure_menu_page\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -610,13 +611,13 @@ int configure_menu_page(m_ui_page *page, void *data)
 	
 	page->configured = (ret_val == NO_ERROR);
 	
-	m_printf("configure_menu_page done\n");
+	M_PRINTF("configure_menu_page done\n");
 	return ret_val;
 }
 
 int create_menu_page_ui(m_ui_page *page)
 {
-	m_printf("create_menu_page_ui\n");
+	M_PRINTF("create_menu_page_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -639,7 +640,7 @@ int create_menu_page_ui(m_ui_page *page)
 	int i = 0;
 	while (current)
 	{
-		m_printf("Create menu item %d ui\n", i);
+		M_PRINTF("Create menu item %d ui\n", i);
 		create_menu_item_ui(current->data, page->container);
 		current = current->next;
 		i++;
@@ -650,7 +651,7 @@ int create_menu_page_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	m_printf("create_menu_page_ui done\n");
+	M_PRINTF("create_menu_page_ui done\n");
 	return NO_ERROR;
 }
 
@@ -668,16 +669,16 @@ int enter_menu_page(m_ui_page *page)
 	{
 		m_menu_item_pll *current = str->items;
 		
-		m_printf("Menu page menu items:\n");
+		M_PRINTF("Menu page menu items:\n");
 		
 		while (current)
 		{
 			if (current->data)
 			{
-				m_printf("Type %d\n", current->data->type);
+				M_PRINTF("Type %d\n", current->data->type);
 				if (current->data->type == MENU_ITEM_PARAMETER_WIDGET)
 				{
-					m_printf("Requesting value for menu page parameter widget...\n");
+					M_PRINTF("Requesting value for menu page parameter widget...\n");
 					//param_widget_request_value(current->data->data);
 				}
 			}

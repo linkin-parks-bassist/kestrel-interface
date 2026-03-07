@@ -22,6 +22,7 @@
 #define BLOCK_INSTR_DELAY_WRITE 	18
 #define BLOCK_INSTR_MEM_READ 		19
 #define BLOCK_INSTR_MEM_WRITE		20
+#define BLOCK_INSTR_FILTER			21
 
 struct m_dsp_resource;
 

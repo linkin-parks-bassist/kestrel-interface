@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_transformer_select.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_transformer_selector_button);
@@ -11,7 +13,7 @@ void enter_transformer_selector_cb(lv_event_t *e)
 
 int init_transformer_selector_eff(m_ui_page *page)
 {
-	m_printf("init_transformer_selector_eff\n");
+	M_PRINTF("init_transformer_selector_eff\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -48,7 +50,7 @@ int init_transformer_selector_eff(m_ui_page *page)
 		i++;
 	}
 	
-	m_printf("Created %d buttons\n", i);
+	M_PRINTF("Created %d buttons\n", i);
 	
 	page->configured = 1;
 	
@@ -69,7 +71,7 @@ int configure_transformer_selector(m_ui_page *page, void *data)
 	if (!ts)
 		return ERR_BAD_ARGS;
 	
-	m_printf("success\n");
+	M_PRINTF("success\n");
 	return NO_ERROR;
 }
 
@@ -85,7 +87,7 @@ void add_transformer_from_menu_eff(lv_event_t *e)
 	// Should never happen
 	if (!button)
 	{
-		m_printf("User tried to add transformer from menu, but the pointer to the page struct is NULL!\n");
+		M_PRINTF("User tried to add transformer from menu, but the pointer to the page struct is NULL!\n");
 		return;
 	}
 	
@@ -96,11 +98,11 @@ void add_transformer_from_menu_eff(lv_event_t *e)
 	
 	m_effect_desc *eff = button->eff;
 	
-	m_printf("User wishes to add a \"%s\"\n", button->name);
+	M_PRINTF("User wishes to add a \"%s\"\n", button->name);
 	
 	if (!profile->view_page)
 	{
-		m_printf("Profile does not have a view page!\n");
+		M_PRINTF("Profile does not have a view page!\n");
 	}
 	else
 	{

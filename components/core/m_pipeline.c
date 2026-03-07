@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_pipeline.c";
 
 int init_m_pipeline(m_pipeline *pipeline)
@@ -60,14 +62,12 @@ m_transformer *m_pipeline_append_transformer_eff(m_pipeline *pipeline, m_effect_
 		current->next = node;
 	}
 	
-	m_printf("Created transformer with id %d. trans->view_page = %p\n", trans->id, trans->view_page);
-	
 	return trans;
 }
 
 int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id)
 {
-	m_printf("m_pipeline_remove_transformer\n");
+	M_PRINTF("m_pipeline_remove_transformer\n");
 	if (!pipeline)
 		return ERR_NULL_PTR;
 	
@@ -88,7 +88,7 @@ int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id)
 			
 			m_free(current);
 			
-			m_printf("m_pipeline_remove_transformer found and vanquished the transformer\n");
+			M_PRINTF("m_pipeline_remove_transformer found and vanquished the transformer\n");
 			return NO_ERROR;
 		}
 		
@@ -97,7 +97,7 @@ int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id)
 	}
 	
 	
-	m_printf("m_pipeline_remove_transformer finished without finding the transformer\n");
+	M_PRINTF("m_pipeline_remove_transformer finished without finding the transformer\n");
 	return ERR_INVALID_TRANSFORMER_ID;
 }
 
@@ -177,7 +177,7 @@ int clone_pipeline(m_pipeline *dest, m_pipeline *src)
 	if (!src || !dest)
 		return ERR_NULL_PTR;
 	
-	m_printf("Cloning pipeline...\n");
+	M_PRINTF("Cloning pipeline...\n");
 	
 	m_transformer_pll *current = src->transformers;
 	m_transformer_pll *nl;
@@ -186,7 +186,7 @@ int clone_pipeline(m_pipeline *dest, m_pipeline *src)
 	int i = 0;
 	while (current)
 	{
-		m_printf("Cloning transformer %d... current = %p, current->next = %p\n", i, current, current->next);
+		M_PRINTF("Cloning transformer %d... current = %p, current->next = %p\n", i, current, current->next);
 		if (current->data)
 		{
 			trans = m_alloc(sizeof(m_transformer));
@@ -220,7 +220,7 @@ void gut_pipeline(m_pipeline *pipeline)
 
 int m_pipeline_create_fpga_transfer_batch(m_pipeline *pipeline, m_fpga_transfer_batch *batch)
 {
-	m_printf("m_pipeline_create_fpga_transfer_batch(pipeline = %p, batch = %p)\n", pipeline, batch);
+	M_PRINTF("m_pipeline_create_fpga_transfer_batch(pipeline = %p, batch = %p)\n", pipeline, batch);
 	if (!batch)
 		return ERR_NULL_PTR;
 	
@@ -252,7 +252,7 @@ int m_pipeline_create_fpga_transfer_batch(m_pipeline *pipeline, m_fpga_transfer_
 	
 	*batch = result;
 	
-	m_printf("m_pipeline_create_fpga_transfer_batch done (%s)\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_pipeline_create_fpga_transfer_batch done (%s)\n", m_error_code_to_string(ret_val));
 	return ret_val;
 	
 return_nothing:
@@ -261,7 +261,7 @@ return_nothing:
 	batch->len = 0;
 	batch->buffer_owned = 1;
 	
-	m_printf("m_pipeline_create_fpga_transfer_batch failed (%s)\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_pipeline_create_fpga_transfer_batch failed (%s)\n", m_error_code_to_string(ret_val));
 	return ret_val;
 }
 
@@ -271,34 +271,34 @@ m_transformer *m_pipeline_get_transformer_by_id(m_pipeline *pipeline, int id)
 	if (!pipeline)
 		return NULL;
 	
-	m_printf("searching pipelime %p for a transformer with ID %d.\n", pipeline, id);
+	M_PRINTF("searching pipelime %p for a transformer with ID %d.\n", pipeline, id);
 	
 	m_transformer_pll *current = pipeline->transformers;
 	int i = 0;
-	m_printf("Beginning on the list%s\n", (!current) ? "..... which is empty! :0\n" : "");
+	M_PRINTF("Beginning on the list%s\n", (!current) ? "..... which is empty! :0\n" : "");
 	
 	while (current)
 	{
-		m_printf("Transformer %d", i);
+		M_PRINTF("Transformer %d", i);
 		
 		if (current->data)
 		{
-			m_printf(" had ID %d\n", current->data->id);
+			M_PRINTF(" had ID %d\n", current->data->id);
 		}
 		else
 		{
-			m_printf("... doesn't exist!!!!! :(\n");
+			M_PRINTF("... doesn't exist!!!!! :(\n");
 		}
 		if (current->data && current->data->id == id)
 		{
-			m_printf("This is the desired transformer! Great. Return it\n");
+			M_PRINTF("This is the desired transformer! Great. Return it\n");
 			return current->data;
 		}
 		current = current->next;
 		i++;
 	}
 	
-	m_printf("The desired transformer was not found :(\n");
+	M_PRINTF("The desired transformer was not found :(\n");
 	
 	return NULL;
 }

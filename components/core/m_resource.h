@@ -2,8 +2,10 @@
 #define M_RESOURCES_H_
 
 #define M_DSP_RESOURCE_NOTHING	0
-#define M_DSP_RESOURCE_DELAY	1
+#define M_DSP_RESOURCE_LUT		1
 #define M_DSP_RESOURCE_MEM		2
+#define M_DSP_RESOURCE_DELAY	3
+#define M_DSP_RESOURCE_FILTER	4
 
 struct m_expression;
 
@@ -33,5 +35,8 @@ typedef struct
 } m_eff_resource_report;
 
 m_eff_resource_report empty_m_eff_resource_report();
+
+extern m_dsp_resource sin_lut;
+extern m_dsp_resource tanh_lut;
 
 #endif

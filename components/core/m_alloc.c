@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_alloc.c";
 
 static size_t total_current, total_peak;
@@ -166,10 +168,10 @@ void m_mem_monitor_task(void *param)
 
 void m_mem_init()
 {
-	m_printf("m_mem_init()");
+	M_PRINTF("m_mem_init()");
 	#ifdef PRINT_MEMORY_USAGE
 	#ifdef M_USE_FREERTOS
-	m_printf("Spinning off memory printer task...\n");
+	M_PRINTF("Spinning off memory printer task...\n");
 	xTaskCreate(
 		m_mem_monitor_task,
 		"memory_log",
@@ -220,5 +222,5 @@ void m_lv_free(void *ptr)
 
 void print_memory_report()
 {
-    m_printf("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
+    M_PRINTF("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
 }

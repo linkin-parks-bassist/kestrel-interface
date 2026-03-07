@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_transformer_table.c";
 
 const int N_TRANSFORMER_TYPES = 15;

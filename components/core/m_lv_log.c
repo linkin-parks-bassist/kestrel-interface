@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_lv_log.c";
+
 #ifdef M_USE_FREERTOS
 #ifdef M_ENABLE_LV_LOGGING
 SemaphoreHandle_t m_lv_log_mutex;
@@ -41,7 +45,7 @@ void m_lv_log_flush()
 	
 	if (xSemaphoreTake(m_lv_log_mutex, pdMS_TO_TICKS(0)) != pdTRUE)
 	{
-		m_printf("Failed to obtain log mutex");
+		M_PRINTF("Failed to obtain log mutex");
 		return;
 	}
 	
@@ -88,7 +92,7 @@ void m_lv_log_cb(lv_log_level_t level, const char *buf)
 	//m_printf("m_lv_log_cb. buf = %p", buf);
 	
 	//if (buf)
-	//	m_printf(" = %s", buf ? buf : "(NULL)");
+	//	M_PRINTF(" = %s", buf ? buf : "(NULL)");
 	
 	//m_printf("\n");
 	if (waiting_buf)

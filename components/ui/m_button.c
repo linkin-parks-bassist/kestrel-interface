@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 IMPLEMENT_LINKED_PTR_LIST(m_active_button);
 
 static const char *FNAME = "m_active_button.c";
@@ -68,7 +70,7 @@ int create_button_ui(m_button *button, lv_obj_t *parent)
 	
 	if (button->obj)
 	{
-		m_printf("WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
+		M_PRINTF("WARNING: attempt to call create_button_ui on a button for which button->obj is not NULL. button->obj = %p", button->obj);
 		return ERR_BAD_ARGS;
 	}
 	
@@ -774,14 +776,14 @@ void m_active_button_del_button_remain_timer_cb(lv_timer_t *timer)
 
 void m_active_button_clicked_cb(lv_event_t *e)
 {
-	m_printf("m_active_button_clicked_cb\n");
+	M_PRINTF("m_active_button_clicked_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
-	m_printf("button->long_pressed = %d\n", button->long_pressed);
+	M_PRINTF("button->long_pressed = %d\n", button->long_pressed);
 	
 	if (!button)
 	{
-		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		M_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -802,7 +804,7 @@ void m_active_button_long_pressed_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		M_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -860,7 +862,7 @@ void m_active_button_pressing_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		m_printf("Transformer widget long press callback triggered but pointer to struct not passed");
+		M_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 
@@ -933,7 +935,7 @@ void m_active_button_pressing_cb(lv_event_t *e)
 
 void m_active_button_release_cb(lv_event_t *e)
 {
-	m_printf("m_active_button_release_cb\n");
+	M_PRINTF("m_active_button_release_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
 	if (!button)
@@ -943,7 +945,7 @@ void m_active_button_release_cb(lv_event_t *e)
 	
 	if (!button->array)
 	{
-		m_printf("button has no array :(\n");
+		M_PRINTF("button has no array :(\n");
 		return;
 	}
 	
@@ -979,7 +981,7 @@ void m_active_button_release_cb(lv_event_t *e)
 
 void m_active_button_del_cb(lv_event_t *e)
 {
-	m_printf("m_active_button_del_cb\n");
+	M_PRINTF("m_active_button_del_cb\n");
 	m_active_button *button = (m_active_button*)lv_event_get_user_data(e);
 	
 	m_active_button_trigger_delete_anim(button);
@@ -1026,7 +1028,7 @@ int m_active_button_add_del_button(m_active_button *button)
 	
 	if (button->del_button)
 	{
-		m_printf("WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
+		M_PRINTF("WARNING: m_active_button_add_del_button called with button for which button->del_button is not NULL: it is %p", button->del_button);
 		return ERR_BAD_ARGS;
 	}
 	
@@ -1285,7 +1287,7 @@ m_active_button_array *m_active_button_array_new()
 
 m_active_button *m_active_button_array_append_new(m_active_button_array *array, void *data, char *label)
 {
-	m_printf("m_active_button_array_append_new\n");
+	M_PRINTF("m_active_button_array_append_new\n");
 	if (!array)
 	{
 		//m_printf("Returning NULL cause array = %p\n", array);
@@ -1320,7 +1322,7 @@ m_active_button *m_active_button_array_append_new(m_active_button_array *array, 
 	}
 	
 	//m_printf("returning %p\n", button);
-	m_printf("m_active_button_array_append_new done\n");
+	M_PRINTF("m_active_button_array_append_new done\n");
 	return button;
 }
 

@@ -1,6 +1,8 @@
 #include <float.h>
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 #define DEFAULT_MAX_VELOCITY 1.0
 
 IMPLEMENT_LINKED_PTR_LIST(m_parameter);
@@ -233,7 +235,9 @@ m_parameter *m_parameter_make_clone_for_transformer(m_parameter *src, m_transfor
 	
 	clone_parameter(param, src);
 	
+	#ifdef M_ENABLE_REPRESENTATIONS
 	param->trans_rep.representer = (void*)trans;
+	#endif
 	
 	return param;
 }
@@ -316,7 +320,9 @@ m_setting *m_setting_make_clone_for_transformer(m_setting *src, m_transformer *t
 	
 	clone_setting(setting, src);
 	
+	#ifdef M_ENABLE_REPRESENTATIONS
 	setting->trans_rep.representer = (void*)trans;
+	#endif
 	
 	return setting;
 }
@@ -349,7 +355,7 @@ void m_setting_free(m_setting *setting)
 int m_parameters_assign_ids(m_parameter_pll *list)
 {
 	int next_parameter_id = 0;
-	m_printf("m_parameters_assign_ids\n");
+	M_PRINTF("m_parameters_assign_ids\n");
 	
 	m_parameter_pll *current = list;
 	
@@ -357,21 +363,21 @@ int m_parameters_assign_ids(m_parameter_pll *list)
 	{
 		if (current->data)
 		{
-			m_printf("Assigning ID %d...\n",
+			M_PRINTF("Assigning ID %d...\n",
 				next_parameter_id);
 			current->data->id.parameter_id = next_parameter_id++;
 		}
 		current = current->next;
 	}
 	
-	m_printf("m_parameters_assign_ids done\n");
+	M_PRINTF("m_parameters_assign_ids done\n");
 	return NO_ERROR;
 }
 
 int m_settings_assign_ids(m_setting_pll *list)
 {
 	int next_setting_id = 0;
-	m_printf("m_settings_assign_ids\n");
+	M_PRINTF("m_settings_assign_ids\n");
 	
 	m_setting_pll *current = list;
 	
@@ -379,14 +385,14 @@ int m_settings_assign_ids(m_setting_pll *list)
 	{
 		if (current->data)
 		{
-			m_printf("Assigning ID %d...\n",
+			M_PRINTF("Assigning ID %d...\n",
 				next_setting_id);
 			current->data->id.setting_id = next_setting_id++;
 		}
 		current = current->next;
 	}
 	
-	m_printf("m_settings_assign_ids done\n");
+	M_PRINTF("m_settings_assign_ids done\n");
 	return NO_ERROR;
 }
 
@@ -401,7 +407,7 @@ m_interval m_parameter_get_range(m_parameter *param)
 	
 	if (trans && !trans->scope)
 	{
-		m_printf("transformer is not in posession of a scope... strange. generate it\n");
+		M_PRINTF("transformer is not in posession of a scope... strange. generate it\n");
 		trans->scope = m_transformer_create_scope(trans);
 	}
 	
@@ -461,30 +467,8 @@ void m_parameter_transformer_rep_update(void *representer, void *representee)
 	m_transformer *trans = (m_transformer*)representer;
 	m_parameter *param = (m_parameter*)representee;
 	
-	m_printf("m_parameter_transformer_rep_update(trans = %p, param = %p)\n", trans, param);
 	if (!trans || !param)
 		return;
-	
-	
-	m_printf("trans rep list looks like\n");
-	
-	int k = 0;
-	m_representation_pll *current = trans->reps;
-	
-	if (!current)
-	{
-		m_printf("Nothing!\n");
-	}
-	else
-	{
-		while (current)
-		{
-			m_printf("Rep %d: {.representer = %p, representee = %p, update = %p},\n", k, current->data->representer, current->data->representee,
-				current->data->update);
-			current = current->next;
-			k++;
-		}
-	}
 	
 	m_transformer_update_reps(trans);
 	

@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_expr_scope.c";
+
 IMPLEMENT_LINKED_PTR_LIST(m_expr_scope_entry);
 
 m_expr_scope_entry *m_new_expr_scope_entry_expr(const char *name, struct m_expression *expr)
@@ -41,7 +45,7 @@ m_expr_scope_entry *m_new_expr_scope_entry_setting(struct m_setting *setting)
 	if (!setting)
 		return NULL;
 	
-	m_printf("m_new_expr_scope_entry_setting(setting = %p)\n", setting);
+	M_PRINTF("m_new_expr_scope_entry_setting(setting = %p)\n", setting);
 	m_expr_scope_entry *result = m_alloc(sizeof(m_expr_scope_entry));
 	
 	if (!result)
@@ -51,7 +55,7 @@ m_expr_scope_entry *m_new_expr_scope_entry_setting(struct m_setting *setting)
 	result->name = setting->name_internal;
 	result->val.setting = setting;
 	
-	m_printf("\tresult->type = %d\n\tresult->name = \"%s\"\n\tresult->val.setting = %p\n",
+	M_PRINTF("\tresult->type = %d\n\tresult->name = \"%s\"\n\tresult->val.setting = %p\n",
 		result->type, result->name, result->val.setting);
 	
 	return result;
@@ -157,16 +161,16 @@ int m_expr_scope_add_settings(m_expr_scope *scope, m_setting_pll *settings)
 	if (!scope)
 		return ERR_NULL_PTR;
 	
-	m_printf("m_expr_scope_add_settings(scope = %p, settings = %p)\n", scope, settings);
+	M_PRINTF("m_expr_scope_add_settings(scope = %p, settings = %p)\n", scope, settings);
 	
 	int ret_val;
 	m_setting_pll *current = settings;
 	
-	m_printf("current = %p\n", current);
+	M_PRINTF("current = %p\n", current);
 	while (current)
 	{
-		m_printf("current->data = %p\n", current->data);
-		m_printf("Adding setting \"%s\"...\n", current->data ? current->data->name_internal : "(NULL)");
+		M_PRINTF("current->data = %p\n", current->data);
+		M_PRINTF("Adding setting \"%s\"...\n", current->data ? current->data->name_internal : "(NULL)");
 		if ((ret_val = m_expr_scope_add_setting(scope, current->data)) != NO_ERROR)
 		{
 			
@@ -174,7 +178,7 @@ int m_expr_scope_add_settings(m_expr_scope *scope, m_setting_pll *settings)
 		}
 		
 		current = current->next;
-		m_printf("current = %p\n", current);
+		M_PRINTF("current = %p\n", current);
 	}
 	
 	return NO_ERROR;

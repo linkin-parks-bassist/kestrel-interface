@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 IMPLEMENT_LINKED_PTR_LIST(m_effect_desc);
 
 int m_init_effect_desc(m_effect_desc *eff)

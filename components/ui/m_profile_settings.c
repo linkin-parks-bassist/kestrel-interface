@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_profile_settings.c";
+
 int init_profile_settings_page(m_ui_page *page)
 {
 	if (!page)
@@ -115,13 +119,13 @@ void default_profile_button_cb(lv_event_t *e)
 
 int create_profile_settings_page_ui(m_ui_page *page)
 {
-	m_printf("create_profile_settings_page_ui\n");
+	M_PRINTF("create_profile_settings_page_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	if (page->ui_created)
 	{
-		m_printf("Profile settings page: UI already created...\n");
+		M_PRINTF("Profile settings page: UI already created...\n");
 		return NO_ERROR;
 	}
 	
@@ -129,13 +133,13 @@ int create_profile_settings_page_ui(m_ui_page *page)
 	
 	if (!str)
 	{
-		m_printf("Error! Profile settings page has no data struct!\n");
+		M_PRINTF("Error! Profile settings page has no data struct!\n");
 		return ERR_BAD_ARGS;
 	}
 		
 	if (!str->profile)
 	{
-		m_printf("Error! Profile settings page has no profile!\n");
+		M_PRINTF("Error! Profile settings page has no profile!\n");
 		return ERR_BAD_ARGS;
 	}
 	

@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_profile.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_profile);
@@ -104,7 +106,7 @@ int m_profile_add_representation(m_profile *profile, m_representation *rep)
 	else
 		return ERR_ALLOC_FAIL;
 	
-	m_printf("profile->representations = %p\n", profile->representations);
+	M_PRINTF("profile->representations = %p\n", profile->representations);
 	
 	return NO_ERROR;
 	#else
@@ -139,11 +141,11 @@ int m_profile_remove_representation(m_profile *profile, m_representation *rep)
 
 int m_profile_set_default_name_from_id(m_profile *profile)
 {
-	m_printf("m_profile_set_default_name_from_id\n");
+	M_PRINTF("m_profile_set_default_name_from_id\n");
 	if (!profile)
 		return ERR_NULL_PTR;
 	
-	m_printf("ID = %d\n", profile->id);
+	M_PRINTF("ID = %d\n", profile->id);
 	
 	// Compute the digits in the ID. 
 	int id_digits;
@@ -162,7 +164,7 @@ int m_profile_set_default_name_from_id(m_profile *profile)
 	
 	sprintf(profile->name, "Profile %d", profile->id);
 	
-	m_printf("Resulting name: %s\n", profile->name);
+	M_PRINTF("Resulting name: %s\n", profile->name);
 	
 	return NO_ERROR;
 }
@@ -172,23 +174,21 @@ m_transformer *m_profile_append_transformer_eff(m_profile *profile, m_effect_des
 	if (!profile)
 		return NULL;
 	
-	m_printf("m_profile_append_transformer_eff(profile = %p, eff = %p)\n", eff);
+	M_PRINTF("m_profile_append_transformer_eff(profile = %p, eff = %p)\n", eff);
 	m_transformer *trans = m_pipeline_append_transformer_eff(&profile->pipeline, eff);
-	m_printf("trans = %p\n", trans);
+	M_PRINTF("trans = %p\n", trans);
 	
 	if (!trans)
 		return NULL;
 	
 	transformer_rectify_param_ids(trans);
 	
-	m_printf("m_profile_append_transformer_eff done; trans->view_page = %p\n", trans->view_page);
-	
 	return trans;
 }
 
 int m_profile_remove_transformer(m_profile *profile, uint16_t id)
 {
-	m_printf("m_profile_remove_transformer\n");
+	M_PRINTF("m_profile_remove_transformer\n");
 	if (!profile)
 		return ERR_NULL_PTR;
 	
@@ -196,7 +196,7 @@ int m_profile_remove_transformer(m_profile *profile, uint16_t id)
 	
 	m_profile_if_active_update_fpga(profile);
 	
-	m_printf("m_profile_remove_transformer done. ret_val = %s\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_profile_remove_transformer done. ret_val = %s\n", m_error_code_to_string(ret_val));
 	return ret_val;
 }
 
@@ -224,17 +224,17 @@ int clone_profile(m_profile *dest, m_profile *src)
 	if (!src || !dest)
 		return ERR_NULL_PTR;
 	
-	m_printf("Cloning profile\n");
+	M_PRINTF("Cloning profile\n");
 	
-	m_printf("Clone name...\n");
+	M_PRINTF("Clone name...\n");
 	dest->name = m_strndup(src->name, PROFILE_NAME_MAX_LEN);
 	clone_parameter(&dest->volume, &src->volume);
 	dest->id = src->id;
 	
-	m_printf("Clone pipeline...\n");
+	M_PRINTF("Clone pipeline...\n");
 	clone_pipeline(&dest->pipeline, &src->pipeline);
 	
-	m_printf("Done!\n");
+	M_PRINTF("Done!\n");
 	#ifdef M_ENABLE_UI
 	dest->view_page = NULL;
 	#endif
@@ -248,22 +248,22 @@ void gut_profile(m_profile *profile)
 		return;
 	
 	#ifdef M_ENABLE_UI
-	m_printf("Gut view page %p...\n", profile->view_page);
+	M_PRINTF("Gut view page %p...\n", profile->view_page);
 	if (profile->view_page)
 		profile->view_page->free_all(profile->view_page);
 	
 	profile->view_page = NULL;
 	#endif
 	
-	m_printf("Gut name %p...\n", profile->name);
+	M_PRINTF("Gut name %p...\n", profile->name);
 	if (profile->name)
 		m_free(profile->name);
 	
 	profile->name = NULL;
 	
-	m_printf("Gut profile...\n");
+	M_PRINTF("Gut profile...\n");
 	gut_pipeline(&profile->pipeline);
-	m_printf("Done!\n");
+	M_PRINTF("Done!\n");
 }
 
 void free_profile(m_profile *profile)
@@ -293,14 +293,14 @@ void new_profile_receive_id(m_message msg, m_response response)
 	
 	if (!profile)
 	{
-		m_printf("ERROR: Profile ID recieved, but no profile associated !\n");
+		M_PRINTF("ERROR: Profile ID recieved, but no profile associated !\n");
 		return;
 	}
 	
 	uint16_t id;
 	memcpy(&id, response.data, sizeof(uint16_t));
 	
-	m_printf("New profile recieved its ID: %d\n", id);
+	M_PRINTF("New profile recieved its ID: %d\n", id);
 	
 	profile_set_id(profile, id);
 	m_profile_set_default_name_from_id(profile);
@@ -318,7 +318,7 @@ m_profile *create_new_profile_with_teensy()
 	
 	if (!new_profile)
 	{
-		m_printf("ERROR: Couldn't create new profile\n");
+		M_PRINTF("ERROR: Couldn't create new profile\n");
 		return NULL;
 	}
 	
@@ -344,7 +344,7 @@ m_profile *create_new_profile()
 	
 	if (!new_profile)
 	{
-		m_printf("ERROR: Couldn't create new profile\n");
+		M_PRINTF("ERROR: Couldn't create new profile\n");
 		return NULL;
 	}
 	
@@ -383,11 +383,11 @@ int m_profile_create_fpga_transfer_batch(m_profile *profile, m_fpga_transfer_bat
 	if (!profile || !batch)
 		return ERR_NULL_PTR;
 	
-	m_printf("m_profile_create_fpga_transfer_batch(profile = %p, batch = %p)\n", profile, batch);
+	M_PRINTF("m_profile_create_fpga_transfer_batch(profile = %p, batch = %p)\n", profile, batch);
 	
 	int ret_val = m_pipeline_create_fpga_transfer_batch(&profile->pipeline, batch);
 	
-	m_printf("m_profile_create_fpga_transfer_batch done (%s)\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_profile_create_fpga_transfer_batch done (%s)\n", m_error_code_to_string(ret_val));
 	return ret_val;
 }
 
@@ -398,30 +398,26 @@ int m_profile_program_fpga(m_profile *profile)
 	
 	m_fpga_transfer_batch batch;
 	
-	m_printf("m_profile_program_fpga\n");
+	M_PRINTF("m_profile_program_fpga\n");
 	int ret_val = m_pipeline_create_fpga_transfer_batch(&profile->pipeline, &batch);
 	
-	m_printf("m_pipeline_create_fpga_transfer_batch returned with error code %s\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_pipeline_create_fpga_transfer_batch returned with error code %s\n", m_error_code_to_string(ret_val));
 	if (ret_val != NO_ERROR)
 		return ret_val;
 	
-	#ifdef M_FPGA_SIMULATED
-	m_printf("M_FPGA_SIMULATED defined. Sendn't\n");
-	return ERR_FEATURE_DISABLED;
-	#else
-	m_printf("Queueing transfer batch...\n");
+	M_PRINTF("Queueing transfer batch...\n");
 	if ((ret_val = m_fpga_queue_program_batch(batch)) != NO_ERROR)
 	{
-		m_printf("An error was encountered: %s\n", m_error_code_to_string(ret_val));
+		M_PRINTF("An error was encountered: %s\n", m_error_code_to_string(ret_val));
 		return ret_val;
 	}
-	#endif
 	
 	return NO_ERROR;
 }
 
 int m_profile_if_active_update_fpga(m_profile *profile)
 {
+	M_PRINTF("m_profile_if_active_update_fpga");
 	if (!profile)
 		return ERR_NULL_PTR;
 	
@@ -435,13 +431,14 @@ int m_profile_if_active_update_fpga(m_profile *profile)
 
 void m_profile_file_rep_update(void *representer, void *representee)
 {
+	#ifdef M_ENABLE_REPRESENTATIONS
 	if (!representee)
 		return;
 	
 	m_profile *profile = (m_profile*)representee;
 	
 	save_profile(profile);
-	
+	#endif
 	return;
 }
 

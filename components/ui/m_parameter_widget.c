@@ -1,4 +1,6 @@
 #include "m_int.h"
+
+#define PRINTLINES_ALLOWED 0
 #include "m_param_update.h"
 
 static const char *FNAME = "m_parameter_widget.c";
@@ -142,7 +144,7 @@ int parameter_widget_update_value(m_parameter_widget *pw)
 	m_expr_scope *scope = NULL;
 	m_transformer *trans = NULL;
 	
-	m_printf("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f\n",
+	M_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f\n",
 		param->id.profile_id, param->id.transformer_id, param->id.parameter_id,
 		param->name ? param->name : "(NULL)", param->value);
 	
@@ -153,7 +155,7 @@ int parameter_widget_update_value(m_parameter_widget *pw)
 	float min = range.a;
 	float max = range.b;
 	
-	m_printf("min/max for PW: %.03f, %.03f\n", min, max);
+	M_PRINTF("min/max for PW: %.03f, %.03f\n", min, max);
 	
 	if (fabsf(max - min) < 1e-6)
 	{
@@ -246,7 +248,7 @@ void parameter_widget_refresh_cb(lv_event_t *event)
 	
 	if (!pw)
 	{
-		m_printf("NULL pw pointer");
+		M_PRINTF("NULL pw pointer");
 		return;
 	}
 	
@@ -258,13 +260,13 @@ void parameter_widget_change_cb_inner(m_parameter_widget *pw)
 {
 	if (!pw)
 	{
-		m_printf("NULL pw pointer passed to parameter_widget_change_cb_inner");
+		M_PRINTF("NULL pw pointer passed to parameter_widget_change_cb_inner");
 		return;
 	}
 	
 	if (!pw->param)
 	{
-		m_printf("parameter_widget_change_cb_inner called on parameter widget with NULL parameter");
+		M_PRINTF("parameter_widget_change_cb_inner called on parameter widget with NULL parameter");
 		return;
 	}
 	
@@ -329,7 +331,7 @@ void parameter_widget_change_cb(lv_event_t *event)
 	
 	if (!pw)
 	{
-		m_printf("NULL pw pointer passed to parameter_widget_change_cb");
+		M_PRINTF("NULL pw pointer passed to parameter_widget_change_cb");
 		return;
 	}
 	
@@ -353,15 +355,15 @@ int parameter_widget_create_ui(m_parameter_widget *pw, lv_obj_t *parent)
 int parameter_widget_create_ui_no_callback(m_parameter_widget *pw, lv_obj_t *parent)
 {
 	
-	m_printf("parameter_widget_create_ui_no_callback(pw = %p, parent = %p)\n", pw, parent);
+	M_PRINTF("parameter_widget_create_ui_no_callback(pw = %p, parent = %p)\n", pw, parent);
 	if (!pw || !pw->param || !parent)
 		return ERR_NULL_PTR;
 	
 	pw->container = lv_obj_create(parent);
-	m_printf("pw->container = %p\n", pw->container);
+	M_PRINTF("pw->container = %p\n", pw->container);
 	lv_obj_remove_style_all(pw->container);
 	
-	m_printf("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
+	M_PRINTF("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
 		pw->param->id.profile_id, 
 		pw->param->id.transformer_id, 
 		pw->param->id.parameter_id, 
@@ -509,17 +511,17 @@ int nullify_setting_widget(m_setting_widget *sw)
 
 int setting_widget_update_value(m_setting_widget *sw)
 {
-	m_printf("setting_widget_update_value(sw = %p)\n", sw);
+	M_PRINTF("setting_widget_update_value(sw = %p)\n", sw);
 	if (!sw)
 		return ERR_NULL_PTR;
 	
-	m_printf(" ... sw->setting = %p, sw->obj = %p\n", sw->setting, sw->obj);
+	M_PRINTF(" ... sw->setting = %p, sw->obj = %p\n", sw->setting, sw->obj);
 	if (!sw->setting || !sw->obj)
 		return ERR_BAD_ARGS;
 	
 	char buf[32];
 	
-	m_printf("sw->type = %d = %s\n", sw->type, (sw->type == SETTING_WIDGET_DROPDOWN)
+	M_PRINTF("sw->type = %d = %s\n", sw->type, (sw->type == SETTING_WIDGET_DROPDOWN)
 		? "SETTING_WIDGET_DROPDOWN"
 		: ((sw->type == SETTING_WIDGET_SWITCH)
 			? "SETTING_WIDGET_SWITCH"
@@ -529,13 +531,13 @@ int setting_widget_update_value(m_setting_widget *sw)
 	switch (sw->type)
 	{
 		case SETTING_WIDGET_DROPDOWN:
-			m_printf("sw->setting->options = %p, sw->setting->n_options = %d\n", sw->setting->options, sw->setting->n_options);
+			M_PRINTF("sw->setting->options = %p, sw->setting->n_options = %d\n", sw->setting->options, sw->setting->n_options);
 			if (!sw->setting->options)
 				return ERR_BAD_ARGS;
 			
 			for (int i = 0; i < sw->setting->n_options; i++)
 			{
-				m_printf("Option %d: value %d, name \"%s\"\n", i, sw->setting->options[i].value, sw->setting->options[i].name);
+				M_PRINTF("Option %d: value %d, name \"%s\"\n", i, sw->setting->options[i].value, sw->setting->options[i].name);
 				if (sw->setting->options[i].value == sw->setting->value)
 				{
 					lv_dropdown_set_selected(sw->obj, i);
@@ -547,9 +549,9 @@ int setting_widget_update_value(m_setting_widget *sw)
 			break;
 			
 		case SETTING_WIDGET_FIELD:
-			m_printf("It is a field\n");
+			M_PRINTF("It is a field\n");
 			snprintf(buf, 32, "%d", sw->setting->value);
-			m_printf("Set textarea text to \"%s\"\n", buf);
+			M_PRINTF("Set textarea text to \"%s\"\n", buf);
 			lv_textarea_set_text(sw->obj, buf);
 			break;
 		
@@ -688,9 +690,9 @@ void sw_field_save_cb(lv_event_t *e)
 		read_int = read_int * 10 + (int)((uint8_t)content[i] - (uint8_t)'0');
 	}
 	
-	m_printf("Read in the int %d\n", read_int);
+	M_PRINTF("Read in the int %d\n", read_int);
 	
-	m_printf("read_int = binary_min(binary_max(read_int, sw->setting->min), sw->setting->max) = binary_min(binary_max(%d, %d), %d) = binary_min(%d, %d) = %d\n",
+	M_PRINTF("read_int = binary_min(binary_max(read_int, sw->setting->min), sw->setting->max) = binary_min(binary_max(%d, %d), %d) = binary_min(%d, %d) = %d\n",
 		read_int, sw->setting->min, sw->setting->max, binary_max(read_int, sw->setting->min), sw->setting->max, binary_min(binary_max(read_int, sw->setting->min), sw->setting->max));
 	read_int = binary_min(binary_max(read_int, sw->setting->min), sw->setting->max);
 	
@@ -703,7 +705,7 @@ void sw_field_save_cb(lv_event_t *e)
 		
 		#ifdef M_ENABLE_FPGA
 		profile = cxt_get_profile_by_id(&global_cxt, sw->setting->id.profile_id);
-		m_printf("Setting widget value changed from %d to %d; reprogramming FPGA in light. profile = %p\n",
+		M_PRINTF("Setting widget value changed from %d to %d; reprogramming FPGA in light. profile = %p\n",
 				sw->setting->old_value, sw->setting->value, profile);
 		if (profile)
 		{
@@ -723,41 +725,41 @@ void sw_field_save_cb(lv_event_t *e)
 	char buf[32];
 	
 	snprintf(buf, 32, "%d", read_int);
-	m_printf("setting field value to \"%s\"\n", buf);
+	M_PRINTF("setting field value to \"%s\"\n", buf);
 	lv_textarea_set_text(sw->obj, buf);
 	
 	hide_keyboard();
 	lv_obj_clear_state(sw->obj, LV_STATE_FOCUSED);
 	
-	m_printf("sw_field_save_cb done\n");
+	M_PRINTF("sw_field_save_cb done\n");
 }
 
 void sw_field_cancel_cb(lv_event_t *e)
 {
-	m_printf("sw_field_cancel_cb\n");
+	M_PRINTF("sw_field_cancel_cb\n");
 	m_setting_widget *sw = lv_event_get_user_data(e);
 	
 	if (!sw)
 		return;
 	
-	m_printf("%s:%d\n", __func__, __LINE__);
+	M_PRINTF("%s:%d\n", __func__, __LINE__);
 	if (sw->saved_field_text)
 	{
-		m_printf("%s:%d\n", __func__, __LINE__);
+		M_PRINTF("%s:%d\n", __func__, __LINE__);
 		lv_textarea_set_text(sw->obj, sw->saved_field_text);
-		m_printf("%s:%d\n", __func__, __LINE__);
+		M_PRINTF("%s:%d\n", __func__, __LINE__);
 		m_free(sw->saved_field_text);
-		m_printf("%s:%d\n", __func__, __LINE__);
+		M_PRINTF("%s:%d\n", __func__, __LINE__);
 		sw->saved_field_text = NULL;
-		m_printf("%s:%d\n", __func__, __LINE__);
+		M_PRINTF("%s:%d\n", __func__, __LINE__);
 	}
 	hide_keyboard();
-	m_printf("sw_field_cancel_cb done\n");
+	M_PRINTF("sw_field_cancel_cb done\n");
 }
 
 void edit_sw_field_cb(lv_event_t *e)
 {
-	m_printf("edit_sw_field_cb\n");
+	M_PRINTF("edit_sw_field_cb\n");
 	m_setting_widget *sw = lv_event_get_user_data(e);
 	
 	if (!sw)
@@ -767,11 +769,11 @@ void edit_sw_field_cb(lv_event_t *e)
 		return;
 	
 	spawn_numerical_keyboard(sw->parent->screen, sw->obj, sw_field_save_cb, sw, sw_field_cancel_cb, sw);
-	m_printf("spawned numerical keyboard\n");
+	M_PRINTF("spawned numerical keyboard\n");
 	lv_obj_add_state(sw->obj, LV_STATE_FOCUSED);
 	
 	sw->saved_field_text = m_strndup(lv_textarea_get_text(sw->obj), 32);
-	m_printf("edit_sw_field_cb done\n");
+	M_PRINTF("edit_sw_field_cb done\n");
 }
 
 void setting_widget_change_cb_inner(m_setting_widget *sw)
@@ -785,7 +787,7 @@ void setting_widget_change_cb_inner(m_setting_widget *sw)
 	
 	if ((ret_val = setting_widget_calc_value(sw, &value)) != NO_ERROR)
 	{
-		m_printf("Error %s getting setting widget value\n", m_error_code_to_string(ret_val));
+		M_PRINTF("Error %s getting setting widget value\n", m_error_code_to_string(ret_val));
 		return;
 	}
 	
@@ -795,7 +797,7 @@ void setting_widget_change_cb_inner(m_setting_widget *sw)
 		sw->setting->updated = 1;
 	}
 	
-	m_printf("setting_widget_change_cb_inner. value = %d\n", value);
+	M_PRINTF("setting_widget_change_cb_inner. value = %d\n", value);
 	#ifdef USE_TEENSY
 	m_message msg = create_m_message(M_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.transformer_id, sw->setting->id.setting_id, value);
 
@@ -818,7 +820,7 @@ void setting_widget_change_cb(lv_event_t *event)
 	
 	if (!sw)
 	{
-		m_printf("NULL virtual sw pointer");
+		M_PRINTF("NULL virtual sw pointer");
 		return;
 	}
 	
@@ -827,18 +829,18 @@ void setting_widget_change_cb(lv_event_t *event)
 
 int setting_widget_create_ui(m_setting_widget *sw, lv_obj_t *parent)
 {
-	m_printf("setting_widget_create_ui(sw = %p, parent = %p)", sw, parent);
+	M_PRINTF("setting_widget_create_ui(sw = %p, parent = %p)", sw, parent);
 	if (!sw)
 		return ERR_NULL_PTR;
 	
 	int ret_val;
 	if ((ret_val = setting_widget_create_ui_no_callback(sw, parent)) != NO_ERROR)
 	{
-		m_printf("setting_widget_create_ui line %d\n", __LINE__);
+		M_PRINTF("setting_widget_create_ui line %d\n", __LINE__);
 		return ret_val;
 	}
 	
-	m_printf("setting_widget_create_ui line %d\n", __LINE__);
+	M_PRINTF("setting_widget_create_ui line %d\n", __LINE__);
 	switch (sw->type)
 	{
 		case SETTING_WIDGET_DROPDOWN:
@@ -854,17 +856,16 @@ int setting_widget_create_ui(m_setting_widget *sw, lv_obj_t *parent)
 			break;
 	}
 	
-	m_printf("setting_widget_create_ui done\n");
+	M_PRINTF("setting_widget_create_ui done\n");
 	return NO_ERROR;
 }
 
 int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 {
-	m_printf("\n\n\n\n\n\n\n\n\n\n\nsetting_widget_create_ui_no_callback(sw = %p, parent = %p)\n\n\n\n\n\n\n\n\n\n\n\n", sw, parent);
 	
 	if (!sw || !sw->setting || !parent)
 	{
-		m_printf("setting_widget_create_ui_no_callback(sw = %p, parent = %p)\n", sw, parent);
+		M_PRINTF("setting_widget_create_ui_no_callback(sw = %p, parent = %p)\n", sw, parent);
 		return ERR_NULL_PTR;
 	}
 	
@@ -872,7 +873,7 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 	lv_obj_remove_style_all(sw->container);
 	lv_obj_clear_flag(sw->container, LV_OBJ_FLAG_SCROLLABLE);
 	
-	m_printf("sw->type = %d = %s\n", sw->type, (sw->type == SETTING_WIDGET_DROPDOWN)
+	M_PRINTF("sw->type = %d = %s\n", sw->type, (sw->type == SETTING_WIDGET_DROPDOWN)
 		? "SETTING_WIDGET_DROPDOWN"
 		: ((sw->type == SETTING_WIDGET_SWITCH)
 			? "SETTING_WIDGET_SWITCH"
@@ -883,7 +884,7 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 	switch (sw->setting->widget_type)
 	{	
 		case SETTING_WIDGET_DROPDOWN:
-			m_printf("Creating label for setting %s\n", sw->setting->name);
+			M_PRINTF("Creating label for setting %s\n", sw->setting->name);
 			
 			lv_obj_set_layout(sw->container, LV_LAYOUT_FLEX);
 			lv_obj_set_flex_flow(sw->container, LV_FLEX_FLOW_ROW);
@@ -918,7 +919,7 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 			lv_obj_set_flex_flow(sw->container, LV_FLEX_FLOW_ROW);
 			lv_obj_set_flex_align(sw->container, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 			
-			m_printf("Creating label for setting %s\n", sw->setting->name);
+			M_PRINTF("Creating label for setting %s\n", sw->setting->name);
 			sw->label = lv_label_create(sw->container);
 			lv_label_set_text(sw->label, sw->setting->name);
 			lv_obj_set_flex_grow(sw->label, 2);
@@ -935,10 +936,10 @@ int setting_widget_create_ui_no_callback(m_setting_widget *sw, lv_obj_t *parent)
 			break;
 	}
 	
-	m_printf("setting_widget_create_ui_no_callback nearly finished\n");
+	M_PRINTF("setting_widget_create_ui_no_callback nearly finished\n");
 	setting_widget_update_value(sw);
 	
-	m_printf("setting_widget_create_ui_no_callback done\n");
+	M_PRINTF("setting_widget_create_ui_no_callback done\n");
 	
 	return NO_ERROR;
 }

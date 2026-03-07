@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 
 static const char *FNAME = "m_ui.c";
@@ -239,7 +241,7 @@ int enter_ui_page(m_ui_page *page)
 {
 	if (!page)
 	{
-		m_printf("Error! No page!\n");
+		M_PRINTF("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -247,38 +249,38 @@ int enter_ui_page(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			m_printf("Error! Page is unconfigured\n");
+			M_PRINTF("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			M_PRINTF("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		m_printf("Page has not created its UI yet. Creating now...\n");
+		M_PRINTF("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		m_printf("page has refresh; calling\n");
+		M_PRINTF("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		m_printf("page has 'enter_page'; calling\n");
+		M_PRINTF("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 
 	if (!page->screen)
 	{
-		m_printf("Error! Page has no screen!\n");
+		M_PRINTF("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
 	lv_scr_load(page->screen);
@@ -294,7 +296,7 @@ int enter_ui_page_forwards(m_ui_page *page)
 {
 	if (!page)
 	{
-		m_printf("Error! No page!\n");
+		M_PRINTF("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -302,38 +304,38 @@ int enter_ui_page_forwards(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			m_printf("Error! Page is unconfigured\n");
+			M_PRINTF("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			M_PRINTF("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		m_printf("Page has not created its UI yet. Creating now...\n");
+		M_PRINTF("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		m_printf("page has refresh; calling\n");
+		M_PRINTF("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		m_printf("page has 'enter_page'; calling\n");
+		M_PRINTF("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 
 	if (!page->screen)
 	{
-		m_printf("Error! Page has no screen!\n");
+		M_PRINTF("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
 	lv_scr_load_anim(page->screen, LV_SCR_LOAD_ANIM_OUT_LEFT, UI_PAGE_TRANSITION_ANIM_MS, 0, false);
@@ -349,7 +351,7 @@ int enter_ui_page_backwards(m_ui_page *page)
 {
 	if (!page)
 	{
-		m_printf("Error! No page!\n");
+		M_PRINTF("Error! No page!\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -357,41 +359,41 @@ int enter_ui_page_backwards(m_ui_page *page)
 	{
 		if (!page->configured)
 		{
-			m_printf("Error! Page is unconfigured\n");
+			M_PRINTF("Error! Page is unconfigured\n");
 			return ERR_BAD_ARGS;
 		}
 		
 		if (!page->create_ui)
 		{
-			m_printf("Error! Page has no UI, and no create_ui function pointer!\n");
+			M_PRINTF("Error! Page has no UI, and no create_ui function pointer!\n");
 			return ERR_BAD_ARGS;
 		}
 	}
 	
 	if (!page->ui_created)
 	{
-		m_printf("Page has not created its UI yet. Creating now...\n");
+		M_PRINTF("Page has not created its UI yet. Creating now...\n");
 		page->create_ui(page);
 	}
 	
 	if (page->refresh)
 	{
-		m_printf("page has refresh; calling\n");
+		M_PRINTF("page has refresh; calling\n");
 		page->refresh(page);
 	}
 	
 	if (page->enter_page)
 	{
-		m_printf("page has 'enter_page'; calling\n");
+		M_PRINTF("page has 'enter_page'; calling\n");
 		page->enter_page(page);
 	}
 	
 	if (!page->screen)
 	{
-		m_printf("Error! Page has no screen!\n");
+		M_PRINTF("Error! Page has no screen!\n");
 		return ERR_BAD_ARGS;
 	}
-	m_printf("lv_scr_load...\n");
+	M_PRINTF("lv_scr_load...\n");
 	lv_scr_load_anim(page->screen, LV_SCR_LOAD_ANIM_OUT_RIGHT, UI_PAGE_TRANSITION_ANIM_MS, 0, false);
 
 	global_cxt.pages.current_page = page;
@@ -1234,7 +1236,7 @@ int ui_page_create_container(m_ui_page *page)
 			tall = 0;
 	}
 	
-	m_printf("page->container_type = %d\n", page->container_type);
+	M_PRINTF("page->container_type = %d\n", page->container_type);
 	
 	switch (page->container_type)
 	{

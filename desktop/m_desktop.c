@@ -1,9 +1,10 @@
 #include "m_int.h"
+
+#define PRINTLINES_ALLOWED 0
 #include <SDL2/SDL.h>
 #include <time.h>
 
 static const char *FNAME = "m_desktop.c";
-#define VOICE M_VOICE_MAIN
 
 int init_sd_card()   {return NO_ERROR;}
 int m_sd_mode_msc()  {return NO_ERROR;}
@@ -50,22 +51,8 @@ void main_task(void *arg)
 	
 	srand(time(0));
 	
-	xTaskCreate(m_log_task,
-		"m_log_task",
-		4 * 1024,
-		NULL,
-		8,
-		NULL);
+	m_printf_init();
 	
-    lv_init();
-    
-    m_mute_all_voices();
-    m_unmute_voice(M_VOICE_LOG);
-    m_unmute_voice(M_VOICE_FILES);
-	//m_unmute_voice(M_VOICE_STATE);
-    //m_unmute_voice(M_VOICE_CONTEXT);
-    //m_unmute_voice(M_VOICE_PROFILE);
-
     SDL_Init(SDL_INIT_VIDEO);
 
     window = SDL_CreateWindow("M",
@@ -80,6 +67,7 @@ void main_task(void *arg)
                                  SDL_TEXTUREACCESS_STREAMING,
                                  DISPLAY_HRES, DISPLAY_VRES);
 
+	lv_init();
     disp = lv_display_create(DISPLAY_HRES, DISPLAY_VRES);
 
     static lv_color_t buf[DISPLAY_HRES * 40];
@@ -94,10 +82,6 @@ void main_task(void *arg)
     lv_indev_t *mouse = lv_indev_create();
 	lv_indev_set_type(mouse, LV_INDEV_TYPE_POINTER);
 	lv_indev_set_read_cb(mouse, mouse_read);
-
-    // test object
-    lv_obj_t *btn = lv_button_create(lv_screen_active());
-    lv_obj_center(btn);
     
 	init_representation_updater();
 	m_init_context(&global_cxt);
@@ -133,11 +117,11 @@ void main_task(void *arg)
 	{
 		ret_val = m_cxt_restore_state(&global_cxt, &state);
 		
-		m_vprintf(VOICE, "Restored state from disk with error code \"%s\"\n", m_error_code_to_string(ret_val));
+		M_PRINTF("Restored state from disk with error code \"%s\"\n", m_error_code_to_string(ret_val));
 	}
 	else
 	{
-		m_vprintf(VOICE, "Unable to restore state from disk: \"%s\"\n", m_error_code_to_string(ret_val));
+		M_PRINTF("Unable to restore state from disk: \"%s\"\n", m_error_code_to_string(ret_val));
 	}
 	
 	int running = 1;

@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_sequence.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_sequence);
@@ -78,38 +80,38 @@ int sequence_append_profile(m_sequence *sequence, m_profile *profile)
 
 seq_profile_ll *sequence_append_profile_rp(m_sequence *sequence, m_profile *profile)
 {
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	
 	if (!sequence || !profile)
 		return NULL;
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	seq_profile_ll *new_node = m_alloc(sizeof(seq_profile_ll));
 	
 	if (!new_node)
 		return NULL;
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	new_node->data = profile;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	if (!sequence->profiles)
 	{
 		sequence->profiles = new_node;
 		return new_node;
 	}
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	
 	seq_profile_ll *current = sequence->profiles;
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	while (current)
 	{
 		if (!current->next)
@@ -118,15 +120,15 @@ seq_profile_ll *sequence_append_profile_rp(m_sequence *sequence, m_profile *prof
 	}
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	current->next = new_node;
 	new_node->prev = current;
 	
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	m_sequence_update_representations(sequence);
 	
-	m_printf("sequence_append_profile_rp, line %d\n", __LINE__);
+	M_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
 	
 	return new_node;
 }
@@ -270,7 +272,7 @@ int m_sequence_begin(m_sequence *sequence)
 	
 	if (!sequence->profiles)
 	{
-		m_printf("Sequence is empty !\n");
+		M_PRINTF("Sequence is empty !\n");
 		return NO_ERROR;
 	}
 	
@@ -293,7 +295,7 @@ int m_sequence_begin_at(m_sequence *sequence, m_profile *profile)
 	
 	if (!sequence->profiles)
 	{
-		m_printf("Sequence is empty !\n");
+		M_PRINTF("Sequence is empty !\n");
 		return NO_ERROR;
 	}
 	
@@ -329,23 +331,23 @@ int m_sequence_regress(m_sequence *sequence)
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	m_printf("regressing sequence\n");
+	M_PRINTF("regressing sequence\n");
 	
 	if (!sequence->profiles)
 	{
-		m_printf("Error: empty sequence\n");
+		M_PRINTF("Error: empty sequence\n");
 		return ERR_BAD_ARGS;
 	}
 	
 	if (!sequence->active || !sequence->position)
 	{
-		m_printf("Error: sequence not active\n");
+		M_PRINTF("Error: sequence not active\n");
 		return ERR_BAD_ARGS;
 	}
 	
 	if (!sequence->position->prev)
 	{
-		m_printf("Can't regress sequence; sequence at start already\n");
+		M_PRINTF("Can't regress sequence; sequence at start already\n");
 		return NO_ERROR;
 	}
 	
@@ -361,35 +363,35 @@ int m_sequence_advance(m_sequence *sequence)
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	m_printf("advancing sequence. sequence = %p\n", sequence);
+	M_PRINTF("advancing sequence. sequence = %p\n", sequence);
 	
 	if (!sequence->profiles)
 	{
-		m_printf("Error: empty sequence\n");
+		M_PRINTF("Error: empty sequence\n");
 		return ERR_BAD_ARGS;
 	}
 	
-	m_printf("Sequence nonempty\n");
+	M_PRINTF("Sequence nonempty\n");
 	
 	if (!sequence->active || !sequence->position)
 	{
-		m_printf("Error: sequence not active\n");
+		M_PRINTF("Error: sequence not active\n");
 		return ERR_BAD_ARGS;
 	}
 	
-	m_printf("Sequence active. Position: %p\n", sequence->position);
+	M_PRINTF("Sequence active. Position: %p\n", sequence->position);
 	
 	if (!sequence->position->next)
 	{
-		m_printf("Can't regress sequence; sequence at end already\n");
+		M_PRINTF("Can't regress sequence; sequence at end already\n");
 		return NO_ERROR;
 	}
 	
-	m_printf("sequence->position->next = %p\n", sequence->position->next);
+	M_PRINTF("sequence->position->next = %p\n", sequence->position->next);
 	
 	sequence->position = sequence->position->next;
 	
-	m_printf("New sequence->position: %p. sequence->position->data: %p\n", 
+	M_PRINTF("New sequence->position: %p. sequence->position->data: %p\n", 
 		sequence->position, (sequence->position) ? sequence->position->data : NULL);
 	
 	return set_active_profile_from_sequence(sequence->position->data);
@@ -430,7 +432,7 @@ int m_sequence_stop_from_profile(m_sequence *sequence)
 
 int m_sequence_activate_at(m_sequence *sequence, m_profile *profile)
 {
-	m_printf("m_sequence_activate_at\n");
+	M_PRINTF("m_sequence_activate_at\n");
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
@@ -450,7 +452,7 @@ int m_sequence_activate_at(m_sequence *sequence, m_profile *profile)
 		current = current->next;
 	}
 	
-	m_printf("m_sequence_activate_at done\n");
+	M_PRINTF("m_sequence_activate_at done\n");
 	return ERR_BAD_ARGS;
 }
 
@@ -483,7 +485,7 @@ int m_sequence_update_representations(m_sequence *sequence)
 	
 	if (!current)
 	{
-		m_printf("Sequence %p has no representations.\n", sequence);
+		M_PRINTF("Sequence %p has no representations.\n", sequence);
 	}
 	else
 	{
@@ -492,7 +494,7 @@ int m_sequence_update_representations(m_sequence *sequence)
 		{
 			if (current->data)
 			{
-				m_printf("Seq %p rep %d: {.representer = %p, representee = %p, update = %p}\n",
+				M_PRINTF("Seq %p rep %d: {.representer = %p, representee = %p, update = %p}\n",
 					sequence, i, current->data->representer, current->data->representee, current->data->update);
 			}
 			

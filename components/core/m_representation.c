@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_representation.c";
 
 IMPLEMENT_LINKED_PTR_LIST(m_representation);
@@ -52,11 +54,11 @@ int init_representation_updater()
 
 int queue_representation_list_update(m_representation_pll *reps)
 {
+	#ifdef M_ENABLE_REPRESENTATIONS
+	#ifdef M_USE_FREERTOS
 	if (!rep_updated_initd)
 		return ERR_CURRENTLY_EXHAUSTED;
 	
-	#ifdef M_ENABLE_REPRESENTATIONS
-	#ifdef M_USE_FREERTOS
 	if (xQueueSend(m_rep_update_queue, (void*)&reps, (TickType_t)10) != pdPASS)
 	{
 		return ERR_QUEUE_SEND_FAILED;

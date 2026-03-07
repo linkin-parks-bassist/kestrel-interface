@@ -4,6 +4,8 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_files.c";
 
 #define IO_BUFFER_SIZE 128
@@ -43,12 +45,12 @@ static const char *FNAME = "m_files.c";
 
 void dump_file_contents(char *fname)
 {
-	m_printf("FILE HEX DUMP: %s\n", fname);
+	M_PRINTF("FILE HEX DUMP: %s\n", fname);
 	FILE *file = fopen(fname, "rb");
 	
 	if (!file)
 	{
-		m_printf("Failed to open file %s\n", fname);
+		M_PRINTF("Failed to open file %s\n", fname);
 		return;
 	}
 	
@@ -57,12 +59,12 @@ void dump_file_contents(char *fname)
 	int i = 1;
 	while (fread(&byte, 1, 1, file))
 	{
-		if (i % 8 == 1) m_printf("\n %s%d | ", (i < 10) ? "  " : ((i < 100) ? " " : ""), i - 1);
-		m_printf("0x%02x ", byte);
+		if (i % 8 == 1) M_PRINTF("\n %s%d | ", (i < 10) ? "  " : ((i < 100) ? " " : ""), i - 1);
+		M_PRINTF("0x%02x ", byte);
 		i++;
 	}
 	
-	m_printf((i % 8 == 1) ? "" : "\n");
+	M_PRINTF((i % 8 == 1) ? "" : "\n");
 	fclose(file);
 }
 
@@ -91,11 +93,11 @@ int file_validity_check(FILE *file, uint8_t magic_byte, uint8_t *byte_out)
 
 int save_profile_as_file(m_profile *profile, const char *fname)
 {
-	m_printf("save_profile_as_file\n");
+	M_PRINTF("save_profile_as_file\n");
 	
 	if (!fname || !profile)
 	{
-		m_printf("NULL pointer lol\n");
+		M_PRINTF("NULL pointer lol\n");
 		return ERR_NULL_PTR;
 	}
 	
@@ -105,7 +107,7 @@ int save_profile_as_file(m_profile *profile, const char *fname)
 	
 	if (!file)
 	{
-		m_printf("Could not open file %s\n", fname);
+		M_PRINTF("Could not open file %s\n", fname);
 		return ERR_FOPEN_FAIL;
 	}
 	
@@ -182,7 +184,7 @@ int save_profile_as_file(m_profile *profile, const char *fname)
 	
 	fclose(file);
 	
-	m_printf("save_profile_as_file done\n");
+	M_PRINTF("save_profile_as_file done\n");
 	
 	return NO_ERROR;
 }
@@ -192,12 +194,12 @@ int save_sequence_as_file(m_sequence *sequence, const char *fname)
 	if (!sequence || !fname)
 		return ERR_NULL_PTR;
 	
-	m_printf("Saving sequence %s to sd card!\n", sequence->name ? "(unnamed)" : sequence->name);
+	M_PRINTF("Saving sequence %s to sd card!\n", sequence->name ? "(unnamed)" : sequence->name);
 	FILE *file = fopen(fname, "wb");
 	
 	if (!file)
 	{
-		m_printf("Failed to open file %s\n", fname);
+		M_PRINTF("Failed to open file %s\n", fname);
 		return ERR_FOPEN_FAIL;
 	}
 	
@@ -220,7 +222,7 @@ int save_sequence_as_file(m_sequence *sequence, const char *fname)
 		current = current->next;
 	}
 	
-	m_printf("Sequence has %d profiles...\n", n_profiles);
+	M_PRINTF("Sequence has %d profiles...\n", n_profiles);
 	write_short(n_profiles);
 	
 	current = sequence->profiles;
@@ -233,7 +235,7 @@ int save_sequence_as_file(m_sequence *sequence, const char *fname)
 				save_profile(current->data);
 			}
 			
-			m_printf("Profile %s...\n", current->data->fname);
+			M_PRINTF("Profile %s...\n", current->data->fname);
 			write_string(current->data->fname);
 		}
 		
@@ -245,7 +247,7 @@ int save_sequence_as_file(m_sequence *sequence, const char *fname)
 	
 	fclose(file);
 	
-	m_printf("Success\n");
+	M_PRINTF("Success\n");
 	
 	dump_file_contents(fname);
 	return NO_ERROR;
@@ -256,13 +258,13 @@ int save_state_to_file(m_state *state, const char *fname)
 	if (!state || !fname)
 		return ERR_NULL_PTR;
 	
-	m_printf("Saving state to sd card!\n");
+	M_PRINTF("Saving state to sd card!\n");
 	FILE *file = fopen(fname, "wb");
 	int32_t arg32;
 	
 	if (!file)
 	{
-		m_printf("Failed to open file %s\n", fname);
+		M_PRINTF("Failed to open file %s\n", fname);
 		return ERR_FOPEN_FAIL;
 	}
 	
@@ -275,7 +277,7 @@ int save_state_to_file(m_state *state, const char *fname)
 	
 	write_string(state->active_profile_fname);
 	
-	m_printf("Write state->current_page.type = %d = 0x%08x\n", state->current_page.type, state->current_page.type);
+	M_PRINTF("Write state->current_page.type = %d = 0x%08x\n", state->current_page.type, state->current_page.type);
 	write_int32(state->current_page.type);
 	write_int32(state->current_page.id);
 	write_string(state->current_page.fname);
@@ -285,7 +287,7 @@ int save_state_to_file(m_state *state, const char *fname)
 	
 	fclose(file);
 	
-	m_printf("Success\n");
+	M_PRINTF("Success\n");
 	
 	dump_file_contents(fname);
 	return NO_ERROR;
@@ -296,7 +298,7 @@ int load_state_from_file(m_state *state, const char *fname)
 	if (!state || !fname)
 		return ERR_NULL_PTR;
 	
-	m_printf("load state from file %s...\n", fname);
+	M_PRINTF("load state from file %s...\n", fname);
 	
 	dump_file_contents(fname);
 	
@@ -312,7 +314,7 @@ int load_state_from_file(m_state *state, const char *fname)
 	
 	if (!file)
 	{
-		m_printf("Failed to open file %s\n", fname);
+		M_PRINTF("Failed to open file %s\n", fname);
 		return ERR_FOPEN_FAIL;
 	}
 	
@@ -347,18 +349,18 @@ int load_state_from_file(m_state *state, const char *fname)
 	ptr = (void*)&content[2];
 	
 	state->input_gain  = *((float*)(&content[2]));
-	m_printf("Obtained input gain as %f = 0x%08x\n", state->input_gain, *((int*)(&content[2])));
+	M_PRINTF("Obtained input gain as %f = 0x%08x\n", state->input_gain, *((int*)(&content[2])));
 	state->output_gain = *((float*)(&content[6]));
-	m_printf("Obtained output gain as %f = 0x%08x\n", state->output_gain, *((int*)(&content[6])));
+	M_PRINTF("Obtained output gain as %f = 0x%08x\n", state->output_gain, *((int*)(&content[6])));
 	
 	i = 10;
-	m_printf("Reading active profile fname from position %d\n", i);
+	M_PRINTF("Reading active profile fname from position %d\n", i);
 	if (content[i])
 	{
 		j = 10;
 		while (content[i] && i - j < 31)
 		{
-			m_printf("\t0x%02x = '%c'\n", content[i], content[i]);
+			M_PRINTF("\t0x%02x = '%c'\n", content[i], content[i]);
 			state->active_profile_fname[i - j] = (char)content[i];
 			i++;
 		}
@@ -387,23 +389,23 @@ int load_state_from_file(m_state *state, const char *fname)
 		i++;
 	}
 	
-	m_printf("Reading current page identifier struct, starting at position %d\n", i);
+	M_PRINTF("Reading current page identifier struct, starting at position %d\n", i);
 	
 	state->current_page.type = *((int32_t*)(&content[i]));
-	m_printf("Obtained current_page.type as %d = 0x%08x\n", state->current_page.type, *((int*)(&content[i])));
+	M_PRINTF("Obtained current_page.type as %d = 0x%08x\n", state->current_page.type, *((int*)(&content[i])));
 	i += sizeof(int32_t);
 	state->current_page.id = *((int32_t*)(&content[i]));
-	m_printf("Obtained current_page.type as %d = 0x%08x\n", state->current_page.id, *((int*)(&content[i])));
+	M_PRINTF("Obtained current_page.type as %d = 0x%08x\n", state->current_page.id, *((int*)(&content[i])));
 	i += sizeof(int32_t);
 
-	m_printf("Reading state->current_page.fname from position %d\n", i);
+	M_PRINTF("Reading state->current_page.fname from position %d\n", i);
 	if (content[i])
 	{
 		j = i;
 		
 		while (content[i] && i - j < 32)
 		{
-			m_printf("\t0x%02x = '%c'\n", content[i], content[i]);
+			M_PRINTF("\t0x%02x = '%c'\n", content[i], content[i]);
 			state->current_page.fname[i - j] = (char)content[i];
 			i++;
 		}
@@ -415,11 +417,11 @@ int load_state_from_file(m_state *state, const char *fname)
 		i++;
 	}
 
-	m_printf("read input gain: %f\n",  state->input_gain);
-	m_printf("read output gain: %f\n", state->output_gain);
-	m_printf("read active profile fname: %s\n", state->active_profile_fname);
-	m_printf("read active sequence fname: %s\n", state->active_sequence_fname);
-	m_printf("read current page: {type = %d, id = %d, fname = \"%s\"}\n", state->current_page.type, state->current_page.id,
+	M_PRINTF("read input gain: %f\n",  state->input_gain);
+	M_PRINTF("read output gain: %f\n", state->output_gain);
+	M_PRINTF("read active profile fname: %s\n", state->active_profile_fname);
+	M_PRINTF("read active sequence fname: %s\n", state->active_sequence_fname);
+	M_PRINTF("read current page: {type = %d, id = %d, fname = \"%s\"}\n", state->current_page.type, state->current_page.id,
 		state->current_page.fname);
 	
 read_settings_exit:
@@ -447,7 +449,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	}
 	
 	
-	m_printf("Reading profile from %s\n", fname);
+	M_PRINTF("Reading profile from %s\n", fname);
 	
 	uint8_t byte;
 	uint16_t arg16;
@@ -465,7 +467,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (byte != M_PROFILE_MAGIC_BYTE)
 	{
-		m_printf("Attempted load of profile from file \"%s\", whose first byte 0x%02x is not the profile magic byte 0x%02x\n",
+		M_PRINTF("Attempted load of profile from file \"%s\", whose first byte 0x%02x is not the profile magic byte 0x%02x\n",
 			fname, byte, M_PROFILE_MAGIC_BYTE);
 		ret_val = ERR_BAD_ARGS;
 		goto profile_read_bail;
@@ -476,7 +478,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (byte != M_WRITE_FINISHED_BYTE)
 	{
-		m_printf("Attempted load of profile from file \"%s\", whose second byte 0x%02x indicates that its write was unfinished\n",
+		M_PRINTF("Attempted load of profile from file \"%s\", whose second byte 0x%02x indicates that its write was unfinished\n",
 			fname, byte);
 		ret_val = ERR_UNFINISHED_WRITE;
 		goto profile_read_bail;
@@ -486,13 +488,13 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	if (!name)
 	{
-		m_printf("Allocation fail allocating string of length %d for profile name from file %s\n", (int)byte, fname);
+		M_PRINTF("Allocation fail allocating string of length %d for profile name from file %s\n", (int)byte, fname);
 		goto profile_read_bail;
 	}
 	
 	profile->name = name;
 	
-	m_printf("Loaded profile name: %s\n", profile->name);
+	M_PRINTF("Loaded profile name: %s\n", profile->name);
 	
 	read_short(n_transformers);
 	
@@ -500,7 +502,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	for (int i = 0; i < n_transformers; i++)
 	{
-		m_printf("Profile professes to contain %d transformers\n", n_transformers);
+		M_PRINTF("Profile professes to contain %d transformers\n", n_transformers);
 		//Get effect type
 		read_string();
 		
@@ -508,18 +510,18 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		
 		if (!eff)
 		{
-			m_printf("Profile references non-existent effect. Aborting.\n");
+			M_PRINTF("Profile references non-existent effect. Aborting.\n");
 			ret_val = ERR_MANGLED_FILE;
 			goto profile_read_bail;
 		}
 		
-		m_printf("Encountered %s in position %d\n", eff->name, (int)i);
+		M_PRINTF("Encountered %s in position %d\n", eff->name, (int)i);
 		
 		trans = m_profile_append_transformer_eff(profile, eff);
 		
 		if (!trans)
 		{
-			m_printf("Failed to append effect \"%s\"", eff->name);
+			M_PRINTF("Failed to append effect \"%s\"", eff->name);
 			ret_val = ERR_MANGLED_FILE;
 			goto profile_read_bail;
 		}
@@ -528,7 +530,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		read_short(arg16);
 		
 		
-		m_printf("Transformer ID: %d\n", (int)arg16);
+		M_PRINTF("Transformer ID: %d\n", (int)arg16);
 		trans->id = arg16;
 		
 		current_param = trans->parameters;
@@ -552,9 +554,9 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		//m_transformer_init_view_page(trans);
 	}
 	
-	m_printf("File done! closing...\n");
+	M_PRINTF("File done! closing...\n");
 	fclose(file);
-	m_printf("Closed. Returning\n");
+	M_PRINTF("Closed. Returning\n");
 	
 	for (int k = 0; k < M_FILENAME_LEN; k++)
 	{
@@ -585,7 +587,7 @@ profile_read_bail:
 
 int read_sequence_from_file(m_sequence *sequence, const char *fname)
 {
-	m_printf("read_sequence_from_file\n");
+	M_PRINTF("read_sequence_from_file\n");
 	if (!fname || !sequence)
 	{
 		return ERR_NULL_PTR;
@@ -597,11 +599,11 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 	
 	if (!file)
 	{
-		m_printf("Could not open file \"%s\"\n", fname);
+		M_PRINTF("Could not open file \"%s\"\n", fname);
 		return ERR_FOPEN_FAIL;
 	}
 	
-	m_printf("Reading sequence from %s\n", fname);
+	M_PRINTF("Reading sequence from %s\n", fname);
 	
 	uint8_t byte;
 	uint16_t arg16;
@@ -618,13 +620,13 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 			break;
 		
 		case 1:
-			m_printf("Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
+			M_PRINTF("Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
 				fname, byte, M_PROFILE_MAGIC_BYTE);
 			ret_val = ERR_BAD_ARGS;
 			goto sequence_read_bail;
 		
 		case 2:
-			m_printf("Attempted load of sequence from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
+			M_PRINTF("Attempted load of sequence from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
 				fname, byte);
 			ret_val = ERR_UNFINISHED_WRITE;
 			goto sequence_read_bail;
@@ -634,13 +636,13 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 	
 	if (!name)
 	{
-		m_printf("Allocation fail allocating string of length %d for sequence name from file %s", (int)byte, fname);
+		M_PRINTF("Allocation fail allocating string of length %d for sequence name from file %s", (int)byte, fname);
 		goto sequence_read_bail;
 	}
 	
 	sequence->name = name;
 	
-	m_printf("Loaded sequence name: %s\n", sequence->name);
+	M_PRINTF("Loaded sequence name: %s\n", sequence->name);
 	
 	read_short(n_profiles);
 	
@@ -650,7 +652,7 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 	{
 		read_string();
 		
-		m_printf("Sequence contains profile %s...\n", string_read_buffer);
+		M_PRINTF("Sequence contains profile %s...\n", string_read_buffer);
 		profile = cxt_get_profile_by_fname(&global_cxt, string_read_buffer);
 		
 		if (profile)
@@ -659,13 +661,13 @@ int read_sequence_from_file(m_sequence *sequence, const char *fname)
 		}
 		else
 		{
-			m_printf("Error: sequence %s contains profile %s, but no such profile found!\n", fname, string_read_buffer);
+			M_PRINTF("Error: sequence %s contains profile %s, but no such profile found!\n", fname, string_read_buffer);
 		}
 	}
 	
-	m_printf("File done! closing...\n");
+	M_PRINTF("File done! closing...\n");
 	fclose(file);
-	m_printf("Closed. Returning\n");
+	M_PRINTF("Closed. Returning\n");
 	
 	for (int k = 0; k < M_FILENAME_LEN; k++)
 	{
@@ -696,35 +698,35 @@ int m_init_directories()
 
 	if (stat(M_PROFILES_DIR, &statbuf) == 0)
 	{
-		m_printf("Profiles directory %s found\n", M_PROFILES_DIR);
+		M_PRINTF("Profiles directory %s found\n", M_PROFILES_DIR);
 	}
 	else
 	{
-		m_printf("Profiles directory %s doesn't exist. Creating...\n", M_PROFILES_DIR);
+		M_PRINTF("Profiles directory %s doesn't exist. Creating...\n", M_PROFILES_DIR);
 		if (mkdir(M_PROFILES_DIR, 07777) != 0)
 		{
-			m_printf("Failed to create profiles directory\n");
+			M_PRINTF("Failed to create profiles directory\n");
 		}
 		else
 		{
-			m_printf("Directory created sucessfully\n");
+			M_PRINTF("Directory created sucessfully\n");
 		}
 	}
 
 	if (stat(M_SEQUENCES_DIR, &statbuf) == 0)
 	{
-		m_printf("Sequences directory %s found", M_SEQUENCES_DIR);
+		M_PRINTF("Sequences directory %s found", M_SEQUENCES_DIR);
 	}
 	else
 	{
-		m_printf("Sequences directory %s doesn't exist. Creating...\n", M_SEQUENCES_DIR);
+		M_PRINTF("Sequences directory %s doesn't exist. Creating...\n", M_SEQUENCES_DIR);
 		if (mkdir(M_SEQUENCES_DIR, 07777) != 0)
 		{
-			m_printf("Failed to create sequences directory\n");
+			M_PRINTF("Failed to create sequences directory\n");
 		}
 		else
 		{
-			m_printf("Directory created sucessfully\n");
+			M_PRINTF("Directory created sucessfully\n");
 		}
 	}
 	
@@ -860,7 +862,7 @@ void generate_filename(char *prefix, char *suffix, char *dest)
 	
 	fname[index] = 0;
 	
-	m_printf("Generated filename %s\n", fname);
+	M_PRINTF("Generated filename %s\n", fname);
 	
 	for (int k = 0; k < index && k < M_FILENAME_LEN; k++)
 	{
@@ -903,12 +905,12 @@ int save_profile(m_profile *profile)
 	
 	if (ret_val == NO_ERROR)
 	{
-		m_printf("Sucessfully saved profile as %s. Dumping file...\n", profile->fname);
+		M_PRINTF("Sucessfully saved profile as %s. Dumping file...\n", profile->fname);
 		dump_file_contents(profile->fname);
 	}
 	else
 	{
-		m_printf("Profile save error: %s\n", m_error_code_to_string(ret_val));
+		M_PRINTF("Profile save error: %s\n", m_error_code_to_string(ret_val));
 	}
 	
 	return ret_val;
@@ -942,12 +944,12 @@ int save_sequence(m_sequence *sequence)
 	
 	if (ret_val == NO_ERROR)
 	{
-		m_printf("Sucessfully saved sequence as %s. Dumping file...\n", sequence->fname);
+		M_PRINTF("Sucessfully saved sequence as %s. Dumping file...\n", sequence->fname);
 		dump_file_contents(sequence->fname);
 	}
 	else
 	{
-		m_printf("Sequence save error: %s\n", m_error_code_to_string(ret_val));
+		M_PRINTF("Sequence save error: %s\n", m_error_code_to_string(ret_val));
 	}
 	
 	return ret_val;
@@ -955,21 +957,21 @@ int save_sequence(m_sequence *sequence)
 
 int load_saved_profiles(m_context *cxt)
 {
-	m_printf("load_saved_profiles...\n");
+	M_PRINTF("load_saved_profiles...\n");
 	string_ll *current_file = list_files_in_directory(M_PROFILES_DIR);
 	
 	string_ll *cf = current_file;
 	
-	m_printf("Profile files fonund:\n");
+	M_PRINTF("Profile files fonund:\n");
 	if (!cf)
 	{
-		m_printf("none!!!\n");
+		M_PRINTF("none!!!\n");
 	}
 	else
 	{
 		while (cf)
 		{
-			m_printf("%s\n", cf->data);
+			M_PRINTF("%s\n", cf->data);
 			cf = cf->next;
 		}
 	}
@@ -982,7 +984,7 @@ int load_saved_profiles(m_context *cxt)
 	
 	while (current_file)
 	{
-		m_printf("Loading profile %s...\n", current_file->data);
+		M_PRINTF("Loading profile %s...\n", current_file->data);
 		profile = m_alloc(sizeof(m_profile));
 		
 		if (!profile)
@@ -1086,21 +1088,21 @@ int load_effects(m_context *cxt)
 	
 	while (current)
 	{
-		m_printf("Attempting to load effect from file \"%s\"...\n", current->data);
+		M_PRINTF("Attempting to load effect from file \"%s\"...\n", current->data);
 		
 		eff = m_read_eff_desc_from_file(current->data);
 		
-		m_printf("m_read_eff_desc_from_file returned the pointer %p\n", eff);
+		M_PRINTF("m_read_eff_desc_from_file returned the pointer %p\n", eff);
 		
 		if (eff)
 		{
-			m_printf("Obtained an effect descriptor by the name of \"%s\" ! Adding it to the list %p...\n",
+			M_PRINTF("Obtained an effect descriptor by the name of \"%s\" ! Adding it to the list %p...\n",
 				eff->name, &cxt->effects);
 			ret_val = m_effect_desc_pll_safe_append(&cxt->effects, eff);
 			
 			if (ret_val != NO_ERROR)
 			{
-				m_printf("Error adding effect \"%s\"; error %s\n", eff->name, m_error_code_to_string(ret_val));
+				M_PRINTF("Error adding effect \"%s\"; error %s\n", eff->name, m_error_code_to_string(ret_val));
 			}
 		}
 		
@@ -1123,7 +1125,7 @@ string_ll *list_files_in_directory(char *dir)
 	if (!dir)
 		return NULL;
 	
-	m_printf("Generating list of files in %s\n", dir);
+	M_PRINTF("Generating list of files in %s\n", dir);
 	
 	char *fname = NULL;
 	
@@ -1131,7 +1133,7 @@ string_ll *list_files_in_directory(char *dir)
 	
 	if (!directory)
 	{
-		m_printf("Failed to open directory!\n");
+		M_PRINTF("Failed to open directory!\n");
 		return NULL;
 	}
 	
@@ -1142,10 +1144,10 @@ string_ll *list_files_in_directory(char *dir)
 	
 	while (directory_entry)
 	{
-		m_printf("Directory entry: %s\n", directory_entry->d_name);
+		M_PRINTF("Directory entry: %s\n", directory_entry->d_name);
 		if (directory_entry->d_type == DT_DIR)
 		{
-			m_printf("... is itself a directory!\n");
+			M_PRINTF("... is itself a directory!\n");
 			directory_entry = readdir(directory);
 			continue;
 		}
@@ -1154,7 +1156,7 @@ string_ll *list_files_in_directory(char *dir)
 		
 		if (!fname)
 		{
-			m_printf("Error: couldn't allocate string to list directory entry %s/%s", dir, directory_entry->d_name);
+			M_PRINTF("Error: couldn't allocate string to list directory entry %s/%s", dir, directory_entry->d_name);
 			return list;
 		}
 		
@@ -1168,7 +1170,7 @@ string_ll *list_files_in_directory(char *dir)
 		}
 		else
 		{
-						m_printf("Error: couldn't append linked list to list directory entry %s/%s", dir, directory_entry->d_name);
+						M_PRINTF("Error: couldn't append linked list to list directory entry %s/%s", dir, directory_entry->d_name);
 			return list;
 		}
 		
@@ -1187,13 +1189,13 @@ void erase_sd_card_void_cb(void *data)
 
 int erase_folder(const char *dir)
 {
-	m_printf("Erasing directory %s...\n", dir);
+	M_PRINTF("Erasing directory %s...\n", dir);
 	
 	DIR *directory = opendir(dir);
 	
 	if (!directory)
 	{
-		m_printf("Failed to open directory!\n");
+		M_PRINTF("Failed to open directory!\n");
 		return ERR_BAD_ARGS;
 	}
 	
@@ -1208,12 +1210,12 @@ int erase_folder(const char *dir)
 	
 	while (directory_entry)
 	{
-		m_printf("Directory entry: %s\n", directory_entry->d_name);
+		M_PRINTF("Directory entry: %s\n", directory_entry->d_name);
 		if (directory_entry->d_type == DT_DIR)
 		{
-			m_printf("... is itself a directory!\n");
+			M_PRINTF("... is itself a directory!\n");
 			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
-			m_printf("Full name: %s\n", buf);
+			M_PRINTF("Full name: %s\n", buf);
 			m_free(buf);
 			ret_val = erase_folder(buf);
 			rmdir(buf);
@@ -1223,9 +1225,9 @@ int erase_folder(const char *dir)
 		}
 		else
 		{
-			m_printf("... is a file. Deleting...\n");
+			M_PRINTF("... is a file. Deleting...\n");
 			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
-			m_printf("Full name: %s\n", buf);
+			M_PRINTF("Full name: %s\n", buf);
 			remove(buf);
 		}
 		

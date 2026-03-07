@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_state.c";
 
 #ifdef M_USE_FREERTOS
@@ -60,7 +62,7 @@ int m_cxt_clone_state(m_context *cxt, m_state *state)
 
 void m_state_representation_update(void *representer, void *representee)
 {
-	m_printf("m_state_representation_update\n");
+	M_PRINTF("m_state_representation_update\n");
 	
 	if (!representee)
 		return;
@@ -74,14 +76,14 @@ void m_state_representation_update(void *representer, void *representee)
 	
 	if ((ret_val = m_cxt_clone_state(cxt, &state)) != NO_ERROR)
 	{
-		m_printf("Failed to clone state; aborting\n");
+		M_PRINTF("Failed to clone state; aborting\n");
 		return;
 	}
 	
-	m_printf("Cloned state\n");
+	M_PRINTF("Cloned state\n");
 	
 	safe_file_write((int (*)(void*, const char*))save_state_to_file, &state, SETTINGS_FNAME);
-	m_printf("m_state_representation_update done\n");
+	M_PRINTF("m_state_representation_update done\n");
 	
 	return;
 }
@@ -89,7 +91,7 @@ void m_state_representation_update(void *representer, void *representee)
 
 int m_cxt_restore_state(m_context *cxt, m_state *state)
 {
-	m_printf("m_cxt_restore_state\n");
+	M_PRINTF("m_cxt_restore_state\n");
 	
 	if (!cxt || !state)
 		return ERR_NULL_PTR;
@@ -109,7 +111,7 @@ int m_cxt_restore_state(m_context *cxt, m_state *state)
 	m_cxt_set_input_gain (cxt, state->input_gain);
 	m_cxt_set_output_gain(cxt, state->output_gain);
 	
-	m_printf("m_cxt_restore_state done\n");
+	M_PRINTF("m_cxt_restore_state done\n");
 	return NO_ERROR;
 }
 

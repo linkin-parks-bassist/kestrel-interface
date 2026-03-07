@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_fpga_comms.c";
 
 #define M_FPGA_MSG_TYPE_BATCH 			0
@@ -37,7 +39,7 @@ void m_fpga_comms_task(void *param)
 	uint8_t byte;
 	byte = m_fpga_read_byte();
 	
-	m_printf("Starting FPGA comms. FPGA reports status code %d\n", byte);
+	M_PRINTF("Starting FPGA comms. FPGA reports status code %d\n", byte);
 	
 	m_fpga_set_input_gain(global_cxt.input_gain.value);
 	m_fpga_set_output_gain(global_cxt.output_gain.value);
@@ -59,6 +61,7 @@ void m_fpga_comms_task(void *param)
 				#ifdef PRINT_TRANSFER_BATCHES
 				m_fpga_batch_print(msg.data.batch);
 				#endif
+				#ifndef M_FPGA_SIMULATED
 				for (int i = 0; i < PROGRAM_RETRIES; i++)
 				{
 					m_fpga_transfer_batch_send(msg.data.batch);
@@ -67,14 +70,15 @@ void m_fpga_comms_task(void *param)
 					
 					if (byte != SPI_RESPONSE_OK)
 					{
-						m_printf("FPGA responded with code %d after programming. Retrying...\n", byte);
+						M_PRINTF("FPGA responded with code %d after programming. Retrying...\n", byte);
 					}
 					else
 					{
-						m_printf("FPGA accepted the new pipeline :)\n");
+						M_PRINTF("FPGA accepted the new pipeline :)\n");
 						break;
 					}
 				}
+				#endif
 				
 				m_free_fpga_transfer_batch(msg.data.batch);
 				break;
@@ -97,7 +101,7 @@ void m_fpga_comms_task(void *param)
 				
 			case M_FPGA_MSG_TYPE_COMMAND:
 				#ifdef PRINT_COMMANDS
-				m_printf("send FPGA command %s\n", m_fpga_command_to_string(msg.data.command));
+				M_PRINTF("send FPGA command %s\n", m_fpga_command_to_string(msg.data.command));
 				#endif
 				m_fpga_send_byte(msg.data.command);
 				break;
@@ -134,6 +138,7 @@ int m_fpga_queue_program_batch(m_fpga_transfer_batch batch)
 {
 	m_fpga_msg msg;
 	
+	M_PRINTF("QUEUEING PROGRAM BATCH\n");
 	msg.type = M_FPGA_MSG_TYPE_PROGRAM_BATCH;
 	msg.data.batch = batch;
 	

@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_bump_arena.c";
+
 int m_bump_arena_init_empty(m_bump_arena *arena)
 {
 	if (!arena)
@@ -47,7 +51,7 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	
 	if (!arena->arena || arena->capacity == 0 || size == 0)
 	{
-		m_printf("m_bump_arena ERROR: arena has no memory!\n");
+		M_PRINTF("m_bump_arena ERROR: arena has no memory!\n");
 		return NULL;
 	}
 	
@@ -55,7 +59,7 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	
 	if (size > arena->capacity - arena->pos)
 	{
-		m_printf("m_bump_arena ERROR: Arena exhausted. Capacity: %d bytes; consumed: %d bytes. Requested: %d bytes\n",
+		M_PRINTF("m_bump_arena ERROR: Arena exhausted. Capacity: %d bytes; consumed: %d bytes. Requested: %d bytes\n",
 			arena->capacity, arena->pos, size);
 		return NULL;
 	}

@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 #define INITIAL_PROFILE_ARRAY_LENGTH 8
 #define PROFILE_ARRAY_CHUNK_SIZE	 8
 
@@ -89,7 +91,7 @@ int m_context_init_main_sequence(m_context *cxt)
 
 int m_context_init_effect_list(m_context *cxt)
 {
-	m_printf("m_context_init_effect_list\n");
+	M_PRINTF("m_context_init_effect_list\n");
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
@@ -139,19 +141,19 @@ m_profile *m_context_add_profile_rp(m_context *cxt)
 	if (!cxt)
 		return NULL;
 	
-	m_printf("m_context_add_profile_rp\n");
+	M_PRINTF("m_context_add_profile_rp\n");
 	
 	m_profile *profile = m_alloc(sizeof(m_profile));
 	
 	if (!profile)
 		return NULL;
 	
-	m_printf("profile = %p\n", profile);
+	M_PRINTF("profile = %p\n", profile);
 	
 	init_m_profile(profile);
 	
-	m_printf("profile->name = %p\n", profile->name);
-	m_printf("\t\t\t= %s\n", profile->name ? profile->name : "(NULL)");
+	M_PRINTF("profile->name = %p\n", profile->name);
+	M_PRINTF("\t\t\t= %s\n", profile->name ? profile->name : "(NULL)");
 	
 	profile_ll *nl = m_profile_pll_append(cxt->profiles, profile);
 	
@@ -476,7 +478,7 @@ int set_active_profile(m_profile *profile)
 	
 	if (profile && profile->sequence)
 	{
-		m_printf("profile has a sequence. call m_sequence_activate_at\n");
+		M_PRINTF("profile has a sequence. call m_sequence_activate_at\n");
 		m_sequence_activate_at(profile->sequence, profile);
 	}
 	
@@ -497,7 +499,7 @@ int set_active_profile(m_profile *profile)
 // tell the sequence about it; it is handled from the caller
 int set_active_profile_from_sequence(m_profile *profile)
 {
-	m_printf("set_active_profile_from_sequence, profile = %p\n", profile);
+	M_PRINTF("set_active_profile_from_sequence, profile = %p\n", profile);
 	if (profile)
 		m_profile_set_active(profile);
 	
@@ -535,7 +537,7 @@ void context_print_profiles(m_context *cxt)
 	if (!cxt)
 		return;
 		
-	m_printf("Printing profiles...\n");
+	M_PRINTF("Printing profiles...\n");
 	
 	profile_ll *current = global_cxt.profiles;
 	
@@ -543,7 +545,7 @@ void context_print_profiles(m_context *cxt)
 	int i = 0;
 	while (current)
 	{
-		m_printf("Profile %d, stored at %p, ", i, current->data);
+		M_PRINTF("Profile %d, stored at %p, ", i, current->data);
 		
 		if (current->data)
 		{
@@ -555,13 +557,13 @@ void context_print_profiles(m_context *cxt)
 				ct = ct->next;
 				j++;
 			}
-			m_printf("has name %s, and has %d transformers%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
+			M_PRINTF("has name %s, and has %d transformers%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
 			
 			ct = current->data->pipeline.transformers;
 			
 			while (ct)
 			{
-				m_printf("\t%s,\n", (ct->data && m_transformer_name(ct->data)) ? m_transformer_name(ct->data) : "UNKNOWN");
+				M_PRINTF("\t%s,\n", (ct->data && m_transformer_name(ct->data)) ? m_transformer_name(ct->data) : "UNKNOWN");
 				ct = ct->next;
 			}
 		}
@@ -571,7 +573,7 @@ void context_print_profiles(m_context *cxt)
 	
 	if (i == 0)
 	{
-		m_printf("There are none!\n");
+		M_PRINTF("There are none!\n");
 	}
 }
 
@@ -600,7 +602,7 @@ int cxt_handle_hw_switch(m_context *cxt, int sw)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	m_printf("cxt_handle_hw_switch, sw = %d\n", sw);
+	M_PRINTF("cxt_handle_hw_switch, sw = %d\n", sw);
 	
 	if (cxt->sequence)
 	{
@@ -620,18 +622,18 @@ m_profile *cxt_find_profile(m_context *cxt, const char *fname)
 	
 	profile_ll *current = cxt->profiles;
 	
-	m_printf("Searching for profile with fname %s...\n", fname);
+	M_PRINTF("Searching for profile with fname %s...\n", fname);
 	while (current)
 	{
 		if (current->data && current->data->has_fname)
 		{
-			m_printf("Check %s\n", current->data->fname);
+			M_PRINTF("Check %s\n", current->data->fname);
 			if (strncmp(current->data->fname, fname, PROFILE_NAME_MAX_LEN) == 0)
 			{
-				m_printf("Match!\n");
+				M_PRINTF("Match!\n");
 				return current->data;
 			}
-			m_printf("No match\n");
+			M_PRINTF("No match\n");
 		}
 		
 		current = current->next;
@@ -716,29 +718,29 @@ int m_cxt_queue_save_state(m_context *cxt)
 
 m_profile *cxt_get_profile_by_fname(m_context *cxt, const char *fname)
 {
-	m_printf("cxt_get_profile_by_fname(cxt = %p, fname = %s)\n", cxt, fname ? fname : "(NULL)");
+	M_PRINTF("cxt_get_profile_by_fname(cxt = %p, fname = %s)\n", cxt, fname ? fname : "(NULL)");
 	
 	if (!cxt || !fname)
 		return NULL;
 	
 	m_profile_pll *current = cxt->profiles;
 	
-	m_printf("Searching the list. %s\n", !current ? "... but it is empty!" : "");
+	M_PRINTF("Searching the list. %s\n", !current ? "... but it is empty!" : "");
 	int i = 0;
 	while (current)
 	{
-		m_printf("Profile %d ", i);
+		M_PRINTF("Profile %d ", i);
 		if (current->data)
 		{
-			m_printf("has fname \"%s\".\n", current->data->has_fname ? current->data->fname : "(NULL)");
+			M_PRINTF("has fname \"%s\".\n", current->data->has_fname ? current->data->fname : "(NULL)");
 		}
 		else
 		{
-			m_printf("... doesn't exist???\n");
+			M_PRINTF("... doesn't exist???\n");
 		}
 		if (current->data && current->data->has_fname && fnames_agree(current->data->fname, fname))
 		{
-			m_printf("That's the one :) returning it\n");
+			M_PRINTF("That's the one :) returning it\n");
 			return current->data;
 		}
 		
@@ -769,24 +771,24 @@ m_sequence *cxt_get_sequence_by_fname(m_context *cxt, const char *fname)
 
 int m_cxt_set_input_gain(m_context *cxt, float gain)
 {
-	m_printf("m_cxt_set_input_gain\n");
+	M_PRINTF("m_cxt_set_input_gain\n");
 	
 	if (!cxt) return ERR_NULL_PTR;
 	
 	int ret_val = m_parameter_trigger_update(&cxt->input_gain, gain);
 	
-	m_printf("m_cxt_set_input_gain done\n");
+	M_PRINTF("m_cxt_set_input_gain done\n");
 	return ret_val;
 }
 
 int m_cxt_set_output_gain(m_context *cxt, float gain)
 {
-	m_printf("m_cxt_set_output_gain\n");
+	M_PRINTF("m_cxt_set_output_gain\n");
 	if (!cxt) return ERR_NULL_PTR;
 	
 	int ret_val = m_parameter_trigger_update(&cxt->output_gain, gain);
 	
-	m_printf("m_cxt_set_input_gain done\n");
+	M_PRINTF("m_cxt_set_input_gain done\n");
 	return ret_val;
 }
 

@@ -6,13 +6,16 @@ static const char *FNAME = "m_fpga_encoding.c";
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 1
+
 int m_fpga_block_opcode_format(int opcode)
 {
 	return (opcode == BLOCK_INSTR_LUT_READ
 		 || opcode == BLOCK_INSTR_DELAY_READ
 		 || opcode == BLOCK_INSTR_DELAY_WRITE
 		 || opcode == BLOCK_INSTR_MEM_READ
-		 || opcode == BLOCK_INSTR_MEM_WRITE)
+		 || opcode == BLOCK_INSTR_MEM_WRITE
+		 || opcode == BLOCK_INSTR_FILTER)
 		 ? INSTR_FORMAT_B : INSTR_FORMAT_A;
 }
 
@@ -58,6 +61,10 @@ uint32_t m_block_instr_encode_resource_aware(m_block *block, const m_eff_resourc
 		
 		switch (block->res->type)
 		{
+			case M_DSP_RESOURCE_LUT:
+				res_handle = block->res->handle;
+				break;
+				
 			case M_DSP_RESOURCE_MEM:
 				res_handle = block->res->handle + (res ? res->memory : 0);
 				break;
@@ -65,6 +72,7 @@ uint32_t m_block_instr_encode_resource_aware(m_block *block, const m_eff_resourc
 			case M_DSP_RESOURCE_DELAY:
 				res_handle = block->res->handle + (res ? res->delays : 0);
 				break;
+				
 		}
 		
 		return m_encode_dsp_block_instr_type_b(block, res_handle);
@@ -294,7 +302,7 @@ int m_fpga_batch_append_transformer(m_fpga_transfer_batch *batch, m_transformer 
 	m_expr_scope *scope = trans->scope;
 	
 	trans->block_position = *pos;
-	m_printf("Updating transformer %p's block position to %d. New value: %d\n", trans, *pos, trans->block_position);
+	M_PRINTF("Updating transformer %p's block position to %d. New value: %d\n", trans, *pos, trans->block_position);
 	
 	m_fpga_batch_append_eff_desc(batch, trans->eff, res, scope, *pos);
 	
@@ -310,7 +318,7 @@ int m_fpga_batch_append_transformers(m_fpga_transfer_batch *batch, m_transformer
 {
 	if (!batch || !list || !res || !pos)
 		return ERR_NULL_PTR;
-	m_printf("m_fpga_batch_append_transformers\n");
+	M_PRINTF("m_fpga_batch_append_transformers\n");
 	
 	m_transformer_pll *current = list;
 	
@@ -320,7 +328,7 @@ int m_fpga_batch_append_transformers(m_fpga_transfer_batch *batch, m_transformer
 		current = current->next;
 	}
 	
-	m_printf("m_fpga_batch_append_transformers done\n");
+	M_PRINTF("m_fpga_batch_append_transformers done\n");
 	return NO_ERROR;
 }
 
@@ -338,6 +346,7 @@ char *m_block_opcode_to_string(uint32_t opcode)
 		case BLOCK_INSTR_DELAY_READ: 	return (char*)"BLOCK_INSTR_DELAY_READ";
 		case BLOCK_INSTR_DELAY_WRITE: 	return (char*)"BLOCK_INSTR_DELAY_WRITE";
 		case BLOCK_INSTR_MEM_WRITE:		return (char*)"BLOCK_INSTR_MEM_WRITE";
+		case BLOCK_INSTR_FILTER:		return (char*)"BLOCK_INSTR_FILTER";
 		case BLOCK_INSTR_MEM_READ:		return (char*)"BLOCK_INSTR_MEM_READ";
 		case BLOCK_INSTR_MIN: 			return (char*)"BLOCK_INSTR_MIN";
 		case BLOCK_INSTR_MAX: 			return (char*)"BLOCK_INSTR_MAX";
@@ -367,6 +376,7 @@ char *m_block_opcode_to_name(uint32_t opcode)
 		case BLOCK_INSTR_DELAY_WRITE: 	return (char*)"delay_write";
 		case BLOCK_INSTR_MEM_WRITE:		return (char*)"mem_write";
 		case BLOCK_INSTR_MEM_READ:		return (char*)"mem_read";
+		case BLOCK_INSTR_FILTER:		return (char*)"filter";
 		case BLOCK_INSTR_MIN: 			return (char*)"min";
 		case BLOCK_INSTR_MAX: 			return (char*)"max";
 		case BLOCK_INSTR_CLAMP: 		return (char*)"clamp";
@@ -396,7 +406,7 @@ void print_instruction_format_a(uint32_t instr)
 	int sat = !!(instr & (1 << 30));
 	int no_shift = !!(instr & (1 << 31));
 	
-	m_printf("%s c%d %s%d %s%d %s%d, (%d%s)",
+	M_PRINTF_("%s c%d %s%d %s%d %s%d, (%d%s)",
 		m_block_opcode_to_name(opcode), dest,
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -423,7 +433,7 @@ void print_instruction_format_b(uint32_t instr)
 	
 	int res_addr = range_bits(instr, 8, 20);
 	
-	m_printf("%s c%d %s%d %s%d $%d",
+	M_PRINTF_("%s c%d %s%d %s%d $%d",
 		m_block_opcode_to_name(opcode), dest,
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -444,16 +454,16 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 {
 	int n = seq.len;
 	
-	m_printf("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
+	M_PRINTF_("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
 	
 	if (!seq.buf)
 	{
-		m_printf("Buffer is NULL!\n");
+		M_PRINTF_("Buffer is NULL!\n");
 	}
 	
 	if (n < 1)
 	{
-		m_printf("Batch has no bytes!\n");
+		M_PRINTF_("Batch has no bytes!\n");
 	}
 	
 	int i = 0;
@@ -472,13 +482,14 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 	uint8_t reg_no = 0;
 	m_fpga_block_addr_t block = 0;
 	uint32_t value = 0;
+	int32_t signed_val;
 	uint32_t instruction = 0;
 	
 	while (i < n)
 	{
 		byte = seq.buf[i];
 		
-		m_printf("\tByte %s%d: 0x%02X. ", (n > 9 && i < 10) ? " " : "", i, byte);
+		M_PRINTF_("\tByte %s%d: 0x%02X. ", (n > 9 && i < 10) ? " " : "", i, byte);
 		
 		switch (state)
 		{
@@ -486,11 +497,11 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 				switch (byte)
 				{
 					case COMMAND_BEGIN_PROGRAM:
-						m_printf("Command BEGIN_PROGRAM");
+						M_PRINTF_("Command BEGIN_PROGRAM");
 						break;
 						
 					case COMMAND_WRITE_BLOCK_INSTR:
-						m_printf("Command WRITE_BLOCK_INSTR");
+						M_PRINTF_("Command WRITE_BLOCK_INSTR");
 						state = 1;
 						ret_state = 2;
 						ctr = 0;
@@ -498,7 +509,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_WRITE_BLOCK_REG_0:
-						m_printf("Command WRITE_BLOCK_REG_0");
+						M_PRINTF_("Command WRITE_BLOCK_REG_0");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -506,7 +517,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_WRITE_BLOCK_REG_1:
-						m_printf("Command WRITE_BLOCK_REG_1");
+						M_PRINTF_("Command WRITE_BLOCK_REG_1");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -514,7 +525,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_ALLOC_DELAY:
-						m_printf("Command ALLOC_DELAY");
+						M_PRINTF_("Command ALLOC_DELAY");
 						state = 5;
 						value = 0;
 						ctr = 0;
@@ -523,11 +534,11 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 						
 					case COMMAND_END_PROGRAM:
-						m_printf("Command END_PROGRAM");
+						M_PRINTF_("Command END_PROGRAM");
 						break;
 
 					case COMMAND_UPDATE_BLOCK_REG_0:
-						m_printf("Command UPDATE_BLOCK_REG_0");
+						M_PRINTF_("Command UPDATE_BLOCK_REG_0");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -535,7 +546,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_UPDATE_BLOCK_REG_1:
-						m_printf("Command UPDATE_BLOCK_REG_1");
+						M_PRINTF_("Command UPDATE_BLOCK_REG_1");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -543,11 +554,11 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 						
 					case COMMAND_COMMIT_REG_UPDATES:
-						m_printf("Command COMMIT_REG_UPDATES");
+						M_PRINTF_("Command COMMIT_REG_UPDATES");
 						break;
 
 					case COMMAND_SET_INPUT_GAIN:
-						m_printf("Command SET_INPUT_GAIN");
+						M_PRINTF_("Command SET_INPUT_GAIN");
 						state = 4;
 						ret_state = 0;
 						value = 0;
@@ -556,12 +567,32 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_SET_OUTPUT_GAIN:
-						m_printf("Command SET_OUTPUT_GAIN");
+						M_PRINTF_("Command SET_OUTPUT_GAIN");
 						state = 4;
 						ret_state = 0;
 						value = 0;
 						ctr = 0;
 						shift = 4;
+						break;
+
+					case COMMAND_ALLOC_FILTER:
+						M_PRINTF_("Command COMMAND_ALLOC_FILTER");
+						state = 6;
+						ret_state = 0;
+						value = 0;
+						ctr = 0;
+						ctr_2 = 0;
+						shift = 0;
+						break;
+
+					case COMMAND_WRITE_FILTER_COEF:
+						M_PRINTF_("Command COMMAND_WRITE_FILTER_COEF");
+						state = 7;
+						ret_state = 0;
+						value = 0;
+						ctr = 0;
+						ctr_2 = 0;
+						shift = 0;
 						break;
 
 				}
@@ -572,7 +603,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 				
 				if (ctr == M_FPGA_BLOCK_ADDR_BYTES - 1)
 				{
-					m_printf("Block number %d", byte);
+					M_PRINTF_("Block number %d", byte);
 					state = ret_state;
 					ctr = 0;
 				}
@@ -603,7 +634,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 				break;
 			
 			case 3: // expecting register number then register value
-				m_printf("Register %d", byte);
+				M_PRINTF_("Register %d", byte);
 				state = 4;
 				break;
 			
@@ -613,7 +644,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 					state = 0;
 					
 					value = (value << 8) | byte;
-					m_printf("Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, 15 - shift)), 1 + shift, 15 - shift);
+					M_PRINTF_("Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, 15 - shift)), 1 + shift, 15 - shift);
 				}
 				else
 				{
@@ -631,7 +662,7 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 				else if (ctr == 2)
 				{
 					value = (value << 8) | byte;
-					m_printf("%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, (15 - shift))));
+					M_PRINTF_("%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, (15 - shift))));
 					
 					ctr = 0;
 					
@@ -652,12 +683,96 @@ int m_fpga_batch_print(m_fpga_transfer_batch seq)
 				}
 				break;
 			
+			case 6:
+				if (ctr_2 == 0)
+				{
+					M_PRINTF_("Format: q%d.%d", 1 + byte, 17 - byte);
+					shift = byte;
+					ctr_2++;
+				}
+				else if (ctr_2 == 1)
+				{
+					if (ctr == 0)
+					{
+						value = byte;
+						ctr++;
+					}
+					else
+					{
+						value = (value << 8) | byte;
+						M_PRINTF_("Feed-forward: %d", value);
+						
+						ctr_2++;
+						ctr = 0;
+					}
+				}
+				else
+				{
+					if (ctr == 0)
+					{
+						value = byte;
+						ctr++;
+					}
+					else
+					{
+						value = (value << 8) | byte;
+						M_PRINTF_("Feed-back:    %d", value);
+						
+						state = 0;
+					}
+				}
+				
+				break;
+			
+			case 7:
+				if (ctr_2 == 0)
+				{
+					M_PRINTF_("Filter %d", byte);
+					ctr_2++;
+					ctr = 0;
+					value = 0;
+				}
+				else if (ctr_2 == 1)
+				{
+					value = (value << 8) | byte;
+					
+					if (ctr == 1)
+					{
+						M_PRINTF_("Coefficient %d", value);
+						ctr = 0;
+						ctr_2++;
+						
+						signed_val = 0;
+					}
+					else
+					{
+						ctr++;
+					}
+				}
+				else
+				{
+					signed_val = (signed_val << 8) | byte;
+					ctr++;
+					
+					if (ctr == 3)
+					{
+						if (signed_val & (1u << 23))
+						{
+							signed_val |= 0xFF000000;
+						}
+						
+						M_PRINTF_("Value: %.04f", ((float)signed_val) * pow(2, -(16 - shift)));
+						state = 0;
+					}
+				}
+				break;
+			
 			default:
-				m_printf("Unknown :(\n");
+				M_PRINTF_("Unknown :(\n");
 				return 1;
 		}
 		
-		m_printf("\n");
+		M_PRINTF_("\n");
 		
 		i++;
 	}

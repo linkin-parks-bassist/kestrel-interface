@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
 #define PARAMETER_ARRAY_CHUNK_SIZE	 	8
 
@@ -107,14 +109,6 @@ int init_transformer_from_effect_desc(m_transformer *trans, m_effect_desc *eff)
 	while (current_param)
 	{
 		m_parameter_pll_safe_append(&trans->parameters, m_parameter_make_clone_for_transformer(current_param->data, trans));
-		if (current_param->data)
-		{
-			current_param->data->trans_rep.representer = trans;
-			if (!current_param->data->reps)
-			{
-				m_representation_pll_safe_append(&current_param->data->reps, &current_param->data->trans_rep);
-			}
-		}
 		current_param = current_param->next;
 	}
 	
@@ -123,14 +117,6 @@ int init_transformer_from_effect_desc(m_transformer *trans, m_effect_desc *eff)
 	while (current_setting)
 	{
 		m_setting_pll_safe_append(&trans->settings, m_setting_make_clone_for_transformer(current_setting->data, trans));
-		if (current_setting->data)
-		{
-			current_setting->data->trans_rep.representer = trans;
-			if (!current_setting->data->reps)
-			{
-				m_representation_pll_safe_append(&current_setting->data->reps, &current_setting->data->trans_rep);
-			}
-		}
 		current_setting = current_setting->next;
 	}
 	
@@ -221,7 +207,7 @@ int request_append_transformer(uint16_t type, m_transformer *local)
 #ifdef USE_TEENSY
 void transformer_receive_id(m_message message, m_response response)
 {
-	m_printf("Transformer receive ID!\n");
+	M_PRINTF("Transformer receive ID!\n");
 	m_transformer *trans = message.cb_arg;
 	
 	if (!trans)
@@ -234,11 +220,11 @@ void transformer_receive_id(m_message message, m_response response)
 	
 	if (!trans->profile || pid != trans->profile->id)
 	{
-		m_printf("Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
+		M_PRINTF("Transformer ID for transformer in profile %d sent to transformer in %d\n", pid, trans->profile->id);
 	}
 	else
 	{
-		m_printf("Transformer %p obtains id %d.%d\n", trans, pid, tid);
+		M_PRINTF("Transformer %p obtains id %d.%d\n", trans, pid, tid);
 		trans->id = tid;
 		
 		transformer_rectify_param_ids(trans);
@@ -304,7 +290,7 @@ m_setting *transformer_add_setting(m_transformer *trans)
 
 int m_transformer_init_view_page(m_transformer *trans, m_ui_page *parent)
 {
-	m_printf("transformer_init_ui_page. trans = %p, parent = %p\n", trans, parent);
+	M_PRINTF("transformer_init_ui_page. trans = %p, parent = %p\n", trans, parent);
 	if (!trans)
 		return ERR_NULL_PTR;
 	
@@ -323,7 +309,7 @@ int m_transformer_init_view_page(m_transformer *trans, m_ui_page *parent)
 /*
 int m_transformer_init_view_page(m_transformer *trans)
 {
-	m_printf("m_transformer_init_view_page(trans = %p)\n", trans);
+	M_PRINTF("m_transformer_init_view_page(trans = %p)\n", trans);
 	
 	if (!trans)
 		return ERR_NULL_PTR;
@@ -341,15 +327,15 @@ int m_transformer_init_view_page(m_transformer *trans)
 	
 	m_profile *profile = trans->profile;
 	
-	m_printf("trans->profile = %p\n", trans->profile);
+	M_PRINTF("trans->profile = %p\n", trans->profile);
 	
 	if (profile)
 	{
-		m_printf("trans->profile->view_page = %p\n", trans->profile->view_page);
+		M_PRINTF("trans->profile->view_page = %p\n", trans->profile->view_page);
 		trans->view_page->parent = profile->view_page;
 	}
 	
-	m_printf("m_transformer_init_view_page done\n");
+	M_PRINTF("m_transformer_init_view_page done\n");
 	return NO_ERROR;
 }*/
 #endif
@@ -599,6 +585,7 @@ int m_transformer_set_setting(m_transformer *trans, const char *name, int value)
 
 void m_transformer_profile_rep_update(void *representer, void *representee)
 {
+	#ifdef M_ENABLE_REPRESENTATIONS
 	m_profile *profile = representer;
 	m_transformer *trans = representee;
 	
@@ -606,16 +593,19 @@ void m_transformer_profile_rep_update(void *representer, void *representee)
 		return;
 	
 	save_profile(profile);
+	#endif
 	
 	return;
 }
 
 int m_transformer_update_reps(m_transformer *trans)
 {
+	#ifdef M_ENABLE_REPRESENTATIONS
 	if (!trans)
 		return ERR_NULL_PTR;
 	
 	queue_representation_list_update(trans->reps);
+	#endif
 	
 	return NO_ERROR;
 }

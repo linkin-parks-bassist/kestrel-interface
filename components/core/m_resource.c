@@ -5,7 +5,29 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_resource.c";
+
 IMPLEMENT_LINKED_PTR_LIST(m_dsp_resource);
+
+m_dsp_resource sin_lut = {
+	.type   = M_DSP_RESOURCE_LUT,
+	.name   = NULL,
+	.handle = 0,
+	.size   = NULL,
+	.delay  = NULL,
+	.data   = NULL
+};
+
+m_dsp_resource tanh_lut = {
+	.type   = M_DSP_RESOURCE_LUT,
+	.name   = NULL,
+	.handle = 1,
+	.size   = NULL,
+	.delay  = NULL,
+	.data   = NULL
+};
 
 int m_init_dsp_resource(m_dsp_resource *res)
 {
@@ -52,7 +74,7 @@ int m_resources_assign_handles(m_dsp_resource_pll *list)
 			switch (current->data->type)
 			{
 				case M_DSP_RESOURCE_DELAY:
-					m_printf("Assigning \"%s\" handle %d...\n", current->data->name, next_delay_handle);
+					M_PRINTF("Assigning \"%s\" handle %d...\n", current->data->name, next_delay_handle);
 					current->data->handle = next_delay_handle;
 					next_delay_handle += 1;
 					break;

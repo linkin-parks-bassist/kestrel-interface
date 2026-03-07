@@ -2,11 +2,13 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_reg_format.c";
 
 int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 {
-	m_printf("m_compute_register_formats\n");
+	M_PRINTF("m_compute_register_formats\n");
 	if (!blocks) return NO_ERROR;
 	
 	m_block_pll *current = blocks;
@@ -35,14 +37,14 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 					min = range.a;
 					max = range.b;
 					
-					m_printf("Block %d register 0 has range [%.06f, %.06f], so ", i, min, max);
+					M_PRINTF("Block %d register 0 has range [%.06f, %.06f], so ", i, min, max);
 					
 					abs_min = (min < 0) ? -min : min;
 					abs_max = (max < 0) ? -max : max;
 					
 					max_abs = abs_min > abs_max ? abs_min : abs_max;
 					
-					m_printf("max absolute value: %f; ", max_abs);
+					M_PRINTF("max absolute value: %f; ", max_abs);
 					
 					format = 0;
 					p2 = 1.0;
@@ -53,7 +55,7 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 						format++;
 					}
 					
-					m_printf("needed format: q%d.%d\n", format + 1, 16 - format - 1);
+					M_PRINTF("needed format: q%d.%d\n", format + 1, 16 - format - 1);
 					
 					current->data->shift = format;
 				}
@@ -69,14 +71,14 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 					min = range.a;
 					max = range.b;
 					
-					m_printf("Block %d register 1 has min %f and maximum %f, so ", i, min, max);
+					M_PRINTF("Block %d register 1 has min %f and maximum %f, so ", i, min, max);
 					
 					abs_min = (min < 0) ? -min : min;
 					abs_max = (max < 0) ? -max : max;
 					
 					max_abs = abs_min > abs_max ? abs_min : abs_max;
 					
-					m_printf("max absolute value: %f; ", max_abs);
+					M_PRINTF("max absolute value: %f; ", max_abs);
 					
 					format = 0;
 					p2 = 1.0;
@@ -87,7 +89,7 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 						format++;
 					}
 					
-					m_printf("needed format: q%d.%d\n", format + 1, M_FPGA_DATA_WIDTH - format - 1);
+					M_PRINTF("needed format: q%d.%d\n", format + 1, M_FPGA_DATA_WIDTH - format - 1);
 				}
 				
 				current->data->reg_1.format = format;
@@ -99,7 +101,7 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 	}
 	
 	
-	m_printf("m_compute_register_formats done\n");
+	M_PRINTF("m_compute_register_formats done\n");
 	
 	return NO_ERROR;
 }

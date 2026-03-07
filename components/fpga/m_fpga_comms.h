@@ -1,7 +1,7 @@
 #ifndef M_FPGA_COMMS_H_
 #define M_FPGA_COMMS_H_
 
-//#define PRINT_TRANSFER_BATCHES
+#define PRINT_TRANSFER_BATCHES
 //#define PRINT_COMMANDS
 
 void m_fpga_comms_task(void *param);

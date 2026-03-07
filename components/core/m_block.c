@@ -4,6 +4,8 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 IMPLEMENT_LINKED_PTR_LIST(m_block);
 
 m_block_operand operand_const_zero()

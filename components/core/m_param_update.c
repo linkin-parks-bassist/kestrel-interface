@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_param_update.c";
 
 #ifdef M_USE_FREERTOS
@@ -18,6 +20,7 @@ static int n_updates = 0;
 
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
 
+int queue_initd = 0;
 QueueHandle_t update_rtos_queue;
 
 void remove_param_update(int index)
@@ -50,12 +53,13 @@ int add_param_update(m_parameter_update up)
 
 void print_parameter_update(m_parameter_update up)
 {
-	m_printf("%d.%d.%d -> %s%.03f\n", up.id.profile_id, up.id.transformer_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
+	M_PRINTF("%d.%d.%d -> %s%.03f\n", up.id.profile_id, up.id.transformer_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
 }
 
 void m_param_update_task(void *arg)
 {
 	update_rtos_queue = xQueueCreate(16, sizeof(m_parameter_update));
+	queue_initd = 1;
 	
 	TickType_t last_wake = xTaskGetTickCount();
 	
@@ -78,7 +82,7 @@ void m_param_update_task(void *arg)
 			enqueue = 1;
 			for (int i = 0; i < n_updates; i++)
 			{
-				print_parameter_update(current);
+				//print_parameter_update(current);
 				if (update_array[i].id.profile_id 		== current.id.profile_id
 				 && update_array[i].id.transformer_id 	== current.id.transformer_id
 				 && update_array[i].id.parameter_id 	== current.id.parameter_id)
@@ -94,7 +98,7 @@ void m_param_update_task(void *arg)
 			
 			for (int j = update_queue_head; j != update_queue_tail; j = (j + 1) % UPDATE_QUEUE_LENGTH)
 			{
-				print_parameter_update(update_queue[j]);
+				//print_parameter_update(update_queue[j]);
 				
 				if (update_queue[j].id.profile_id 		== current.id.profile_id
 				 && update_queue[j].id.transformer_id 	== current.id.transformer_id
@@ -117,7 +121,7 @@ void m_param_update_task(void *arg)
 		{
 			update_array[n_updates++] = update_queue[update_queue_head];
 			update_queue_head = (update_queue_head + 1) % UPDATE_QUEUE_LENGTH;
-			print_parameter_update(update_array[n_updates - 1]);
+			//print_parameter_update(update_array[n_updates - 1]);
 		}
 		
 		
@@ -126,7 +130,7 @@ void m_param_update_task(void *arg)
 		for (int i = 0; i < n_updates; i++)
 		{
 			current = update_array[i];
-			print_parameter_update(current);
+			//print_parameter_update(current);
 			
 			if (cxt_get_parameter_and_transformer_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t) != NO_ERROR)
 			{
@@ -247,17 +251,19 @@ void m_param_update_task(void *arg)
 
 int m_parameter_trigger_update(m_parameter *param, float target)
 {
-	m_printf("m_parameter_trigger_update, param = %p, target = %f\n", param, target);
+	M_PRINTF("m_parameter_trigger_update, param = %p, target = %f\n", param, target);
 	if (!param)
 		return ERR_NULL_PTR;
 	
-	m_printf("Parameter %s, ID %d.%d.%d. Current value: %f. Update target: %f. Max velocity: %f\n",
+	M_PRINTF("Parameter %s, ID %d.%d.%d. Current value: %f. Update target: %f. Max velocity: %f\n",
 		param->name, param->id.profile_id, param->id.transformer_id, param->id.parameter_id,
 		param->value, target, param->max_velocity);
 	
 	m_parameter_update up;
 	up.id = param->id;
 	up.target = target;
+	
+	while (!queue_initd);
 	
 	if (xQueueSend(update_rtos_queue, &up, pdMS_TO_TICKS(1)) != pdPASS)
 		return ERR_CURRENTLY_EXHAUSTED;
@@ -267,7 +273,7 @@ int m_parameter_trigger_update(m_parameter *param, float target)
 #else
 int m_parameter_trigger_update(m_parameter *param, float target)
 {
-	m_printf("m_parameter_trigger_update, param = %p, target = %f\n", param, target);
+	M_PRINTF("m_parameter_trigger_update, param = %p, target = %f\n", param, target);
 	if (!param)
 		return ERR_NULL_PTR;
 	

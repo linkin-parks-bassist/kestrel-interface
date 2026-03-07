@@ -1,10 +1,12 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_transformer_view.c";
 
 m_ui_page *create_transformer_view_for(m_transformer *trans)
 {
-	m_printf("create_transformer_view_for(trans = %p)\n", trans);
+	M_PRINTF("create_transformer_view_for(trans = %p)\n", trans);
 	
 	if (!trans)
 		return NULL;
@@ -32,7 +34,7 @@ m_ui_page *create_transformer_view_for(m_transformer *trans)
 		return NULL;
 	}
 	
-	m_printf("create_transformer_view_for done\n");
+	M_PRINTF("create_transformer_view_for done\n");
 	return page;
 }
 
@@ -101,7 +103,7 @@ void transformer_view_enter_settings_cb(lv_event_t *e)
 
 int configure_transformer_view(m_ui_page *page, void *data)
 {
-	m_printf("Conpfigure transformer view... page = %p, data = %p\n", page, data);
+	//m_printf("Conpfigure transformer view... page = %p, data = %p\n", page, data);
 	if (!page || !data)
 	{
 		if (page)
@@ -187,7 +189,7 @@ int configure_transformer_view(m_ui_page *page, void *data)
 
 int create_transformer_view_ui(m_ui_page *page)
 {
-	m_printf("create_transformer_view_ui\n");
+	M_PRINTF("create_transformer_view_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -259,7 +261,7 @@ int create_transformer_view_ui(m_ui_page *page)
 			if (current_param->data->param)
 			{
 				group = current_param->data->param->group;
-				m_printf("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
+				M_PRINTF("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
 					current_param->data->param->name, current_param->data->param->name_internal, group);
 				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
 				{
@@ -290,7 +292,7 @@ int create_transformer_view_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	m_printf("create_transformer_view_ui done\n");
+	M_PRINTF("create_transformer_view_ui done\n");
 	return NO_ERROR;
 }
 

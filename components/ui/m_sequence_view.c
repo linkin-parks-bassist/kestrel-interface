@@ -1,5 +1,7 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_sequence_view.c";
 
 int create_sequence_view_for(m_sequence *sequence)
@@ -114,7 +116,7 @@ void seq_play_cb(lv_event_t *e)
 	
 	if (!str->sequence)
 	{
-		m_printf("ERROR: no sequence\n");
+		M_PRINTF("ERROR: no sequence\n");
 		return;
 	}
 	
@@ -126,25 +128,25 @@ void seq_play_cb(lv_event_t *e)
 
 void seq_plus_cb(lv_event_t *e)
 {
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
 	m_ui_page *page = lv_event_get_user_data(e);
 	
 	if (!page) return;
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
 	m_sequence_view_str *str = (m_sequence_view_str*)page->data_struct;
 	
 	if (!str) return;
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
 	m_profile *new_profile = create_new_profile();
 	
 	if (!new_profile) return;
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
 	new_profile->sequence = str->sequence;
 	
@@ -152,21 +154,21 @@ void seq_plus_cb(lv_event_t *e)
 	
 	if (!node) return;
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
 	m_active_button *button = m_active_button_array_append_new(str->array, node->data, node->data->name);
 	
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	m_active_button_set_representation(button, button, new_profile, sequence_view_profile_button_rep_update);
 	
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	if (page->ui_created)
 		m_active_button_create_ui(button, page->container);
 	
 	
-	m_printf("seq_plus_cb, line %d\n", __LINE__);
+	M_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	m_profile_add_representation(new_profile, &button->rep);
 	
 	return;
@@ -348,7 +350,7 @@ int configure_sequence_view(m_ui_page *page, void *data)
 
 int create_sequence_view_ui(m_ui_page *page)
 {
-	m_printf("create_sequence_view_ui\n");
+	M_PRINTF("create_sequence_view_ui\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -369,7 +371,7 @@ int create_sequence_view_ui(m_ui_page *page)
 	
 	page->ui_created = 1;
 	
-	m_printf("create_sequence_view_ui done\n");
+	M_PRINTF("create_sequence_view_ui done\n");
 	return NO_ERROR;
 }
 
@@ -445,15 +447,15 @@ void sequence_view_rep_update(void *representer, void *representee)
 
 void sequence_view_profile_button_rep_update(void *representer, void *representee)
 {
-	m_printf("sequence_view_profile_button_rep_update\n");
+	M_PRINTF("sequence_view_profile_button_rep_update\n");
 	m_active_button *button  = (m_active_button*)representer;
 	m_profile *profile = (m_profile*)representee;
 	
-	m_printf("button = %p, profile = %s\n", button, profile ? (profile->name ? profile->name : "Unnamed Profile") : "NULL");
+	M_PRINTF("button = %p, profile = %s\n", button, profile ? (profile->name ? profile->name : "Unnamed Profile") : "NULL");
 	
 	if (!button || !profile)
 	{
-		m_printf("sequence_view_profile_button_rep_update bailing...\n");
+		M_PRINTF("sequence_view_profile_button_rep_update bailing...\n");
 		return;
 	}
 	
@@ -461,16 +463,16 @@ void sequence_view_profile_button_rep_update(void *representer, void *represente
 	
 	if (profile->active)
 	{
-		m_printf("profile is active; activating active symbol\n");
+		M_PRINTF("profile is active; activating active symbol\n");
 		m_active_button_swap_del_button_for_persistent_unclickable(button, LV_SYMBOL_PLAY);
 	}
 	else
 	{
-		m_printf("profile is inactive; disabling active symbol\n");
+		M_PRINTF("profile is inactive; disabling active symbol\n");
 		m_active_button_reset_del_button(button);
 	}
 	
-	m_printf("sequence_view_profile_button_rep_update done\n");
+	M_PRINTF("sequence_view_profile_button_rep_update done\n");
 	
 	return;
 }
