@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 #include "m_param_update.h"
 
 static const char *FNAME = "m_parameter_widget.c";

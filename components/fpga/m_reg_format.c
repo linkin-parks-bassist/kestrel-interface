@@ -2,14 +2,20 @@
 
 #include "m_int.h"
 
-#define PRINTLINES_ALLOWED 0
+#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+#endif
 
 static const char *FNAME = "m_reg_format.c";
 
 int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 {
 	M_PRINTF("m_compute_register_formats\n");
-	if (!blocks) return NO_ERROR;
+	if (!blocks)
+	{
+		M_PRINTF("m_compute_register_formats: no blocks!\n");
+		return NO_ERROR;
+	}
 	
 	m_block_pll *current = blocks;
 	
@@ -29,6 +35,8 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 			shift_set = current->data->shift_set;
 			format = current->data->shift;
 			
+			M_PRINTF("m_compute_register_formats(current->data = %p), shift_set = %d, format = %d, reg_0_active: %d, reg_1_active: %d\n",
+				current->data, shift_set, format, current->data->reg_0.active, current->data->reg_1.active);
 			if (current->data->reg_0.active)
 			{
 				if (!shift_set && current->data->reg_0.expr)

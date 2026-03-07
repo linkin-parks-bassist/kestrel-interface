@@ -96,4 +96,11 @@ extern m_expression m_expression_int_max;
 extern m_expression m_expression_int_min;
 extern m_expression m_expression_freq_max;
 
+typedef struct {
+	const char *name;
+	m_expression *expr;
+} m_named_expression;
+
+DECLARE_LINKED_PTR_LIST(m_named_expression);
+
 #endif

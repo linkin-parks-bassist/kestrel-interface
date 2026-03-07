@@ -1,6 +1,8 @@
 #include "m_int.h"
 
-#define PRINTLINES_ALLOWED 0
+#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+#endif
 
 static const char *FNAME = "m_eff_section.c";
 
@@ -132,6 +134,58 @@ int m_resources_section_extract(m_eff_parsing_state *ps, m_dsp_resource_pll **li
 	return NO_ERROR;
 }
 
+int m_defs_section_extract(m_eff_parsing_state *ps, m_expr_scope *scope, struct m_ast_node *sect)
+{
+	M_PRINTF("m_defs_section_extract(ps = %p, scope = %p, sect = %p)\n", ps, scope, sect);
+	if (!scope || !sect || !ps)
+		return ERR_NULL_PTR;
+	
+	m_eff_desc_file_section *sec = (m_eff_desc_file_section*)sect->data;
+	
+	if (!sec) return ERR_BAD_ARGS;
+	
+	m_dictionary *dict = sec->dict;
+	m_named_expression *nexpr;
+	
+	if (!dict)
+		return ERR_BAD_ARGS;
+	
+	M_PRINTF("dict exists and has %d entries.\n", dict->n_entries);
+	
+	int ret_val = NO_ERROR;
+	for (int i = 0; i < dict->n_entries; i++)
+	{
+		M_PRINTF("Entry %d, name: \"%s\", type: %s\n", i,  dict->entries[i].name, m_dict_entry_type_to_string(dict->entries[i].type));
+		if (dict->entries[i].type == DICT_ENTRY_TYPE_EXPR)
+		{
+			M_PRINTF("Expression. Adding to defs...\n");
+			nexpr = m_alloc(sizeof(m_named_expression));
+			
+			if (!nexpr)
+				return ERR_ALLOC_FAIL;
+			
+			nexpr->name = m_strndup(dict->entries[i].name, 64);
+			nexpr->expr = dict->entries[i].value.val_expr;
+			
+			ret_val = m_named_expression_pll_safe_append(&ps->def_exprs, nexpr);
+			
+			if (ret_val != NO_ERROR)
+			{
+				M_PRINTF("Error adding to defs: %s\n", m_error_code_to_string(ret_val));
+				return ret_val;
+			}
+			
+			ret_val = m_expr_scope_add_expr(ps->scope, dict->entries[i].name, dict->entries[i].value.val_expr);
+		}
+		else
+		{
+			m_parser_error_at_line(ps, dict->entries[i].line, ".DEFS section entry DEFS.%s is not an expression\n", dict->entries[i].name);
+		}
+	}
+	
+	return NO_ERROR;
+}
+
 int m_dictionary_section_lookup_str(m_ast_node *section, const char *name, const char **result)
 {
 	if (!section) return ERR_NULL_PTR;
@@ -190,4 +244,46 @@ int m_dictionary_section_lookup_dict(m_ast_node *section, const char *name, m_di
 	if (!sec || !sec->dict) return ERR_BAD_ARGS;
 	
 	return m_dictionary_lookup_dict(sec->dict, name, result);
+}
+
+int m_parse_dictionary_section(m_eff_parsing_state *ps, m_ast_node *section)
+{
+	if (!ps || !section)
+		return ERR_NULL_PTR;
+	
+	if (section->type != M_AST_NODE_SECTION)
+		return ERR_BAD_ARGS;
+	
+	m_eff_desc_file_section *sec = (m_eff_desc_file_section*)section->data;
+	
+	m_token_ll *tokens = sec->tokens;
+	
+	if (!tokens)
+		return ERR_BAD_ARGS;
+	
+	ps->current_token = tokens->next;
+	
+	return m_parse_dictionary(ps, &sec->dict, sec->name);
+}
+
+
+int m_parse_code_section(m_eff_parsing_state *ps, m_ast_node *section)
+{
+	if (!ps || !section)
+		return ERR_NULL_PTR;
+	
+	if (section->type != M_AST_NODE_SECTION)
+		return ERR_BAD_ARGS;
+	
+	m_eff_desc_file_section *sec = (m_eff_desc_file_section*)section->data;
+	m_token_ll *tokens = sec->tokens;
+	
+	if (!tokens)
+		return ERR_BAD_ARGS;
+	
+	ps->current_token = tokens->next;
+	
+	int ret_val = m_parse_asm(ps);
+	
+	return ret_val;
 }

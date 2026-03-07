@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_profile.c";
 
@@ -398,6 +400,7 @@ int m_profile_program_fpga(m_profile *profile)
 	
 	m_fpga_transfer_batch batch;
 	
+	#ifndef M_LIBRARY
 	M_PRINTF("m_profile_program_fpga\n");
 	int ret_val = m_pipeline_create_fpga_transfer_batch(&profile->pipeline, &batch);
 	
@@ -411,6 +414,7 @@ int m_profile_program_fpga(m_profile *profile)
 		M_PRINTF("An error was encountered: %s\n", m_error_code_to_string(ret_val));
 		return ret_val;
 	}
+	#endif
 	
 	return NO_ERROR;
 }

@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_expr_scope.c";
 
@@ -186,26 +188,48 @@ int m_expr_scope_add_settings(m_expr_scope *scope, m_setting_pll *settings)
 
 m_expr_scope_entry *m_expr_scope_fetch(m_expr_scope *scope, const char *name)
 {
+	M_PRINTF("m_expr_scope_fetch(scope = %p, name = %p = %s)\n", scope, name, name ? name : "(NULL)");
 	if (!scope || !name)
 		return NULL;
 	
 	m_expr_scope_entry_pll *current = scope->entries;
 	
+	int i = 0;
 	while (current)
 	{
+		M_PRINTF("Entry %d ", i);
 		if (current->data)
 		{
+			M_PRINTF("exists ");
 			if (current->data->name)
 			{
+				M_PRINTF("has name \"%s\"\n", current->data->name);
 				if (strcmp(current->data->name, name) == 0)
 				{
 					return current->data;
 				}
 			}
+			else
+			{
+				M_PRINTF("has no name. Moving on...");
+			}
+		}
+		else
+		{
+			M_PRINTF("does not exist. Moving on...");
 		}
 		
+		M_PRINTF("\n");
 		current = current->next;
 	}
 	
 	return NULL;
+}
+
+m_expr_scope *m_expr_scope_copy(m_expr_scope *scope)
+{
+	if (!scope)
+		return NULL;
+	
+	m_expr_scope *result;
 }

@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 1
+#endif
 
 static const char *FNAME = "m_expr_parser.c";
 
@@ -191,7 +193,7 @@ m_expression *m_parse_expression_rec_pratt(m_eff_parsing_state *ps,
 	return lhs;
 
 pratt_bail:
-	// free anything allocated
+	// free anything allocated .. ?
 	return NULL;
 }
 

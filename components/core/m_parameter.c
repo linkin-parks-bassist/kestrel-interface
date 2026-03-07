@@ -1,7 +1,9 @@
 #include <float.h>
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 #define DEFAULT_MAX_VELOCITY 1.0
 

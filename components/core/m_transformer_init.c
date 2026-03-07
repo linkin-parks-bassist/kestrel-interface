@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *unit_string_    = "";
 static const char *unit_string_hz  = " Hz";

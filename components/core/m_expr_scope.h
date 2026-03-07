@@ -46,4 +46,6 @@ int m_expr_scope_add_settings(m_expr_scope *scope, struct m_setting_pll *setting
 
 m_expr_scope_entry *m_expr_scope_fetch(m_expr_scope *scope, const char *name);
 
+m_expr_scope *m_expr_scope_copy(m_expr_scope *scope);
+
 #endif

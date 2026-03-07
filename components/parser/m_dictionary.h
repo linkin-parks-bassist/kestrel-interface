@@ -14,6 +14,7 @@ struct m_dictionary;
 typedef struct {
 	const char *name;
 	int type;
+	int line;
 	union {
 		int val_int;
 		float val_float;
@@ -22,6 +23,8 @@ typedef struct {
 		struct m_dictionary *val_dict;
 	} value;
 } m_dictionary_entry;
+
+const char *m_dict_entry_type_to_string(int type);
 
 typedef struct m_dictionary {
 	const char *name;

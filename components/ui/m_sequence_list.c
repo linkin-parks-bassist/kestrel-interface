@@ -2,7 +2,9 @@
 
 static const char *FNAME = "m_sequence_list.c";
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 m_menu_item *create_sequence_listing_menu_item(char *text, m_sequence *sequence, m_ui_page *parent)
 {

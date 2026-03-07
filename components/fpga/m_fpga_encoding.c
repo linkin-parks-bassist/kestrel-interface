@@ -6,7 +6,17 @@ static const char *FNAME = "m_fpga_encoding.c";
 
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 1
+#endif
+
+#ifdef PRINT_TRANSFER_BATCHES
+#ifdef PRINTLINES_ALLOWED
+#undef PRINTLINES_ALLOWED
+#endif
+#define PRINTLINES_ALLOWED 1
+#endif
+
 
 int m_fpga_block_opcode_format(int opcode)
 {
@@ -406,11 +416,11 @@ void print_instruction_format_a(uint32_t instr)
 	int sat = !!(instr & (1 << 30));
 	int no_shift = !!(instr & (1 << 31));
 	
-	M_PRINTF_("%s c%d %s%d %s%d %s%d, (%d%s)",
-		m_block_opcode_to_name(opcode), dest,
+	M_PRINTF_("%s %s%d %s%d %s%d, c%d (%d%s)",
+		m_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
-			src_c_reg ? "r" : "c", src_c,
+			src_c_reg ? "r" : "c", src_c, dest,
 			shift, sat ? ", unsat" : "");
 }
 
@@ -433,11 +443,11 @@ void print_instruction_format_b(uint32_t instr)
 	
 	int res_addr = range_bits(instr, 8, 20);
 	
-	M_PRINTF_("%s c%d %s%d %s%d $%d",
-		m_block_opcode_to_name(opcode), dest,
+	M_PRINTF_("%s %s%d %s%d $%d c%d",
+		m_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
-			res_addr);
+			res_addr, dest);
 }
 
 void print_instruction(uint32_t instr)

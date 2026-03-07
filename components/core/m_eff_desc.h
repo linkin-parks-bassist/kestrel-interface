@@ -9,6 +9,7 @@ typedef struct {
 	m_setting_pll *settings;
 	m_parameter_pll *parameters;
 	m_dsp_resource_pll *resources;
+	m_named_expression_pll *def_exprs;
 	
 	m_eff_resource_report res_rpt;
 	

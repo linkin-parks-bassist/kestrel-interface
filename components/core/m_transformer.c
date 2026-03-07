@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
 #define PARAMETER_ARRAY_CHUNK_SIZE	 	8
@@ -516,6 +518,7 @@ m_expr_scope *m_transformer_create_scope(m_transformer *trans)
 	
 	m_parameter_pll *current_param = trans->parameters;
 	m_setting_pll *current_setting = trans->settings;
+	m_named_expression_pll *current_def_expr = trans->eff ? trans->eff->def_exprs : NULL;
 	
 	while (current_param)
 	{
@@ -531,6 +534,15 @@ m_expr_scope *m_transformer_create_scope(m_transformer *trans)
 			m_expr_scope_add_setting(scope, current_setting->data);
 		
 		current_setting = current_setting->next;
+	}
+	
+	
+	while (current_def_expr)
+	{
+		if (current_def_expr->data)
+			m_expr_scope_add_expr(scope, current_def_expr->data->name, current_def_expr->data->expr);
+		
+		current_def_expr = current_def_expr->next;
 	}
 	
 	return scope;

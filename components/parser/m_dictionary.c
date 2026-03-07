@@ -5,9 +5,24 @@
 
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_dictionary.c";
+
+const char *m_dict_entry_type_to_string(int type)
+{
+	switch (type)
+	{
+		case DICT_ENTRY_TYPE_INT: 		return "DICT_ENTRY_TYPE_INT";
+		case DICT_ENTRY_TYPE_FLOAT: 	return "DICT_ENTRY_TYPE_FLOAT";
+		case DICT_ENTRY_TYPE_STR: 		return "DICT_ENTRY_TYPE_STR";
+		case DICT_ENTRY_TYPE_EXPR: 		return "DICT_ENTRY_TYPE_EXPR";
+		case DICT_ENTRY_TYPE_SUBDICT: 	return "DICT_ENTRY_TYPE_SUBDICT";
+		default: return "DICT_ENTRY_TYPE_UNKNOWN";
+	}
+}
 
 m_dictionary *m_new_dictionary()
 {
@@ -330,6 +345,8 @@ int m_parse_dict_val(m_eff_parsing_state *ps, m_dictionary_entry *result)
 	
 	int paren_cnt = 0;
 	int n_tokens = 0;
+	
+	result->line = current->line;
 	
 	while (end)
 	{

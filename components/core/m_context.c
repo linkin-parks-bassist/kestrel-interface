@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 #define INITIAL_PROFILE_ARRAY_LENGTH 8
 #define PROFILE_ARRAY_CHUNK_SIZE	 8

@@ -37,11 +37,12 @@ typedef struct m_eff_parsing_state {
 	
 	m_token_ll *current_token;
 	
-	struct m_asm_line_pll *asm_lines;
-	m_block_pll *blocks;
-	m_parameter_pll *parameters;
-	m_setting_pll *settings;
-	m_dsp_resource_pll *resources;
+	struct m_asm_line_pll 	*asm_lines;
+	m_block_pll 			*blocks;
+	m_parameter_pll 		*parameters;
+	m_setting_pll 			*settings;
+	m_dsp_resource_pll 		*resources;
+	m_named_expression_pll 	*def_exprs;
 	
 	m_expr_scope *scope;
 	
@@ -54,9 +55,6 @@ extern const char *ver_str;
 
 struct m_dictionary;
 
-int m_parse_dict_val(m_eff_parsing_state *ps, m_dictionary_entry *result);
-int m_parse_dictionary_section(m_eff_parsing_state *ps, m_ast_node *section);
-int m_parse_code_section(m_eff_parsing_state *ps, m_ast_node *section);
 int m_parse_dictionary(m_eff_parsing_state *ps, m_dictionary **result, const char *name);
 
 m_effect_desc *m_read_eff_desc_from_file(char *fname);

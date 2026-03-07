@@ -1,6 +1,10 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
+#endif
 
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 

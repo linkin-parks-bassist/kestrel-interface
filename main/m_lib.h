@@ -5,9 +5,9 @@
 extern "C" {
 #endif
 
-#define m_printf printf
-
 #define M_FILENAME_LEN 128
+
+#define PRINT_TRANSFER_BATCHES
 
 #include <string.h>
 #include <stdlib.h>
@@ -69,6 +69,9 @@ extern "C" {
 #include "m_reg_format.h"
 #include "m_fpga_encoding.h"
 #include "m_dict_extract.h"
+#include "m_printf.h"
+
+#define PRINTLINES_ALLOWED 0
 
 #ifdef __cplusplus
 }

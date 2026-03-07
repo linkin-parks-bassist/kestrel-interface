@@ -5,7 +5,9 @@
 
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_resource.c";
 

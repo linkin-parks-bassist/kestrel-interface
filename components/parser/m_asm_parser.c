@@ -4,7 +4,9 @@
 
 #include "m_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_asm_parser.c";
 
@@ -59,6 +61,17 @@ static const m_arg_format arg_format_std_2 = {
 	.shift_pos = M_ARG_POS_NONE
 };
 
+static const m_arg_format arg_format_mac = {
+	.n_args = 2,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = 1,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = M_ARG_POS_NONE,
+	.shift_pos = M_ARG_POS_NONE
+};
+
 static const m_arg_format arg_format_add = {
 	.n_args = 3,
 	
@@ -102,7 +115,7 @@ static const m_arg_format arg_format_read = {
 	.dest_pos  = 0,
 	.shift_pos = M_ARG_POS_NONE
 };
-
+/*
 static const m_arg_format arg_format_write = {
 	.n_args = 1,
 	
@@ -113,7 +126,7 @@ static const m_arg_format arg_format_write = {
 	.dest_pos  = M_ARG_POS_NONE,
 	.shift_pos = M_ARG_POS_NONE
 };
-
+*/
 static const m_arg_format arg_format_res_read = {
 	.n_args = 2,
 	
@@ -164,7 +177,7 @@ const m_arg_format *m_instr_arg_format(const char *instr)
 	
 	if (strcmp(instr, "nop"         ) == 0) return &arg_format_std_0;
 	if (strcmp(instr, "mov"         ) == 0) return &arg_format_std_1;
-	if (strcmp(instr, "add"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "add"         ) == 0) return &arg_format_add;
 	if (strcmp(instr, "sub"         ) == 0) return &arg_format_std_2;
 	if (strcmp(instr, "mul"         ) == 0) return &arg_format_std_2;
 	if (strcmp(instr, "madd"        ) == 0) return &arg_format_std_3;
@@ -176,10 +189,10 @@ const m_arg_format *m_instr_arg_format(const char *instr)
 	if (strcmp(instr, "max"         ) == 0) return &arg_format_std_2;
 	if (strcmp(instr, "clamp"       ) == 0) return &arg_format_std_3;
 	if (strcmp(instr, "mov_acc"     ) == 0) return &arg_format_read;
-	if (strcmp(instr, "macz"        ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "mac"         ) == 0) return &arg_format_std_3;
-	if (strcmp(instr, "umac"        ) == 0) return &arg_format_std_3;
+	if (strcmp(instr, "macz"        ) == 0) return &arg_format_mac;
+	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_mac;
+	if (strcmp(instr, "mac"         ) == 0) return &arg_format_mac;
+	if (strcmp(instr, "umac"        ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
 	if (strcmp(instr, "delay_mwrite") == 0) return &arg_format_res_write_2;
@@ -659,7 +672,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 		current = ps->current_token;
 	}
 	
-	printf("Line has %d args\n", line->n_args);
+	M_PRINTF("Line has %d args\n", line->n_args);
 	
 	m_asm_line_pll_safe_append(&ps->asm_lines, line);
 	
@@ -1290,7 +1303,7 @@ int m_process_asm_line(m_eff_parsing_state *ps, m_asm_line *line)
 	int line_number = line->line_number;
 	
 	m_block *block = NULL;
-	m_arg_format *arg_format = m_instr_arg_format(line->instr);
+	const m_arg_format *arg_format = m_instr_arg_format(line->instr);
 	
 	m_dsp_resource *resource;
 	
@@ -1309,9 +1322,7 @@ int m_process_asm_line(m_eff_parsing_state *ps, m_asm_line *line)
 	if (!block)
 		return ERR_ALLOC_FAIL;
 	
-	block->res = NULL;
-	block->shift = 0;
-	block->shift_set = 0;
+	memset(block, 0, sizeof(m_block));
 	
 	block->instr = m_instr_opcode(line->instr);
 	

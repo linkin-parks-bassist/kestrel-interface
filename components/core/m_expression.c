@@ -6,9 +6,13 @@
 
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 static const char *FNAME = "m_expression.c";
+
+IMPLEMENT_LINKED_PTR_LIST(m_named_expression);
 
 #define M_EXPRESSION_CONST(x) { \
 	.type = M_EXPR_CONST,		\
@@ -160,20 +164,20 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	if (!expr || depth > M_EXPR_REC_MAX_DEPTH)
 		return 1;
 	
-	//m_printf("The expression \"%s\" ", m_expression_to_string(expr));
+	//M_PRINTF("The expression \"%s\" ", m_expression_to_string(expr));
 	
 	int ret_val = 1;
 	
 	if (expr->type == M_EXPR_CONST)
 	{
-		//m_printf("is a constant.\n");
+		//M_PRINTF("is a constant.\n");
 		ret_val = 1;
 		goto detect_constants_finish;
 	}
 	
 	if (expr->type == M_EXPR_REF)
 	{
-		//m_printf("is a reference");
+		//M_PRINTF("is a reference");
 		ret_val = m_expression_refers_constant(expr);
 		//if (ret_val)
 		//	M_PRINTF(" to a constant.\n");
@@ -187,11 +191,11 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	
 	if (arity > 0)
 	{
-		//m_printf("has top-level arity %d. To see if it's constant, we check its %d top-level sub-expressions.\n", arity, arity);
+		//M_PRINTF("has top-level arity %d. To see if it's constant, we check its %d top-level sub-expressions.\n", arity, arity);
 		
 		if (!expr->val.sub_exprs)
 		{
-			//m_printf("Unfortunately, the data is corrupted, and no sub-expressions were found.\n");
+			//M_PRINTF("Unfortunately, the data is corrupted, and no sub-expressions were found.\n");
 			ret_val = 1;
 			goto detect_constants_finish;
 		}
@@ -206,7 +210,7 @@ int m_expression_detect_constants_rec(m_expression *expr, int depth)
 	
 detect_constants_finish:
 	expr->constant = ret_val;
-	//m_printf("Therefore, \"%s\" is %sconstant.\n", m_expression_to_string(expr), ret_val ? "" : "NOT ");
+	//M_PRINTF("Therefore, \"%s\" is %sconstant.\n", m_expression_to_string(expr), ret_val ? "" : "NOT ");
 	
 	return ret_val;
 }
@@ -225,6 +229,8 @@ static float m_expression_evaluate_rec(m_expression *expr, m_expr_scope *scope, 
 	
 	float x = 0.0;
 	float ret_val;
+	
+	M_PRINTF("[Depth %d] m_expression_evaluate_rec(\"%s\") in scope %p\n", depth, m_expression_to_string(expr), scope);
 	
 	if (depth > M_EXPR_REC_MAX_DEPTH)
 	{
@@ -448,7 +454,7 @@ expr_compute_return:
 float m_expression_evaluate(m_expression *expr, m_expr_scope *scope)
 {
 	float ret_val = m_expression_evaluate_rec(expr, scope, 0);
-	//m_printf("Evaluating expression; %s = %.04f\n", m_expression_to_string(expr), ret_val);
+	//M_PRINTF("Evaluating expression; %s = %.04f\n", m_expression_to_string(expr), ret_val);
 	return ret_val;
 }
 

@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include "m_int.h"
 
 static const char *FNAME = "m_printf.c";

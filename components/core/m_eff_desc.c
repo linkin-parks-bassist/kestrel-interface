@@ -1,6 +1,8 @@
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
+#endif
 
 IMPLEMENT_LINKED_PTR_LIST(m_effect_desc);
 
@@ -15,6 +17,8 @@ int m_init_effect_desc(m_effect_desc *eff)
 	eff->scope  = NULL;
 	eff->cname = NULL;
 	eff->name = NULL;
+	
+	eff->def_exprs = NULL;
 	
 	return NO_ERROR;
 }
