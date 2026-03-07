@@ -4,12 +4,229 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 1
+
+static const char *FNAME = "m_asm_parser.c";
+
 #define CH_DELIMITER 'c'
-#define DQ_DELIMITER "["
+#define M_EXPR_DELIMITER "["
 #define RS_DELIMITER "$"
 #define DQ_CODELIMITER "]"
 
-int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_arg *arg)
+IMPLEMENT_LINKED_PTR_LIST(m_asm_line);
+
+static const char *instrs [] = {
+	"nop", "mov", "add", "sub", "mul",
+	"madd", "arsh", "lsh", "rsh", "abs",
+	"min", "max", "clamp", "mov_acc",
+	"macz", "umacz", "mac", "umac",
+	"delay_read", "delay_write", "delay_mwrite",
+	"mem_read", "mem_write", "filter",
+	"tanh4", "sin2pi"
+};
+
+static const int n_instrs = sizeof(instrs) / sizeof(instrs[0]);
+
+static const m_arg_format arg_format_std_0 = {
+	.n_args = 0,
+	
+	.arg_a_pos = M_ARG_POS_NONE,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.dest_pos  = M_ARG_POS_NONE,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_std_1 = {
+	.n_args = 2,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 1,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_std_2 = {
+	.n_args = 3,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = 1,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 2,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_add = {
+	.n_args = 3,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = 1,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 2,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_std_3 = {
+	.n_args = 4,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = 1,
+	.arg_c_pos = 2,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 3,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_shift = {
+	.n_args = 3,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = 1,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 3,
+	.shift_pos = 2
+};
+
+static const m_arg_format arg_format_read = {
+	.n_args = 1,
+	
+	.arg_a_pos = M_ARG_POS_NONE,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = 0,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_write = {
+	.n_args = 1,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = M_ARG_POS_NONE,
+	.dest_pos  = M_ARG_POS_NONE,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_res_read = {
+	.n_args = 2,
+	
+	.arg_a_pos = M_ARG_POS_NONE,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = 0,
+	.dest_pos  = 1,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_res_write = {
+	.n_args = 2,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = 1,
+	.dest_pos  = M_ARG_POS_NONE,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_res_write_2 = {
+	.n_args = 3,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = 1,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = 2,
+	.dest_pos  = M_ARG_POS_NONE,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+static const m_arg_format arg_format_res_rw = {
+	.n_args = 3,
+	
+	.arg_a_pos = 0,
+	.arg_b_pos = M_ARG_POS_NONE,
+	.arg_c_pos = M_ARG_POS_NONE,
+	.res_pos   = 1,
+	.dest_pos  = 2,
+	.shift_pos = M_ARG_POS_NONE
+};
+
+const m_arg_format *m_instr_arg_format(const char *instr)
+{
+	if (!instr) return NULL;
+	
+	if (strcmp(instr, "nop"         ) == 0) return &arg_format_std_0;
+	if (strcmp(instr, "mov"         ) == 0) return &arg_format_std_1;
+	if (strcmp(instr, "add"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "sub"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "mul"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "madd"        ) == 0) return &arg_format_std_3;
+	if (strcmp(instr, "arsh"        ) == 0) return &arg_format_shift;
+	if (strcmp(instr, "lsh"         ) == 0) return &arg_format_shift;
+	if (strcmp(instr, "rsh"         ) == 0) return &arg_format_shift;
+	if (strcmp(instr, "abs"         ) == 0) return &arg_format_std_1;
+	if (strcmp(instr, "min"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "max"         ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "clamp"       ) == 0) return &arg_format_std_3;
+	if (strcmp(instr, "mov_acc"     ) == 0) return &arg_format_read;
+	if (strcmp(instr, "macz"        ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_std_2;
+	if (strcmp(instr, "mac"         ) == 0) return &arg_format_std_3;
+	if (strcmp(instr, "umac"        ) == 0) return &arg_format_std_3;
+	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
+	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
+	if (strcmp(instr, "delay_mwrite") == 0) return &arg_format_res_write_2;
+	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
+	if (strcmp(instr, "mem_write"   ) == 0) return &arg_format_res_write;
+	if (strcmp(instr, "filter"      ) == 0) return &arg_format_res_rw;
+	if (strcmp(instr, "tanh4"       ) == 0) return &arg_format_std_1;
+	if (strcmp(instr, "sin2pi"      ) == 0) return &arg_format_std_1;
+	
+	return NULL;
+}
+
+int m_instr_opcode(const char *instr)
+{
+	if (!instr) return BLOCK_INSTR_NOP;
+	
+	if (strcmp(instr, "nop"         ) == 0) return BLOCK_INSTR_NOP;
+	if (strcmp(instr, "mov"         ) == 0) return BLOCK_INSTR_MADD;
+	if (strcmp(instr, "add"         ) == 0) return BLOCK_INSTR_MADD;
+	if (strcmp(instr, "sub"         ) == 0) return BLOCK_INSTR_MADD;
+	if (strcmp(instr, "mul"         ) == 0) return BLOCK_INSTR_MADD;
+	if (strcmp(instr, "madd"        ) == 0) return BLOCK_INSTR_MADD;
+	if (strcmp(instr, "arsh"        ) == 0) return BLOCK_INSTR_ARSH;
+	if (strcmp(instr, "lsh"         ) == 0) return BLOCK_INSTR_LSH;
+	if (strcmp(instr, "rsh"         ) == 0) return BLOCK_INSTR_RSH;
+	if (strcmp(instr, "abs"         ) == 0) return BLOCK_INSTR_ABS;
+	if (strcmp(instr, "min"         ) == 0) return BLOCK_INSTR_MIN;
+	if (strcmp(instr, "max"         ) == 0) return BLOCK_INSTR_MAX;
+	if (strcmp(instr, "clamp"       ) == 0) return BLOCK_INSTR_CLAMP;
+	if (strcmp(instr, "mov_acc"     ) == 0) return BLOCK_INSTR_MOV_ACC;
+	if (strcmp(instr, "macz"        ) == 0) return BLOCK_INSTR_MACZ;
+	if (strcmp(instr, "umacz"       ) == 0) return BLOCK_INSTR_UMACZ;
+	if (strcmp(instr, "mac"         ) == 0) return BLOCK_INSTR_MAC;
+	if (strcmp(instr, "umac"        ) == 0) return BLOCK_INSTR_UMAC;
+	if (strcmp(instr, "delay_read"  ) == 0) return BLOCK_INSTR_DELAY_READ;
+	if (strcmp(instr, "delay_write" ) == 0) return BLOCK_INSTR_DELAY_WRITE;
+	if (strcmp(instr, "delay_mwrite") == 0) return BLOCK_INSTR_DELAY_WRITE;
+	if (strcmp(instr, "mem_read"    ) == 0) return BLOCK_INSTR_MEM_READ;
+	if (strcmp(instr, "mem_write"   ) == 0) return BLOCK_INSTR_MEM_WRITE;
+	if (strcmp(instr, "filter"      ) == 0) return BLOCK_INSTR_FILTER;
+	if (strcmp(instr, "tanh4"       ) == 0) return BLOCK_INSTR_LUT_READ;
+	if (strcmp(instr, "sin2pi"      ) == 0) return BLOCK_INSTR_LUT_READ;
+	
+	return BLOCK_INSTR_NOP;
+}
+
+int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_operand *arg)
 {
 	if (!ps)
 		return ERR_NULL_PTR;
@@ -69,7 +286,7 @@ int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_arg *arg)
 		
 		if (arg) arg->addr = n;
 	}
-	else if (strcmp(current->data, DQ_DELIMITER) == 0)
+	else if (strcmp(current->data, M_EXPR_DELIMITER) == 0)
 	{
 		if (arg) arg->type = M_ASM_ARG_EXPR;
 		
@@ -154,7 +371,7 @@ int m_parse_asm_arg(m_eff_parsing_state *ps, m_asm_arg *arg)
 	}
 	else 
 	{
-		m_printf("Syntax error: \"%s\"\n", current->data);
+		M_PRINTF("Syntax error: \"%s\"\n", current->data);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_parse_arg_fin;
 	}
@@ -167,6 +384,161 @@ asm_parse_arg_fin:
 	ps->current_token = current;
 	
 	return ret_val;
+}
+
+int m_parse_asm_arg_2(m_eff_parsing_state *ps, m_asm_arg *arg)
+{
+	if (!ps)
+		return ERR_NULL_PTR;
+	
+	m_token_ll *current = ps->current_token;
+	m_token_ll *tok;
+	
+	m_expression *expr;
+	
+	m_dsp_resource_pll *current_res;
+	int resource_found;
+	int line;
+	
+	int ret_val = NO_ERROR;
+	
+	int n;
+	int valid;
+	
+	if (!current || !current->data)
+	{
+		ret_val = ERR_BAD_ARGS;
+		goto asm_parse_arg_fin;
+	}
+	
+	if (current->data[0] == CH_DELIMITER)
+	{
+		if (arg) arg->type = M_ASM_ARG_CHANNEL;
+		
+		valid = 1;
+		n = 0;
+		for (int i = 1; current->data[i] != 0; i++)
+		{
+			if (i > 2)
+				valid = 0;
+			
+			if ('0' <= current->data[i] && current->data[i] <= '9')
+			{
+				n = 10 * n + current->data[i] - '0';
+			}
+			else if ('a' <= current->data[i] && current->data[i] <= 'f')
+			{
+				n = 16 * n + current->data[i] - 'a' + 10;
+			}
+			else if ('A' <= current->data[i] && current->data[i] <= 'F')
+			{
+				n = 16 * n + current->data[i] - 'A' + 10;
+			}
+			else
+			{
+				valid = 0;
+			}
+			
+			if (!valid)
+			{
+				m_parser_error_at(ps, current, "Invalid argument \"%s\"");
+				ret_val = ERR_BAD_ARGS;
+				goto asm_parse_arg_fin;
+			}
+		}
+		
+		if (arg)
+		{
+			arg->expr = new_m_expression_const(n);
+		}
+	}
+	else if (strcmp(current->data, M_EXPR_DELIMITER) == 0)
+	{
+		if (arg) arg->type = M_ASM_ARG_EXPR;
+		
+		tok = current;
+		
+		do 
+		{
+			tok = tok->next;
+			
+			if (!tok || strcmp(tok->data, "\n") == 0)
+			{
+				m_parser_error_at(ps, current, "Missing \"%s\"", DQ_CODELIMITER);
+				ret_val = ERR_BAD_ARGS;
+				goto asm_parse_arg_fin;
+			}
+			
+		} while (strcmp(tok->data, DQ_CODELIMITER) != 0);
+		
+		if (arg)
+		{
+			arg->expr = m_parse_expression(ps, current->next, tok);
+			if (!arg->expr)
+			{
+				ret_val = ERR_BAD_ARGS;
+				goto asm_parse_arg_fin;
+			}
+		}
+		
+		if (tok)
+			current = tok;
+		else
+			current = NULL;
+	}
+	else if (strcmp(current->data, RS_DELIMITER) == 0)
+	{
+		if (arg) arg->type = M_ASM_ARG_RES;
+		
+		current = current->next;
+		
+		if (!current || !current->data || strcmp(current->data, "\n") == 0)
+		{
+			m_parser_error_at(ps, current, "Missing resource identifier");
+			ret_val = ERR_BAD_ARGS;
+			goto asm_parse_arg_fin;
+		}
+		
+		expr = new_m_expression_reference(current->data);
+		if (arg)
+		{
+			arg->expr = expr;
+		}
+	}
+	else if (token_is_int(current->data))
+	{
+		if (arg)
+		{
+			arg->type = M_ASM_ARG_INT;
+			arg->expr = new_m_expression_const(token_to_float(current->data));
+		}
+	}
+	else 
+	{
+		M_PRINTF("Syntax error: \"%s\"\n", current->data);
+		ret_val = ERR_BAD_ARGS;
+		goto asm_parse_arg_fin;
+	}
+	
+asm_parse_arg_fin:
+
+	if (current)
+		current = current->next;
+
+	ps->current_token = current;
+	
+	return ret_val;
+}
+
+int is_valid_instr(const char *instr)
+{
+	if (!instr)
+		return 0;
+	
+	for (int i = 0; i < n_instrs; i++)
+		if (strcmp(instrs[i], instr) == 0) return 1;
+	
+	return 0;
 }
 
 int m_parse_asm_line(m_eff_parsing_state *ps)
@@ -189,40 +561,109 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	
 	memset(block, 0, sizeof(m_block));
 	
-	int pos = 0;
-	int n_args_expected = 3;
+	int line_number = current->line;
 	
-	int dest_pos  =  0;
-	int arg_a_pos =  1;
-	int arg_b_pos =  2;
-	int arg_c_pos = -1;
-	int res_pos   = -1;
-	int res_type  =  0;
-	int shift_pos = -1;
-	
-	
-	int reg_0_taken = 0;
-	int reg_1_taken = 0;
-	
-	int shift_mode = 0;
-	
-	if (current->data[0] == 's' && current->data[1] == 'h' && current->data[2] == '_')
-	{
-		shift_mode = 1;
-		current->data = &current->data[3];
-	}
+	M_PRINTF("Parsing asm line, line %d: \"%s\"\n", line_number, ps->lines[line_number - 1]);
 	
 	int ret_val = NO_ERROR;
 	
 	const char *instr_char = current->data;
 	
-	m_asm_arg args[INSTR_MAX_ARGS];
+	m_asm_line *line = NULL;
+	m_asm_operand args[INSTR_MAX_ARGS];
 	
 	int args_cont = 1;
 	int line_fin = 0;
 	int n_args_read = 0;
 	int arg_ret_val;
 	
+	if (!is_valid_instr(current->data))
+	{
+		m_parser_error_at(ps, current, "Unknown instruction \"%s\"", current->data);
+		ret_val = ERR_BAD_ARGS;
+		goto asm_line_parse_fin;
+	}
+	
+	line = m_parser_alloc(sizeof(m_asm_line));
+	
+	if (!line)
+	{
+		m_parser_error_at(ps, current, "Allocation failed", current->data);
+		ret_val = ERR_ALLOC_FAIL;
+		goto asm_line_parse_fin;
+	}
+	
+	line->line_number = line_number;
+	line->n_args = 0;
+	line->instr = m_parser_strndup(current->data, 12);
+	
+	if (!line->instr)
+	{
+		m_parser_error_at(ps, current, "Allocation failed", current->data);
+		ret_val = ERR_ALLOC_FAIL;
+		goto asm_line_parse_fin;
+	}
+	
+	current = current->next;
+	ps->current_token = current;
+	
+	for (int i = 0; ; i++)
+	{
+		if (!current || !current->data || current->data[0] == '\n' || current->line != line_number)
+		{
+			M_PRINTF("Breaking argument loop; reason:\n");
+			if (!current)
+				M_PRINTF("current = NULL");
+			if (!current->data)
+				M_PRINTF("current->data = NULL");
+			if (current->data[0] == '\n')
+				M_PRINTF("current token is newline token\n");
+			if (current->line != line_number)
+				M_PRINTF("current token is on line %d, instead of %d\n", current->line, line_number);
+			break;
+		}
+		
+		if ((arg_ret_val = m_parse_asm_arg_2(ps, (i < INSTR_MAX_ARGS) ? &line->args[i] : NULL)) != NO_ERROR)
+		{
+			current = ps->current_token;
+			ret_val = arg_ret_val;
+			goto asm_line_parse_fin;
+		}
+		
+		if (i < INSTR_MAX_ARGS)
+		{
+			M_PRINTF("Parsed an argument: ");
+			switch (line->args[i].type)
+			{
+				case M_ASM_ARG_CHANNEL:
+					M_PRINTF("channel c%s\n", m_expression_to_string(line->args[i].expr));
+					break;
+					
+				case M_ASM_ARG_EXPR:
+					M_PRINTF("expression [%s]\n", m_expression_to_string(line->args[i].expr));
+					break;
+				
+				case M_ASM_ARG_RES:
+					M_PRINTF("resource $%s\n", m_expression_to_string(line->args[i].expr));
+					break;
+					
+				case M_ASM_ARG_INT:
+					M_PRINTF("integer: %s\n", m_expression_to_string(line->args[i].expr));
+					break;
+			}
+		}
+		
+		line->n_args++;
+		n_args_read++;
+		
+		current = ps->current_token;
+	}
+	
+	printf("Line has %d args\n", line->n_args);
+	
+	m_asm_line_pll_safe_append(&ps->asm_lines, line);
+	
+#if 0
 	if (strcmp(current->data, "nop") == 0)
 	{
 		block->instr = BLOCK_INSTR_NOP;
@@ -575,7 +1016,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	}
 	else
 	{
-		m_printf("Error: unknown instruction \"%s\"\n", current->data);
+		M_PRINTF("Error: unknown instruction \"%s\"\n", current->data);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
@@ -620,13 +1061,13 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	
 	if (n_args_read < n_args_expected)
 	{
-		m_printf("Error: too few arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
+		M_PRINTF("Error: too few arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
 	else if (n_args_read > n_args_expected)
 	{
-		m_printf("Error: too many arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
+		M_PRINTF("Error: too many arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_line_parse_fin;
 	}
@@ -635,7 +1076,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[dest_pos].type != M_ASM_ARG_CHANNEL)
 		{
-			m_printf("Error: destination must be a channel\n");
+			M_PRINTF("Error: destination must be a channel\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}
@@ -649,7 +1090,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[shift_pos].type != M_ASM_ARG_INT || args[shift_pos].val < 0 || args[shift_pos].val > 15)
 		{
-			m_printf("Error: shift value must be an integer between 0 and 15\n");
+			M_PRINTF("Error: shift value must be an integer between 0 and 15\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}
@@ -678,7 +1119,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				break;
 			
 			default:
-				m_printf("Error: wrong type given for arg a\n");
+				M_PRINTF("Error: wrong type given for arg a\n");
 				break;
 		}
 	}
@@ -714,7 +1155,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				break;
 			
 			default:
-				m_printf("Error: wrong type given for arg b\n");
+				M_PRINTF("Error: wrong type given for arg b\n");
 				ret_val = ERR_BAD_ARGS;
 				goto asm_line_parse_fin;
 				break;
@@ -750,14 +1191,14 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 				}
 				else
 				{
-					m_printf("Error: too many constants\n");
+					M_PRINTF("Error: too many constants\n");
 					ret_val = ERR_BAD_ARGS;
 					goto asm_line_parse_fin;
 				}
 				break;
 			
 			default:
-				m_printf("Error: wrong type given for arg c\n");
+				M_PRINTF("Error: wrong type given for arg c\n");
 				ret_val = ERR_BAD_ARGS;
 				goto asm_line_parse_fin;
 				break;
@@ -768,7 +1209,7 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	{
 		if (args[res_pos].type != M_ASM_ARG_RES)
 		{
-			m_printf("Error: resource must be a resource\n");
+			M_PRINTF("Error: resource must be a resource\n");
 			ret_val = ERR_BAD_ARGS;
 			goto asm_line_parse_fin;
 		}
@@ -782,9 +1223,9 @@ int m_parse_asm_line(m_eff_parsing_state *ps)
 	
 	m_block_pll_safe_append(&ps->blocks, block);
 	
+#endif
+
 asm_line_parse_fin:
-	if (current)
-		current = current->next;
 	
 	ps->current_token = current;
 	
@@ -800,20 +1241,259 @@ int m_parse_asm(m_eff_parsing_state *ps)
 	
 	int line_start;
 	int comment;
+	int ret_val = NO_ERROR;
 	
 	m_token_ll_skip_ws(&current);
 	while (current)
 	{
-		line_start = 0;
-		comment = 0;
-		
 		// Advance to the next non-whitespace token
 		ps->current_token = current;
-		m_parse_asm_line(ps);
+		ret_val = m_parse_asm_line(ps);
+		
+		if (ret_val != NO_ERROR)
+		{
+			M_PRINTF("ASM parsing failed: %s\n", m_error_code_to_string(ret_val));
+			return ret_val;
+		}
 		
 		current = ps->current_token;
 		m_token_ll_skip_ws(&current);
 	}
 	
 	return NO_ERROR;
+}
+
+m_dsp_resource *m_resource_get_by_name(m_dsp_resource_pll *resources, const char *name)
+{
+	if (!resources || !name)
+		return NULL;
+	
+	m_dsp_resource_pll *current = resources;
+	
+	while (current)
+	{
+		if (current->data && current->data->name && strcmp(current->data->name, name) == 0)
+			return current->data;
+		
+		current = current->next;
+	}
+	
+	return NULL;
+}
+
+int m_process_asm_line(m_eff_parsing_state *ps, m_asm_line *line)
+{
+	if (!ps || !line)
+		return ERR_NULL_PTR;
+	
+	int ret_val = NO_ERROR;
+	int line_number = line->line_number;
+	
+	m_block *block = NULL;
+	m_arg_format *arg_format = m_instr_arg_format(line->instr);
+	
+	m_dsp_resource *resource;
+	
+	if (!arg_format)
+		return ERR_BAD_ARGS;
+	
+	if (line->n_args != arg_format->n_args)
+	{
+		m_parser_error_at_line(ps, line_number,
+			"Instruction \"%s\" expects %d arguments, but %d were given.", line->instr, arg_format->n_args, line->n_args);
+		return ERR_BAD_ARGS;
+	}
+	
+	block = m_alloc(sizeof(m_block));
+	
+	if (!block)
+		return ERR_ALLOC_FAIL;
+	
+	block->res = NULL;
+	block->shift = 0;
+	block->shift_set = 0;
+	
+	block->instr = m_instr_opcode(line->instr);
+	
+	m_asm_arg arg;
+	m_block_operand *op = NULL;
+	
+	int reg_0_taken = 0;
+	
+	for (int i = 0; i < line->n_args; i++)
+	{
+		arg = line->args[i];
+		
+		if (i == arg_format->dest_pos)
+		{
+			if (arg.type != M_ASM_ARG_CHANNEL)
+			{
+				m_parser_error_at_line(ps, line_number, "Destination must be a channel");
+				return ERR_BAD_ARGS;
+			}
+			
+			block->dest = (int)roundf(m_expression_evaluate(line->args[i].expr, NULL));
+		}
+		else if (i == arg_format->res_pos)
+		{
+			if (arg.type != M_ASM_ARG_RES)
+			{
+				m_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be a resource", i + 1, line->instr);
+				return ERR_BAD_ARGS;
+			}
+			
+			if (!arg.expr)
+			{
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			if (arg.expr->type != M_EXPR_REF)
+			{
+				// tbh.... 
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			if (!arg.expr->val.ref_name)
+			{
+				m_parser_error_at_line(ps, line_number, "Resource has no name!");
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			resource = m_resource_get_by_name(ps->resources, arg.expr->val.ref_name);
+			
+			if (!resource)
+			{
+				m_parser_error_at_line(ps, line_number, "Could not find resource \"%s\"", arg.expr->val.ref_name);
+				return ERR_BAD_ARGS;
+			}
+			
+			block->res = resource;
+		}
+		else if (i == arg_format->shift_pos)
+		{
+			if (arg.type != M_ASM_ARG_INT)
+			{
+				m_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be an integer", i + 1, line->instr);
+				return ERR_BAD_ARGS;
+			}
+			
+			if (!arg.expr)
+			{
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			if (arg.expr->type != M_EXPR_CONST)
+			{
+				// tbh.... 
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			block->shift = (int)roundf(m_expression_evaluate(arg.expr, NULL));
+		}
+		else
+		{
+			if (i == arg_format->arg_a_pos)
+				op = &block->arg_a;
+			else if (i == arg_format->arg_b_pos)
+				op = &block->arg_b;
+			else if (i == arg_format->arg_c_pos)
+				op = &block->arg_c;
+			
+			if (!op)
+			{
+				m_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" does not correspond to anything (this is a bug!!)", i + 1, line->instr);
+				return ERR_UNKNOWN_ERR;
+			}
+			
+			switch (arg.type)
+			{
+				case M_ASM_ARG_CHANNEL:
+					op->type = BLOCK_OPERAND_TYPE_C;
+					op->addr = (int)roundf(m_expression_evaluate(arg.expr, NULL));
+					break;
+				
+				case M_ASM_ARG_EXPR:
+					op->type = BLOCK_OPERAND_TYPE_R;
+					
+					if (!reg_0_taken)
+					{
+						block->reg_0.active = 1;
+						block->reg_0.expr = arg.expr;
+						reg_0_taken = 1;
+						
+						op->addr = 0;
+					}
+					else 
+					{
+						block->reg_1.active = 1;
+						block->reg_1.expr = arg.expr;
+						
+						op->addr = 1;
+					}
+					
+					break;
+				
+				default:
+					m_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be either a channel or an expression", i + 1, line->instr);
+					return ERR_BAD_ARGS;
+			}
+		}
+	}
+	
+	/* ... and some special considerations for unusual instructions */
+	
+	if (strcmp(line->instr, "mov") == 0)
+	{
+		block->arg_b = operand_const_one();
+		block->arg_c = operand_const_zero();
+	}
+	else if (strcmp(line->instr, "add") == 0)
+	{
+		block->arg_b = operand_const_one();
+	}
+	else if (strcmp(line->instr, "sub") == 0)
+	{
+		block->arg_b = operand_const_minus_one();
+	}
+	else if (strcmp(line->instr, "mul") == 0)
+	{
+		block->arg_c = operand_const_zero();
+	}
+	else if (strcmp(line->instr, "delay_write") == 0)
+	{
+		block->arg_c = operand_const_zero();
+	}
+	else if (strcmp(line->instr, "sin2pi") == 0)
+	{
+		block->res = &sin_lut;
+	}
+	else if (strcmp(line->instr, "tanh4") == 0)
+	{
+		block->res = &tanh_lut;
+	}
+	
+	m_block_pll_safe_append(&ps->blocks, block);
+	
+	return ret_val;
+}
+
+int m_process_asm_lines(m_eff_parsing_state *ps)
+{
+	M_PRINTF("m_process_asm_lines\n");
+	if (!ps)
+		return ERR_NULL_PTR;
+	
+	int ret_val = NO_ERROR;
+	
+	m_asm_line_pll *current = ps->asm_lines;
+	
+	int i = 0;
+	while (current)
+	{
+		M_PRINTF("m_process_asm_lines, line %d\n", i);
+		m_process_asm_line(ps, current->data);
+		current = current->next; i++;
+	}
+	
+	return ret_val;
 }

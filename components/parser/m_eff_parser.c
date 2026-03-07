@@ -5,6 +5,8 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 1
+
 static const char *FNAME = "m_eff_parser.c";
 
 const char *ver_str = "v1.0";
@@ -190,6 +192,7 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 	m_ast_node *resources_section = NULL;
 	m_ast_node *parameters_section = NULL;
 	m_ast_node *settings_section = NULL;
+	m_ast_node *defs_section = NULL;
 	
 	m_eff_desc_file_section *sect;
 	
@@ -236,6 +239,14 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 			}
 			settings_section = current_section;
 		}
+		else if (strcmp(sect->name, "DEFS") == 0)
+		{
+			if ((ret_val = m_parse_dictionary_section(ps, current_section)) != NO_ERROR)
+			{
+				return ret_val;
+			}
+			defs_section = current_section;
+		}
 		else if (strcmp(sect->name, "CODE") == 0)
 		{
 			code_section = current_section;
@@ -261,7 +272,7 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 		}
 		else
 		{
-			m_printf("Found name: \"%s\"\n", ps->name ? ps->name : "(NULL)");
+			M_PRINTF("Found name: \"%s\"\n", ps->name ? ps->name : "(NULL)");
 		}
 		if ((ret_val = m_dictionary_section_lookup_str(info_section, "cname", &ps->cname)) != NO_ERROR)
 		{
@@ -270,7 +281,7 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 		}
 		else
 		{
-			m_printf("Found cname: \"%s\"\n", ps->cname ? ps->cname : "(NULL)");
+			M_PRINTF("Found cname: \"%s\"\n", ps->cname ? ps->cname : "(NULL)");
 		}
 	}
 	else
@@ -314,7 +325,7 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 		}
 		
 		m_settings_assign_ids(ps->settings);
-		m_printf("Adding settings to scope...\n");
+		M_PRINTF("Adding settings to scope...\n");
 		m_expr_scope_add_settings(ps->scope, ps->settings);
 	}
 	
@@ -344,6 +355,8 @@ int init_parsing_state(m_eff_parsing_state *ps)
 	ps->blocks = NULL;
 	ps->cname = NULL;
 	ps->name = NULL;
+	
+	ps->asm_lines = NULL;
 	
 	ps->errors = 0;
 	ps->scope = NULL;
@@ -401,6 +414,11 @@ int m_parser_lineize_content(m_eff_parsing_state *ps)
 
 m_effect_desc *m_read_eff_desc_from_file(char *fname)
 {
+	if (!fname)
+		return NULL;
+	
+	printf("m_read_eff_desc_from_file\n");
+	
 	m_effect_desc *result = NULL;
 	m_eff_parsing_state ps;
 	
@@ -410,7 +428,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	{
 		if ((ret_val = m_eff_parser_init_mempool()) != NO_ERROR)
 		{
-			m_printf("Error initialising parser mempool: %s\n", m_error_code_to_string(ret_val));
+			M_PRINTF("Error initialising parser mempool: %s\n", m_error_code_to_string(ret_val));
 			return NULL;
 		}
 	}
@@ -421,7 +439,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	
 	if (!src)
 	{
-		m_printf("Failed to open file \"%s\"!\n", fname);
+		M_PRINTF("Failed to open file \"%s\"!\n", fname);
 		return NULL;
 	}
 	
@@ -453,7 +471,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	
 	if (ps.errors != 0)
 	{
-		m_printf("File \"%s\" ignored due to errors.\n", fname);
+		M_PRINTF("File \"%s\" ignored due to errors.\n", fname);
 		return NULL;
 	}
 	
@@ -463,7 +481,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	
 	if (ps.errors != 0)
 	{
-		m_printf("File \"%s\" ignored due to errors.\n", fname);
+		M_PRINTF("File \"%s\" ignored due to errors.\n", fname);
 		if (ps.parameters)
 		{
 			free_m_parameter_pll(ps.parameters);
@@ -481,11 +499,18 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 	
 	if (ret_val == NO_ERROR)
 	{
-		m_printf("File \"%s\" parsed sucessfully\n", fname);
+		M_PRINTF("File \"%s\" parsed sucessfully\n", fname);
 	}
 	else
 	{
-		m_printf("File \"%s\" parsing failed. Error code: %s\n", fname, m_error_code_to_string(ret_val));
+		M_PRINTF("File \"%s\" parsing failed. Error code: %s\n", fname, m_error_code_to_string(ret_val));
+	}
+	
+	ret_val = m_process_asm_lines(&ps);
+	
+	if (ret_val != NO_ERROR)
+	{
+		return NULL;
 	}
 	
 	result = m_alloc(sizeof(m_effect_desc));
@@ -546,9 +571,9 @@ int m_parse_code_section(m_eff_parsing_state *ps, m_ast_node *section)
 	
 	ps->current_token = tokens->next;
 	
-	m_parse_asm(ps);
+	int ret_val = m_parse_asm(ps);
 	
-	return NO_ERROR;
+	return ret_val;
 }
 
 #define M_PARSER_PRINT_BUFLEN 1024
@@ -561,10 +586,10 @@ const char *reset_colour = "\e[0m";
 
 #define PR_LINE_INDENT 4
 
-void m_parser_format_offending_section(char *line, int index, int length, char *buf, int buf_len, char *colour)
+int m_parser_format_offending_section(char *line, int index, int length, char *buf, int buf_len, char *colour)
 {
 	if (!line || !buf)
-		return;
+		return ERR_NULL_PTR;
 
 	int i, j, buf_pos;
 	
@@ -597,18 +622,20 @@ void m_parser_format_offending_section(char *line, int index, int length, char *
 	if (buf_pos + index + length / 2 + 1 + PR_LINE_INDENT >= buf_len)
 	{
 		buf[buf_pos < buf_len ? buf_pos : buf_len - 1] = 0;
-		return;
+		return NO_ERROR;
 	}
 	else
 	{
 		buf[buf_pos++] = '\n';
 	}
 	
-	for (int i = 0; i <= index + length / 2 + PR_LINE_INDENT && buf_pos + 1 < M_PARSER_PRINT_BUFLEN; i++)
+	for (int i = 0; i <= index + length / 2 + PR_LINE_INDENT - 1 && buf_pos + 1 < M_PARSER_PRINT_BUFLEN; i++)
 		buf[buf_pos++] = '~';
 	
 	buf[buf_pos++] = '^';
 	buf[buf_pos++] = 0;
+	
+	return NO_ERROR;
 }
 
 void m_parser_print_info_at(m_eff_parsing_state *ps, m_token_ll *token, const char *msg, ...)
@@ -627,13 +654,15 @@ void m_parser_print_info_at(m_eff_parsing_state *ps, m_token_ll *token, const ch
 	else
 		loc_string[0] = 0;
 	
-	m_printf("%sINFO%s%s: %s\n", info_colour, loc_string, reset_colour, buf);
+	M_PRINTF_("%sINFO%s%s: %s\n", info_colour, loc_string, reset_colour, buf);
 	
+	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
 	{
-		m_parser_format_offending_section(ps->lines[token->line], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, info_colour);
+		ret_val = m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, info_colour);
 		
-		m_printf("%s\n", buf);
+		if (ret_val == NO_ERROR)
+			M_PRINTF_("%s\n", buf);
 	}
 }
 
@@ -653,13 +682,15 @@ void m_parser_warn_at(m_eff_parsing_state *ps, m_token_ll *token, const char *ms
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 	
+	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
 	{
-		m_parser_format_offending_section(ps->lines[token->line], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, warn_colour);
+		m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, warn_colour);
 		
-		m_printf("%s\n", buf);
+		if (ret_val == NO_ERROR)
+			M_PRINTF_("%s\n", buf);
 	}
 }
 
@@ -685,13 +716,15 @@ void m_parser_error_at(m_eff_parsing_state *ps, m_token_ll *token, const char *m
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	m_printf("%sERROR%s%s: %s\n", err_colour, loc_string, reset_colour, buf);
+	M_PRINTF_("%sERROR%s%s: %s\n", err_colour, loc_string, reset_colour, buf);
 	
+	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
 	{
-		m_parser_format_offending_section(ps->lines[token->line], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, err_colour);
+		m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, err_colour);
 		
-		m_printf("%s\n", buf);
+		if (ret_val == NO_ERROR)
+			M_PRINTF_("%s\n", buf);
 	}
 }
 
@@ -711,7 +744,7 @@ void m_parser_print_info_at_line(m_eff_parsing_state *ps, int line, const char *
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_warn_at_line(m_eff_parsing_state *ps, int line, const char *msg, ...)
@@ -730,7 +763,7 @@ void m_parser_warn_at_line(m_eff_parsing_state *ps, int line, const char *msg, .
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_error_at_line(m_eff_parsing_state *ps, int line, const char *msg, ...)
@@ -750,7 +783,7 @@ void m_parser_error_at_line(m_eff_parsing_state *ps, int line, const char *msg, 
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	m_printf("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_print_info_at_node(m_eff_parsing_state *ps, m_ast_node *node, const char *msg, ...)
@@ -769,7 +802,7 @@ void m_parser_print_info_at_node(m_eff_parsing_state *ps, m_ast_node *node, cons
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_warn_at_node(m_eff_parsing_state *ps, m_ast_node *node, const char *msg, ...)
@@ -788,7 +821,7 @@ void m_parser_warn_at_node(m_eff_parsing_state *ps, m_ast_node *node, const char
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_error_at_node(m_eff_parsing_state *ps, m_ast_node *node, const char *msg, ...)
@@ -808,7 +841,7 @@ void m_parser_error_at_node(m_eff_parsing_state *ps, m_ast_node *node, const cha
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	m_printf("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_print_info(m_eff_parsing_state *ps, const char *msg, ...)
@@ -827,7 +860,7 @@ void m_parser_print_info(m_eff_parsing_state *ps, const char *msg, ...)
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;36INFO%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;36INFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_warn(m_eff_parsing_state *ps, const char *msg, ...)
@@ -846,7 +879,7 @@ void m_parser_warn(m_eff_parsing_state *ps, const char *msg, ...)
 	else
 		loc_string[0] = 0;
 	
-	m_printf("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void m_parser_error(m_eff_parsing_state *ps, const char *msg, ...)
@@ -867,5 +900,5 @@ void m_parser_error(m_eff_parsing_state *ps, const char *msg, ...)
 	
 	ps->errors++;
 	
-	m_printf("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	M_PRINTF_("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }

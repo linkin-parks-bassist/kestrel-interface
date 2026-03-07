@@ -5,6 +5,8 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
 static const char *FNAME = "m_dictionary.c";
 
 m_dictionary *m_new_dictionary()
@@ -259,51 +261,51 @@ void print_dict_entry(m_dictionary_entry *entry)
 {
 	if (!entry)
 	{
-		m_printf("(null)");
+		M_PRINTF("(null)");
 		return;
 	}
-	m_printf("%s: ", entry->name);
+	M_PRINTF("%s: ", entry->name);
 	
 	switch (entry->type)
 	{
 		case DICT_ENTRY_TYPE_STR:
-			m_printf("\"%s\"", entry->value.val_string);
+			M_PRINTF("\"%s\"", entry->value.val_string);
 			break;
 		
 		case DICT_ENTRY_TYPE_INT:
-			m_printf("%d", entry->value.val_int);
+			M_PRINTF("%d", entry->value.val_int);
 			break;
 		
 		case DICT_ENTRY_TYPE_FLOAT:
-			m_printf("%f", entry->value.val_float);
+			M_PRINTF("%f", entry->value.val_float);
 			break;
 		
 		case DICT_ENTRY_TYPE_EXPR:
-			m_printf("(expression)");
+			M_PRINTF("(expression)");
 			break;
 			
 		default:
-			m_printf("mangled !");
+			M_PRINTF("mangled !");
 			break;
 	}
 }
 
 void print_dict(m_dictionary *dict)
 {
-	m_printf("Dictionary ");
+	M_PRINTF("Dictionary ");
 	if (!dict)
 	{
-		m_printf("(null)\n");
+		M_PRINTF("(null)\n");
 		return;
 	}
 	
-	m_printf("\"%s\" (%d entries):\n", dict->name, dict->n_entries);
+	M_PRINTF("\"%s\" (%d entries):\n", dict->name, dict->n_entries);
 	
 	for (int i = 0; i < dict->n_entries; i++)
 	{
-		m_printf("\t");
+		M_PRINTF("\t");
 		print_dict_entry(&dict->entries[i]);
-		m_printf("\n");
+		M_PRINTF("\n");
 	}
 }
 
@@ -357,7 +359,7 @@ int m_parse_dict_val(m_eff_parsing_state *ps, m_dictionary_entry *result)
 		len = strlen(current->data) - 2;
 		if (n_tokens > 1)
 		{
-			m_printf("Syntax error (line %d): excess tokens following string %s\n", current->line, current->data);
+			M_PRINTF("Syntax error (line %d): excess tokens following string %s\n", current->line, current->data);
 			ret_val = ERR_BAD_ARGS;
 			goto parse_dict_val_fin;
 		}

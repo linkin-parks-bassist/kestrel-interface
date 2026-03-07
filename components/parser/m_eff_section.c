@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_eff_section.c";
+
 int token_is_valid_section_name(char *str)
 {
 	if (!str)
@@ -9,6 +13,7 @@ int token_is_valid_section_name(char *str)
 	if (strcmp(str, "RESOURCES")  == 0) return 1;
 	if (strcmp(str, "PARAMETERS") == 0) return 1;
 	if (strcmp(str, "SETTINGS")   == 0) return 1;
+	if (strcmp(str, "DEFS")   	  == 0) return 1;
 	if (strcmp(str, "CODE") 	  == 0) return 1;
 	
 	return 0;
@@ -83,7 +88,7 @@ int m_settings_section_extract(m_eff_parsing_state *ps, m_setting_pll **list, m_
 			
 			if (setting)
 			{
-				m_printf("Obtained setting \"%s\"; adding to list...\n", setting->name_internal);
+				M_PRINTF("Obtained setting \"%s\"; adding to list...\n", setting->name_internal);
 				m_setting_pll_safe_append(list, setting);
 			}
 		}

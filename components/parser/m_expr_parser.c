@@ -1,5 +1,9 @@
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 1
+
+static const char *FNAME = "m_expr_parser.c";
+
 int m_expression_token_unary_type(char *token)
 {
 	if (!token) return 0;
@@ -196,7 +200,6 @@ m_expression *m_parse_expression(m_eff_parsing_state *ps, m_token_ll *tokens, m_
 	m_token_ll *next_token;
 	m_expression *expr = m_parse_expression_rec_pratt(ps, tokens, &next_token, tokens_end, 0, 0);
 	
-	
 	int anything = 0;
 	m_token_ll *check = next_token;
 	
@@ -204,7 +207,7 @@ m_expression *m_parse_expression(m_eff_parsing_state *ps, m_token_ll *tokens, m_
 	{
 		m_expression_detect_constants(expr);
 		
-		if (next_token != tokens_end)
+		if (tokens_end && next_token != tokens_end)
 		{
 			// check if there's anyhting of substance
 			while (check && check != tokens_end && !anything)
@@ -221,6 +224,8 @@ m_expression *m_parse_expression(m_eff_parsing_state *ps, m_token_ll *tokens, m_
 			}
 		}
 	}
+	
+	ps->current_token = next_token;
 	
 	return expr;
 }

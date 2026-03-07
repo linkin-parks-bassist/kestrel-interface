@@ -4,6 +4,10 @@
 
 #include "m_int.h"
 
+#define PRINTLINES_ALLOWED 0
+
+static const char *FNAME = "m_tokenizer.c";
+
 IMPLEMENT_LINKED_PTR_LIST(char);
 
 int char_is_letter(char c)
@@ -522,12 +526,11 @@ int m_tokenize_content(m_eff_parsing_state *ps)
 	
 	if (strcmp(ver_str, buf) != 0)
 	{
-		m_printf("'%c' (%d), '%c' (%d), '%c' (%d), '%c' (%d)\n", buf[0], buf[0], buf[1], buf[1], buf[2], buf[2], buf[3], buf[3]);
+		M_PRINTF("'%c' (%d), '%c' (%d), '%c' (%d), '%c' (%d)\n", buf[0], buf[0], buf[1], buf[1], buf[2], buf[2], buf[3], buf[3]);
 		m_parser_error_at_line(ps, 1, "Version string \"%s\" required at start of file; instead, file starts with \"%s\"", ver_str, buf);
 		return ERR_BAD_ARGS;
 	}
 
-	
 	m_token_ll_safe_aappend(&ps->tokens, m_parser_strndup(ver_str, 4), line, 0);
 	
 	while (state != TOKENIZER_STATE_DONE)

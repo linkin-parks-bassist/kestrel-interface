@@ -16,6 +16,8 @@ typedef struct m_ast_node {
 	struct m_ast_node *next;
 } m_ast_node;
 
+struct m_asm_line_pll;
+
 typedef struct m_eff_parsing_state {
 	const char *fname;
 	const char *name;
@@ -35,6 +37,7 @@ typedef struct m_eff_parsing_state {
 	
 	m_token_ll *current_token;
 	
+	struct m_asm_line_pll *asm_lines;
 	m_block_pll *blocks;
 	m_parameter_pll *parameters;
 	m_setting_pll *settings;
