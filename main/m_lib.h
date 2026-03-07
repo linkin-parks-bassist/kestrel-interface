@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+#define m_printf printf
+
+#define M_FILENAME_LEN 128
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
