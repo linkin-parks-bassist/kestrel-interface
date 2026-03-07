@@ -5,7 +5,9 @@
 
 #include "m_int.h"
 
+#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 1
+#endif
 
 static const char *FNAME = "m_eff_parser.c";
 
@@ -329,14 +331,21 @@ int m_parse_tokens(m_eff_parsing_state *ps)
 		m_expr_scope_add_settings(ps->scope, ps->settings);
 	}
 	
+	if (defs_section)
+	{
+		M_PRINTF("Adding defs to scope...\n");
+		if ((ret_val = m_defs_section_extract(ps, ps->scope, defs_section)) != NO_ERROR)
+		{
+			return ret_val;
+		}
+	}
+	
 	if (code_section)
 	{
 		if ((ret_val = m_parse_code_section(ps, code_section)) != NO_ERROR)
 		{
 			return ret_val;
 		}
-		
-		m_compute_register_formats(ps->blocks, ps->scope);
 	}
 	
 	return NO_ERROR;
@@ -357,6 +366,7 @@ int init_parsing_state(m_eff_parsing_state *ps)
 	ps->name = NULL;
 	
 	ps->asm_lines = NULL;
+	ps->def_exprs = NULL;
 	
 	ps->errors = 0;
 	ps->scope = NULL;
@@ -513,6 +523,8 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 		return NULL;
 	}
 	
+	m_compute_register_formats(ps.blocks, ps.scope);
+	
 	result = m_alloc(sizeof(m_effect_desc));
 	
 	if (result)
@@ -527,53 +539,12 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 		result->cname = m_strndup(ps.cname, 128);
 		result->name = m_strndup(ps.name, 128);
 		
-		result->scope = m_eff_desc_create_scope(result);
+		result->def_exprs = ps.def_exprs;
 		
 		m_effect_desc_generate_res_rpt(result);
 	}
 	
 	return result;
-}
-
-int m_parse_dictionary_section(m_eff_parsing_state *ps, m_ast_node *section)
-{
-	if (!ps || !section)
-		return ERR_NULL_PTR;
-	
-	if (section->type != M_AST_NODE_SECTION)
-		return ERR_BAD_ARGS;
-	
-	m_eff_desc_file_section *sec = (m_eff_desc_file_section*)section->data;
-	
-	m_token_ll *tokens = sec->tokens;
-	
-	if (!tokens)
-		return ERR_BAD_ARGS;
-	
-	ps->current_token = tokens->next;
-	
-	return m_parse_dictionary(ps, &sec->dict, sec->name);
-}
-
-int m_parse_code_section(m_eff_parsing_state *ps, m_ast_node *section)
-{
-	if (!ps || !section)
-		return ERR_NULL_PTR;
-	
-	if (section->type != M_AST_NODE_SECTION)
-		return ERR_BAD_ARGS;
-	
-	m_eff_desc_file_section *sec = (m_eff_desc_file_section*)section->data;
-	m_token_ll *tokens = sec->tokens;
-	
-	if (!tokens)
-		return ERR_BAD_ARGS;
-	
-	ps->current_token = tokens->next;
-	
-	int ret_val = m_parse_asm(ps);
-	
-	return ret_val;
 }
 
 #define M_PARSER_PRINT_BUFLEN 1024
@@ -687,7 +658,7 @@ void m_parser_warn_at(m_eff_parsing_state *ps, m_token_ll *token, const char *ms
 	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
 	{
-		m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, warn_colour);
+		ret_val = m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, warn_colour);
 		
 		if (ret_val == NO_ERROR)
 			M_PRINTF_("%s\n", buf);
@@ -721,7 +692,7 @@ void m_parser_error_at(m_eff_parsing_state *ps, m_token_ll *token, const char *m
 	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
 	{
-		m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, err_colour);
+		ret_val = m_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, M_PARSER_PRINT_BUFLEN, err_colour);
 		
 		if (ret_val == NO_ERROR)
 			M_PRINTF_("%s\n", buf);
