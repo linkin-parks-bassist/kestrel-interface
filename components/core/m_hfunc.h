@@ -23,4 +23,17 @@ char *binary_print_32(uint32_t x);
 // Gives a word with bits y to x being the initial bits of "val"
 #define place_bits(x, y, val) ((IBM((x)-(y)+1) & ((uint32_t)val)) << y)
 
+inline static uint32_t hash(const char *str)
+{
+	if (!str) return 0;
+	
+    uint32_t x = 5381;
+    int c;
+
+    while ((c = *str++))
+        x = ((x << 5) + x) + c;
+
+    return x;
+}
+
 #endif

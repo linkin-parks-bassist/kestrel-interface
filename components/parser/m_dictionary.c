@@ -24,6 +24,256 @@ const char *m_dict_entry_type_to_string(int type)
 	}
 }
 
+int m_dictionary_bucket_init(m_dictionary_bucket *bucket)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	memset(bucket, 0, sizeof(m_dictionary_bucket));
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_ensure_capacity(m_dictionary_bucket *bucket)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	m_dictionary_entry *na;
+	
+	if (bucket->entry_array_length == 0)
+	{
+		bucket->entries = m_parser_alloc(sizeof(m_dictionary_entry) * 2);
+	
+		if (!bucket->entries)
+		{
+			bucket->entry_array_length = 0;
+			return ERR_ALLOC_FAIL;
+		}
+		
+		bucket->entry_array_length = 2;
+	}
+	else if (bucket->n_entries == bucket->entry_array_length)
+	{
+		na = m_parser_alloc(sizeof(m_dictionary_entry) * bucket->entry_array_length * 2);
+		
+		if (!na) return ERR_ALLOC_FAIL;
+		
+		for (int i = 0; i < bucket->n_entries; i++)
+			na[i] = bucket->entries[i];
+		
+		bucket->entries = na;
+		bucket->entry_array_length *= 2;
+	}
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_add_entry(m_dictionary_bucket *bucket, m_dictionary_entry entry)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name = strndup(entry.name, 32);
+	bucket->entries[bucket->n_entries].type = entry.type;
+	bucket->entries[bucket->n_entries].value = entry.value;
+
+	bucket->n_entries++;
+	
+	return ret_val;
+}
+
+int m_dictionary_bucket_add_entry_str(m_dictionary_bucket *bucket, const char *name, const char *value)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	if (!name || !value)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name  = name;
+	bucket->entries[bucket->n_entries].type = DICT_ENTRY_TYPE_STR;
+	bucket->entries[bucket->n_entries].value.val_string = value;
+
+	bucket->n_entries++;
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_add_entry_int(m_dictionary_bucket *bucket, const char *name, int value)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	if (!name || !value)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name  = name;
+	bucket->entries[bucket->n_entries].type = DICT_ENTRY_TYPE_INT;
+	bucket->entries[bucket->n_entries].value.val_int = value;
+
+	bucket->n_entries++;
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_add_entry_float(m_dictionary_bucket *bucket, const char *name, float value)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	if (!name || !value)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name  = name;
+	bucket->entries[bucket->n_entries].type = DICT_ENTRY_TYPE_FLOAT;
+	bucket->entries[bucket->n_entries].value.val_float = value;
+
+	bucket->n_entries++;
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_add_entry_expr(m_dictionary_bucket *bucket, const char *name, m_expression *value)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	if (!name || !value)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name  = name;
+	bucket->entries[bucket->n_entries].type = DICT_ENTRY_TYPE_EXPR;
+	bucket->entries[bucket->n_entries].value.val_expr = value;
+
+	bucket->n_entries++;
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_add_entry_dict(m_dictionary_bucket *bucket, const char *name, m_dictionary *value)
+{
+	if (!bucket)
+		return ERR_NULL_PTR;
+	
+	if (!name || !value)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	if ((ret_val = m_dictionary_bucket_ensure_capacity(bucket)) != NO_ERROR)
+		return ret_val;
+	
+	bucket->entries[bucket->n_entries].name  = name;
+	bucket->entries[bucket->n_entries].type = DICT_ENTRY_TYPE_SUBDICT;
+	bucket->entries[bucket->n_entries].value.val_dict = value;
+
+	bucket->n_entries++;
+	
+	return NO_ERROR;
+}
+
+int m_dictionary_bucket_lookup(m_dictionary_bucket *bucket, const char *name, void *result, int type)
+{
+	if (!bucket || !result || !name)
+		return ERR_NULL_PTR;
+	
+	for (int i = 0; i < bucket->n_entries; i++)
+	{
+		if (strcmp(bucket->entries[i].name, name) == 0)
+		{
+			if (bucket->entries[i].type == type)
+			{
+				switch (type)
+				{
+					case DICT_ENTRY_TYPE_STR:
+						*((const char**)result) = bucket->entries[i].value.val_string;
+						break;
+					case DICT_ENTRY_TYPE_FLOAT:
+						*((float*)result) = bucket->entries[i].value.val_float;
+						break;
+					case DICT_ENTRY_TYPE_INT:
+						*((int*)result) = bucket->entries[i].value.val_int;
+						break;
+					case DICT_ENTRY_TYPE_EXPR:
+						*((m_expression**)result) = bucket->entries[i].value.val_expr;
+						break;
+					case DICT_ENTRY_TYPE_SUBDICT:
+						*((m_dictionary**)result) = bucket->entries[i].value.val_dict;
+						break;
+				}
+			}
+			else if (type == DICT_ENTRY_TYPE_FLOAT && bucket->entries[i].type == DICT_ENTRY_TYPE_INT)
+			{
+				*((float*)result) = (float)bucket->entries[i].value.val_int;
+			}
+			else if (type == DICT_ENTRY_TYPE_INT && bucket->entries[i].type == DICT_ENTRY_TYPE_FLOAT)
+			{
+				*((int*)result) = (int)roundf(bucket->entries[i].value.val_float);
+			}
+			else
+			{
+				return ERR_WRONG_TYPE;
+			}
+			
+			return NO_ERROR;
+		}
+	}
+	
+	return ERR_NOT_FOUND;
+}
+
+int m_dictionary_bucket_lookup_str(m_dictionary_bucket *bucket, const char *name, const char **result)
+{
+	return m_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_STR);
+}
+
+int m_dictionary_bucket_lookup_float(m_dictionary_bucket *bucket, const char *name, float *result)
+{
+	return m_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_FLOAT);
+}
+
+int m_dictionary_bucket_lookup_int(m_dictionary_bucket *bucket, const char *name, int *result)
+{
+	return m_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_INT);
+}
+
+int m_dictionary_bucket_lookup_expr(m_dictionary_bucket *bucket, const char *name, m_expression **result)
+{
+	return m_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_EXPR);
+}
+
+int m_dictionary_bucket_lookup_dict(m_dictionary_bucket *bucket, const char *name, m_dictionary **result)
+{
+	return m_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_SUBDICT);
+}
+
+
 m_dictionary *m_new_dictionary()
 {
 	m_dictionary *dict = m_parser_alloc(sizeof(m_dictionary));
@@ -32,15 +282,19 @@ m_dictionary *m_new_dictionary()
 		return NULL;
 	
 	dict->name = NULL;
+	dict->n_entries = 0;
 	dict->entries = m_parser_alloc(sizeof(m_dictionary_entry) * 8);
 	
 	if (!dict->entries)
 	{
+		dict->entry_array_length = 0;
 		return NULL;
 	}
 	
-	dict->n_entries = 0;
 	dict->entry_array_length = 8;
+	
+	for (int i = 0; i < M_DICTIONARY_N_BUCKETS; i++)
+		m_dictionary_bucket_init(&dict->buckets[i]);
 	
 	return dict;
 }
@@ -84,7 +338,9 @@ int m_dictionary_add_entry(m_dictionary *dict, m_dictionary_entry entry)
 
 	dict->n_entries++;
 	
-	return ret_val;
+	uint32_t bucket = hash(entry.name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry(&dict->buckets[bucket], entry);
 }
 
 int m_dictionary_add_entry_str(m_dictionary *dict, const char *name, const char *value)
@@ -106,7 +362,9 @@ int m_dictionary_add_entry_str(m_dictionary *dict, const char *name, const char 
 
 	dict->n_entries++;
 	
-	return NO_ERROR;
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry_str(&dict->buckets[bucket], name, value);
 }
 
 int m_dictionary_add_entry_int(m_dictionary *dict, const char *name, int value)
@@ -128,7 +386,9 @@ int m_dictionary_add_entry_int(m_dictionary *dict, const char *name, int value)
 
 	dict->n_entries++;
 	
-	return NO_ERROR;
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry_int(&dict->buckets[bucket], name, value);
 }
 
 int m_dictionary_add_entry_float(m_dictionary *dict, const char *name, float value)
@@ -150,7 +410,9 @@ int m_dictionary_add_entry_float(m_dictionary *dict, const char *name, float val
 
 	dict->n_entries++;
 	
-	return NO_ERROR;
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry_float(&dict->buckets[bucket], name, value);
 }
 
 int m_dictionary_add_entry_expr(m_dictionary *dict, const char *name, m_expression *value)
@@ -172,7 +434,9 @@ int m_dictionary_add_entry_expr(m_dictionary *dict, const char *name, m_expressi
 
 	dict->n_entries++;
 	
-	return NO_ERROR;
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry_expr(&dict->buckets[bucket], name, value);
 }
 
 int m_dictionary_add_entry_dict(m_dictionary *dict, const char *name, m_dictionary *value)
@@ -194,7 +458,9 @@ int m_dictionary_add_entry_dict(m_dictionary *dict, const char *name, m_dictiona
 
 	dict->n_entries++;
 	
-	return NO_ERROR;
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	
+	return m_dictionary_bucket_add_entry_dict(&dict->buckets[bucket], name, value);
 }
 
 int m_dictionary_lookup(m_dictionary *dict, const char *name, void *result, int type)
@@ -202,49 +468,9 @@ int m_dictionary_lookup(m_dictionary *dict, const char *name, void *result, int 
 	if (!dict || !result || !name)
 		return ERR_NULL_PTR;
 	
-	for (int i = 0; i < dict->n_entries; i++)
-	{
-		if (strcmp(dict->entries[i].name, name) == 0)
-		{
-			if (dict->entries[i].type == type)
-			{
-				switch (type)
-				{
-					case DICT_ENTRY_TYPE_STR:
-						*((const char**)result) = dict->entries[i].value.val_string;
-						break;
-					case DICT_ENTRY_TYPE_FLOAT:
-						*((float*)result) = dict->entries[i].value.val_float;
-						break;
-					case DICT_ENTRY_TYPE_INT:
-						*((int*)result) = dict->entries[i].value.val_int;
-						break;
-					case DICT_ENTRY_TYPE_EXPR:
-						*((m_expression**)result) = dict->entries[i].value.val_expr;
-						break;
-					case DICT_ENTRY_TYPE_SUBDICT:
-						*((m_dictionary**)result) = dict->entries[i].value.val_dict;
-						break;
-				}
-			}
-			else if (type == DICT_ENTRY_TYPE_FLOAT && dict->entries[i].type == DICT_ENTRY_TYPE_INT)
-			{
-				*((float*)result) = (float)dict->entries[i].value.val_int;
-			}
-			else if (type == DICT_ENTRY_TYPE_INT && dict->entries[i].type == DICT_ENTRY_TYPE_FLOAT)
-			{
-				*((int*)result) = (int)roundf(dict->entries[i].value.val_float);
-			}
-			else
-			{
-				return ERR_WRONG_TYPE;
-			}
-			
-			return NO_ERROR;
-		}
-	}
+	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
 	
-	return ERR_NOT_FOUND;
+	return m_dictionary_bucket_lookup(&dict->buckets[bucket], name, result, type);
 }
 
 int m_dictionary_lookup_str(m_dictionary *dict, const char *name, const char **result)

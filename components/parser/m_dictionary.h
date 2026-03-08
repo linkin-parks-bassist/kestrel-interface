@@ -26,12 +26,38 @@ typedef struct {
 
 const char *m_dict_entry_type_to_string(int type);
 
+typedef struct m_dictionary_bucket {
+	int n_entries;
+	int entry_array_length;
+	m_dictionary_entry *entries;
+} m_dictionary_bucket;
+
+struct m_dictionary;
+
+int m_dictionary_bucket_add_entry(m_dictionary_bucket *dict, m_dictionary_entry entry);
+
+int m_dictionary_bucket_add_entry_str  (m_dictionary_bucket *dict, const char *name, const char *value);
+int m_dictionary_bucket_add_entry_int  (m_dictionary_bucket *dict, const char *name, int value);
+int m_dictionary_bucket_add_entry_float(m_dictionary_bucket *dict, const char *name, float value);
+int m_dictionary_bucket_add_entry_expr (m_dictionary_bucket *dict, const char *name, m_expression *value);
+int m_dictionary_bucket_add_entry_dict (m_dictionary_bucket *dict, const char *name, struct m_dictionary *value);
+
+int m_dictionary_bucket_lookup_str  (m_dictionary_bucket *dict, const char *name, const char **result);
+int m_dictionary_bucket_lookup_float(m_dictionary_bucket *dict, const char *name, float *result);
+int m_dictionary_bucket_lookup_int  (m_dictionary_bucket *dict, const char *name, int *result);
+int m_dictionary_bucket_lookup_expr (m_dictionary_bucket *dict, const char *name, m_expression **result);
+int m_dictionary_bucket_lookup_dict (m_dictionary_bucket *dict, const char *name, struct m_dictionary **result);
+
+#define M_DICTIONARY_N_BUCKETS 32
+
 typedef struct m_dictionary {
 	const char *name;
 	
 	int n_entries;
 	int entry_array_length;
 	m_dictionary_entry *entries;
+	
+	m_dictionary_bucket buckets[M_DICTIONARY_N_BUCKETS];
 } m_dictionary;
 
 m_dictionary *m_new_dictionary();
