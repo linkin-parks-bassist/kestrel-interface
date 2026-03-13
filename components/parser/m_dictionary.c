@@ -338,7 +338,7 @@ int m_dictionary_add_entry(m_dictionary *dict, m_dictionary_entry entry)
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(entry.name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(entry.name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry(&dict->buckets[bucket], entry);
 }
@@ -362,7 +362,7 @@ int m_dictionary_add_entry_str(m_dictionary *dict, const char *name, const char 
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry_str(&dict->buckets[bucket], name, value);
 }
@@ -386,7 +386,7 @@ int m_dictionary_add_entry_int(m_dictionary *dict, const char *name, int value)
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry_int(&dict->buckets[bucket], name, value);
 }
@@ -410,7 +410,7 @@ int m_dictionary_add_entry_float(m_dictionary *dict, const char *name, float val
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry_float(&dict->buckets[bucket], name, value);
 }
@@ -434,7 +434,7 @@ int m_dictionary_add_entry_expr(m_dictionary *dict, const char *name, m_expressi
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry_expr(&dict->buckets[bucket], name, value);
 }
@@ -458,7 +458,7 @@ int m_dictionary_add_entry_dict(m_dictionary *dict, const char *name, m_dictiona
 
 	dict->n_entries++;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_add_entry_dict(&dict->buckets[bucket], name, value);
 }
@@ -468,7 +468,7 @@ int m_dictionary_lookup(m_dictionary *dict, const char *name, void *result, int 
 	if (!dict || !result || !name)
 		return ERR_NULL_PTR;
 	
-	uint32_t bucket = hash(name) % M_DICTIONARY_N_BUCKETS;
+	uint32_t bucket = hash(name) & (M_DICTIONARY_N_BUCKETS - 1);
 	
 	return m_dictionary_bucket_lookup(&dict->buckets[bucket], name, result, type);
 }

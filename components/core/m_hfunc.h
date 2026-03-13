@@ -36,4 +36,6 @@ inline static uint32_t hash(const char *str)
     return x;
 }
 
+int format_float(char *buf, float val, int max_len);
+
 #endif

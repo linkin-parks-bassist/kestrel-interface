@@ -48,7 +48,7 @@ int m_dictionary_bucket_lookup_int  (m_dictionary_bucket *dict, const char *name
 int m_dictionary_bucket_lookup_expr (m_dictionary_bucket *dict, const char *name, m_expression **result);
 int m_dictionary_bucket_lookup_dict (m_dictionary_bucket *dict, const char *name, struct m_dictionary **result);
 
-#define M_DICTIONARY_N_BUCKETS 32
+#define M_DICTIONARY_N_BUCKETS 8
 
 typedef struct m_dictionary {
 	const char *name;

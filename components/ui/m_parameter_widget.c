@@ -10,66 +10,6 @@ static const char *FNAME = "m_parameter_widget.c";
 IMPLEMENT_LINKED_PTR_LIST(m_parameter_widget);
 IMPLEMENT_LINKED_PTR_LIST(m_setting_widget);
 
-int format_float(char *buf, float val, int max_len)
-{
-	if (!buf) return 0;
-
-	char tmp[10];
-	int i = 0;
-	
-	// Handle negative numbers
-	int is_neg = (val < 0);
-	if (is_neg)
-		val = -val;
-
-	// Multiply and round to 2 decimal places
-	int scaled 	  = (int)roundf(val * 100.0f);
-	int int_part  = scaled / 100;
-	int frac_part = scaled % 100;
-
-	// Write manually to buffer
-	int pos = 0;
-
-	if (is_neg)
-		buf[pos++] = '-';
-
-	if (int_part == 0)
-	{
-		buf[pos++] = '0';
-	}
-	else
-	{
-		while (int_part > 0)
-		{
-			tmp[i++] = '0' + (int_part % 10);
-			int_part /= 10;
-		}
-		
-		while (i-- && pos < max_len - 1)
-		{
-			buf[pos++] = tmp[i];
-		}
-		
-		if (pos == max_len - 1)
-		{
-			buf[pos] = 0;
-			return pos;
-		}
-	}
-
-	tmp[0] = (pos < 5) ? '.' : 0;
-	tmp[1] = (pos < 5) ? '0' + (frac_part / 10) : 0;
-	tmp[2] = (pos < 4) ? '0' + (frac_part % 10) : 0;
-	tmp[3] = 0;
-	
-	for (i = 0; i < 4 && pos < max_len - 1 && tmp[i]; i++)
-		buf[pos++] = tmp[i];
-
-	buf[pos] = 0;
-	
-	return pos - 1;
-}
-
 int parameter_widget_update_value(m_parameter_widget *pw);
 
 void param_widget_rep_update(void *representer, void *representee)

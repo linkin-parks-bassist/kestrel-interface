@@ -124,6 +124,12 @@ void setting_widget_refresh_cb(lv_event_t *event);
 
 void free_setting_widget(m_setting_widget *pw);
 
+void format_parameter_widget_value_label_v(m_parameter_widget *pw, float v);
+void parameter_widget_update_value_label_v(m_parameter_widget *pw, float v);
+
+void param_widget_rep_update(void *representer, void *representee);
+void setting_widget_rep_update(void *representer, void *representee);
+
 DECLARE_LINKED_PTR_LIST(m_setting_widget);
 
 #endif
