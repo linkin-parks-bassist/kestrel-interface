@@ -1,6 +1,7 @@
 top_objdir := bin
 app_objdir := $(top_objdir)/app
 lib_objdir := $(top_objdir)/lib
+test_objdir := $(top_objdir)/tests
 
 app_cfiles := 	core/m_error_codes.c	\
 				core/m_alloc.c			\
@@ -59,6 +60,7 @@ lib_cfiles := 	core/m_error_codes.c	\
 				core/m_transformer.c	\
 				core/m_pipeline.c		\
 				core/m_profile.c		\
+				core/m_printf.c			\
 				core/m_hfunc.c			\
 				core/m_bump_arena.c		\
 				parser/m_tokenizer.c	\
@@ -96,6 +98,7 @@ INC_FLAGS_APP := \
 CFLAGS_LIB := -fPIC -lm -DM_LIBRARY -Imain $(INC_FLAGS_LIB) -g
 CFLAGS_APP := -DM_DESKTOP -Idesktop -Imain $(INC_FLAGS_APP) -g
 LDFLAGS_APP := -lm -lSDL2 -lpthread
+CFLAGS_TEST := $(CFLAGS_APP) -Itests
 
 HDR_INSTALL_DIR := /usr/include/libM/
 
@@ -133,7 +136,13 @@ FREERTOS_OBJ := $(patsubst %.c,$(app_objdir)/%.o,$(FREERTOS_SRC))
 
 ALL_APP_OBJ := $(APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
 
+TEST_SRC := $(shell find tests -name "*.c")
+TEST_OBJ := $(patsubst tests/%.c,$(test_objdir)/%.o,$(TEST_SRC))
+TEST_APP_OBJ := $(filter-out $(app_objdir)/desktop/m_desktop.o,$(APP_OBJ))
+
 app: M
+
+tests: M_tests
 
 clean:
 	rm -r $(top_objdir)
@@ -150,7 +159,11 @@ fullclean:
 M: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/core $(app_objdir)/desktop
 	gcc -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
-all : M app
+M_tests: $(TEST_OBJ) $(TEST_APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
+	gcc -Wl,--undefined=__start___m_tests -Wl,--undefined=__stop___m_tests \
+	    -o $@ $^ `sdl2-config --libs` -lm -lpthread
+
+all : app lib
 	idf.py build
 
 $(app_objdir)/%.o: %.c $(app_hdrs) | $(app_objdir)
@@ -170,6 +183,10 @@ $(app_objdir)/lvgl/%.o: $(LVGL_DIR)/src/%.c | $(app_objdir)
 $(app_objdir)/desktop/freertos/%.o: desktop/freertos/%.c | $(app_objdir)
 	mkdir -p $(dir $@)
 	gcc $(CFLAGS_APP) `sdl2-config --cflags` -c $< -o $@
+
+$(test_objdir)/%.o: tests/%.c | $(test_objdir)
+	mkdir -p $(dir $@)
+	gcc $(CFLAGS_TEST) -c $< -o $@
 
 lib: $(lib_objdir)/libM.so
 
@@ -203,6 +220,9 @@ $(lib_objdir):  | $(top_objdir)
 	mkdir $(lib_objdir)/core
 	mkdir $(lib_objdir)/parser
 	mkdir $(lib_objdir)/fpga
+
+$(test_objdir): | $(top_objdir)
+	mkdir $(test_objdir)
 
 $(HDR_INSTALL_DIR) :
 	mkdir $(HDR_INSTALL_DIR)
