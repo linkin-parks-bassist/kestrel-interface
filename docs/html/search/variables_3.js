@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['data_0',['data',['../structm__allocator.html#a8355650c529a4b0f121b4e3f6281dcdd',1,'m_allocator::data'],['../structm__dsp__resource.html#a2835eb252dab2585d4c22bfa32a4ab50',1,'m_dsp_resource::data'],['../structseq__profile__ll.html#a7631ace35c87a7d9dbf03df62f7ff33e',1,'seq_profile_ll::data'],['../structm__fpga__msg.html#a9594e57b1ea271933919ae0fbcd047ec',1,'m_fpga_msg::data'],['../structm__ast__node.html#a1630ac57b581049dce3594084f7c062f',1,'m_ast_node::data'],['../structm__token__ll.html#a9b72d09924bc6dd46221759c4b73655d',1,'m_token_ll::data'],['../structm__active__button.html#a5b02d6ca5de5e2407821ec19402b6816',1,'m_active_button::data'],['../structm__active__button__array.html#a986e91e9ea2c96817e8d4aeca1fe1396',1,'m_active_button_array::data'],['../structm__menu__item.html#a3f029c3b17ef45d2fb2d78a27e6b1033',1,'m_menu_item::data'],['../structm__menu__page__str.html#af11148b9c111899b9e5c3afa24e45c4e',1,'m_menu_page_str::data']]],
+  ['data_5fstruct_1',['data_struct',['../structm__ui__page.html#a416d3a4e0363dd9e37ab8c9908af0637',1,'m_ui_page']]],
+  ['def_5fexprs_2',['def_exprs',['../structm__effect__desc.html#a3e674ddf70a7dede98485b7a6e1455a6',1,'m_effect_desc::def_exprs'],['../structm__eff__parsing__state.html#a6ffc37df62ccb7a25bb5522ac3528a8e',1,'m_eff_parsing_state::def_exprs']]],
+  ['default_5fbutton_3',['default_button',['../structm__profile__settings__str.html#ad2ae46ec08257e69c087c9b11791edc0',1,'m_profile_settings_str']]],
+  ['default_5fbutton_5flabel_4',['default_button_label',['../structm__profile__settings__str.html#ab898e241bfd9f14ab1c5bce8e5c64969',1,'m_profile_settings_str']]],
+  ['default_5fprofile_5',['default_profile',['../structm__context.html#acd7415973569e601bd051b16c9c3b6f2',1,'m_context']]],
+  ['del_5fbutton_6',['del_button',['../structm__active__button.html#a897787f67086df52a97652a7e262b106',1,'m_active_button']]],
+  ['del_5fbutton_5fanims_7',['del_button_anims',['../structm__active__button.html#a29a33b3e284be99b35cc6b482547f35e',1,'m_active_button']]],
+  ['del_5fbutton_5fcb_8',['del_button_cb',['../structm__active__button__array.html#a403fb1591af0754ac2965286656783f8',1,'m_active_button_array']]],
+  ['del_5fbutton_5ffade_9',['del_button_fade',['../structm__active__button.html#ac70bc4e2ec2050190e1d589e6e1ac249',1,'m_active_button']]],
+  ['del_5fbutton_5fremain_5ftimer_10',['del_button_remain_timer',['../structm__active__button.html#a96d5d60018704f70168f34299a5c0cbc',1,'m_active_button']]],
+  ['delay_11',['delay',['../structm__dsp__resource.html#a71e720904341334b4af34007dcbe9fe2',1,'m_dsp_resource']]],
+  ['delays_12',['delays',['../structm__eff__resource__report.html#ac7e79b337f546781eadc7222e615c90c',1,'m_eff_resource_report']]],
+  ['delete_5fanim_13',['delete_anim',['../structm__active__button.html#a74cdc4bffaba7e0e7c36a486866cc632',1,'m_active_button']]],
+  ['delete_5fcb_14',['delete_cb',['../structm__active__button__array.html#a1aa23d3de22f4cf34f6de43ee819713f',1,'m_active_button_array']]],
+  ['desc_15',['desc',['../structm__menu__item.html#ae12ccc3fb0f7c28a6801dc8c0a837f4a',1,'m_menu_item']]],
+  ['dest_16',['dest',['../structm__block.html#a45af90ffe6c92fdf7c78615440ec9908',1,'m_block']]],
+  ['dest_5fpos_17',['dest_pos',['../structm__arg__format.html#af07789227c03248a5edf38a6b3b93186',1,'m_arg_format']]],
+  ['dict_18',['dict',['../structm__eff__desc__file__section.html#ab11b43f8f241fa2271d15b57deed1769',1,'m_eff_desc_file_section']]],
+  ['draggable_5fx_19',['draggable_x',['../structm__button.html#a3f214d45985aaf78b8860e075d549ecf',1,'m_button']]],
+  ['draggable_5fy_20',['draggable_y',['../structm__button.html#a43d30ab5a93cd5edd3b97d069c6165e6',1,'m_button']]]
+];

@@ -1,0 +1,31 @@
+<map id="m_profile_settings_str" name="m_profile_settings_str">
+<area shape="rect" id="Node000001" title=" " alt="" coords="261,430,427,458"/>
+<area shape="rect" id="Node000002" href="$structm__parameter__widget.html" title=" " alt="" coords="264,330,424,357"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="347,373,347,430,342,430,342,373"/>
+<area shape="rect" id="Node000003" href="$structm__parameter__id.html" title=" " alt="" coords="240,5,368,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,48,332,256,344,329,339,330,327,257,304,49"/>
+<area shape="rect" id="Node000004" href="$structm__parameter.html" title=" " alt="" coords="30,128,139,156"/>
+<area shape="poly" id="edge6_Node000004_Node000003" title=" " alt="" coords="270,43,156,107,111,130,109,126,154,102,267,39"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="84,172,87,214,93,236,104,255,133,276,179,296,286,326,284,332,177,301,130,281,100,258,89,238,82,215,79,172"/>
+<area shape="rect" id="Node000006" href="$structm__profile.html" title=" " alt="" coords="164,229,247,257"/>
+<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="108,166,147,203,183,226,180,231,144,207,104,170"/>
+<area shape="rect" id="Node000005" href="$structm__expression.html" title=" " alt="" coords="5,5,118,33"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="69,48,84,127,79,128,64,49"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="134,8,141,12,144,20,136,29,119,33,118,28,134,25,139,19,137,16,132,13"/>
+<area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="200,272,195,314,197,336,204,356,224,381,248,400,302,427,299,432,245,405,220,384,200,359,192,337,189,314,194,271"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="216,271,225,288,237,304,257,317,279,327,277,331,254,322,234,308,220,291,211,273"/>
+<area shape="rect" id="Node000007" href="$structm__pipeline.html" title=" " alt="" coords="167,128,260,156"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="214,171,209,229,204,228,209,171"/>
+<area shape="rect" id="Node000008" href="$structm__ui__page.html" title=" " alt="" coords="342,229,434,257"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="379,272,352,330,348,328,374,270"/>
+<area shape="poly" id="edge14_Node000008_Node000008" title=" " alt="" coords="452,233,461,243,453,252,435,255,434,250,450,247,456,243,448,238"/>
+<area shape="rect" id="Node000009" href="$structm__ui__page__panel.html" title=" " alt="" coords="512,128,648,156"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="542,166,415,231,413,226,540,161"/>
+<area shape="rect" id="Node000010" href="$structm__button.html" title=" " alt="" coords="470,5,554,33"/>
+<area shape="poly" id="edge15_Node000008_Node000010" title=" " alt="" coords="476,43,429,79,408,103,392,129,384,155,382,183,388,228,382,229,377,183,379,155,387,127,404,100,426,75,473,39"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="529,45,575,126,570,129,525,48"/>
+<area shape="poly" id="edge13_Node000010_Node000010" title=" " alt="" coords="571,8,578,12,580,20,572,30,555,33,554,28,570,25,575,19,574,15,568,12"/>
+<area shape="rect" id="Node000011" href="$structm__representation.html" title=" " alt="" coords="532,229,668,257"/>
+<area shape="poly" id="edge18_Node000001_Node000011" title=" " alt="" coords="586,271,535,339,499,377,459,409,433,422,406,432,404,427,431,417,456,404,496,373,531,336,582,268"/>
+<area shape="poly" id="edge16_Node000002_Node000011" title=" " alt="" coords="553,265,379,332,377,327,551,260"/>
+</map>

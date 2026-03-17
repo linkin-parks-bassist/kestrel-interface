@@ -1,0 +1,27 @@
+var m__profile_8c =
+[
+    [ "PRINTLINES_ALLOWED", "m__profile_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "clone_profile", "m__profile_8c.html#a7e5db159d2b37a612f0ca66124da78c7", null ],
+    [ "create_new_profile_with_teensy", "m__profile_8c.html#a87f18b6c73975f1a163bc50254834b3c", null ],
+    [ "free_profile", "m__profile_8c.html#a924661c699938ec0a5887d77760265e8", null ],
+    [ "gut_profile", "m__profile_8c.html#accc7093440aeddb4d1ba24e393451061", null ],
+    [ "IMPLEMENT_LINKED_PTR_LIST", "m__profile_8c.html#a946cd161540239a664f61be8f6adca0b", null ],
+    [ "init_m_profile", "m__profile_8c.html#ab73797729c3c2878fcbc0e8eb3a3b1d1", null ],
+    [ "m_free_profile", "m__profile_8c.html#a34011bc15e8e1676f967d8216f781a69", null ],
+    [ "m_profile_add_representation", "m__profile_8c.html#a390a0011b78329bf127915efdc481c67", null ],
+    [ "m_profile_append_effect_eff", "m__profile_8c.html#a69a5c3334f55904c60414b0caaef7305", null ],
+    [ "m_profile_create_fpga_transfer_batch", "m__profile_8c.html#ab83be7040a9737b6cd93be5a49ff019b", null ],
+    [ "m_profile_file_rep_update", "m__profile_8c.html#afa367fbc737a45369449f963fde361b6", null ],
+    [ "m_profile_get_effect_by_id", "m__profile_8c.html#ae624ae6d84d14e1cb791d9af517275f6", null ],
+    [ "m_profile_if_active_update_fpga", "m__profile_8c.html#a9161b482b0dc7522ee6c65b863b7e1c6", null ],
+    [ "m_profile_move_effect", "m__profile_8c.html#aa4800b0c771ef2621526b18b878df2cc", null ],
+    [ "m_profile_program_fpga", "m__profile_8c.html#afb4661b1e69513d4087f5e27ec776d51", null ],
+    [ "m_profile_remove_effect", "m__profile_8c.html#a954f3dbec70179420a9e28af858bb6ea", null ],
+    [ "m_profile_remove_representation", "m__profile_8c.html#a0c552dac7fcc8274f2469054d633854c", null ],
+    [ "m_profile_save", "m__profile_8c.html#a7626d2057edcb47ce39ccbede89e5214", null ],
+    [ "m_profile_set_active", "m__profile_8c.html#a74d36a7be10c6d05715b82bb706cd342", null ],
+    [ "m_profile_set_default_name_from_id", "m__profile_8c.html#a33c84cfd9d7294e4949c6809648774c2", null ],
+    [ "m_profile_set_inactive", "m__profile_8c.html#a05ede4e67e9d4cf8558996a0dc2ea4ae", null ],
+    [ "m_profile_update_representations", "m__profile_8c.html#a3e0dbd889a2ea32d7abb63f31b1c04ac", null ],
+    [ "profile_set_id", "m__profile_8c.html#a594b5ac5b6194fd248a7358d7f9941b8", null ]
+];

@@ -1,0 +1,28 @@
+var m__effect_8c =
+[
+    [ "INITIAL_OPTION_ARRAY_LENGTH", "m__effect_8c.html#a323ebdcac3f352ec4e76e2239cf1a1e3", null ],
+    [ "INITIAL_PARAMETER_ARRAY_LENGTH", "m__effect_8c.html#af7f3080356d8cbda4838029a35e482ce", null ],
+    [ "OPTION_ARRAY_CHUNK_SIZE", "m__effect_8c.html#a381222cdd65a7f571824d8c4052752bc", null ],
+    [ "PARAMETER_ARRAY_CHUNK_SIZE", "m__effect_8c.html#a80c48303c09f4193c278b0218150f210", null ],
+    [ "PRINTLINES_ALLOWED", "m__effect_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "clone_effect", "m__effect_8c.html#a93e462e09ad909e5888ae697e63a3a4f", null ],
+    [ "effect_add_parameter", "m__effect_8c.html#a04f72018a5ac8693ac33407c9c163bdc", null ],
+    [ "effect_add_setting", "m__effect_8c.html#a2c516973024b16430dc427476b79048e", null ],
+    [ "effect_get_parameter", "m__effect_8c.html#a077a26e842b0b062ac97a8833ad62682", null ],
+    [ "effect_get_setting", "m__effect_8c.html#afd77e409d2c20a93003eca6767df065a", null ],
+    [ "effect_rectify_param_ids", "m__effect_8c.html#ab1a94024d9e8f3498da5867fb92b8294", null ],
+    [ "effect_set_id", "m__effect_8c.html#a929ed342380889efe0d43f4db5ccb314", null ],
+    [ "free_effect", "m__effect_8c.html#ae44e06e64b2aa5377a7ef568c7f5eb08", null ],
+    [ "gut_effect", "m__effect_8c.html#a7863c6000c7532060ebfd7163a6ede45", null ],
+    [ "IMPLEMENT_LINKED_PTR_LIST", "m__effect_8c.html#ae699d96b70a860a18bd72ddeef93d804", null ],
+    [ "init_effect", "m__effect_8c.html#a3258a7f312e7d7dede5095eb53da6416", null ],
+    [ "init_effect_from_effect_desc", "m__effect_8c.html#a8e75c554d3e8551168278ca959dd73e0", null ],
+    [ "m_effect_create_scope", "m__effect_8c.html#a3bbae12e774f7708567b75d2dcb93260", null ],
+    [ "m_effect_name", "m__effect_8c.html#a4ac79b482fe1208b069ebed66e421d4a", null ],
+    [ "m_effect_profile_rep_update", "m__effect_8c.html#a4ae269e7439d805b367b0d3a9ad261ec", null ],
+    [ "m_effect_set_parameter", "m__effect_8c.html#aa688a610a6829494182f00df50912c54", null ],
+    [ "m_effect_set_setting", "m__effect_8c.html#a1502a57a1f97f8c483c428354cadf641", null ],
+    [ "m_effect_update_fpga_registers", "m__effect_8c.html#a2aa17151efc9d7f76e287385de04a747", null ],
+    [ "m_effect_update_reps", "m__effect_8c.html#a7ffa53dea58d069a71ce0288e044946b", null ],
+    [ "request_append_effect", "m__effect_8c.html#a08f9cc63c819fd6d0d7c16c95696864e", null ]
+];

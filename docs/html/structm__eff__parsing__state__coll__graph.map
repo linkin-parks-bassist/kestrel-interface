@@ -1,0 +1,16 @@
+<map id="m_eff_parsing_state" name="m_eff_parsing_state">
+<area shape="rect" id="Node000001" title=" " alt="" coords="218,249,372,276"/>
+<area shape="rect" id="Node000002" href="$structm__effect__desc.html" title=" " alt="" coords="90,116,206,144"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,158,170,192,193,223,212,236,233,246,231,251,209,241,189,227,166,194,152,160"/>
+<area shape="rect" id="Node000003" href="$structm__eff__resource__report.html" title=" " alt="" coords="5,5,174,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,48,102,81,115,99,131,114,128,117,111,102,97,83,87,49"/>
+<area shape="rect" id="Node000004" href="$structm__expr__scope.html" title=" " alt="" coords="197,5,312,33"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="258,48,262,97,269,153,281,205,293,247,288,249,276,207,264,154,256,98,253,49"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="213,43,192,59,170,88,156,117,151,114,165,85,188,55,209,39"/>
+<area shape="rect" id="Node000005" href="$structm__token__ll.html" title=" " alt="" coords="325,116,417,144"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="358,159,305,250,300,247,353,156"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="434,119,441,123,444,130,436,140,418,144,417,138,433,135,438,129,437,126,431,123"/>
+<area shape="rect" id="Node000006" href="$structm__ast__node.html" title=" " alt="" coords="502,116,602,144"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="533,157,495,193,445,227,410,242,373,252,372,247,408,237,443,222,491,189,529,153"/>
+<area shape="poly" id="edge8_Node000006_Node000006" title=" " alt="" coords="619,119,626,123,629,130,621,140,603,143,602,138,618,135,624,129,622,126,616,123"/>
+</map>

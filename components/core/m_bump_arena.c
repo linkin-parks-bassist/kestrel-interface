@@ -18,6 +18,23 @@ int m_bump_arena_init_empty(m_bump_arena *arena)
 	return NO_ERROR;
 }
 
+static void *m_bump_arena_alloc_wrapper(void *data, size_t size)
+{
+    return m_bump_arena_alloc((m_bump_arena*)data, size);
+}
+
+static void *m_bump_arena_realloc_wrapper(void *data, void *ptr, size_t size)
+{
+    return m_bump_arena_realloc((m_bump_arena*)data, ptr, size);
+}
+
+static void m_bump_arena_free_wrapper(void *data, void *ptr)
+{
+    (void)data;
+    (void)ptr;
+    /* no-op */
+}
+
 int m_bump_arena_init(m_bump_arena *arena, size_t capacity)
 {
 	if (!arena)
@@ -41,6 +58,11 @@ int m_bump_arena_init(m_bump_arena *arena, size_t capacity)
 	arena->pos = 0;
 	arena->capacity = capacity;
 	
+	arena->alloc.alloc 	 = m_bump_arena_alloc_wrapper;
+	arena->alloc.realloc = m_bump_arena_realloc_wrapper;
+	arena->alloc.free 	 = m_bump_arena_free_wrapper;
+	arena->alloc.data 	 = arena;
+	
 	return NO_ERROR;
 }
 
@@ -51,11 +73,14 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 		return NULL;
 	}
 	
-	if (!arena->arena || arena->capacity == 0 || size == 0)
+	if (!arena->arena || arena->capacity == 0)
 	{
 		M_PRINTF("m_bump_arena ERROR: arena has no memory!\n");
 		return NULL;
 	}
+	
+	if (size == 0)
+		return (uint8_t*)arena->arena + arena->pos;
 	
 	size = (size + (M_BUMP_ARENA_ALLOC_ALIGN - 1)) & ~(M_BUMP_ARENA_ALLOC_ALIGN - 1);
 	
@@ -70,6 +95,26 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	arena->pos += size;
 	
 	return ptr;
+}
+
+void *m_bump_arena_realloc(m_bump_arena *arena, void *p, size_t size)
+{
+	if (!arena)
+	{
+		return NULL;
+	}
+	
+	if (!p)
+		return m_bump_arena_alloc(arena, size);
+	
+	uint8_t *new_ptr = m_bump_arena_alloc(arena, size);
+	
+	if (!new_ptr)
+		return NULL;
+	
+	memcpy(new_ptr, p, size);
+	
+	return new_ptr;
 }
 
 int m_bump_arena_reset(m_bump_arena *arena)

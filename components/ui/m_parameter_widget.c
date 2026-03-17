@@ -84,10 +84,10 @@ int parameter_widget_update_value(m_parameter_widget *pw)
 	
 	m_parameter *param = pw->param;
 	m_expr_scope *scope = NULL;
-	m_transformer *trans = NULL;
+	m_effect *effect = NULL;
 	
 	M_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f\n",
-		param->id.profile_id, param->id.transformer_id, param->id.parameter_id,
+		param->id.profile_id, param->id.effect_id, param->id.parameter_id,
 		param->name ? param->name : "(NULL)", param->value);
 	
 	uint32_t val;
@@ -253,7 +253,7 @@ void parameter_widget_change_cb_inner(m_parameter_widget *pw)
 	m_parameter_trigger_update(pw->param, val);
 	
 	#ifdef USE_TEENSY
-	m_message msg = create_m_message(M_MESSAGE_SET_PARAM_VALUE, "sssf", pw->param->id.profile_id, pw->param->id.transformer_id, pw->param->id.parameter_id, pw->param->value);
+	m_message msg = create_m_message(M_MESSAGE_SET_PARAM_VALUE, "sssf", pw->param->id.profile_id, pw->param->id.effect_id, pw->param->id.parameter_id, pw->param->value);
 	queue_msg_to_teensy(msg);
 	#endif
 	
@@ -307,7 +307,7 @@ int parameter_widget_create_ui_no_callback(m_parameter_widget *pw, lv_obj_t *par
 	
 	M_PRINTF("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
 		pw->param->id.profile_id, 
-		pw->param->id.transformer_id, 
+		pw->param->id.effect_id, 
 		pw->param->id.parameter_id, 
 		pw->param->name, 
 		pw->param->name_internal, 
@@ -656,7 +656,7 @@ void sw_field_save_cb(lv_event_t *e)
 		#endif
 		
 		#ifdef USE_TEENSY
-		m_message msg = create_m_message(M_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.transformer_id, sw->setting->id.setting_id, read_int);
+		m_message msg = create_m_message(M_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.effect_id, sw->setting->id.setting_id, read_int);
 		
 		queue_msg_to_teensy(msg);
 		#endif
@@ -741,7 +741,7 @@ void setting_widget_change_cb_inner(m_setting_widget *sw)
 	
 	M_PRINTF("setting_widget_change_cb_inner. value = %d\n", value);
 	#ifdef USE_TEENSY
-	m_message msg = create_m_message(M_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.transformer_id, sw->setting->id.setting_id, value);
+	m_message msg = create_m_message(M_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.effect_id, sw->setting->id.setting_id, value);
 
 	queue_msg_to_teensy(msg);
 	#endif

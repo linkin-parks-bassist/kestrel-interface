@@ -6,7 +6,7 @@
 typedef struct {
 	m_parameter_id id;
 	m_parameter *p;
-	m_transformer *t;
+	m_effect *t;
 	float target;
 	int send;
 } m_parameter_update;

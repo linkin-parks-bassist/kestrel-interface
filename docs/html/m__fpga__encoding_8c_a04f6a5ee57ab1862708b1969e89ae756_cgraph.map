@@ -1,0 +1,16 @@
+<map id="m_fpga_batch_append_block_register_updates" name="m_fpga_batch_append_block_register_updates">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,100,185,144"/>
+<area shape="rect" id="Node000002" href="$m__fpga__io_8c.html#ac4ecd8804864719b441aab2f560c654d" title=" " alt="" coords="246,5,396,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,97,178,70,232,43,251,36,253,41,234,48,181,74,134,101"/>
+<area shape="rect" id="Node000003" href="$m__expression_8c.html#a0938d229ef0ec131b65241e93dc6166d" title=" " alt="" coords="233,57,409,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,99,240,86,241,92,186,104"/>
+<area shape="rect" id="Node000004" href="$m__fpga__io_8c.html#a79d3271b8a45d157eb1d205c3a9cfbfa" title=" " alt="" coords="696,163,865,190"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,120,397,128,523,136,649,149,699,157,698,162,648,154,522,141,397,133,185,125"/>
+<area shape="rect" id="Node000005" href="$m__fpga__io_8c.html#a48b1c2910a47990f4f72059b8bc66cd4" title=" " alt="" coords="457,163,648,190"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="185,132,233,138,442,162,441,167,232,143,185,137"/>
+<area shape="rect" id="Node000006" href="$m__fpga__encoding_8c.html#a80502fb9fa038201d7ada3b2b183130a" title=" " alt="" coords="237,210,405,255"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="142,142,234,189,258,201,256,205,231,194,139,147"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="649,174,681,174,681,179,649,179"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="405,224,521,214,648,199,696,191,697,196,649,204,521,220,406,230"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="405,210,477,192,478,197,406,215"/>
+</map>

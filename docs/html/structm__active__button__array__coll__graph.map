@@ -1,0 +1,18 @@
+<map id="m_active_button_array" name="m_active_button_array">
+<area shape="rect" id="Node000001" title=" " alt="" coords="54,349,226,377"/>
+<area shape="rect" id="Node000002" href="$structm__active__button.html" title=" " alt="" coords="74,450,204,478"/>
+<area shape="poly" id="edge5_Node000002_Node000001" title=" " alt="" coords="110,390,102,402,99,413,102,425,110,437,121,448,117,452,106,441,97,427,93,413,97,400,106,387"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,434,144,426,144,401,140,378,146,377,149,401,149,426,148,435"/>
+<area shape="rect" id="Node000003" href="$structm__button.html" title=" " alt="" coords="25,5,108,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="48,46,21,89,12,114,8,141,8,364,10,380,16,393,36,416,64,434,93,447,91,452,61,439,33,420,11,396,5,381,3,365,3,141,7,113,16,87,43,43"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="125,8,132,12,135,20,127,30,109,33,108,28,124,25,130,19,128,15,123,12"/>
+<area shape="rect" id="Node000005" href="$structm__ui__page.html" title=" " alt="" coords="106,239,198,266"/>
+<area shape="poly" id="edge10_Node000005_Node000003" title=" " alt="" coords="67,49,69,99,73,128,81,155,93,179,109,202,140,237,136,240,105,205,89,182,76,157,68,129,63,100,62,49"/>
+<area shape="rect" id="Node000006" href="$structm__ui__page__panel.html" title=" " alt="" coords="202,128,337,156"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="103,39,249,125,246,130,100,44"/>
+<area shape="rect" id="Node000004" href="$structm__representation.html" title=" " alt="" coords="249,349,386,377"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="284,387,211,428,166,452,163,447,208,424,281,383"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="152,282,144,349,139,349,146,281"/>
+<area shape="poly" id="edge9_Node000005_Node000005" title=" " alt="" coords="215,242,222,246,225,253,217,263,199,267,198,261,214,258,220,252,218,249,212,246"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="246,169,168,240,164,236,242,165"/>
+</map>

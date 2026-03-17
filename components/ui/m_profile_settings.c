@@ -177,7 +177,7 @@ int create_profile_settings_page_ui(m_ui_page *page)
 	lv_label_set_text(str->plus_button_label, "+");
 	lv_obj_center(str->plus_button_label);
 	
-	lv_obj_add_event_cb(str->plus_button, enter_transformer_selector_cb, LV_EVENT_CLICKED, page);
+	lv_obj_add_event_cb(str->plus_button, enter_effect_selector_cb, LV_EVENT_CLICKED, page);
 	
 	str->save_button = lv_btn_create(page->screen);
     lv_obj_set_size(str->save_button, PROFILE_VIEW_BUTTON_WIDTH / 3, PROFILE_VIEW_BUTTON_HEIGHT);

@@ -192,7 +192,7 @@ void hide_keyboard();
 
 typedef struct
 {
-	m_ui_page transformer_selector;
+	m_ui_page effect_selector;
 	
 	lv_obj_t *backstage;
 	

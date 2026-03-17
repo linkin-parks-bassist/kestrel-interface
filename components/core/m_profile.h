@@ -52,10 +52,10 @@ int profile_set_id(m_profile *profile, uint16_t id);
 
 int m_profile_set_default_name_from_id(m_profile *profile);
 
-m_transformer *m_profile_append_transformer_eff(m_profile *profile, m_effect_desc *eff);
-int m_profile_remove_transformer(m_profile *profile, uint16_t id);
+m_effect *m_profile_append_effect_eff(m_profile *profile, m_effect_desc *eff);
+int m_profile_remove_effect(m_profile *profile, uint16_t id);
 
-int m_profile_move_transformer(m_profile *profile, int new_pos, int old_pos);
+int m_profile_move_effect(m_profile *profile, int new_pos, int old_pos);
 
 int clone_profile(m_profile *dest, m_profile *src);
 void gut_profile(m_profile *profile);
@@ -92,6 +92,6 @@ int m_profile_program_fpga(m_profile *profile);
 
 void m_profile_file_rep_update(void *representer, void *representee);
 
-m_transformer *m_profile_get_transformer_by_id(m_profile *profile, int id);
+m_effect *m_profile_get_effect_by_id(m_profile *profile, int id);
 
 #endif

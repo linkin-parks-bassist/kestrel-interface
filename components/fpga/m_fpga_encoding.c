@@ -301,44 +301,44 @@ int m_fpga_batch_append_eff_desc(m_fpga_transfer_batch *batch, m_effect_desc *ef
 	return NO_ERROR;
 }
 
-int m_fpga_batch_append_transformer(m_fpga_transfer_batch *batch, m_transformer *trans, m_eff_resource_report *res, int *pos)
+int m_fpga_batch_append_effect(m_fpga_transfer_batch *batch, m_effect *effect, m_eff_resource_report *res, int *pos)
 {
-	if (!batch || !trans || !res || !pos)
+	if (!batch || !effect || !res || !pos)
 		return ERR_NULL_PTR;
 	
-	if (!trans->eff)
+	if (!effect->eff)
 		return ERR_BAD_ARGS;
 	
-	m_expr_scope *scope = trans->scope;
+	m_expr_scope *scope = effect->scope;
 	
-	trans->block_position = *pos;
-	M_PRINTF("Updating transformer %p's block position to %d. New value: %d\n", trans, *pos, trans->block_position);
+	effect->block_position = *pos;
+	M_PRINTF("Updating effect %p's block position to %d. New value: %d\n", effect, *pos, effect->block_position);
 	
-	m_fpga_batch_append_eff_desc(batch, trans->eff, res, scope, *pos);
+	m_fpga_batch_append_eff_desc(batch, effect->eff, res, scope, *pos);
 	
-	res->memory += trans->eff->res_rpt.memory;
-	res->delays += trans->eff->res_rpt.delays;
+	res->memory += effect->eff->res_rpt.memory;
+	res->delays += effect->eff->res_rpt.delays;
 	
-	*pos += trans->eff->res_rpt.blocks;
+	*pos += effect->eff->res_rpt.blocks;
 	
 	return NO_ERROR;
 }
 
-int m_fpga_batch_append_transformers(m_fpga_transfer_batch *batch, m_transformer_pll *list, m_eff_resource_report *res, int *pos)
+int m_fpga_batch_append_effects(m_fpga_transfer_batch *batch, m_effect_pll *list, m_eff_resource_report *res, int *pos)
 {
 	if (!batch || !list || !res || !pos)
 		return ERR_NULL_PTR;
-	M_PRINTF("m_fpga_batch_append_transformers\n");
+	M_PRINTF("m_fpga_batch_append_effects\n");
 	
-	m_transformer_pll *current = list;
+	m_effect_pll *current = list;
 	
 	while (current)
 	{
-		m_fpga_batch_append_transformer(batch, current->data, res, pos);
+		m_fpga_batch_append_effect(batch, current->data, res, pos);
 		current = current->next;
 	}
 	
-	M_PRINTF("m_fpga_batch_append_transformers done\n");
+	M_PRINTF("m_fpga_batch_append_effects done\n");
 	return NO_ERROR;
 }
 

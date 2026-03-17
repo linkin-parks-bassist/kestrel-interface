@@ -44,7 +44,7 @@ m_ui_page *create_profile_view_for(m_profile *profile)
 	return page;
 }
 
-int profile_view_transformer_click_cb(m_active_button *button)
+int profile_view_effect_click_cb(m_active_button *button)
 {
 	if (!button)
 		return ERR_NULL_PTR;
@@ -52,64 +52,64 @@ int profile_view_transformer_click_cb(m_active_button *button)
 	if (!button->data)
 		return ERR_BAD_ARGS;
 	
-	m_transformer *trans = (m_transformer*)button->data;
+	m_effect *effect = (m_effect*)button->data;
 	
 	/*
-	if (!trans->view_page)
+	if (!effect->view_page)
 	{
 		M_PRINTF("Trnasformer's view page existn't; creating now\n");
-		m_transformer_init_view_page(trans);
+		m_effect_init_view_page(effect);
 	}
 	*/
-	enter_ui_page_forwards(((m_transformer*)button->data)->view_page);
+	enter_ui_page_forwards(((m_effect*)button->data)->view_page);
 	
 	return NO_ERROR;
 }
 
-int profile_view_transformer_moved_cb(m_active_button *button)
+int profile_view_effect_moved_cb(m_active_button *button)
 {
 	if (!button)
 		return ERR_NULL_PTR;
 	
-	m_transformer *trans = button->data;
+	m_effect *effect = button->data;
 	
-	if (!trans)
+	if (!effect)
 		return ERR_BAD_ARGS;
 	
 	#ifdef USE_TEENSY
-	queue_msg_to_teensy(create_m_message(M_MESSAGE_MOVE_TRANSFORMER, "sss", trans->profile->id, trans->id, button->index));
+	queue_msg_to_teensy(create_m_message(M_MESSAGE_MOVE_TRANSFORMER, "sss", effect->profile->id, effect->id, button->index));
 	#endif
 	
 	#ifdef USE_FPGA
-	m_profile *profile = trans->profile;
+	m_profile *profile = effect->profile;
 	
 	if (profile)
-		m_profile_move_transformer(profile, button->index, button->prev_index);
+		m_profile_move_effect(profile, button->index, button->prev_index);
 	#endif
 	
 	return NO_ERROR;
 }
 
-int profile_view_transformer_delete_cb(m_active_button *button)
+int profile_view_effect_delete_cb(m_active_button *button)
 {
-	M_PRINTF("profile_view_transformer_delete_cb\n");
+	M_PRINTF("profile_view_effect_delete_cb\n");
 	if (!button)
 		return ERR_NULL_PTR;
 	
-	m_transformer *trans = button->data;
+	m_effect *effect = button->data;
 	
-	if (!trans)
+	if (!effect)
 		return ERR_BAD_ARGS;
 	
-	int ret_val = m_profile_remove_transformer(trans->profile, trans->id);
+	int ret_val = m_profile_remove_effect(effect->profile, effect->id);
 	
 	if (ret_val != NO_ERROR)
 		return ret_val;
 	
 	#ifdef USE_FPGA
-	ret_val = m_profile_if_active_update_fpga(trans->profile);
+	ret_val = m_profile_if_active_update_fpga(effect->profile);
 	#endif
-	M_PRINTF("profile_view_transformer_delete_cb done\n");
+	M_PRINTF("profile_view_effect_delete_cb done\n");
 	return ret_val;
 }
 
@@ -168,9 +168,9 @@ int init_profile_view(m_ui_page *page)
 	str->array->flags |= M_ACTIVE_BUTTON_ARRAY_FLAG_DELETEABLE;
 	str->array->flags |= M_ACTIVE_BUTTON_ARRAY_FLAG_MOVEABLE;
 	
-	str->array->clicked_cb    = profile_view_transformer_click_cb;
-	str->array->moved_cb      = profile_view_transformer_moved_cb;
-	str->array->del_button_cb = profile_view_transformer_delete_cb;
+	str->array->clicked_cb    = profile_view_effect_click_cb;
+	str->array->moved_cb      = profile_view_effect_moved_cb;
+	str->array->del_button_cb = profile_view_effect_delete_cb;
 	
 	str->rep.representee = NULL;
 	str->rep.representer = page;
@@ -357,27 +357,27 @@ int configure_profile_view(m_ui_page *page, void *data)
 	int ret_val;
 	int alloc_fail = 0;
 	
-	m_transformer *trans;
+	m_effect *effect;
 	
 	int i = 0;
-	m_transformer_pll *current = profile->pipeline.transformers;
+	m_effect_pll *current = profile->pipeline.effects;
 	
 	M_PRINTF("Entering while(current)\n");
 	while (current)
 	{
-		trans = current->data;
+		effect = current->data;
 		
-		m_active_button_array_append_new(str->array, trans, m_transformer_name(trans));
-		if (trans && !trans->view_page)
+		m_active_button_array_append_new(str->array, effect, m_effect_name(effect));
+		if (effect && !effect->view_page)
 		{
-			ret_val = m_transformer_init_view_page(trans, page);
+			ret_val = m_effect_init_view_page(effect, page);
 			if (ret_val != NO_ERROR)
 			{
 				// kill self
 			}
 			else
 			{
-				trans->view_page->create_ui(trans->view_page);
+				effect->view_page->create_ui(effect->view_page);
 			}
 		}
 		
@@ -387,7 +387,7 @@ int configure_profile_view(m_ui_page *page, void *data)
 	configure_profile_settings_page(str->settings_page, profile);
 	
 	str->play = ui_page_add_bottom_button(page, LV_SYMBOL_PLAY, profile_view_play_button_cb);
-	str->plus = ui_page_add_bottom_button(page, LV_SYMBOL_PLUS, enter_transformer_selector_cb);
+	str->plus = ui_page_add_bottom_button(page, LV_SYMBOL_PLUS, enter_effect_selector_cb);
 	str->save = ui_page_add_bottom_button(page, LV_SYMBOL_SAVE, save_button_cb);
 	
 	#ifndef USE_SDCARD
@@ -480,14 +480,14 @@ int enter_profile_view(m_ui_page *page)
 	if (str)
 		global_cxt.working_profile = str->profile;
 	M_PRINTF("set working profile\n");
-	global_cxt.pages.transformer_selector.parent = page;
+	global_cxt.pages.effect_selector.parent = page;
 	M_PRINTF("enter_profile_view done\n");
 	return NO_ERROR;
 }
 
-int profile_view_append_transformer(m_ui_page *page, m_transformer *trans)
+int profile_view_append_effect(m_ui_page *page, m_effect *effect)
 {
-	M_PRINTF("profile_view_append_transformer\n");
+	M_PRINTF("profile_view_append_effect\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -496,14 +496,14 @@ int profile_view_append_transformer(m_ui_page *page, m_transformer *trans)
 	if (!str)
 		return ERR_BAD_ARGS;
 	
-	m_active_button *button = m_active_button_array_append_new(str->array, trans, m_transformer_name(trans));
+	m_active_button *button = m_active_button_array_append_new(str->array, effect, m_effect_name(effect));
 	
 	if (page->ui_created)
 	{
 		m_active_button_create_ui(button, page->container);
 	}
 	
-	M_PRINTF("profile_view_append_transformer done; trans->view_page = %p\n", trans->view_page);
+	M_PRINTF("profile_view_append_effect done; effect->view_page = %p\n", effect->view_page);
 	return NO_ERROR;
 }
 

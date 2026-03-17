@@ -104,7 +104,7 @@ void main_task(void *arg)
 	//		save_state_to_file(&global_cxt.state, SETTINGS_FNAME);
 	
 	load_effects(&global_cxt);
-	init_transformer_selector_eff(&global_cxt.pages.transformer_selector);
+	init_effect_selector_eff(&global_cxt.pages.effect_selector);
 	load_saved_profiles(&global_cxt);
 	load_saved_sequences(&global_cxt);
 	

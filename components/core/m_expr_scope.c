@@ -225,11 +225,3 @@ m_expr_scope_entry *m_expr_scope_fetch(m_expr_scope *scope, const char *name)
 	
 	return NULL;
 }
-
-m_expr_scope *m_expr_scope_copy(m_expr_scope *scope)
-{
-	if (!scope)
-		return NULL;
-	
-	m_expr_scope *result;
-}

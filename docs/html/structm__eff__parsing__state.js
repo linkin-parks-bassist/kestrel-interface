@@ -1,0 +1,25 @@
+var structm__eff__parsing__state =
+[
+    [ "asm_lines", "structm__eff__parsing__state.html#aab1d64c38ddbed33db70249e3277e89c", null ],
+    [ "ast", "structm__eff__parsing__state.html#a702345b001abf104b65dd96c373d6ab3", null ],
+    [ "blocks", "structm__eff__parsing__state.html#a6f3669867654f9a2a0ecbccedd0df689", null ],
+    [ "cname", "structm__eff__parsing__state.html#aeb93d8546710dcfeb546cfd9a4fcb553", null ],
+    [ "content", "structm__eff__parsing__state.html#acae752539534955ad95598c1576e8ed2", null ],
+    [ "current_line", "structm__eff__parsing__state.html#a9d753c0be939077d2fdc382b52ea798b", null ],
+    [ "current_token", "structm__eff__parsing__state.html#a5c702c53126fe0f1fd7279c9dcd81ba0", null ],
+    [ "def_exprs", "structm__eff__parsing__state.html#a6ffc37df62ccb7a25bb5522ac3528a8e", null ],
+    [ "errors", "structm__eff__parsing__state.html#ada4ce8022674c54a129ec1d5423d32bd", null ],
+    [ "file_size", "structm__eff__parsing__state.html#aefb76a48135eecc0c448763be2ae0c25", null ],
+    [ "fname", "structm__eff__parsing__state.html#ac2be1d3820cb4b2a62a59fc004431d1e", null ],
+    [ "len", "structm__eff__parsing__state.html#ac2b5fd5f410b4f7e3a9f09cd32b7ccb4", null ],
+    [ "lines", "structm__eff__parsing__state.html#a2ccc16c006ece73304af6e8d9a1649c7", null ],
+    [ "n_lines", "structm__eff__parsing__state.html#ac543ba6cea09f9487579d81230ba8baa", null ],
+    [ "name", "structm__eff__parsing__state.html#a5525b6e7f9a3458ec124f427470da6d9", null ],
+    [ "parameters", "structm__eff__parsing__state.html#a97e11d6aba26aab90c3fe5d9075c2da5", null ],
+    [ "resources", "structm__eff__parsing__state.html#a4b64549aa5709cd30abc1470b31d5716", null ],
+    [ "result", "structm__eff__parsing__state.html#ac8c5b000ffbbd879b7326b6cf23a8a51", null ],
+    [ "scope", "structm__eff__parsing__state.html#adc1b8ff5d519eb3e6fe27224c556777f", null ],
+    [ "settings", "structm__eff__parsing__state.html#a159be5d7281a596584a4b65c94b45ba6", null ],
+    [ "tokens", "structm__eff__parsing__state.html#aefb7842c2bdd2dd92bfc9eec6ca11d2a", null ],
+    [ "version_string", "structm__eff__parsing__state.html#aac7ab96cd150e0a55646c8d04a2e5c89", null ]
+];

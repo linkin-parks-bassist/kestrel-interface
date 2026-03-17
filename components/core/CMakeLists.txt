@@ -18,10 +18,10 @@ idf_component_register(SRCS "m_alloc.c"
 							"m_representation.c"
 							"m_sequence.c"
 							"m_state.c"
-							"m_transformer.c"
-							"m_transformer_enum.c"
-							"m_transformer_init.c"
-							"m_transformer_table.c"
+							"m_effect.c"
+							"m_effect_enum.c"
+							"m_effect_init.c"
+							"m_effect_table.c"
 					REQUIRES
 							driver
 							drivers

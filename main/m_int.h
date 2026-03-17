@@ -57,6 +57,9 @@
 #define LL_MALLOC m_alloc
 #define LL_FREE   m_free
 
+#include "m_error_codes.h"
+
+#include "m_list.h"
 #include "m_linked_list.h"
 
 DECLARE_LINKED_PTR_LIST(char);
@@ -64,7 +67,6 @@ typedef char_pll string_ll;
 
 #define M_FILENAME_LEN 32
 
-#include "m_error_codes.h"
 #include "m_representation.h"
 #include "m_parameter.h"
 #include "m_resource.h"
@@ -73,12 +75,12 @@ typedef char_pll string_ll;
 #include "m_block.h"
 #include "m_eff_desc.h"
 #include "m_fpga_io.h"
-#include "m_transformer.h"
+#include "m_effect.h"
 #include "m_pipeline.h"
 #include "m_profile.h"
 #include "m_param_update.h"
 #include "m_status.h"
-#include "m_transformer_enum.h"
+#include "m_effect_enum.h"
 #include "m_alloc.h"
 #include "m_bump_arena.h"
 #include "m_hfunc.h"
@@ -90,11 +92,11 @@ typedef char_pll string_ll;
 #include "m_button.h"
 #include "m_ui.h"
 #include "m_parameter_widget.h"
-#include "m_transformer_init.h"
-#include "m_transformer_table.h"
-#include "m_transformer_view.h"
-#include "m_transformer_settings.h"
-#include "m_transformer_select.h"
+#include "m_effect_init.h"
+#include "m_effect_table.h"
+#include "m_effect_view.h"
+#include "m_effect_settings.h"
+#include "m_effect_select.h"
 #include "m_sequence.h"
 #include "m_profile_settings.h"
 #include "m_profile_view.h"

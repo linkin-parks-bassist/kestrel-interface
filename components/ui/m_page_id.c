@@ -15,8 +15,8 @@ m_ui_page *m_page_id_find_page(m_context *cxt, m_page_identifier id)
 		return NULL;
 	
 	m_ui_page *page;
-	m_transformer_view_str *tv_str;
-	m_transformer *trans = NULL;
+	m_effect_view_str *tv_str;
+	m_effect *effect = NULL;
 	m_profile *profile = NULL;
 	m_sequence *seq = NULL;
 	
@@ -40,7 +40,7 @@ m_ui_page *m_page_id_find_page(m_context *cxt, m_page_identifier id)
 			else return profile->view_page;
 			
 		case M_UI_PAGE_TRANS_VIEW: 
-			M_PRINTF("It is a transformer view. First, search for the profile with fname \"%s\"\n", id.fname);
+			M_PRINTF("It is a effect view. First, search for the profile with fname \"%s\"\n", id.fname);
 			profile = cxt_get_profile_by_fname(cxt, id.fname);
 			M_PRINTF("The returned profile: %p\n", profile);
 			if (!profile)
@@ -49,33 +49,33 @@ m_ui_page *m_page_id_find_page(m_context *cxt, m_page_identifier id)
 				return NULL;
 			}
 			
-			M_PRINTF("It is non-NULL! Yay!. Now we must try to find among it the desired transformer; it has ID %d\n", id.id);
+			M_PRINTF("It is non-NULL! Yay!. Now we must try to find among it the desired effect; it has ID %d\n", id.id);
 			
-			trans = m_profile_get_transformer_by_id(profile, id.id);
+			effect = m_profile_get_effect_by_id(profile, id.id);
 			
-			if (!trans)
+			if (!effect)
 			{
-				M_PRINTF("The transformer was not found. No chance of locating the page. Return NULL\n");
+				M_PRINTF("The effect was not found. No chance of locating the page. Return NULL\n");
 				return NULL;
 			}
 			else
 			{
-				M_PRINTF("The transformer was found! Its view page is %p.\n", trans->view_page);
+				M_PRINTF("The effect was found! Its view page is %p.\n", effect->view_page);
 				M_PRINTF("Send it.\n");
-				return trans->view_page;
+				return effect->view_page;
 			}
 			
 		case M_UI_PAGE_TRANS_SET: 
-			M_PRINTF("It is a transformer settings page.\n");
+			M_PRINTF("It is a effect settings page.\n");
 			profile = cxt_get_profile_by_fname(cxt, id.fname);
 			
 			if (!profile) return NULL;
 			
-			trans = m_profile_get_transformer_by_id(profile, id.id);
+			effect = m_profile_get_effect_by_id(profile, id.id);
 			
-			if (!trans) return NULL;
-			page = trans->view_page;
-			tv_str = (m_transformer_view_str*)page->data_struct;
+			if (!effect) return NULL;
+			page = effect->view_page;
+			tv_str = (m_effect_view_str*)page->data_struct;
 			
 			if (!tv_str) return NULL;
 			else return tv_str->settings_page;
@@ -114,9 +114,9 @@ int m_ui_page_create_identifier(m_ui_page *page, m_page_identifier *id)
 	
 	m_profile_view_str		*pv_str = (m_profile_view_str*)		page->data_struct;
 	m_sequence_view_str 	*sv_str = (m_sequence_view_str*)	page->data_struct;
-	m_transformer_view_str 	*tv_str = (m_transformer_view_str*)	page->data_struct;
-	trans_settings_page_str *ts_str = (trans_settings_page_str*)page->data_struct;
-	m_transformer *trans = NULL;
+	m_effect_view_str 	*tv_str = (m_effect_view_str*)	page->data_struct;
+	effect_settings_page_str *ts_str = (effect_settings_page_str*)page->data_struct;
+	m_effect *effect = NULL;
 	m_profile *profile = NULL;
 	m_sequence *seq = NULL;
 	
@@ -133,25 +133,25 @@ int m_ui_page_create_identifier(m_ui_page *page, m_page_identifier *id)
 			break;
 			
 		case M_UI_PAGE_TRANS_VIEW:
-			trans = tv_str->trans;
+			effect = tv_str->effect;
 			
-			if (!trans) return ERR_BAD_ARGS;
+			if (!effect) return ERR_BAD_ARGS;
 			break;
 			
 		case M_UI_PAGE_TRANS_SET:
-			trans = ts_str->trans;
+			effect = ts_str->effect;
 			
-			if (!trans) return ERR_BAD_ARGS;
+			if (!effect) return ERR_BAD_ARGS;
 			break;
 		
 		default:
 			return ERR_BAD_ARGS;
 	}
 	
-	if (trans)
+	if (effect)
 	{
-		id->id = trans->id;
-		profile = trans->profile;
+		id->id = effect->id;
+		profile = effect->profile;
 	}
 	
 	if (seq)

@@ -1,0 +1,27 @@
+<map id="m_parameter_widget" name="m_parameter_widget">
+<area shape="rect" id="Node000001" title=" " alt="" coords="189,330,350,357"/>
+<area shape="rect" id="Node000002" href="$structm__parameter__id.html" title=" " alt="" coords="5,5,134,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,48,82,102,100,172,114,208,131,243,153,276,179,304,198,317,220,327,218,332,196,322,176,308,149,279,127,246,109,210,95,173,77,103,69,49"/>
+<area shape="rect" id="Node000003" href="$structm__parameter.html" title=" " alt="" coords="107,128,216,156"/>
+<area shape="poly" id="edge5_Node000003_Node000002" title=" " alt="" coords="91,44,154,126,149,129,86,47"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,172,158,213,161,235,169,255,184,278,204,298,245,327,242,331,200,302,180,282,164,258,156,236,153,213,154,171"/>
+<area shape="rect" id="Node000005" href="$structm__profile.html" title=" " alt="" coords="228,229,311,257"/>
+<area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="182,166,216,203,248,226,245,231,212,207,178,170"/>
+<area shape="rect" id="Node000004" href="$structm__expression.html" title=" " alt="" coords="157,5,270,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="204,48,170,129,165,127,200,46"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="286,8,293,12,296,20,288,29,271,33,270,28,286,25,291,19,289,16,284,13"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="272,272,272,329,267,329,267,272"/>
+<area shape="rect" id="Node000006" href="$structm__pipeline.html" title=" " alt="" coords="240,128,334,156"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="285,172,274,229,269,228,279,171"/>
+<area shape="rect" id="Node000007" href="$structm__ui__page.html" title=" " alt="" coords="335,229,428,257"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="363,270,326,308,293,331,290,327,322,304,359,267"/>
+<area shape="poly" id="edge13_Node000007_Node000007" title=" " alt="" coords="445,233,454,243,446,252,428,255,428,250,444,247,449,243,441,238"/>
+<area shape="rect" id="Node000008" href="$structm__ui__page__panel.html" title=" " alt="" coords="516,128,652,156"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="545,166,410,231,407,226,542,161"/>
+<area shape="rect" id="Node000009" href="$structm__button.html" title=" " alt="" coords="466,5,550,33"/>
+<area shape="poly" id="edge14_Node000007_Node000009" title=" " alt="" coords="476,44,432,80,412,104,396,129,387,156,382,183,383,228,377,228,377,182,381,154,391,127,408,100,429,77,473,40"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="527,45,578,126,574,129,522,48"/>
+<area shape="poly" id="edge12_Node000009_Node000009" title=" " alt="" coords="567,8,574,12,576,20,568,30,551,33,550,28,566,25,571,19,570,15,564,12"/>
+<area shape="rect" id="Node000010" href="$structm__representation.html" title=" " alt="" coords="525,229,662,257"/>
+<area shape="poly" id="edge15_Node000001_Node000010" title=" " alt="" coords="541,265,405,308,321,332,319,326,403,303,540,260"/>
+</map>

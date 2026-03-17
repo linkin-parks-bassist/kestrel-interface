@@ -16,12 +16,17 @@ typedef struct {
 	void *arena;
 	size_t pos;
 	size_t capacity;
+	
+	m_allocator alloc;
 } m_bump_arena;
 
 int m_bump_arena_init_empty(m_bump_arena *arena);
 int m_bump_arena_init(m_bump_arena *arena, size_t capacity);
 
 void *m_bump_arena_alloc(m_bump_arena *arena, size_t size);
+void *m_bump_arena_realloc(m_bump_arena *arena, void *p, size_t size);
+void m_bump_arena_free(m_bump_arena *arena);
+
 int   m_bump_arena_reset(m_bump_arena *arena);
 int   m_bump_arena_destroy(m_bump_arena *arena);
 

@@ -1,0 +1,11 @@
+<map id="m_fpga_batch_append_effect" name="m_fpga_batch_append_effect">
+<area shape="rect" id="Node000001" title=" " alt="" coords="676,36,845,81"/>
+<area shape="rect" id="Node000002" href="$m__fpga__encoding_8c.html#a064d2046d35612bd6dfc444e729ab8e2" title=" " alt="" coords="460,36,628,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="661,61,629,61,629,56,661,56"/>
+<area shape="rect" id="Node000003" href="$m__pipeline_8c.html#a0e4dc109656a9755396b6cc528f264bb" title=" " alt="" coords="235,36,412,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="445,61,413,61,413,56,445,56"/>
+<area shape="rect" id="Node000004" href="$m__profile_8c.html#a453d8e3c1c10b908be0c956022850d46" title=" " alt="" coords="12,5,180,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="219,47,180,42,181,36,220,42"/>
+<area shape="rect" id="Node000005" href="$m__profile_8c.html#afb4661b1e69513d4087f5e27ec776d51" title=" " alt="" coords="5,74,187,102"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="220,74,188,79,187,73,219,69"/>
+</map>

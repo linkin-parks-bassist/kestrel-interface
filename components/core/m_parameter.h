@@ -12,7 +12,7 @@
 typedef struct m_parameter_id
 {
 	uint16_t profile_id;
-	uint16_t transformer_id;
+	uint16_t effect_id;
 	uint16_t parameter_id;
 } m_parameter_id;
 
@@ -48,7 +48,7 @@ typedef struct m_parameter
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	m_representation_pll *reps;
-	m_representation trans_rep;
+	m_representation effect_rep;
 	#endif
 } m_parameter;
 
@@ -61,7 +61,7 @@ typedef struct m_setting_option
 typedef struct m_setting_id
 {
 	uint16_t profile_id;
-	uint16_t transformer_id;
+	uint16_t effect_id;
 	uint16_t setting_id;
 } m_setting_id;
 
@@ -100,7 +100,7 @@ typedef struct m_setting
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	m_representation_pll *reps;
-	m_representation trans_rep;
+	m_representation effect_rep;
 	#endif
 } m_setting;
 
@@ -121,17 +121,17 @@ m_parameter *new_m_parameter_wni(const char *name, const char *name_internal, fl
 int init_setting_str(m_setting *setting);
 int init_setting(m_setting *setting, const char *name, uint16_t level);
 
-struct m_transformer;
+struct m_effect;
 
 void clone_parameter(m_parameter *dest, m_parameter *src);
 m_parameter *m_parameter_make_clone(m_parameter *src);
-m_parameter *m_parameter_make_clone_for_transformer(m_parameter *src, struct m_transformer *trans);
+m_parameter *m_parameter_make_clone_for_effect(m_parameter *src, struct m_effect *effect);
 void gut_parameter(m_parameter *param);
 void m_parameter_free(m_parameter *param);
 
 int clone_setting(m_setting *dest, m_setting *src);
 m_setting *m_setting_make_clone(m_setting *src);
-m_setting *m_setting_make_clone_for_transformer(m_setting *src, struct m_transformer *trans);
+m_setting *m_setting_make_clone_for_effect(m_setting *src, struct m_effect *effect);
 void gut_setting(m_setting *setting);
 void m_setting_free(m_setting *setting);
 
@@ -140,7 +140,7 @@ struct m_interval;
 struct m_interval m_parameter_get_range(m_parameter *param);
 #endif
 
-void m_parameter_transformer_rep_update(void *representer, void *representee);
-void m_setting_transformer_rep_update(void *representer, void *representee);
+void m_parameter_effect_rep_update(void *representer, void *representee);
+void m_setting_effect_rep_update(void *representer, void *representee);
 
 #endif

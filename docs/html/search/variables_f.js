@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['rb_0',['rb',['../structm__ui__page__panel.html#ac86e26a533f6e7772d0b03b81a82dd67',1,'m_ui_page_panel']]],
+  ['realloc_1',['realloc',['../structm__allocator.html#a93f92ea99cd6b24dc9c942c630189f93',1,'m_allocator']]],
+  ['ref_5fname_2',['ref_name',['../structm__expression.html#ada5f2b584b1f946a31d8e1c53640e7b6',1,'m_expression']]],
+  ['refresh_3',['refresh',['../structm__ui__page.html#a310efaf69a2dc494f14cf429e9035abf',1,'m_ui_page']]],
+  ['reg_4',['reg',['../structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07',1,'sgtl_reg_desc_t']]],
+  ['reg_5f0_5',['reg_0',['../structm__block.html#ade7a7938e2166520d2e3eda1c5e63b3c',1,'m_block']]],
+  ['reg_5f1_6',['reg_1',['../structm__block.html#a283d0e9d40caf7361cf5d972d427a57a',1,'m_block']]],
+  ['relative_5ftouch_5fy_7',['relative_touch_y',['../structm__active__button.html#adef845f5888bc8290153aad395cd7560',1,'m_active_button']]],
+  ['released_5fcb_8',['released_cb',['../structm__button.html#abefcc74f8011449ea498a11e563c3b1b',1,'m_button']]],
+  ['released_5fcb_5farg_9',['released_cb_arg',['../structm__button.html#ac93425d8e525f87793e0934353ff4e54',1,'m_button']]],
+  ['rep_10',['rep',['../structm__active__button.html#a6f2aac1757c070bbcc5354c187881f53',1,'m_active_button::rep'],['../structm__menu__item.html#a3bca7068727538fea3e699450bf41096',1,'m_menu_item::rep'],['../structm__parameter__widget.html#aafec8458e2fc08c9eb9b9467e627bce0',1,'m_parameter_widget::rep'],['../structm__setting__widget.html#a8b9b67296f5b0213bf7b1fbf434f11f0',1,'m_setting_widget::rep'],['../structm__profile__settings__str.html#af7b2f49b3d0bd409158077237ee5c09e',1,'m_profile_settings_str::rep'],['../structm__profile__view__str.html#ac2d46249f01b906256f49e926fa7046b',1,'m_profile_view_str::rep'],['../structm__sequence__view__str.html#ad21de35eceefd3592ae499409bc2e8dc',1,'m_sequence_view_str::rep']]],
+  ['representee_11',['representee',['../structm__representation.html#af70d4414179997f3d3eb925cef8ed26c',1,'m_representation']]],
+  ['representer_12',['representer',['../structm__representation.html#aac3df982e7143de556044458b57bff2e',1,'m_representation']]],
+  ['res_13',['res',['../structm__block.html#aa4fe11252b531ff70444b0362b2e5851',1,'m_block::res'],['../structm__asm__operand.html#a63f90b6062d1c97eb41fe25f61ab8bdb',1,'m_asm_operand::res']]],
+  ['res_5fname_14',['res_name',['../structm__asm__operand.html#abc6399c0fa28b29910b7669a3d563a54',1,'m_asm_operand']]],
+  ['res_5fpos_15',['res_pos',['../structm__arg__format.html#aceb9855880562c96efd2beb692043d00',1,'m_arg_format']]],
+  ['res_5frpt_16',['res_rpt',['../structm__effect__desc.html#aa5aff8777a60682b3483b831b8e7e980',1,'m_effect_desc']]],
+  ['reset_5fcolour_17',['reset_colour',['../m__eff__parser_8c.html#a5a52ad647bc8da6da262c5a0a4d16597',1,'m_eff_parser.c']]],
+  ['resources_18',['resources',['../structm__effect__desc.html#aca2d2476a7620fdd43e324304699cf26',1,'m_effect_desc::resources'],['../structm__eff__parsing__state.html#a4b64549aa5709cd30abc1470b31d5716',1,'m_eff_parsing_state::resources']]],
+  ['result_19',['result',['../structm__eff__parsing__state.html#ac8c5b000ffbbd879b7326b6cf23a8a51',1,'m_eff_parsing_state']]],
+  ['right_5fbutton_20',['right_button',['../structm__ui__page__panel.html#a497fbd236ffe48ad4269b06e5e35708b',1,'m_ui_page_panel']]],
+  ['right_5fbutton_5fsymbol_21',['right_button_symbol',['../structm__ui__page__panel.html#aabb9590c3cde9e18cbaead0435c35122',1,'m_ui_page_panel']]],
+  ['right_5fswitch_5fstate_22',['right_switch_state',['../m__footswitch_8c.html#a83d248105e635a8b8fee74324508a512',1,'m_footswitch.c']]],
+  ['rw_5fcancel_5fcb_23',['rw_cancel_cb',['../structm__ui__page__panel.html#a5c76068daada2cbcc6e38d56055b392a',1,'m_ui_page_panel']]],
+  ['rw_5fsave_5fcb_24',['rw_save_cb',['../structm__ui__page__panel.html#a40ed98042b07a584180fcf6f7ff7c5a5',1,'m_ui_page_panel']]]
+];

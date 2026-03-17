@@ -81,7 +81,7 @@ int m_init_global_pages(m_global_pages *pages)
 		return ERR_NULL_PTR;
 	
 	init_main_menu(&pages->main_menu);
-	//init_transformer_selector_eff(&pages->transformer_selector);
+	//init_effect_selector_eff(&pages->effect_selector);
 	
 	//init_profile_list(&pages->profile_list);
 	init_sequence_list(&pages->sequence_list);

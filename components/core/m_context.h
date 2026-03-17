@@ -63,18 +63,18 @@ m_profile *m_context_add_profile_rp(m_context *cxt);
 m_sequence *m_context_add_sequence_rp(m_context *cxt);
 
 m_profile *cxt_get_profile_by_id(m_context *cxt, uint16_t profile_id);
-m_transformer *cxt_get_transformer_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id);
-m_parameter *cxt_get_parameter_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id, uint16_t parameter_id);
-int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m_parameter **pp, m_transformer **tp);
-m_setting *cxt_get_setting_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id, uint16_t parameter_id);
+m_effect *cxt_get_effect_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id);
+m_parameter *cxt_get_parameter_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id);
+int cxt_get_parameter_and_effect_by_id(m_context *cxt, m_parameter_id id, m_parameter **pp, m_effect **tp);
+m_setting *cxt_get_setting_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id);
 
 m_profile *cxt_get_profile_by_fname(m_context *cxt, const char *fname);
 m_sequence *cxt_get_sequence_by_fname(m_context *cxt, const char *fname);
 
-int cxt_transformer_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t transformer_id);
-int cxt_transformer_position_to_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_pos);
+int cxt_effect_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t effect_id);
+int cxt_effect_position_to_id(m_context *cxt, uint16_t profile_id, uint16_t effect_pos);
 
-int cxt_remove_transformer(m_context *cxt, uint16_t pid, uint16_t tid);
+int cxt_remove_effect(m_context *cxt, uint16_t pid, uint16_t tid);
 int cxt_remove_profile(m_context *cxt, m_profile *profile);
 int cxt_remove_sequence(m_context *cxt, m_sequence *sequence);
 

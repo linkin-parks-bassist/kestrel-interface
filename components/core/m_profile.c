@@ -45,7 +45,7 @@ int init_m_profile(m_profile *profile)
 	
 	init_parameter(&profile->volume, "Gain", 0.0, -12.0, 12.0);
 	profile->volume.units = " dB";
-	profile->volume.id = (m_parameter_id){.profile_id = 0, .transformer_id = 0xFFFF, .parameter_id = 0};
+	profile->volume.id = (m_parameter_id){.profile_id = 0, .effect_id = 0xFFFF, .parameter_id = 0};
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	profile->file_rep.representee = profile;
@@ -171,44 +171,44 @@ int m_profile_set_default_name_from_id(m_profile *profile)
 	return NO_ERROR;
 }
 
-m_transformer *m_profile_append_transformer_eff(m_profile *profile, m_effect_desc *eff)
+m_effect *m_profile_append_effect_eff(m_profile *profile, m_effect_desc *eff)
 {
 	if (!profile)
 		return NULL;
 	
-	M_PRINTF("m_profile_append_transformer_eff(profile = %p, eff = %p)\n", eff);
-	m_transformer *trans = m_pipeline_append_transformer_eff(&profile->pipeline, eff);
-	M_PRINTF("trans = %p\n", trans);
+	M_PRINTF("m_profile_append_effect_eff(profile = %p, eff = %p)\n", eff);
+	m_effect *effect = m_pipeline_append_effect_eff(&profile->pipeline, eff);
+	M_PRINTF("effect = %p\n", effect);
 	
-	if (!trans)
+	if (!effect)
 		return NULL;
 	
-	transformer_rectify_param_ids(trans);
+	effect_rectify_param_ids(effect);
 	
-	return trans;
+	return effect;
 }
 
-int m_profile_remove_transformer(m_profile *profile, uint16_t id)
+int m_profile_remove_effect(m_profile *profile, uint16_t id)
 {
-	M_PRINTF("m_profile_remove_transformer\n");
+	M_PRINTF("m_profile_remove_effect\n");
 	if (!profile)
 		return ERR_NULL_PTR;
 	
-	int ret_val = m_pipeline_remove_transformer(&profile->pipeline, id);
+	int ret_val = m_pipeline_remove_effect(&profile->pipeline, id);
 	
 	m_profile_if_active_update_fpga(profile);
 	
-	M_PRINTF("m_profile_remove_transformer done. ret_val = %s\n", m_error_code_to_string(ret_val));
+	M_PRINTF("m_profile_remove_effect done. ret_val = %s\n", m_error_code_to_string(ret_val));
 	return ret_val;
 }
 
-int m_profile_move_transformer(m_profile *profile, int new_pos, int old_pos)
+int m_profile_move_effect(m_profile *profile, int new_pos, int old_pos)
 {
 	int ret_val = NO_ERROR;
 	
 	if (profile)
 	{
-		if ((ret_val = m_pipeline_move_transformer(&profile->pipeline, new_pos, old_pos)) != NO_ERROR)
+		if ((ret_val = m_pipeline_move_effect(&profile->pipeline, new_pos, old_pos)) != NO_ERROR)
 			return ret_val;
 		
 		ret_val = m_profile_if_active_update_fpga(profile);
@@ -447,9 +447,9 @@ void m_profile_file_rep_update(void *representer, void *representee)
 }
 
 
-m_transformer *m_profile_get_transformer_by_id(m_profile *profile, int id)
+m_effect *m_profile_get_effect_by_id(m_profile *profile, int id)
 {
-	m_transformer *result = m_pipeline_get_transformer_by_id(&profile->pipeline, id);
+	m_effect *result = m_pipeline_get_effect_by_id(&profile->pipeline, id);
 	
 	return result;
 }

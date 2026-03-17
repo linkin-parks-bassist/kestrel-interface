@@ -11,40 +11,40 @@ int init_m_pipeline(m_pipeline *pipeline)
 	if (!pipeline)
 		return ERR_NULL_PTR;
 	
-	pipeline->transformers = NULL;
+	pipeline->effects = NULL;
 	
 	return NO_ERROR;
 }
 
-m_transformer *m_pipeline_append_transformer_eff(m_pipeline *pipeline, m_effect_desc *eff)
+m_effect *m_pipeline_append_effect_eff(m_pipeline *pipeline, m_effect_desc *eff)
 {
 	if (!pipeline || !eff)
 		return NULL;
 	
-	m_transformer *trans = m_alloc(sizeof(m_transformer));
+	m_effect *effect = m_alloc(sizeof(m_effect));
 	
-	if (!trans)
+	if (!effect)
 		return NULL;
 	
-	m_transformer_pll *node = m_alloc(sizeof(m_transformer_pll));
+	m_effect_pll *node = m_alloc(sizeof(m_effect_pll));
 	
 	if (!node)
 		return NULL;
 	
-	node->data = trans;
+	node->data = effect;
 	node->next = NULL;
 	
-	init_transformer_from_effect_desc(trans, eff);
+	init_effect_from_effect_desc(effect, eff);
 	
-	if (!pipeline->transformers)
+	if (!pipeline->effects)
 	{
-		trans->id = 0;
-		pipeline->transformers = node;
+		effect->id = 0;
+		pipeline->effects = node;
 	}
 	else
 	{
 		int least_free_id = 0;
-		m_transformer_pll *current = pipeline->transformers;
+		m_effect_pll *current = pipeline->effects;
 		
 		while (current)
 		{
@@ -60,37 +60,37 @@ m_transformer *m_pipeline_append_transformer_eff(m_pipeline *pipeline, m_effect_
 				break;
 		}
 		
-		trans->id = least_free_id;
+		effect->id = least_free_id;
 		current->next = node;
 	}
 	
-	return trans;
+	return effect;
 }
 
-int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id)
+int m_pipeline_remove_effect(m_pipeline *pipeline, uint16_t id)
 {
-	M_PRINTF("m_pipeline_remove_transformer\n");
+	M_PRINTF("m_pipeline_remove_effect\n");
 	if (!pipeline)
 		return ERR_NULL_PTR;
 	
-	m_transformer_pll *current = pipeline->transformers;
-	m_transformer_pll *prev = NULL;
+	m_effect_pll *current = pipeline->effects;
+	m_effect_pll *prev = NULL;
 	
 	while (current)
 	{
 		if (current->data && current->data->id == id)
 		{
 			if (current->data)
-				free_transformer(current->data);
+				free_effect(current->data);
 			
 			if (prev)
 				prev->next = current->next;
 			else
-				pipeline->transformers = current->next;
+				pipeline->effects = current->next;
 			
 			m_free(current);
 			
-			M_PRINTF("m_pipeline_remove_transformer found and vanquished the transformer\n");
+			M_PRINTF("m_pipeline_remove_effect found and vanquished the effect\n");
 			return NO_ERROR;
 		}
 		
@@ -99,23 +99,23 @@ int m_pipeline_remove_transformer(m_pipeline *pipeline, uint16_t id)
 	}
 	
 	
-	M_PRINTF("m_pipeline_remove_transformer finished without finding the transformer\n");
+	M_PRINTF("m_pipeline_remove_effect finished without finding the effect\n");
 	return ERR_INVALID_TRANSFORMER_ID;
 }
 
-int m_pipeline_move_transformer(m_pipeline *pipeline, int new_pos, int old_pos)
+int m_pipeline_move_effect(m_pipeline *pipeline, int new_pos, int old_pos)
 {
 	if (!pipeline)
 		return ERR_NULL_PTR;
 	
-	if (!pipeline->transformers)
+	if (!pipeline->effects)
 		return ERR_BAD_ARGS;
 	
-	m_transformer_pll *target  = NULL;
+	m_effect_pll *target  = NULL;
 	
 	int i = 0;
-	m_transformer_pll *current = pipeline->transformers;
-	m_transformer_pll *prev    = NULL;
+	m_effect_pll *current = pipeline->effects;
+	m_effect_pll *prev    = NULL;
 	
 	while (current && i < old_pos)
 	{
@@ -132,11 +132,11 @@ int m_pipeline_move_transformer(m_pipeline *pipeline, int new_pos, int old_pos)
 	if (prev)
 		prev->next = target->next;
 	else
-		pipeline->transformers = target->next;
+		pipeline->effects = target->next;
 
 	i = 0;
 	prev = NULL;
-	current = pipeline->transformers;
+	current = pipeline->effects;
 	
 	while (current && i < new_pos)
 	{
@@ -148,21 +148,21 @@ int m_pipeline_move_transformer(m_pipeline *pipeline, int new_pos, int old_pos)
 	target->next = current;
 	
 	if (!prev)
-		pipeline->transformers = target;
+		pipeline->effects = target;
 	else
 		prev->next = target;
 	
 	return NO_ERROR;
 }
 
-int m_pipeline_get_n_transformers(m_pipeline *pipeline)
+int m_pipeline_get_n_effects(m_pipeline *pipeline)
 {
 	if (!pipeline)
 		return -ERR_NULL_PTR;
 	
 	int n = 0;
 	
-	m_transformer_pll *current = pipeline->transformers;
+	m_effect_pll *current = pipeline->effects;
 	
 	while (current)
 	{
@@ -181,27 +181,27 @@ int clone_pipeline(m_pipeline *dest, m_pipeline *src)
 	
 	M_PRINTF("Cloning pipeline...\n");
 	
-	m_transformer_pll *current = src->transformers;
-	m_transformer_pll *nl;
-	m_transformer *trans = NULL;
+	m_effect_pll *current = src->effects;
+	m_effect_pll *nl;
+	m_effect *effect = NULL;
 	
 	int i = 0;
 	while (current)
 	{
-		M_PRINTF("Cloning transformer %d... current = %p, current->next = %p\n", i, current, current->next);
+		M_PRINTF("Cloning effect %d... current = %p, current->next = %p\n", i, current, current->next);
 		if (current->data)
 		{
-			trans = m_alloc(sizeof(m_transformer));
+			effect = m_alloc(sizeof(m_effect));
 			
-			if (!trans)
+			if (!effect)
 				return ERR_ALLOC_FAIL;
 			
-			clone_transformer(trans, current->data);
+			clone_effect(effect, current->data);
 			
-			nl = m_transformer_pll_append(dest->transformers, trans);
+			nl = m_effect_pll_append(dest->effects, effect);
 		
 			if (nl)
-				dest->transformers = nl;
+				dest->effects = nl;
 		}
 		
 		current = current->next;
@@ -216,8 +216,8 @@ void gut_pipeline(m_pipeline *pipeline)
 	if (!pipeline)
 		return;
 	
-	destructor_free_m_transformer_pll(pipeline->transformers, free_transformer);
-	pipeline->transformers = NULL;
+	destructor_free_m_effect_pll(pipeline->effects, free_effect);
+	pipeline->effects = NULL;
 }
 
 int m_pipeline_create_fpga_transfer_batch(m_pipeline *pipeline, m_fpga_transfer_batch *batch)
@@ -241,8 +241,8 @@ int m_pipeline_create_fpga_transfer_batch(m_pipeline *pipeline, m_fpga_transfer_
 	m_eff_resource_report rpt = empty_m_eff_resource_report();
 	
 	int pos = 0;
-	if (pipeline->transformers)
-		ret_val = m_fpga_batch_append_transformers(&result, pipeline->transformers, &rpt, &pos);
+	if (pipeline->effects)
+		ret_val = m_fpga_batch_append_effects(&result, pipeline->effects, &rpt, &pos);
 	
 	if (ret_val != NO_ERROR)
 	{
@@ -268,14 +268,14 @@ return_nothing:
 }
 
 
-m_transformer *m_pipeline_get_transformer_by_id(m_pipeline *pipeline, int id)
+m_effect *m_pipeline_get_effect_by_id(m_pipeline *pipeline, int id)
 {
 	if (!pipeline)
 		return NULL;
 	
-	M_PRINTF("searching pipelime %p for a transformer with ID %d.\n", pipeline, id);
+	M_PRINTF("searching pipelime %p for a effect with ID %d.\n", pipeline, id);
 	
-	m_transformer_pll *current = pipeline->transformers;
+	m_effect_pll *current = pipeline->effects;
 	int i = 0;
 	M_PRINTF("Beginning on the list%s\n", (!current) ? "..... which is empty! :0\n" : "");
 	
@@ -293,14 +293,14 @@ m_transformer *m_pipeline_get_transformer_by_id(m_pipeline *pipeline, int id)
 		}
 		if (current->data && current->data->id == id)
 		{
-			M_PRINTF("This is the desired transformer! Great. Return it\n");
+			M_PRINTF("This is the desired effect! Great. Return it\n");
 			return current->data;
 		}
 		current = current->next;
 		i++;
 	}
 	
-	M_PRINTF("The desired transformer was not found :(\n");
+	M_PRINTF("The desired effect was not found :(\n");
 	
 	return NULL;
 }

@@ -37,14 +37,14 @@ int m_init_context(m_context *cxt)
 	
 	init_parameter(&cxt->input_gain, "Input Gain", -100, -30.0, 30.0);
 	cxt->input_gain.units = " dB";
-	cxt->input_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .transformer_id = 0, .parameter_id = INPUT_GAIN_PID};
+	cxt->input_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .effect_id = 0, .parameter_id = INPUT_GAIN_PID};
 	cxt->input_gain.max_velocity = 0.4;
 	cxt->input_gain.min_expr = &m_expression_standard_gain_min;
 	cxt->input_gain.max_expr = &m_expression_standard_gain_max;
 	
 	init_parameter(&cxt->output_gain, "Output Gain", -100, -30.0, 30.0);
 	cxt->output_gain.units = " dB";
-	cxt->output_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .transformer_id = 0, .parameter_id = OUTPUT_GAIN_PID};
+	cxt->output_gain.id = (m_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .effect_id = 0, .parameter_id = OUTPUT_GAIN_PID};
 	cxt->output_gain.max_velocity = 0.4;
 	cxt->output_gain.min_expr = &m_expression_standard_gain_min;
 	cxt->output_gain.max_expr = &m_expression_standard_gain_max;
@@ -217,7 +217,7 @@ m_profile *cxt_get_profile_by_id(m_context *cxt, uint16_t profile_id)
 	return NULL;
 }
 
-m_transformer *cxt_get_transformer_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id)
+m_effect *cxt_get_effect_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id)
 {
 	if (!cxt)
 		return NULL;
@@ -228,11 +228,11 @@ m_transformer *cxt_get_transformer_by_id(m_context *cxt, uint16_t profile_id, ui
 		return NULL;
 	
 	
-	m_transformer_pll *current = profile->pipeline.transformers;
+	m_effect_pll *current = profile->pipeline.effects;
 	
 	while (current)
 	{
-		if (current->data && current->data->id == transformer_id)
+		if (current->data && current->data->id == effect_id)
 		{
 			return current->data;
 		}
@@ -243,20 +243,20 @@ m_transformer *cxt_get_transformer_by_id(m_context *cxt, uint16_t profile_id, ui
 	return NULL;
 }
 
-m_parameter *cxt_get_parameter_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id, uint16_t parameter_id)
+m_parameter *cxt_get_parameter_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	m_transformer *trans = cxt_get_transformer_by_id(cxt, profile_id, transformer_id);
+	m_effect *effect = cxt_get_effect_by_id(cxt, profile_id, effect_id);
 	
-	if (!trans)
+	if (!effect)
 		return NULL;
 	
-	return transformer_get_parameter(trans, parameter_id);
+	return effect_get_parameter(effect, parameter_id);
 }	
 
-int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m_parameter **pp, m_transformer **tp)
+int cxt_get_parameter_and_effect_by_id(m_context *cxt, m_parameter_id id, m_parameter **pp, m_effect **tp)
 {
 	if (!cxt || !pp || !tp)
 		return ERR_NULL_PTR;
@@ -266,7 +266,7 @@ int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m
 	
 	if (id.profile_id == CONTEXT_PROFILE_ID)
 	{
-		if (id.transformer_id == 0)
+		if (id.effect_id == 0)
 		{
 			switch (id.parameter_id)
 			{
@@ -286,15 +286,15 @@ int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m
 		return ERR_BAD_ARGS;
 	}
 	
-	m_transformer *trans = cxt_get_transformer_by_id(cxt, id.profile_id, id.transformer_id);
+	m_effect *effect = cxt_get_effect_by_id(cxt, id.profile_id, id.effect_id);
 	
 	
-	if (!trans)
+	if (!effect)
 	{
 		return ERR_BAD_ARGS;
 	}
 
-	m_parameter *param = transformer_get_parameter(trans, id.parameter_id);
+	m_parameter *param = effect_get_parameter(effect, id.parameter_id);
 	
 	if (!param)
 	{
@@ -302,25 +302,25 @@ int cxt_get_parameter_and_transformer_by_id(m_context *cxt, m_parameter_id id, m
 	}
 	
 	*pp = param;
-	*tp = trans;
+	*tp = effect;
 	
 	return NO_ERROR;
 }
 
-m_setting *cxt_get_setting_by_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_id, uint16_t parameter_id)
+m_setting *cxt_get_setting_by_id(m_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	m_transformer *trans = cxt_get_transformer_by_id(cxt, profile_id, transformer_id);
+	m_effect *effect = cxt_get_effect_by_id(cxt, profile_id, effect_id);
 	
-	if (!trans)
+	if (!effect)
 		return NULL;
 	
-	return transformer_get_setting(trans, parameter_id);
+	return effect_get_setting(effect, parameter_id);
 }
 
-int cxt_transformer_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t transformer_id)
+int cxt_effect_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t effect_id)
 {
 	if (!cxt)
 		return -ERR_NULL_PTR;
@@ -330,12 +330,12 @@ int cxt_transformer_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t
 	if (!profile)
 		return -ERR_INVALID_PROFILE_ID;
 	
-	m_transformer_pll *current = profile->pipeline.transformers;
+	m_effect_pll *current = profile->pipeline.effects;
 	
 	int i = 0;
 	while (current)
 	{
-		if (current->data && current->data->id == transformer_id)
+		if (current->data && current->data->id == effect_id)
 			return i;
 		
 		current = current->next;
@@ -345,7 +345,7 @@ int cxt_transformer_id_to_position(m_context *cxt, uint16_t profile_id, uint16_t
 	return -ERR_INVALID_TRANSFORMER_ID;
 }
 
-int cxt_transformer_position_to_id(m_context *cxt, uint16_t profile_id, uint16_t transformer_pos)
+int cxt_effect_position_to_id(m_context *cxt, uint16_t profile_id, uint16_t effect_pos)
 {
 	if (!cxt)
 		return -ERR_NULL_PTR;
@@ -355,12 +355,12 @@ int cxt_transformer_position_to_id(m_context *cxt, uint16_t profile_id, uint16_t
 	if (!profile)
 		return -ERR_INVALID_PROFILE_ID;
 	
-	m_transformer_pll *current = profile->pipeline.transformers;
+	m_effect_pll *current = profile->pipeline.effects;
 	
 	int i = 0;
 	while (current)
 	{
-		if (i == transformer_pos)
+		if (i == effect_pos)
 		{
 			if (!current->data)
 				return ERR_NULL_PTR;
@@ -453,12 +453,12 @@ int cxt_remove_sequence(m_context *cxt, m_sequence *sequence)
 	return ERR_INVALID_PROFILE_ID;
 }
 
-int cxt_remove_transformer(m_context *cxt, uint16_t pid, uint16_t tid)
+int cxt_remove_effect(m_context *cxt, uint16_t pid, uint16_t tid)
 {
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	int ret_val = m_profile_remove_transformer(cxt_get_profile_by_id(cxt, pid), tid);
+	int ret_val = m_profile_remove_effect(cxt_get_profile_by_id(cxt, pid), tid);
 	
 	if (ret_val == NO_ERROR)
 	{
@@ -552,20 +552,20 @@ void context_print_profiles(m_context *cxt)
 		if (current->data)
 		{
 			int j = 0;
-			m_transformer_pll *ct = current->data->pipeline.transformers;
+			m_effect_pll *ct = current->data->pipeline.effects;
 			
 			while (ct)
 			{
 				ct = ct->next;
 				j++;
 			}
-			M_PRINTF("has name %s, and has %d transformers%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
+			M_PRINTF("has name %s, and has %d effects%s", current->data->name ? current->data->name : "(NULL)", j, (j > 0) ? ", which are\n" : "\n\n");
 			
-			ct = current->data->pipeline.transformers;
+			ct = current->data->pipeline.effects;
 			
 			while (ct)
 			{
-				M_PRINTF("\t%s,\n", (ct->data && m_transformer_name(ct->data)) ? m_transformer_name(ct->data) : "UNKNOWN");
+				M_PRINTF("\t%s,\n", (ct->data && m_effect_name(ct->data)) ? m_effect_name(ct->data) : "UNKNOWN");
 				ct = ct->next;
 			}
 		}

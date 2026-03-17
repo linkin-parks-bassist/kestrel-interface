@@ -24,7 +24,7 @@ int init_parameter_str(m_parameter *param)
 	param->max_expr = NULL;
 	param->max_velocity = DEFAULT_MAX_VELOCITY;
 	param->factor = 1.0;
-	param->id = (m_parameter_id){.profile_id = 0, .transformer_id = 0, .parameter_id = 0};
+	param->id = (m_parameter_id){.profile_id = 0, .effect_id = 0, .parameter_id = 0};
 	param->name = NULL;
 	param->name_internal = NULL;
 	param->units = NULL;
@@ -34,10 +34,10 @@ int init_parameter_str(m_parameter *param)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
-	param->trans_rep.representer = NULL;
-	param->trans_rep.representee = param;
-	param->trans_rep.update = m_parameter_transformer_rep_update;
-	m_representation_pll_safe_append(&param->reps, &param->trans_rep);
+	param->effect_rep.representer = NULL;
+	param->effect_rep.representee = param;
+	param->effect_rep.update = m_parameter_effect_rep_update;
+	m_representation_pll_safe_append(&param->reps, &param->effect_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -62,10 +62,10 @@ int init_parameter(m_parameter *param, const char *name, float level, float min,
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
-	param->trans_rep.representer = NULL;
-	param->trans_rep.representee = param;
-	param->trans_rep.update = m_parameter_transformer_rep_update;
-	m_representation_pll_safe_append(&param->reps, &param->trans_rep);
+	param->effect_rep.representer = NULL;
+	param->effect_rep.representee = param;
+	param->effect_rep.update = m_parameter_effect_rep_update;
+	m_representation_pll_safe_append(&param->reps, &param->effect_rep);
 	#endif
 	return NO_ERROR;
 }
@@ -111,10 +111,10 @@ int init_setting_str(m_setting *setting)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	setting->reps = NULL;
-	setting->trans_rep.representer = NULL;
-	setting->trans_rep.representee = setting;
-	setting->trans_rep.update = m_setting_transformer_rep_update;
-	m_representation_pll_safe_append(&setting->reps, &setting->trans_rep);
+	setting->effect_rep.representer = NULL;
+	setting->effect_rep.representee = setting;
+	setting->effect_rep.update = m_setting_effect_rep_update;
+	m_representation_pll_safe_append(&setting->reps, &setting->effect_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -137,10 +137,10 @@ int init_setting(m_setting *setting, const char *name, uint16_t level)
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
 	setting->reps = NULL;
-	setting->trans_rep.representer = NULL;
-	setting->trans_rep.representee = setting;
-	setting->trans_rep.update = m_setting_transformer_rep_update;
-	m_representation_pll_safe_append(&setting->reps, &setting->trans_rep);
+	setting->effect_rep.representer = NULL;
+	setting->effect_rep.representee = setting;
+	setting->effect_rep.update = m_setting_effect_rep_update;
+	m_representation_pll_safe_append(&setting->reps, &setting->effect_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -173,7 +173,7 @@ int parameter_set_id(m_parameter *param, uint16_t pid, uint16_t tid, uint16_t pp
 		return ERR_NULL_PTR;
 	
 	param->id.profile_id 	= pid;
-	param->id.transformer_id = tid;
+	param->id.effect_id = tid;
 	param->id.parameter_id 	= ppid;
 	
 	return NO_ERROR;
@@ -225,7 +225,7 @@ m_parameter *m_parameter_make_clone(m_parameter *src)
 	return param;
 }
 
-m_parameter *m_parameter_make_clone_for_transformer(m_parameter *src, m_transformer *trans)
+m_parameter *m_parameter_make_clone_for_effect(m_parameter *src, m_effect *effect)
 {
 	if (!src)
 		return NULL;
@@ -238,7 +238,7 @@ m_parameter *m_parameter_make_clone_for_transformer(m_parameter *src, m_transfor
 	clone_parameter(param, src);
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
-	param->trans_rep.representer = (void*)trans;
+	param->effect_rep.representer = (void*)effect;
 	#endif
 	
 	return param;
@@ -310,7 +310,7 @@ m_setting *m_setting_make_clone(m_setting *src)
 	return setting;
 }
 
-m_setting *m_setting_make_clone_for_transformer(m_setting *src, m_transformer *trans)
+m_setting *m_setting_make_clone_for_effect(m_setting *src, m_effect *effect)
 {
 	if (!src)
 		return NULL;
@@ -323,7 +323,7 @@ m_setting *m_setting_make_clone_for_transformer(m_setting *src, m_transformer *t
 	clone_setting(setting, src);
 	
 	#ifdef M_ENABLE_REPRESENTATIONS
-	setting->trans_rep.representer = (void*)trans;
+	setting->effect_rep.representer = (void*)effect;
 	#endif
 	
 	return setting;
@@ -405,15 +405,15 @@ m_interval m_parameter_get_range(m_parameter *param)
 	
 	if (!param) return i;
 	
-	m_transformer *trans = cxt_get_transformer_by_id(&global_cxt, param->id.profile_id, param->id.transformer_id);
+	m_effect *effect = cxt_get_effect_by_id(&global_cxt, param->id.profile_id, param->id.effect_id);
 	
-	if (trans && !trans->scope)
+	if (effect && !effect->scope)
 	{
-		M_PRINTF("transformer is not in posession of a scope... strange. generate it\n");
-		trans->scope = m_transformer_create_scope(trans);
+		M_PRINTF("effect is not in posession of a scope... strange. generate it\n");
+		effect->scope = m_effect_create_scope(effect);
 	}
 	
-	int no_transformer = 0;
+	int no_effect = 0;
 	int no_scope = 0;
 	
 	if (param->min_expr)
@@ -424,9 +424,9 @@ m_interval m_parameter_get_range(m_parameter *param)
 		}
 		else
 		{
-			if (trans && trans->scope)
+			if (effect && effect->scope)
 			{
-				i.a = m_expression_evaluate(param->min_expr, trans->scope);
+				i.a = m_expression_evaluate(param->min_expr, effect->scope);
 			}
 			else
 			{
@@ -446,9 +446,9 @@ m_interval m_parameter_get_range(m_parameter *param)
 		}
 		else
 		{
-			if (trans && trans->scope)
+			if (effect && effect->scope)
 			{
-				i.b = m_expression_evaluate(param->max_expr, trans->scope);
+				i.b = m_expression_evaluate(param->max_expr, effect->scope);
 			}
 			else
 			{
@@ -464,28 +464,28 @@ m_interval m_parameter_get_range(m_parameter *param)
 }
 #endif
 
-void m_parameter_transformer_rep_update(void *representer, void *representee)
+void m_parameter_effect_rep_update(void *representer, void *representee)
 {
-	m_transformer *trans = (m_transformer*)representer;
+	m_effect *effect = (m_effect*)representer;
 	m_parameter *param = (m_parameter*)representee;
 	
-	if (!trans || !param)
+	if (!effect || !param)
 		return;
 	
-	m_transformer_update_reps(trans);
+	m_effect_update_reps(effect);
 	
 	return;
 }
 
-void m_setting_transformer_rep_update(void *representer, void *representee)
+void m_setting_effect_rep_update(void *representer, void *representee)
 {
-	m_transformer *trans = (m_transformer*)representer;
+	m_effect *effect = (m_effect*)representer;
 	m_setting *setting = (m_setting*)representee;
 	
-	if (!trans || !setting)
+	if (!effect || !setting)
 		return;
 	
-	m_transformer_update_reps(trans);
+	m_effect_update_reps(effect);
 	
 	return;
 }

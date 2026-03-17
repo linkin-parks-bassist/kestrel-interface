@@ -130,35 +130,35 @@ int save_profile_as_file(m_profile *profile, const char *fname)
 	
 	write_string(name);
 	
-	m_transformer_pll *current_transformer = profile->pipeline.transformers;
+	m_effect_pll *current_effect = profile->pipeline.effects;
 	m_parameter_pll *current_param;
 	m_setting_pll *current_setting;
 	
 	n = 0;
 	
-	while (current_transformer)
+	while (current_effect)
 	{
-		current_transformer = current_transformer->next;
+		current_effect = current_effect->next;
 		n++;
 	}
 	
 	write_short(n);
 	
-	current_transformer = profile->pipeline.transformers;
+	current_effect = profile->pipeline.effects;
 	
-	while (current_transformer)
+	while (current_effect)
 	{
-		if (!current_transformer->data || !current_transformer->data->eff)
+		if (!current_effect->data || !current_effect->data->eff)
 		{
 			write_short(M_PROFILE_BROKEN_TRANSFORMER);
-			current_transformer = current_transformer->next;
+			current_effect = current_effect->next;
 			continue;
 		}
 		
-		write_string(current_transformer->data->eff->cname);
-		write_short(current_transformer->data->id);
+		write_string(current_effect->data->eff->cname);
+		write_short(current_effect->data->id);
 		
-		current_param = current_transformer->data->parameters;
+		current_param = current_effect->data->parameters;
 		
 		while (current_param)
 		{
@@ -168,7 +168,7 @@ int save_profile_as_file(m_profile *profile, const char *fname)
 			current_param = current_param->next;
 		}
 		
-		current_setting = current_transformer->data->settings;
+		current_setting = current_effect->data->settings;
 		
 		while (current_setting)
 		{
@@ -178,7 +178,7 @@ int save_profile_as_file(m_profile *profile, const char *fname)
 			current_setting = current_setting->next;
 		}
 		
-		current_transformer = current_transformer->next;
+		current_effect = current_effect->next;
 	}
 	
 	fseek(file, 1, SEEK_SET);
@@ -456,11 +456,11 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	uint8_t byte;
 	uint16_t arg16;
 	int32_t arg32;
-	uint16_t n_transformers;
+	uint16_t n_effects;
 	char string_read_buffer[IO_BUFFER_SIZE];
 	char *name = NULL;
 	int ret_val = NO_ERROR;
-	m_transformer *trans = NULL;
+	m_effect *effect = NULL;
 	m_parameter_pll *current_param = NULL;
 	m_setting_pll *current_setting = NULL;
 	
@@ -498,13 +498,13 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 	
 	M_PRINTF("Loaded profile name: %s\n", profile->name);
 	
-	read_short(n_transformers);
+	read_short(n_effects);
 	
 	m_effect_desc *eff = NULL;
 	
-	for (int i = 0; i < n_transformers; i++)
+	for (int i = 0; i < n_effects; i++)
 	{
-		M_PRINTF("Profile professes to contain %d transformers\n", n_transformers);
+		M_PRINTF("Profile professes to contain %d effects\n", n_effects);
 		//Get effect type
 		read_string();
 		
@@ -519,23 +519,23 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 		
 		M_PRINTF("Encountered %s in position %d\n", eff->name, (int)i);
 		
-		trans = m_profile_append_transformer_eff(profile, eff);
+		effect = m_profile_append_effect_eff(profile, eff);
 		
-		if (!trans)
+		if (!effect)
 		{
 			M_PRINTF("Failed to append effect \"%s\"", eff->name);
 			ret_val = ERR_MANGLED_FILE;
 			goto profile_read_bail;
 		}
 		
-		// Get transformer ID
+		// Get effect ID
 		read_short(arg16);
 		
 		
 		M_PRINTF("Transformer ID: %d\n", (int)arg16);
-		trans->id = arg16;
+		effect->id = arg16;
 		
-		current_param = trans->parameters;
+		current_param = effect->parameters;
 		while (current_param)
 		{
 			if (current_param->data)
@@ -544,7 +544,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 			current_param = current_param->next;
 		}
 		
-		current_setting = trans->settings;
+		current_setting = effect->settings;
 		while (current_setting)
 		{
 			if (current_setting->data)
@@ -553,7 +553,7 @@ int read_profile_from_file(m_profile *profile, const char *fname)
 			current_setting = current_setting->next;
 		}
 		
-		//m_transformer_init_view_page(trans);
+		//m_effect_init_view_page(effect);
 	}
 	
 	M_PRINTF("File done! closing...\n");

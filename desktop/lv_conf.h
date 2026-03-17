@@ -134,22 +134,22 @@
 /** Align start address of draw_buf addresses to this bytes*/
 #define LV_DRAW_BUF_ALIGN                       4
 
-/** Using matrix for transformations.
+/** Using matrix for effectformations.
  * Requirements:
  * - `LV_USE_MATRIX = 1`.
- * - Rendering engine needs to support 3x3 matrix transformations. */
+ * - Rendering engine needs to support 3x3 matrix effectformations. */
 #define LV_DRAW_TRANSFORM_USE_MATRIX            0
 
 /* If a widget has `style_opa < 255` (not `bg_opa`, `text_opa` etc) or not NORMAL blend mode
  * it is buffered into a "simple" layer before rendering. The widget can be buffered in smaller chunks.
- * "Transformed layers" (if `transform_angle/zoom` are set) use larger buffers
+ * "Transformed layers" (if `effectform_angle/zoom` are set) use larger buffers
  * and can't be drawn in chunks. */
 
 /** The target buffer size for simple layer chunks. */
 #define LV_DRAW_LAYER_SIMPLE_BUF_SIZE    (24 * 1024)    /**< [bytes]*/
 
-/* Limit the max allocated memory for simple and transformed layers.
- * It should be at least `LV_DRAW_LAYER_SIMPLE_BUF_SIZE` sized but if transformed layers are also used
+/* Limit the max allocated memory for simple and effectformed layers.
+ * It should be at least `LV_DRAW_LAYER_SIMPLE_BUF_SIZE` sized but if effectformed layers are also used
  * it should be enough to store the largest widget too (width x height x 4 area).
  * Set it to 0 to have no limit. */
 #define LV_DRAW_LAYER_MAX_MEMORY 0  /**< No limit by default [bytes]*/
@@ -174,7 +174,7 @@
      * Selectively disable color format support in order to reduce code size.
      * NOTE: some features use certain color formats internally, e.g.
      * - gradients use RGB888
-     * - bitmaps with transparency may use ARGB8888
+     * - bitmaps with effectparency may use ARGB8888
      */
     #define LV_DRAW_SW_SUPPORT_RGB565       1
     #define LV_DRAW_SW_SUPPORT_RGB565_SWAPPED       1
@@ -425,7 +425,7 @@
     /* EVE_GEN value: 2, 3, or 4 */
     #define LV_DRAW_EVE_EVE_GENERATION 4
 
-    /* The maximum number of bytes to buffer before a single SPI transmission.
+    /* The maximum number of bytes to buffer before a single SPI effectmission.
      * Set it to 0 to disable write buffering.
      */
     #define LV_DRAW_EVE_WRITE_BUFFER_SIZE 2048
@@ -878,7 +878,7 @@
     /** 1: Enable grow on press */
     #define LV_THEME_DEFAULT_GROW 1
 
-    /** Default transition time in ms. */
+    /** Default effectition time in ms. */
     #define LV_THEME_DEFAULT_TRANSITION_TIME 80
 #endif /*LV_USE_THEME_DEFAULT*/
 
@@ -1259,7 +1259,7 @@
 
 #endif /*LV_USE_TEST*/
 
-/** 1: Enable text translation support */
+/** 1: Enable text effectlation support */
 #define LV_USE_TRANSLATION 0
 
 /*1: Enable color filter style*/

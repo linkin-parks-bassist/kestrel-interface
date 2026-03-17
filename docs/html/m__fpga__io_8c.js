@@ -1,0 +1,27 @@
+var m__fpga__io_8c =
+[
+    [ "PIN_NUM_CLK", "m__fpga__io_8c.html#a756bcaa6e44d1879623a058849c66fbb", null ],
+    [ "PIN_NUM_CS", "m__fpga__io_8c.html#a6c332c3f862c9e17cb09b32c73516a4a", null ],
+    [ "PIN_NUM_MISO", "m__fpga__io_8c.html#a4ffa0949bfda52d9c7b37fcb148cbb53", null ],
+    [ "PIN_NUM_MOSI", "m__fpga__io_8c.html#a060569807a8819489e6a7b4ee17ad67b", null ],
+    [ "PRINTLINES_ALLOWED", "m__fpga__io_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "float_to_q15", "m__fpga__io_8c.html#a55906c0421c836a078f0aa6099bd3df9", null ],
+    [ "float_to_q_nminus1", "m__fpga__io_8c.html#ac4ecd8804864719b441aab2f560c654d", null ],
+    [ "m_fpga_batch_append", "m__fpga__io_8c.html#a3e6e7ed1d51243448b55471969a93aa1", null ],
+    [ "m_fpga_batch_append_16", "m__fpga__io_8c.html#a1555178cc242779bd59bd3c2c3b5a554", null ],
+    [ "m_fpga_batch_append_24", "m__fpga__io_8c.html#a68f35bb87d4e6c08d9b8425cb60f3cc8", null ],
+    [ "m_fpga_batch_append_32", "m__fpga__io_8c.html#ac498725b4c608da8003ffe0e8f695eec", null ],
+    [ "m_fpga_batch_concat", "m__fpga__io_8c.html#a679ee71d93f1e00b24aaee77f16eefca", null ],
+    [ "m_fpga_command_to_string", "m__fpga__io_8c.html#a7a4c8cee6da54c6ba679be1db306a619", null ],
+    [ "m_fpga_commit_reg_updates", "m__fpga__io_8c.html#a48fe2847fdfdd8d14bd87aa30fc16eaf", null ],
+    [ "m_fpga_read_byte", "m__fpga__io_8c.html#acce880ea81806978d4660478c6bd5a81", null ],
+    [ "m_fpga_send_byte", "m__fpga__io_8c.html#a8f720f994d6e306cdf5f9db887aa6b52", null ],
+    [ "m_fpga_set_input_gain", "m__fpga__io_8c.html#ab62dce1746a040cb3c723d7e9dbf9f13", null ],
+    [ "m_fpga_set_output_gain", "m__fpga__io_8c.html#aef82cd32e52665f5d13560fb02a4ed5b", null ],
+    [ "m_fpga_spi_init", "m__fpga__io_8c.html#a1eb0bce5f77ee81fdfc16675bc1d42fb", null ],
+    [ "m_fpga_transfer_batch_send", "m__fpga__io_8c.html#a7892a65646be091767dc5d11c104e270", null ],
+    [ "m_fpga_txrx", "m__fpga__io_8c.html#a8cc733ae65cd129cf6e63dae62fa6fb4", null ],
+    [ "m_free_fpga_transfer_batch", "m__fpga__io_8c.html#a056288c727967e8014243df20815c1a1", null ],
+    [ "m_new_fpga_transfer_batch", "m__fpga__io_8c.html#a302830ca8cbed4d0a82c67c69f201bf4", null ],
+    [ "spi_handle", "m__fpga__io_8c.html#a805cfba6efbab00f398be9bc6a71ba7e", null ]
+];

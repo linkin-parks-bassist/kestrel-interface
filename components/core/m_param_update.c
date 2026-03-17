@@ -38,7 +38,7 @@ int add_param_update(m_parameter_update up)
 	for (int i = 0; i < n_updates; i++)
 	{
 		if (update_queue[i].id.profile_id 		== up.id.profile_id
-		 && update_queue[i].id.transformer_id 	== up.id.transformer_id
+		 && update_queue[i].id.effect_id 	== up.id.effect_id
 		 && update_queue[i].id.parameter_id 	== up.id.parameter_id)
 		{
 			update_array[i].target = up.target;
@@ -55,7 +55,7 @@ int add_param_update(m_parameter_update up)
 
 void print_parameter_update(m_parameter_update up)
 {
-	M_PRINTF("%d.%d.%d -> %s%.03f\n", up.id.profile_id, up.id.transformer_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
+	M_PRINTF("%d.%d.%d -> %s%.03f\n", up.id.profile_id, up.id.effect_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
 }
 
 void m_param_update_task(void *arg)
@@ -66,7 +66,7 @@ void m_param_update_task(void *arg)
 	TickType_t last_wake = xTaskGetTickCount();
 	
 	m_parameter_update current;
-	m_transformer *trans;
+	m_effect *effect;
 	m_parameter *param;
 	
 	float diff;
@@ -86,7 +86,7 @@ void m_param_update_task(void *arg)
 			{
 				//print_parameter_update(current);
 				if (update_array[i].id.profile_id 		== current.id.profile_id
-				 && update_array[i].id.transformer_id 	== current.id.transformer_id
+				 && update_array[i].id.effect_id 	== current.id.effect_id
 				 && update_array[i].id.parameter_id 	== current.id.parameter_id)
 				{
 					update_array[i].target = current.target;
@@ -103,7 +103,7 @@ void m_param_update_task(void *arg)
 				//print_parameter_update(update_queue[j]);
 				
 				if (update_queue[j].id.profile_id 		== current.id.profile_id
-				 && update_queue[j].id.transformer_id 	== current.id.transformer_id
+				 && update_queue[j].id.effect_id 	== current.id.effect_id
 				 && update_queue[j].id.parameter_id 	== current.id.parameter_id)
 				{
 					update_queue[j].target = current.target;
@@ -134,7 +134,7 @@ void m_param_update_task(void *arg)
 			current = update_array[i];
 			//print_parameter_update(current);
 			
-			if (cxt_get_parameter_and_transformer_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t) != NO_ERROR)
+			if (cxt_get_parameter_and_effect_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t) != NO_ERROR)
 			{
 				remove_param_update(i);
 				i--;
@@ -185,7 +185,7 @@ void m_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			//m_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.profile_id, param->id.transformer_id, param->id.parameter_id,
+			//m_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.profile_id, param->id.effect_id, param->id.parameter_id,
 			//	diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
@@ -214,7 +214,7 @@ void m_param_update_task(void *arg)
 			if (update_array[i].t && update_array[i].send)
 			{
 				if (global_cxt.active_profile && global_cxt.active_profile->id == update_array[i].id.profile_id)
-					m_transformer_update_fpga_registers(update_array[i].t);
+					m_effect_update_fpga_registers(update_array[i].t);
 				xSemaphoreGive(update_array[i].t->mutex);
 			}
 		}
@@ -258,7 +258,7 @@ int m_parameter_trigger_update(m_parameter *param, float target)
 		return ERR_NULL_PTR;
 	
 	M_PRINTF("Parameter %s, ID %d.%d.%d. Current value: %f. Update target: %f. Max velocity: %f\n",
-		param->name, param->id.profile_id, param->id.transformer_id, param->id.parameter_id,
+		param->name, param->id.profile_id, param->id.effect_id, param->id.parameter_id,
 		param->value, target, param->max_velocity);
 	
 	m_parameter_update up;

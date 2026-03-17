@@ -50,7 +50,7 @@ void app_main()
 	init_sd_card();
 	m_init_directories();
 	load_effects(&global_cxt);
-	init_transformer_selector_eff(&global_cxt.pages.transformer_selector);
+	init_effect_selector_eff(&global_cxt.pages.effect_selector);
 	load_saved_profiles(&global_cxt);
 	
 	context_print_profiles(&global_cxt);
