@@ -156,7 +156,7 @@ appclean_full:
 fullclean:
 	rm -r $(top_objdir)
 	
-M: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/core $(app_objdir)/desktop
+M: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/desktop
 	gcc -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
 M_tests: $(TEST_OBJ) $(TEST_APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)

@@ -226,3 +226,33 @@ void print_memory_report()
 {
     M_PRINTF("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
 }
+
+void *m_allocator_alloc(m_allocator *a, size_t n)
+{
+    if (!a || !a->alloc)
+        return m_alloc(n);
+
+    return a->alloc(a->data, n);
+}
+
+void *m_allocator_realloc(m_allocator *a, void *p, size_t n)
+{
+    if (!a || !a->realloc)
+        return m_realloc(p, n);
+
+    return a->realloc(a->data, p, n);
+}
+
+void m_allocator_free(m_allocator *a, void *p)
+{
+    if (!p)
+        return;
+
+    if (!a || !a->free)
+    {
+        m_free(p);
+        return;
+    }
+
+    a->free(a->data, p);
+}
