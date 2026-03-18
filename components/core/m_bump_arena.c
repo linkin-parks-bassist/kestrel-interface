@@ -80,7 +80,7 @@ void *m_bump_arena_alloc(m_bump_arena *arena, size_t size)
 	}
 	
 	if (size == 0)
-		return (uint8_t*)arena->arena + arena->pos;
+		return NULL;
 	
 	size = (size + (M_BUMP_ARENA_ALLOC_ALIGN - 1)) & ~(M_BUMP_ARENA_ALLOC_ALIGN - 1);
 	

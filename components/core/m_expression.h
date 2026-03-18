@@ -49,6 +49,8 @@ typedef struct m_expression
 	} val;
 } m_expression;
 
+DECLARE_PTR_LIST(m_expression);
+
 m_expression m_expression_const(float v);
 m_expression *new_m_expression_const(float v);
 m_expression *new_m_expression_reference(char *ref_name);

@@ -11,6 +11,7 @@ extern "C" {
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
@@ -19,15 +20,16 @@ extern "C" {
 #include "m_error_codes.h"
 #include "m_linked_list.h"
 #include "m_list.h"
+#include "m_string.h"
 
 #include "m_lib_cmph.h"
 
 #include "m_bump_arena.h"
 #include "m_representation.h"
 #include "m_parameter.h"
-#include "m_resource.h"
 #include "m_expr_scope.h"
 #include "m_expression.h"
+#include "m_resource.h"
 #include "m_block.h"
 #include "m_eff_desc.h"
 #include "m_fpga_io.h"
@@ -69,6 +71,7 @@ extern "C" {
 #include "m_eff_section.h"
 #include "m_asm_parser.h"
 #include "m_reg_format.h"
+#include "m_fixed_point.h"
 #include "m_fpga_encoding.h"
 #include "m_dict_extract.h"
 #include "m_printf.h"

@@ -31,6 +31,7 @@ int m_effect_desc_generate_res_rpt(m_effect_desc *eff)
 	unsigned int blocks = 0;
 	unsigned int memory = 0;
 	unsigned int delays = 0;
+	unsigned int filters = 0;
 	
 	m_block_pll *cb = eff->blocks;
 	
@@ -54,6 +55,9 @@ int m_effect_desc_generate_res_rpt(m_effect_desc *eff)
 				case M_DSP_RESOURCE_DELAY:
 					delays += 1;
 					break;
+				case M_DSP_RESOURCE_FILTER:
+					filters += 1;
+					break;
 			}
 		}
 		cr = cr->next;
@@ -62,6 +66,7 @@ int m_effect_desc_generate_res_rpt(m_effect_desc *eff)
 	eff->res_rpt.blocks = blocks;
 	eff->res_rpt.memory = memory;
 	eff->res_rpt.delays = delays;
+	eff->res_rpt.filters = filters;
 	
 	return NO_ERROR;
 }

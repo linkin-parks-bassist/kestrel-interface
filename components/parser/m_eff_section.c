@@ -263,7 +263,13 @@ int m_parse_dictionary_section(m_eff_parsing_state *ps, m_ast_node *section)
 	
 	ps->current_token = tokens->next;
 	
-	return m_parse_dictionary(ps, &sec->dict, sec->name);
+	int ret_val = m_parse_dictionary(ps, &sec->dict, sec->name);
+	
+	M_PRINTF("Parsed dictionary section. Result:\n");
+	
+	print_dict(sec->dict);
+	
+	return ret_val;
 }
 
 

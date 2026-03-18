@@ -22,7 +22,8 @@ void m_free_default(void *data, void *ptr);
 
 void *m_allocator_alloc(m_allocator *a, size_t n);
 void *m_allocator_realloc(m_allocator *a, void *p, size_t n);
-void m_allocator_free(m_allocator *a, void *p);
+void *m_allocator_strndup(m_allocator *a, const char *str, int n);
+void  m_allocator_free(m_allocator *a, void *p);
 
 void *m_lv_malloc(size_t size);
 void m_lv_free(void *ptr);

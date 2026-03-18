@@ -59,6 +59,8 @@
 
 #define ERR_FEATURE_DISABLED			40
 
+#define ERR_DUPLICATE_KEY				41
+
 #define ERR_UNKNOWN_ERR					4999
 #define ERR_UNIMPLEMENTED				5000
 

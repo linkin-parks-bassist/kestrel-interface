@@ -5,9 +5,9 @@
 
 #include "m_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+//#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+//#endif
 
 static const char *FNAME = "m_resource.c";
 
@@ -47,6 +47,26 @@ int m_init_dsp_resource(m_dsp_resource *res)
 	return NO_ERROR;
 }
 
+int m_dsp_resource_create_filter(m_dsp_resource *res)
+{
+	if (!res)
+		return ERR_NULL_PTR;
+	
+	res->name = NULL;
+	res->type = M_DSP_RESOURCE_FILTER;
+	res->size = NULL;
+	res->delay = NULL;
+	res->handle = 0;
+	res->data = m_filter_create(NULL);
+	
+	if (!res->data)
+		return ERR_ALLOC_FAIL;
+	
+	res->mem_size = 0;
+	
+	return NO_ERROR;
+}
+
 int string_to_resource_type(const char *type_str)
 {
 	if ((strcmp(type_str, "delay_buffer") == 0) || (strcmp(type_str, "delay") == 0))
@@ -57,6 +77,10 @@ int string_to_resource_type(const char *type_str)
 	{
 		return M_DSP_RESOURCE_MEM;
 	}
+	else if ((strcmp(type_str, "filter") == 0) || (strcmp(type_str, "biquad") == 0))
+	{
+		return M_DSP_RESOURCE_FILTER;
+	}
 	
 	return M_DSP_RESOURCE_NOTHING;
 }
@@ -65,6 +89,7 @@ int m_resources_assign_handles(m_dsp_resource_pll *list)
 {
 	int next_delay_handle = 0;
 	int next_mem_handle = 0;
+	int next_filter_handle = 0;
 	
 	m_dsp_resource_pll *current = list;
 	
@@ -85,6 +110,11 @@ int m_resources_assign_handles(m_dsp_resource_pll *list)
 					current->data->handle = next_mem_handle;
 					next_mem_handle += current->data->mem_size;
 					break;
+				
+				case M_DSP_RESOURCE_FILTER:
+					current->data->handle = next_filter_handle;
+					next_filter_handle += 1;
+					break;
 			}
 		}
 		
@@ -101,4 +131,53 @@ m_eff_resource_report empty_m_eff_resource_report()
 	memset(&result, 0, sizeof(result));
 	
 	return result;
+}
+
+int m_filter_init(m_filter *filter)
+{
+	if (!filter)
+		return ERR_NULL_PTR;
+	
+	filter->feed_forward = 0;
+	filter->feed_back = 0;
+	filter->format = 0;
+	
+	m_expression_ptr_list_init(&filter->coefs);
+	
+	return NO_ERROR;
+}
+
+m_filter *m_filter_create(m_allocator *alloc)
+{
+	m_filter *filter = m_allocator_alloc(alloc, sizeof(m_filter));
+	
+	if (!filter)
+		return NULL;
+	
+	filter->feed_forward = 0;
+	filter->feed_back = 0;
+	filter->format = 0;
+	
+	m_expression_ptr_list_init_with_allocator(&filter->coefs, alloc);
+	
+	return filter;
+}
+
+int m_resource_report_integrate(m_eff_resource_report *a, const m_eff_resource_report *b)
+{
+	if (!a) return ERR_NULL_PTR;
+	if (!b) return ERR_BAD_ARGS;
+	
+	M_PRINTF("m_resource_report_integrate\n");
+	
+	M_PRINTF("a->blocks = %d + %d = %d\n", a->blocks, b->blocks, a->blocks + b->blocks);
+	M_PRINTF("a->delays = %d + %d = %d\n", a->delays, b->delays, a->delays + b->delays);
+	M_PRINTF("a->memory = %d + %d = %d\n", a->memory, b->memory, a->memory + b->memory);
+	M_PRINTF("a->filters = %d + %d = %d\n", a->filters, b->filters, a->filters + b->filters);
+	a->blocks  += b->blocks;
+	a->memory  += b->memory;
+	a->delays  += b->delays;
+	a->filters += b->filters;
+	
+	return NO_ERROR;
 }

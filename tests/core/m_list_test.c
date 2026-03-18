@@ -439,3 +439,156 @@ M_TEST(test_allocator_partial_success_then_fail)
 
     pair_list_destroy(&list);
 }
+
+M_TEST(test_ptr_list_head_tail_basic)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    dummy_ptr_list_append(&list, &a);
+    dummy_ptr_list_append(&list, &b);
+
+    assert(*dummy_ptr_list_head(&list) == &a);
+    assert(*dummy_ptr_list_tail(&list) == &b);
+}
+
+M_TEST(test_ptr_list_head_tail_empty)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    assert(dummy_ptr_list_head(&list) == NULL);
+    assert(dummy_ptr_list_tail(&list) == NULL);
+}
+
+M_TEST(test_ptr_list_pop_tail_basic)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    dummy_ptr_list_append(&list, &a);
+    dummy_ptr_list_append(&list, &b);
+
+    dummy_ptr_list_pop_tail(&list);
+
+    assert(list.count == 1);
+    assert(list.entries[0] == &a);
+}
+
+M_TEST(test_ptr_list_pop_destroy_tail_calls_destructor)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    dummy_ptr_list_append(&list, &a);
+
+    destructor_call_count = 0;
+
+    dummy_ptr_list_pop_destroy_tail(&list, dummy_destructor);
+
+    assert(list.count == 0);
+    assert(destructor_call_count == 1);
+}
+
+M_TEST(test_ptr_list_append_list_basic)
+{
+    dummy_ptr_list a_list, b_list;
+
+    dummy_ptr_list_init(&a_list);
+    dummy_ptr_list_init(&b_list);
+
+    dummy_ptr_list_append(&a_list, &a);
+    dummy_ptr_list_append(&a_list, &b);
+
+    dummy_ptr_list_append(&b_list, &c);
+
+    dummy_ptr_list_append_list(&b_list, &a_list);
+
+    assert(b_list.count == 3);
+    assert(b_list.entries[1] == &a);
+    assert(b_list.entries[2] == &b);
+}
+
+M_TEST(test_ptr_list_drain_basic)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    dummy_ptr_list_append(&list, &a);
+    dummy_ptr_list_append(&list, &b);
+
+    dummy_ptr_list_drain(&list);
+
+    assert(list.count == 0);
+    assert(list.entries != NULL); /* capacity preserved */
+}
+
+M_TEST(test_ptr_list_drain_destroy_calls_destructor)
+{
+    dummy_ptr_list list;
+    dummy_ptr_list_init(&list);
+
+    dummy *x1 = m_alloc(sizeof(dummy));
+    dummy *x2 = m_alloc(sizeof(dummy));
+
+    dummy_ptr_list_append(&list, x1);
+    dummy_ptr_list_append(&list, x2);
+
+    destructor_call_count = 0;
+
+    dummy_ptr_list_drain_destroy(&list, dummy_destructor);
+
+    assert(list.count == 0);
+    assert(destructor_call_count == 2);
+}
+
+M_TEST(test_list_pop_destroy_tail_basic)
+{
+    pair_list list;
+    pair_list_init(&list);
+
+    pair x = {1,2};
+    pair_list_append(&list, x);
+
+    int called = 0;
+    void d(pair *p) { (void)p; called++; }
+
+    pair_list_pop_destroy_tail(&list, d);
+
+    assert(list.count == 0);
+    assert(called == 1);
+}
+
+M_TEST(test_list_append_list_basic)
+{
+    pair_list a_list, b_list;
+    pair_list_init(&a_list);
+    pair_list_init(&b_list);
+
+    pair a = {1,1};
+    pair b = {2,2};
+
+    pair_list_append(&a_list, a);
+    pair_list_append(&b_list, b);
+
+    pair_list_append_list(&b_list, &a_list);
+
+    assert(b_list.count == 2);
+    assert(b_list.entries[1].a == 1);
+}
+
+M_TEST(test_list_drain_basic)
+{
+    pair_list list;
+    pair_list_init(&list);
+
+    pair x = {1,1};
+    pair_list_append(&list, x);
+
+    pair_list_drain(&list);
+
+    assert(list.count == 0);
+    assert(list.entries != NULL);
+}
+
+

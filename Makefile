@@ -16,7 +16,7 @@ app_cfiles := 	core/m_error_codes.c	\
 				core/m_lv_log.c			\
 				core/m_parameter.c		\
 				core/m_param_update.c	\
-				core/m_transformer.c	\
+				core/m_effect.c			\
 				core/m_pipeline.c		\
 				core/m_state.c			\
 				core/m_sequence.c		\
@@ -24,6 +24,7 @@ app_cfiles := 	core/m_error_codes.c	\
 				core/m_resource.c		\
 				core/m_representation.c	\
 				core/m_printf.c			\
+				core/m_string.c			\
 				ui/m_button.c			\
 				ui/m_home_view.c		\
 				ui/m_menu.c				\
@@ -32,15 +33,16 @@ app_cfiles := 	core/m_error_codes.c	\
 				ui/m_profile_view.c		\
 				ui/m_sequence_list.c	\
 				ui/m_sequence_view.c	\
-				ui/m_transformer_select.c	\
-				ui/m_transformer_settings.c	\
-				ui/m_transformer_view.c	\
+				ui/m_effect_select.c	\
+				ui/m_effect_settings.c	\
+				ui/m_effect_view.c		\
 				ui/m_page_id.c			\
 				ui/m_ui.c				\
 				fpga/m_fpga_encoding.c	\
 				fpga/m_fpga_comms.c		\
 				fpga/m_fpga_io.c		\
 				fpga/m_reg_format.c		\
+				fpga/m_fixed_point.c	\
 				parser/m_asm_parser.c	\
 				parser/m_dict_extract.c	\
 				parser/m_dictionary.c	\
@@ -50,6 +52,7 @@ app_cfiles := 	core/m_error_codes.c	\
 				parser/m_tokenizer.c
 
 lib_cfiles := 	core/m_error_codes.c	\
+				core/m_alloc.c			\
 				core/m_representation.c	\
 				core/m_parameter.c		\
 				core/m_resource.c		\
@@ -57,11 +60,12 @@ lib_cfiles := 	core/m_error_codes.c	\
 				core/m_expr_scope.c		\
 				core/m_block.c			\
 				core/m_eff_desc.c		\
-				core/m_transformer.c	\
+				core/m_effect.c			\
 				core/m_pipeline.c		\
 				core/m_profile.c		\
 				core/m_printf.c			\
 				core/m_hfunc.c			\
+				core/m_string.c			\
 				core/m_bump_arena.c		\
 				parser/m_tokenizer.c	\
 				parser/m_expr_parser.c	\
@@ -72,6 +76,7 @@ lib_cfiles := 	core/m_error_codes.c	\
 				parser/m_dict_extract.c	\
 				fpga/m_fpga_encoding.c	\
 				fpga/m_reg_format.c		\
+				fpga/m_fixed_point.c	\
 				fpga/m_fpga_io.c
 
 
@@ -80,7 +85,7 @@ app_hfiles := core/m_linked_list.h $(app_cfiles:.c=.h)
 
 lib_srcs := $(addprefix $(components)/,$(lib_cfiles))
 lib_objs := $(addprefix $(lib_objdir)/,$(lib_cfiles:.c=.o))
-lib_hdrs := main/m_lib.h main/m_lib_cmph.h $(addprefix components/,$(lib_hfiles))
+lib_hdrs := main/m_lib.h main/m_lib_cmph.h components/core/m_list.h $(addprefix components/,$(lib_hfiles))
 
 app_objs := $(app_objdir)/m_desktop.o $(addprefix $(app_objdir)/,$(app_cfiles:.c=.o))
 app_hdrs := desktop/m_desktop.h $(addprefix components/,$(app_hfiles))

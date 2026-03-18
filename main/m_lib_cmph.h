@@ -14,11 +14,6 @@
 #define SETTING_WIDGET_SWITCH 	 1
 #define SETTING_WIDGET_FIELD 	 2
 
-#define m_alloc 	malloc
-#define m_free 		free 
-#define m_strndup 	strndup
-#define m_realloc	realloc
-
 #define M_FPGA_SIMULATED
 
 DECLARE_LINKED_PTR_LIST(char);

@@ -208,23 +208,6 @@ m_expression *m_parse_expression(m_eff_parsing_state *ps, m_token_ll *tokens, m_
 	if (expr)
 	{
 		m_expression_detect_constants(expr);
-		
-		if (tokens_end && next_token != tokens_end)
-		{
-			// check if there's anyhting of substance
-			while (check && check != tokens_end && !anything)
-			{
-				if (next_token->data && (strcmp(next_token->data, ")") != 0 && strcmp(next_token->data, "\n")))
-					anything = 1;
-				check = check->next;
-			}
-			if (anything)
-			{
-				m_parser_error_at(ps, next_token, "Expression finished with dangling tokens \e[01;32m\"%s\"\e[0m, ... \e[01;32m\"%s\"\e[0m.", next_token->data, tokens_end ? tokens_end->data : "");
-				// need 2 free
-				return NULL;
-			}
-		}
 	}
 	
 	ps->current_token = next_token;

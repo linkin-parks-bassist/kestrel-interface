@@ -605,7 +605,10 @@ int m_tokenize_content(m_eff_parsing_state *ps)
 			line_char = 0;
 			token_index = 0;
 		}
-		line_char++;
+		else
+		{
+			line_char++;
+		}
 	}
 	
 	if (buf_pos)

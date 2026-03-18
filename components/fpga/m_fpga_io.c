@@ -17,30 +17,6 @@ static const char *FNAME = "m_fpga_io.c";
 spi_device_handle_t spi_handle;
 #endif
 
-int16_t float_to_q_nminus1(float x, int shift)
-{
-    int n = (M_FPGA_DATA_WIDTH - 1) - shift;
-
-    float scale = (float)(1 << n);
-
-    float max =  (float)((1 << (M_FPGA_DATA_WIDTH - 1)) - 1) / scale;
-    float min = -(float)(1  << (M_FPGA_DATA_WIDTH - 1))      / scale;
-
-    if (x > max) x = max;
-    if (x < min) x = min;
-
-    return (m_fpga_sample_t)lrintf(x * scale);
-}
-
-
-int16_t float_to_q15(float x)
-{
-	if (x >= 0.999969482421875f) return  32767;
-    if (x <= -1.0f)              return -32768;
-    
-    return (int16_t)lrintf(x * 32768.0f);
-}
-
 int m_fpga_spi_init()
 {
 	#ifndef M_FPGA_SIMULATED

@@ -23,9 +23,13 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 	float min, max;
 	float abs_min, abs_max;
 	float max_abs;
-	int format;
+	int format_0, format_1;
 	int shift_set;
 	float p2;
+	
+	m_string string;
+	m_string_init(&string);
+	char *str = NULL;
 	
 	int i = 0;
 	while (current)
@@ -33,81 +37,43 @@ int m_compute_register_formats(m_block_pll *blocks, m_expr_scope *scope)
 		if (current->data)
 		{
 			shift_set = current->data->shift_set;
-			format = current->data->shift;
+			format_0 = 0;
+			format_1 = 0;
 			
-			M_PRINTF("m_compute_register_formats(current->data = %p), shift_set = %d, format = %d, reg_0_active: %d, reg_1_active: %d\n",
-				current->data, shift_set, format, current->data->reg_0.active, current->data->reg_1.active);
+			/*
+			m_string_appendf(&string, "m_compute_register_formats(current->data = %p), shift_set = %d, reg_0_active: %d, reg_1_active: %d\n",
+				current->data, shift_set, current->data->reg_0.active, current->data->reg_1.active);
+			*/
 			if (current->data->reg_0.active)
 			{
 				if (!shift_set && current->data->reg_0.expr)
-				{
-					range = m_expression_compute_range(current->data->reg_0.expr, scope);
-					min = range.a;
-					max = range.b;
-					
-					M_PRINTF("Block %d register 0 has range [%.06f, %.06f], so ", i, min, max);
-					
-					abs_min = (min < 0) ? -min : min;
-					abs_max = (max < 0) ? -max : max;
-					
-					max_abs = abs_min > abs_max ? abs_min : abs_max;
-					
-					M_PRINTF("max absolute value: %f; ", max_abs);
-					
-					format = 0;
-					p2 = 1.0;
-					
-					while (p2 < max_abs && format < 8)
-					{
-						p2 *= 2.0;
-						format++;
-					}
-					
-					M_PRINTF("needed format: q%d.%d\n", format + 1, 16 - format - 1);
-					
-					current->data->shift = format;
-				}
+					format_0 = m_expression_compute_format(current->data->reg_0.expr, scope, 8, M_FPGA_DATA_WIDTH);
 				
-				current->data->reg_0.format = format;
+				current->data->reg_0.format = format_0;
 			}
 			
 			if (current->data->reg_1.active)
 			{
 				if (!shift_set && current->data->reg_1.expr)
-				{
-					range = m_expression_compute_range(current->data->reg_1.expr, scope);
-					min = range.a;
-					max = range.b;
-					
-					M_PRINTF("Block %d register 1 has min %f and maximum %f, so ", i, min, max);
-					
-					abs_min = (min < 0) ? -min : min;
-					abs_max = (max < 0) ? -max : max;
-					
-					max_abs = abs_min > abs_max ? abs_min : abs_max;
-					
-					M_PRINTF("max absolute value: %f; ", max_abs);
-					
-					format = 0;
-					p2 = 1.0;
-					
-					while (p2 < max_abs && format < 8)
-					{
-						p2 *= 2.0;
-						format++;
-					}
-					
-					M_PRINTF("needed format: q%d.%d\n", format + 1, M_FPGA_DATA_WIDTH - format - 1);
-				}
+					format_1 = m_expression_compute_format(current->data->reg_1.expr, scope, 8, M_FPGA_DATA_WIDTH);
 				
-				current->data->reg_1.format = format;
+				current->data->reg_1.format = format_1;
 			}
+			
+			current->data->shift = format_0 + format_1;
+			/*
+			str = m_string_to_native(&string);
+			M_PRINTF("%s", str);
+			m_free(str);
+			m_string_drain(&string);
+			*/
 		}
 		
 		current = current->next;
 		i++;
 	}
 	
+	m_string_destroy(&string);
 	
 	M_PRINTF("m_compute_register_formats done\n");
 	

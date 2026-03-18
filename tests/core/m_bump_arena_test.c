@@ -118,7 +118,6 @@ M_TEST(m_test_bump_arena_reset)
     m_bump_arena_destroy(&arena);
 }
 
-
 M_TEST(m_test_bump_arena_alloc_zero)
 {
     m_bump_arena arena;
@@ -132,7 +131,6 @@ M_TEST(m_test_bump_arena_alloc_zero)
     m_bump_arena_destroy(&arena);
 }
 
-
 M_TEST(m_test_bump_arena_destroy_twice)
 {
     m_bump_arena arena;
@@ -145,7 +143,6 @@ M_TEST(m_test_bump_arena_destroy_twice)
     assert(rc1 == NO_ERROR);
     assert(rc2 == NO_ERROR);
 }
-
 
 M_TEST(m_test_bump_arena_destroy_null)
 {

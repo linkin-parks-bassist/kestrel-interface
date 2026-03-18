@@ -1,7 +1,7 @@
 #include "m_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "m_dict_extract.c";
@@ -451,6 +451,8 @@ int m_extract_mem_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_di
 	
 	m_expression *expr;
 	
+	M_PRINTF("Extracting filter \"%s\"...\n", res->name);
+	
 	ret_val = m_dictionary_lookup_expr(dict, "size", &expr);
 	
 	if (ret_val == NO_ERROR)
@@ -465,6 +467,163 @@ int m_extract_mem_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_di
 	else
 	{
 		res->mem_size = 1;
+	}
+	
+	return NO_ERROR;
+}
+
+int m_extract_filter_coefs_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_dictionary *dict, m_dsp_resource *res)
+{
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	M_PRINTF("Extracting coefficients for filter \"%s\"...\n", res->name);
+	
+	m_filter *filter = (m_filter*)res->data;
+	
+	if (!filter)
+		return ERR_ALLOC_FAIL;
+	
+	m_dictionary_entry_list *coefs = NULL;
+	
+	int ret_val = m_dictionary_lookup_list(dict, "coefs", &coefs);
+	
+	if (ret_val != NO_ERROR)
+	{
+		m_parser_error_at_node(ps, dict_node, "Could not find mandatory attribute \"coefs\" for filter \"%s\"", res->name);
+		return ERR_BAD_ARGS;
+	}
+	
+	M_PRINTF("Found list; pointer %p.\n", coefs);
+	
+	M_PRINTF("%d entries. begin traversal\n", coefs->count);
+	
+	m_string *string;
+	char *str;
+	
+	for (int i = 0; i < coefs->count; i++)
+	{
+		string = m_dict_entry_to_string(&coefs->entries[i]);
+		if (!string)
+		{
+			M_PRINTF("Alloc fail!!\n");
+			return ERR_ALLOC_FAIL;
+		}
+		str = m_string_to_native(string);
+		if (!str)
+		{
+			M_PRINTF("Alloc fail 2!!\n");
+			return ERR_ALLOC_FAIL;
+		}
+		M_PRINTF("Entry %d; %s\n", i, str);
+		m_free(str);
+		m_string_destroy(string);
+		string = NULL;
+		
+		if (coefs->entries[i].type != DICT_ENTRY_TYPE_EXPR)
+		{
+			m_parser_error_at_node(ps, dict_node, "Filter coefficients must be expressions, but coefficient %d of filter \"%s\" is a %s (%d).",
+				i, res->name, m_dict_entry_type_to_string_nice(coefs->entries[i].type), coefs->entries[i].type);
+			return ERR_BAD_ARGS;
+		}
+		
+		m_expression_ptr_list_append(&filter->coefs, coefs->entries[i].value.val_expr);
+	}
+	
+	return NO_ERROR;
+}
+
+int m_extract_biquad_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_dictionary *dict, m_dsp_resource *res)
+{
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	m_filter *filter = m_filter_create(NULL);
+	
+	if (!filter)
+		return ERR_ALLOC_FAIL;
+	
+	res->data = (void*)filter;
+	
+	filter->feed_forward = 3;
+	filter->feed_back = 2;
+	
+	int ret_val = m_extract_filter_coefs_from_dict(ps, dict_node, dict, res);
+	
+	if (ret_val != NO_ERROR)
+		return ret_val;
+	
+	m_expression_ptr_list *coefs = &filter->coefs;
+	
+	if (filter->feed_forward + filter->feed_back != coefs->count)
+	{
+		m_parser_error_at_node(ps, dict_node, "Filter \"%s\" is declared to be a biquad, but supplies %d coefficients, not 5.", res->name, coefs->count);
+		return ERR_BAD_ARGS;
+	}
+	
+	M_PRINTF("Extracted (%d, %d) filter \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	for (int i = 0; i < coefs->count; i++)
+	{
+		M_PRINTF("\t%s\n", m_expression_to_string(coefs->entries[i]));
+	}
+	
+	return NO_ERROR;
+}
+
+int m_extract_filter_from_dict(m_eff_parsing_state *ps, m_ast_node *dict_node, m_dictionary *dict, m_dsp_resource *res)
+{
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	m_filter *filter = m_filter_create(NULL);
+	
+	if (!filter)
+		return ERR_ALLOC_FAIL;
+	
+	res->data = (void*)filter;
+	
+	int ret_val = m_extract_filter_coefs_from_dict(ps, dict_node, dict, res);
+	
+	if (ret_val != NO_ERROR)
+		return ret_val;
+	
+	m_expression *expr;
+	
+	ret_val = m_dictionary_lookup_expr(dict, "feed_back", &expr);
+	
+	if (ret_val == NO_ERROR)
+	{
+		filter->feed_back = (int)(roundf(m_expression_evaluate(expr, NULL)));
+		
+		if (filter->feed_back < 0)
+		{
+			m_parser_error_at_node(ps, dict_node, "Filter \"%s\" has negative feed-back degree %d, which doesn't make sense.",
+				res->name, filter->feed_back);
+			return ERR_BAD_ARGS;
+		}
+		if (filter->feed_back > filter->coefs.count)
+		{
+			m_parser_error_at_node(ps, dict_node, "Filter \"%s\" has feed-back degree %d, which is higher than its coefficient count %d!",
+				res->name, filter->feed_back, filter->coefs.count);
+			return ERR_BAD_ARGS;
+		}
+		
+		filter->feed_forward = filter->coefs.count - filter->feed_back;
+	}
+	else
+	{
+		filter->feed_back = 0;
+		filter->feed_forward = filter->coefs.count;
+	}
+	
+	M_PRINTF("Extracted (%d, %d) filter \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	m_expression_ptr_list *coefs = &filter->coefs;
+	
+	for (int i = 0; i < coefs->count; i++)
+	{
+		M_PRINTF("\t%s\n", m_expression_to_string(coefs->entries[i]));
 	}
 	
 	return NO_ERROR;
@@ -511,6 +670,13 @@ m_dsp_resource *m_extract_resource_from_dict(m_eff_parsing_state *ps, m_ast_node
 	else if (res->type == M_DSP_RESOURCE_MEM)
 	{
 		m_extract_mem_from_dict(ps, dict_node, dict, res);
+	}
+	else if (res->type == M_DSP_RESOURCE_FILTER)
+	{
+		if (strcmp(type_str, "biquad") == 0)
+			m_extract_biquad_from_dict(ps, dict_node, dict, res);
+		else
+			m_extract_filter_from_dict(ps, dict_node, dict, res);
 	}
 	
 	return res;

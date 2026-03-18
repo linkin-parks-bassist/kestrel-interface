@@ -82,4 +82,6 @@ int m_eff_parser_deinit_mempool();
 void *m_parser_alloc(size_t size);
 char *m_parser_strndup(const char *str, int n);
 
+extern m_allocator *m_parser_allocator;
+
 #endif

@@ -10,8 +10,11 @@
 #define PRINTLINES_ALLOWED 0
 #endif
 
+//#define M_BOUNDS_CHECK_VERBOSE
+
 static const char *FNAME = "m_expression.c";
 
+IMPLEMENT_PTR_LIST(m_expression);
 IMPLEMENT_LINKED_PTR_LIST(m_named_expression);
 
 #define M_EXPRESSION_CONST(x) { \

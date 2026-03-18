@@ -18,6 +18,8 @@
 #define COMMAND_COMMIT_REG_UPDATES 	15
 #define COMMAND_ALLOC_FILTER	 	16
 #define COMMAND_WRITE_FILTER_COEF 	17
+#define COMMAND_UPDATE_FILTER_COEF 	18
+#define COMMAND_COMMIT_FILTER_COEF 	19
 
 #define SPI_RESPONSE_OK 			0
 #define SPI_RESPONSE_INITIALISING	1
@@ -36,6 +38,7 @@
 #endif
 
 #define M_FPGA_DATA_WIDTH 16
+#define M_FPGA_FILTER_WIDTH 18
 #define M_FPGA_DATA_BYTES (M_FPGA_DATA_WIDTH / 8)
 
 #if M_FPGA_DATA_WIDTH == 16
@@ -72,10 +75,6 @@ int m_fpga_batch_append_32(m_fpga_transfer_batch *seq, uint32_t x);
 int m_fpga_transfer_batch_send(m_fpga_transfer_batch batch);
 
 int m_fpga_spi_init();
-
-// Floating point -> fixed point format conversion
-m_fpga_sample_t float_to_q_nminus1(float x, int shift);
-int16_t float_to_q15(float x);
 
 char *m_fpga_command_to_string(int command);
 

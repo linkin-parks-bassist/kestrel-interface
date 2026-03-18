@@ -16,6 +16,8 @@ const char *ver_str = "v1.0";
 m_bump_arena m_eff_parser_mempool;
 int m_parser_mempool_initialised = 0;
 
+m_allocator *m_parser_allocator = NULL;
+
 int m_eff_parser_init_mempool()
 {
 	if (m_parser_mempool_initialised)
@@ -23,6 +25,7 @@ int m_eff_parser_init_mempool()
 	
 	int ret_val = m_bump_arena_init(&m_eff_parser_mempool, M_EFF_PARSER_MEM_POOL_SIZE_KB * 1024);
 	m_parser_mempool_initialised = (ret_val == NO_ERROR);
+	m_parser_allocator = &m_eff_parser_mempool.alloc;
 	return ret_val;
 }
 
@@ -422,6 +425,34 @@ int m_parser_lineize_content(m_eff_parsing_state *ps)
 	return NO_ERROR;
 }
 
+int m_parser_compute_formats(m_eff_parsing_state *ps)
+{
+	if (!ps)
+		return ERR_NULL_PTR;
+	
+	m_compute_register_formats(ps->blocks, ps->scope);
+	
+	m_dsp_resource_pll *res = ps->resources;
+	m_filter *filter;
+	
+	while (res)
+	{
+		if (res->data && res->data->type == M_DSP_RESOURCE_FILTER)
+		{
+			filter = (m_filter*)res->data->data;
+			
+			if (!filter)
+				break;
+			
+			m_filter_compute_format(filter, ps->scope);
+		}
+		
+		res = res->next;
+	}
+	
+	return NO_ERROR;
+}
+
 m_effect_desc *m_read_eff_desc_from_file(char *fname)
 {
 	if (!fname)
@@ -523,7 +554,7 @@ m_effect_desc *m_read_eff_desc_from_file(char *fname)
 		return NULL;
 	}
 	
-	m_compute_register_formats(ps.blocks, ps.scope);
+	m_parser_compute_formats(&ps);
 	
 	result = m_alloc(sizeof(m_effect_desc));
 	
@@ -569,7 +600,7 @@ int m_parser_format_offending_section(char *line, int index, int length, char *b
 	for (i = 0; i < PR_LINE_INDENT; i++)
 		buf[buf_pos++] = ' ';
 	
-	for (i = 0; i <= index && buf_pos + 1 < buf_len && line[i] != 0; i++)
+	for (i = 0; i < index && buf_pos + 1 < buf_len && line[i] != 0; i++)
 		buf[buf_pos++] = line[i];
 	
 	if (colour)

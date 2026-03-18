@@ -10,28 +10,13 @@ static size_t total_current, total_peak;
 
 void *m_alloc(size_t size)
 {
-	#ifdef M_LOG_ALLOCS
-	#endif
-	
 	if (size == 0)
-	{
-		#ifdef M_LOG_ALLOCS
 		return NULL;
-		#else
-		return NULL;
-		#endif
-    }
 	
     uint8_t *ptr = malloc(size + sizeof(size_t));
     
     if (!ptr)
-    {
-		#ifdef M_LOG_ALLOCS
 		return NULL;
-		#else
-		return NULL;
-		#endif
-    }
     
     *(size_t*)ptr = size;
     
@@ -40,26 +25,13 @@ void *m_alloc(size_t size)
     if (total_current > total_peak)
         total_peak = total_current;
     
-    #ifdef M_LOG_ALLOCS
+    
     return ptr + sizeof(size_t);
-    #else
-    return ptr + sizeof(size_t);
-    #endif
 }
 
 void m_free(void *ptr)
 {
-	#ifdef M_LOG_ALLOCS
-	#endif
-	
-    if (!ptr)
-	{
-		#ifdef M_LOG_ALLOCS
-		return;
-		#else
-		return;
-		#endif
-    }
+    if (!ptr) return;
     
     uint8_t *base_ptr = (uint8_t*)ptr - sizeof(size_t);
     
@@ -68,25 +40,12 @@ void m_free(void *ptr)
     total_current -= size;
     
     free(base_ptr);
-    
-	#ifdef M_LOG_ALLOCS
-	return;
-	#endif
 }
 
 void *m_realloc(void *ptr, size_t size)
 {
-	#ifdef M_LOG_ALLOCS
-	#endif
-	
 	if (!ptr)
-	{
-		#ifdef M_LOG_ALLOCS
 		return m_alloc(size);
-		#else
-		return m_alloc(size);
-		#endif
-	}
 	
 	if (size == 0)
 		m_free(ptr);
@@ -97,13 +56,7 @@ void *m_realloc(void *ptr, size_t size)
     uint8_t *new_ptr = realloc(base_ptr, size + sizeof(size_t));
     
     if (!new_ptr)
-    {
-		#ifdef M_LOG_ALLOCS
 		return NULL;
-		#else
-		return NULL;
-		#endif
-	}
     
     *(size_t*)new_ptr = size;
     
@@ -112,11 +65,9 @@ void *m_realloc(void *ptr, size_t size)
     if (total_current > total_peak)
         total_peak = total_current;
     
-    #ifdef M_LOG_ALLOCS
+    
     return new_ptr + sizeof(size_t);
-    #else
-    return new_ptr + sizeof(size_t);
-    #endif
+    
 }
 
 char *m_strndup(const char *str, size_t n)
@@ -126,11 +77,9 @@ char *m_strndup(const char *str, size_t n)
 	
 	if (!str)
 	{
-		#ifdef M_LOG_ALLOCS
+		
 		return NULL;
-		#else
-		return NULL;
-		#endif
+		
 	}
 	
     size_t len = strnlen(str, n);
@@ -139,21 +88,17 @@ char *m_strndup(const char *str, size_t n)
     
     if (!new_str)
     {
-		#ifdef M_LOG_ALLOCS
+		
 		return NULL;
-		#else
-		return NULL;
-		#endif
+		
 	}
 	
 	memcpy(new_str, str, len);
     new_str[len] = '\0';
     
-	#ifdef M_LOG_ALLOCS
+	
 	return new_str;
-	#else
-	return new_str;
-	#endif
+	
 }
 
 void m_mem_monitor_task(void *param)
@@ -187,6 +132,7 @@ void m_mem_init()
 }
 
 #ifndef M_DESKTOP
+#ifndef M_LIBRARY
 void lv_mem_init(void)
 {
 	return;
@@ -221,6 +167,7 @@ void m_lv_free(void *ptr)
     heap_caps_free(ptr);
 }
 #endif
+#endif
 
 void print_memory_report()
 {
@@ -241,6 +188,21 @@ void *m_allocator_realloc(m_allocator *a, void *p, size_t n)
         return m_realloc(p, n);
 
     return a->realloc(a->data, p, n);
+}
+
+void *m_allocator_strndup(m_allocator *a, const char *str, int n)
+{
+	if (!str) return NULL;
+	
+    size_t len = strnlen(str, n);
+    char *new_str = m_allocator_alloc(a, len + 1);
+    
+    if (!new_str) return NULL;
+	
+	memcpy(new_str, str, len);
+    new_str[len] = '\0';
+    
+	return new_str;
 }
 
 void m_allocator_free(m_allocator *a, void *p)

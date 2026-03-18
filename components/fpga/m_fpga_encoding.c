@@ -6,17 +6,17 @@ static const char *FNAME = "m_fpga_encoding.c";
 
 #include "m_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 1
-#endif
-
+//#endif
+/*
 #ifdef PRINT_TRANSFER_BATCHES
 #ifdef PRINTLINES_ALLOWED
 #undef PRINTLINES_ALLOWED
 #endif
 #define PRINTLINES_ALLOWED 1
 #endif
-
+*/
 
 int m_fpga_block_opcode_format(int opcode)
 {
@@ -81,6 +81,10 @@ uint32_t m_block_instr_encode_resource_aware(m_block *block, const m_eff_resourc
 				
 			case M_DSP_RESOURCE_DELAY:
 				res_handle = block->res->handle + (res ? res->delays : 0);
+				break;
+				
+			case M_DSP_RESOURCE_FILTER:
+				res_handle = block->res->handle + (res ? res->filters : 0);
 				break;
 				
 		}
@@ -249,11 +253,15 @@ int m_fpga_batch_append_resource(m_fpga_transfer_batch *batch, m_dsp_resource *r
 	uint32_t size;
 	uint32_t delay;
 	
+	int handle;
+	m_filter *filter = (m_filter*)res->data;
+	float c;
+	int32_t s;
+	
 	switch (res->type)
 	{
 		case M_DSP_RESOURCE_DELAY:
 			m_fpga_batch_append(batch, COMMAND_ALLOC_DELAY);
-			
 			
 			delay = (uint32_t)(ceilf(m_expression_evaluate(res->delay, scope)) * 0.001 * M_FPGA_SAMPLE_RATE);
 			
@@ -267,6 +275,32 @@ int m_fpga_batch_append_resource(m_fpga_transfer_batch *batch, m_dsp_resource *r
 			
 			m_fpga_batch_append_24(batch, size);
 			m_fpga_batch_append_24(batch, delay << DELAY_FORMAT);
+			
+			break;
+		case M_DSP_RESOURCE_FILTER:
+			if (!filter)
+				return ERR_BAD_ARGS;
+			
+			m_fpga_batch_append(batch, COMMAND_ALLOC_FILTER);
+			m_fpga_batch_append(batch, filter->format && 0xFF);
+			m_fpga_batch_append_16(batch, filter->feed_forward);
+			m_fpga_batch_append_16(batch, filter->feed_back);
+			
+			handle = res->handle + rpt->filters;
+			
+			M_PRINTF("Sending filter coefficients; handle %d = %d + %d.\n", handle, res->handle, rpt->filters);
+			for (int i = 0; i < filter->coefs.count; i++)
+			{
+				m_fpga_batch_append(batch, COMMAND_WRITE_FILTER_COEF);
+				m_fpga_batch_append(batch, handle & 0xFF);
+				m_fpga_batch_append_16(batch, i);
+				c = m_expression_evaluate(filter->coefs.entries[i], scope);
+				M_PRINTF("Coefficient %d: %.06f\n", i, c);
+				s = float_to_q_nminus1_18bit(c, filter->format);
+				M_PRINTF("Converting to q%d.%d, we get %d. Masked to 18 bits, that's %d.\n",
+					1 + filter->format, M_FPGA_FILTER_WIDTH - 1 - filter->format, s, s & ((1u << 18) - 1));
+				m_fpga_batch_append_24(batch, s & ((1u << 18) - 1));
+			}
 			
 			break;
 	}
@@ -316,8 +350,7 @@ int m_fpga_batch_append_effect(m_fpga_transfer_batch *batch, m_effect *effect, m
 	
 	m_fpga_batch_append_eff_desc(batch, effect->eff, res, scope, *pos);
 	
-	res->memory += effect->eff->res_rpt.memory;
-	res->delays += effect->eff->res_rpt.delays;
+	m_resource_report_integrate(res, &effect->eff->res_rpt);
 	
 	*pos += effect->eff->res_rpt.blocks;
 	

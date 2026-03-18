@@ -2,7 +2,7 @@
 #define M_DYNAMIC_ARRAY_H_
 
 #define DECLARE_LIST(X) \
-typedef struct { \
+typedef struct X##_list { \
     X* entries; \
     int count; \
     int capacity; \
@@ -21,7 +21,14 @@ int X##_list_destroy_all(X##_list *list, void (*destructor)(X *x)); \
 int X##_list_contains(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
 int X##_list_contains_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*)); \
 int X##_list_index_of(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
-int X##_list_index_of_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*));
+int X##_list_index_of_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*));\
+X *X##_list_head(X##_list *list);\
+X *X##_list_tail(X##_list *list);\
+int X##_list_pop_tail(X##_list *list);\
+int X##_list_pop_destroy_tail(X##_list *list, void (*destructor)(X *x));\
+int X##_list_append_list(X##_list *list, X##_list *a);\
+int X##_list_drain_destroy(X##_list *list, void (*destructor)(X *x));\
+int X##_list_drain(X##_list *list);
 
 #define IMPLEMENT_LIST(X) \
 \
@@ -207,10 +214,106 @@ int X##_list_index_of_ref(X##_list *list, const X *x, int (*cmp)(const X*, const
         } \
     } \
     return -1; \
+}\
+\
+X *X##_list_head(X##_list *list)\
+{\
+	if (!list)\
+		return NULL;\
+	\
+	if (!list->entries)\
+		return NULL;\
+	\
+	if (list->count < 1) return NULL;\
+	\
+	return &list->entries[0];\
+}\
+X *X##_list_tail(X##_list *list)\
+{\
+	if (!list)\
+		return NULL;\
+	\
+	if (!list->entries)\
+		return NULL;\
+	\
+	if (list->count < 1 || list->capacity < list->count) return NULL;\
+	\
+	return &list->entries[list->count - 1];\
+}\
+\
+int X##_list_pop_destroy_tail(X##_list *list, void (*destructor)(X *x))\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	if (list->count > 0)\
+	{\
+		list->count--;\
+		destructor(&list->entries[list->count]);\
+	}\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_list_pop_tail(X##_list *list)\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	if (list->count > 0)\
+		list->count--;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_list_append_list(X##_list *list, X##_list *a)\
+{\
+	if (!list || !a)\
+		return ERR_NULL_PTR;\
+	\
+	if (a->count == 0)\
+		return NO_ERROR;\
+	\
+	if (!a->entries)\
+		return ERR_BAD_ARGS;\
+	\
+	X##_list_reserve(list, a->count);\
+	\
+	memcpy(&list->entries[list->count], a->entries, sizeof(X) * a->count);\
+	\
+	list->count += a->count;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_list_drain_destroy(X##_list *list, void (*destructor)(X *x))\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	\
+	for (int i = 0; i < list->count; i++)\
+	{\
+		if (destructor)\
+			destructor(&list->entries[i]);\
+	}\
+	list->count = 0;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_list_drain(X##_list *list)\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	list->count = 0;\
+	\
+	return NO_ERROR;\
 }
 
 #define DECLARE_PTR_LIST(X) \
-typedef struct { \
+typedef struct X##_ptr_list { \
     X** entries; \
     int count; \
     int capacity; \
@@ -224,7 +327,13 @@ int X##_ptr_list_append(X##_ptr_list *list, X *x); \
 int X##_ptr_list_destroy(X##_ptr_list *list); \
 int X##_ptr_list_destroy_all(X##_ptr_list *list, void (*destructor)(X *x)); \
 int X##_ptr_list_contains(X##_ptr_list *list, X *x); \
-int X##_ptr_list_index_of(X##_ptr_list *list, X *x);
+int X##_ptr_list_index_of(X##_ptr_list *list, X *x); \
+X **X##_ptr_list_head(X##_ptr_list *list);\
+X **X##_ptr_list_tail(X##_ptr_list *list);\
+int X##_ptr_list_pop_tail(X##_ptr_list *list);\
+int X##_ptr_list_append_list(X##_ptr_list *list, X##_ptr_list *a);\
+int X##_ptr_list_drain_destroy(X##_ptr_list *list, void (*destructor)(X *x));\
+int X##_ptr_list_drain(X##_ptr_list *list);
 
 
 #define IMPLEMENT_PTR_LIST(X) \
@@ -356,6 +465,102 @@ int X##_ptr_list_index_of(X##_ptr_list *list, X *x) \
         if (list->entries[i] == x) return i; \
 \
     return -1; \
+}\
+X **X##_ptr_list_head(X##_ptr_list *list)\
+{\
+	if (!list)\
+		return NULL;\
+	\
+	if (!list->entries)\
+		return NULL;\
+	\
+	if (list->count < 1) return NULL;\
+	\
+	return &list->entries[0];\
+}\
+X **X##_ptr_list_tail(X##_ptr_list *list)\
+{\
+	if (!list)\
+		return NULL;\
+	\
+	if (!list->entries)\
+		return NULL;\
+	\
+	if (list->count < 1 || list->capacity < list->count) return NULL;\
+	\
+	return &list->entries[list->count - 1];\
+}\
+\
+int X##_ptr_list_pop_destroy_tail(X##_ptr_list *list, void (*destructor)(X *x))\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	if (list->count > 0)\
+	{\
+		list->count--;\
+		destructor(list->entries[list->count]);\
+	}\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_ptr_list_pop_tail(X##_ptr_list *list)\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	if (list->count > 0)\
+		list->count--;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_ptr_list_append_list(X##_ptr_list *list, X##_ptr_list *a)\
+{\
+	if (!list || !a)\
+		return ERR_NULL_PTR;\
+	\
+	\
+	if (a->count == 0)\
+		return NO_ERROR;\
+	\
+	if (!a->entries)\
+		return ERR_BAD_ARGS;\
+	\
+	X##_ptr_list_reserve(list, a->count);\
+	\
+	memcpy(&list->entries[list->count], a->entries, sizeof(X*) * a->count);\
+	\
+	list->count += a->count;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_ptr_list_drain_destroy(X##_ptr_list *list, void (*destructor)(X *x))\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	\
+	for (int i = 0; i < list->count; i++)\
+	{\
+		if (destructor && list->entries[i])\
+			destructor(list->entries[i]);\
+	}\
+	list->count = 0;\
+	\
+	return NO_ERROR;\
+}\
+\
+int X##_ptr_list_drain(X##_ptr_list *list)\
+{\
+	if (!list)\
+		return ERR_NULL_PTR;\
+	\
+	list->count = 0;\
+	\
+	return NO_ERROR;\
 }
 
 #endif
