@@ -17,8 +17,8 @@ app_cfiles := 	core/kest_error_codes.c	\
 				core/kest_parameter.c		\
 				core/kest_param_update.c	\
 				core/kest_effect.c			\
-				core/kest_pipeline.c		\
 				core/kest_state.c			\
+				core/kest_pipeline.c		\
 				core/kest_sequence.c		\
 				core/kest_profile.c		\
 				core/kest_resource.c		\
