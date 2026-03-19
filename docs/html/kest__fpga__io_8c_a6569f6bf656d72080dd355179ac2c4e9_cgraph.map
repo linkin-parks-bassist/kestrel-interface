@@ -1,0 +1,9 @@
+<map id="kest_fpga_set_output_gain" name="kest_fpga_set_output_gain">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,32,201,60"/>
+<area shape="rect" id="Node000002" href="$kest__fixed__point_8c.html#a1580bc2204b9b5083cfb04e1e883ea35" title=" " alt="" coords="253,5,402,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,32,237,27,238,32,201,37"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__io_8c.html#a5151b31faf4c75059d9d8bd1d27fa5f9" title=" " alt="" coords="249,57,407,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,54,233,58,233,63,201,60"/>
+<area shape="rect" id="Node000004" href="$kest__fpga__io_8c.html#a2fe46577ece371a5fc9834bc59390913" title=" " alt="" coords="455,57,572,85"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="407,68,440,68,440,74,407,74"/>
+</map>

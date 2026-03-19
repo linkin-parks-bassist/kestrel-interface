@@ -1,0 +1,27 @@
+var kest__fpga__encoding_8c =
+[
+    [ "PRINTLINES_ALLOWED", "kest__fpga__encoding_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "kest_block_instr_encode_resource_aware", "kest__fpga__encoding_8c.html#a2e8aa45bdd1fc75e8d054d63628dea8a", null ],
+    [ "kest_block_instr_format", "kest__fpga__encoding_8c.html#a87169a4f3a076c88525f4e753a313806", null ],
+    [ "kest_block_opcode_to_name", "kest__fpga__encoding_8c.html#a039fa960f21627306a112807eb973b8f", null ],
+    [ "kest_block_opcode_to_string", "kest__fpga__encoding_8c.html#a122356815885a831af8b58eac1b21d45", null ],
+    [ "kest_encode_dsp_block_instr_type_a", "kest__fpga__encoding_8c.html#ac458e80a0b05b63cdd31322e1dcebf7d", null ],
+    [ "kest_encode_dsp_block_instr_type_b", "kest__fpga__encoding_8c.html#af9d51e8e84a57743c39842e8a53f18e8", null ],
+    [ "kest_fpga_batch_append_block", "kest__fpga__encoding_8c.html#a793b1841a47fcdbddc9d0aa5b6eec343", null ],
+    [ "kest_fpga_batch_append_block_instr", "kest__fpga__encoding_8c.html#a1e92fe0ff4b72e00fa5d840ec96508c7", null ],
+    [ "kest_fpga_batch_append_block_number", "kest__fpga__encoding_8c.html#a9b93bb2d500d5c9986515930a0f9ce47", null ],
+    [ "kest_fpga_batch_append_block_register_updates", "kest__fpga__encoding_8c.html#a1eb834a3d6799cabab146f2f942de3a5", null ],
+    [ "kest_fpga_batch_append_block_regs", "kest__fpga__encoding_8c.html#a0c272bb9440b58f3546ad0f628d0daec", null ],
+    [ "kest_fpga_batch_append_blocks", "kest__fpga__encoding_8c.html#a1d6980972e5f88bc39838473e70f8281", null ],
+    [ "kest_fpga_batch_append_eff_desc", "kest__fpga__encoding_8c.html#a142858ad82d4b4214aa9191a2146454e", null ],
+    [ "kest_fpga_batch_append_effect", "kest__fpga__encoding_8c.html#a1d36760e33c68c0a5b22c8920f3a5a2b", null ],
+    [ "kest_fpga_batch_append_effects", "kest__fpga__encoding_8c.html#ad4ae765e4a682cbd9a71e3acceabf81d", null ],
+    [ "kest_fpga_batch_append_resource", "kest__fpga__encoding_8c.html#a3b6ea5da3d104a83a4e5fd1f668d9a91", null ],
+    [ "kest_fpga_batch_append_resources", "kest__fpga__encoding_8c.html#adffee6f6156a2d821bd467b1c0c578c2", null ],
+    [ "kest_fpga_batch_print", "kest__fpga__encoding_8c.html#a846915834c09759d6445b5dffc45b723", null ],
+    [ "kest_fpga_block_opcode_format", "kest__fpga__encoding_8c.html#a8357836213e2592c0f36f83c83b1dcbd", null ],
+    [ "kest_fpga_transfer_batch_append_effect_register_updates", "kest__fpga__encoding_8c.html#a2f3bae873de3ea2dafd0d6d1424e929f", null ],
+    [ "print_instruction", "kest__fpga__encoding_8c.html#a9f3d76916b565e27599aebdb6c624499", null ],
+    [ "print_instruction_format_a", "kest__fpga__encoding_8c.html#a7ca2a1fbddc5d291e6f3196e060cd163", null ],
+    [ "print_instruction_format_b", "kest__fpga__encoding_8c.html#a742d286efbcdfcfb04471fac4282b318", null ]
+];

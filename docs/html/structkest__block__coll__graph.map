@@ -1,0 +1,13 @@
+<map id="kest_block" name="kest_block">
+<area shape="rect" id="Node000001" title=" " alt="" coords="207,274,298,301"/>
+<area shape="rect" id="Node000002" href="$structkest__block__operand.html" title=" " alt="" coords="5,128,156,156"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,165,205,248,236,271,233,275,201,252,104,169"/>
+<area shape="rect" id="Node000003" href="$structkest__block__reg__val.html" title=" " alt="" coords="180,128,325,156"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,172,255,273,250,273,250,172"/>
+<area shape="rect" id="Node000004" href="$structkest__expression.html" title=" " alt="" coords="272,5,398,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="320,47,264,129,259,126,316,44"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="415,9,425,19,417,29,399,33,398,28,414,24,420,19,412,13"/>
+<area shape="rect" id="Node000005" href="$structkest__dsp__resource.html" title=" " alt="" coords="350,128,491,156"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="355,44,413,126,409,129,351,47"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="398,169,304,252,273,275,269,271,300,248,394,165"/>
+</map>

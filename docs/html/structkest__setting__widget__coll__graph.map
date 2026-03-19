@@ -1,0 +1,32 @@
+<map id="kest_setting_widget" name="kest_setting_widget">
+<area shape="rect" id="Node000001" title=" " alt="" coords="777,165,929,193"/>
+<area shape="rect" id="Node000002" href="$structkest__parameter__id.html" title=" " alt="" coords="5,5,148,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,19,245,23,391,29,507,35,561,44,619,57,682,79,755,109,800,135,837,163,833,167,797,140,752,114,680,84,617,63,560,49,506,41,391,34,245,28,163,25"/>
+<area shape="rect" id="Node000008" href="$structkest__parameter.html" title=" " alt="" coords="282,49,405,77"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="128,36,172,48,228,56,281,60,281,65,227,62,171,53,127,41"/>
+<area shape="rect" id="Node000003" href="$structkest__setting.html" title=" " alt="" coords="551,165,651,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="667,176,777,176,777,182,667,182"/>
+<area shape="rect" id="Node000004" href="$structkest__setting__id.html" title=" " alt="" coords="284,161,403,189"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="418,174,551,176,551,181,418,179"/>
+<area shape="rect" id="Node000005" href="$structkest__setting__option.html" title=" " alt="" coords="269,215,418,242"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="432,217,501,206,556,191,557,196,503,211,433,222"/>
+<area shape="rect" id="Node000006" href="$structkest__profile.html" title=" " alt="" coords="552,105,650,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="666,130,754,150,801,162,800,167,753,155,665,135"/>
+<area shape="rect" id="Node000007" href="$structkest__pipeline.html" title=" " alt="" coords="290,105,397,133"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="413,116,552,116,552,122,413,122"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="421,73,503,90,553,103,552,108,501,95,420,79"/>
+<area shape="rect" id="Node000009" href="$structkest__expression.html" title=" " alt="" coords="13,117,140,145"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="155,129,200,123,243,111,255,102,267,92,301,75,303,80,270,96,259,106,246,116,201,129,156,135"/>
+<area shape="poly" id="edge9_Node000009_Node000009" title=" " alt="" coords="52,99,61,93,76,91,91,93,101,99,104,108,100,118,95,116,98,108,97,102,90,98,77,96,63,98,55,104"/>
+<area shape="rect" id="Node000010" href="$structkest__ui__page.html" title=" " alt="" coords="548,273,654,301"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="648,264,817,191,820,196,650,269"/>
+<area shape="poly" id="edge15_Node000010_Node000010" title=" " alt="" coords="578,255,586,249,601,247,616,249,625,255,627,264,624,274,619,272,622,264,620,258,614,254,601,252,588,254,581,260"/>
+<area shape="rect" id="Node000011" href="$structkest__ui__page__panel.html" title=" " alt="" coords="269,341,418,369"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="433,350,468,344,501,333,513,323,524,312,551,299,553,304,528,316,516,327,503,337,469,349,434,356"/>
+<area shape="rect" id="Node000012" href="$structkest__button.html" title=" " alt="" coords="28,311,125,338"/>
+<area shape="poly" id="edge16_Node000010_Node000012" title=" " alt="" coords="140,311,171,307,380,292,548,286,548,291,380,297,172,312,141,316"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="125,342,172,355,221,359,268,359,268,364,220,365,171,360,124,347"/>
+<area shape="poly" id="edge14_Node000012_Node000012" title=" " alt="" coords="52,293,61,286,76,284,91,286,101,292,104,302,100,311,95,309,98,301,97,296,90,291,77,289,63,291,55,297"/>
+<area shape="rect" id="Node000013" href="$structkest__representation.html" title=" " alt="" coords="526,325,676,353"/>
+<area shape="poly" id="edge17_Node000001_Node000013" title=" " alt="" coords="659,317,675,310,715,293,752,271,801,230,837,191,841,195,804,234,755,276,718,298,677,315,661,322"/>
+</map>

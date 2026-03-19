@@ -1,0 +1,14 @@
+<map id="footswitch_task" name="footswitch_task">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,130,85"/>
+<area shape="rect" id="Node000002" href="$kest__context_8c.html#a92d3aa6e51991a8969ec021b9d1e0f33" title=" " alt="" coords="178,31,345,58"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,60,162,55,163,61,130,65"/>
+<area shape="rect" id="Node000043" href="$kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105" title=" " alt="" coords="216,83,306,110"/>
+<area shape="poly" id="edge6_Node000001_Node000043" title=" " alt="" coords="130,77,201,86,201,91,129,82"/>
+<area shape="rect" id="Node000003" href="$kest__sequence_8c.html#a85f3248c9d10338f835e998245e44b30" title=" " alt="" coords="393,5,572,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="345,32,377,29,378,34,346,38"/>
+<area shape="rect" id="Node000042" href="$kest__sequence_8c.html#a0076ab743ce384590dc02431edb343c3" title=" " alt="" coords="396,57,569,85"/>
+<area shape="poly" id="edge4_Node000002_Node000042" title=" " alt="" coords="346,52,381,56,381,62,345,57"/>
+<area shape="rect" id="Node000004" href="$kest__context_8c.html#a46a337c8aa1724024c73026c74d90a39" title=" " alt="" coords="620,24,758,68"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="573,28,606,32,605,38,572,33"/>
+<area shape="poly" id="edge5_Node000042_Node000004" title=" " alt="" coords="569,58,605,53,605,59,570,63"/>
+</map>

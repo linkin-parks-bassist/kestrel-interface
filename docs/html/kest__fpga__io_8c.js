@@ -1,0 +1,25 @@
+var kest__fpga__io_8c =
+[
+    [ "PIN_NUM_CLK", "kest__fpga__io_8c.html#a756bcaa6e44d1879623a058849c66fbb", null ],
+    [ "PIN_NUM_CS", "kest__fpga__io_8c.html#a6c332c3f862c9e17cb09b32c73516a4a", null ],
+    [ "PIN_NUM_MISO", "kest__fpga__io_8c.html#a4ffa0949bfda52d9c7b37fcb148cbb53", null ],
+    [ "PIN_NUM_MOSI", "kest__fpga__io_8c.html#a060569807a8819489e6a7b4ee17ad67b", null ],
+    [ "PRINTLINES_ALLOWED", "kest__fpga__io_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "kest_fpga_batch_append", "kest__fpga__io_8c.html#a6900c9b759f1dccf1b3535cc76ad83e3", null ],
+    [ "kest_fpga_batch_append_16", "kest__fpga__io_8c.html#a1d6d30e20ceac79973b36fd12e790aa5", null ],
+    [ "kest_fpga_batch_append_24", "kest__fpga__io_8c.html#aa00adf9f96658a5c00b3d93dfa8c00de", null ],
+    [ "kest_fpga_batch_append_32", "kest__fpga__io_8c.html#ac7679b9a1a77f12aa23affb51346e3d4", null ],
+    [ "kest_fpga_batch_concat", "kest__fpga__io_8c.html#a92cb302dce33b90b44ae9320a70ae519", null ],
+    [ "kest_fpga_command_to_string", "kest__fpga__io_8c.html#a1a1501e2223a5cddbecfb2b92c9d9705", null ],
+    [ "kest_fpga_commit_reg_updates", "kest__fpga__io_8c.html#ac4389d5b4fc4dc3806d9e9cc2195b6b4", null ],
+    [ "kest_fpga_read_byte", "kest__fpga__io_8c.html#ab908dedc52b0ca9107f52f74ab7860c6", null ],
+    [ "kest_fpga_send_byte", "kest__fpga__io_8c.html#a5151b31faf4c75059d9d8bd1d27fa5f9", null ],
+    [ "kest_fpga_set_input_gain", "kest__fpga__io_8c.html#a0e6e4e058cfd8f3ec79208acb0f71aa6", null ],
+    [ "kest_fpga_set_output_gain", "kest__fpga__io_8c.html#a6569f6bf656d72080dd355179ac2c4e9", null ],
+    [ "kest_fpga_spi_init", "kest__fpga__io_8c.html#a8b41ed8feb0e991733a9af1a8f8acc20", null ],
+    [ "kest_fpga_transfer_batch_send", "kest__fpga__io_8c.html#ae911bef59743e59043a283dac1be0761", null ],
+    [ "kest_fpga_txrx", "kest__fpga__io_8c.html#a2fe46577ece371a5fc9834bc59390913", null ],
+    [ "kest_free_fpga_transfer_batch", "kest__fpga__io_8c.html#aa1e89a33f9427932bc0d8e62bbfed3cb", null ],
+    [ "kest_new_fpga_transfer_batch", "kest__fpga__io_8c.html#adb086d525d9f47a4c077d7377110500b", null ],
+    [ "spi_handle", "kest__fpga__io_8c.html#a805cfba6efbab00f398be9bc6a71ba7e", null ]
+];

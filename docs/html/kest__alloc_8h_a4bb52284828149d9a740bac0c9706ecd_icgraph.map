@@ -1,0 +1,33 @@
+<map id="kest_allocator_alloc" name="kest_allocator_alloc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="656,112,807,140"/>
+<area shape="rect" id="Node000002" href="$kest__alloc_8c.html#a5c912e0ea909c2936856b46189e2c704" title=" " alt="" coords="440,5,608,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="699,104,656,75,607,47,580,36,582,31,609,42,659,70,702,100"/>
+<area shape="rect" id="Node000003" href="$kest__dictionary_8c.html#a298bc3ea15bffee0e485de36aea099c2" title=" " alt="" coords="454,150,594,195"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="653,146,595,159,594,154,652,141"/>
+<area shape="rect" id="Node000020" href="$kest__resource_8c.html#adb005fd5423242a5fb393a1ec10feb9d" title=" " alt="" coords="250,285,384,313"/>
+<area shape="poly" id="edge13_Node000001_Node000020" title=" " alt="" coords="702,152,659,181,610,210,551,235,490,256,382,287,380,282,488,251,549,230,607,205,656,177,699,147"/>
+<area shape="rect" id="Node000022" href="$kest__string_8c.html#a7538f892d9e722fe9e9e1cfcb0ac1b40" title=" " alt="" coords="444,57,604,102"/>
+<area shape="poly" id="edge17_Node000001_Node000022" title=" " alt="" coords="652,111,604,100,605,95,653,106"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="558,137,545,131,524,129,505,131,493,135,488,141,490,149,484,150,483,140,490,131,504,126,524,124,547,126,560,133"/>
+<area shape="rect" id="Node000004" href="$kest__dict__extract_8c.html#ac9cee86a595df863e15b7693b86635b7" title=" " alt="" coords="248,214,387,259"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="440,201,388,218,387,212,439,196"/>
+<area shape="rect" id="Node000015" href="$kest__dictionary_8c.html#a8db4f9c511b00d7240052135e9c1ed67" title=" " alt="" coords="243,61,392,89"/>
+<area shape="poly" id="edge7_Node000003_Node000015" title=" " alt="" coords="464,145,391,110,352,92,354,87,393,105,466,140"/>
+<area shape="rect" id="Node000016" href="$kest__dictionary_8c.html#af0aceaa93cba06fd44ad4bc50f2418e4" title=" " alt="" coords="25,61,175,89"/>
+<area shape="poly" id="edge10_Node000003_Node000016" title=" " alt="" coords="438,156,163,92,165,87,440,151"/>
+<area shape="rect" id="Node000019" href="$kest__dictionary_8c.html#a2a60847422026db5eab8103cd8ea1dc5" title=" " alt="" coords="276,163,358,190"/>
+<area shape="poly" id="edge11_Node000003_Node000019" title=" " alt="" coords="439,177,359,178,359,173,439,171"/>
+<area shape="rect" id="Node000005" href="$kest__dict__extract_8c.html#ab7acbd0287c39e5bbb08575fa2a61291" title=" " alt="" coords="24,281,176,326"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="234,265,176,283,174,278,232,260"/>
+<area shape="rect" id="Node000014" href="$kest__dict__extract_8c.html#a449de50461a34d20bba301a90a39ec05" title=" " alt="" coords="30,212,170,256"/>
+<area shape="poly" id="edge6_Node000004_Node000014" title=" " alt="" coords="233,238,170,237,170,232,233,233"/>
+<area shape="poly" id="edge8_Node000015_Node000016" title=" " alt="" coords="227,87,175,86,175,81,227,81"/>
+<area shape="poly" id="edge9_Node000016_Node000015" title=" " alt="" coords="190,64,242,64,242,69,190,69"/>
+<area shape="rect" id="Node000018" href="$kest__eff__section_8c.html#a4de28fb64398c9194136a2ced71e2795" title=" " alt="" coords="18,142,182,187"/>
+<area shape="poly" id="edge12_Node000019_Node000018" title=" " alt="" coords="260,176,182,172,182,166,261,171"/>
+<area shape="poly" id="edge15_Node000020_Node000005" title=" " alt="" coords="235,303,177,304,177,299,235,298"/>
+<area shape="poly" id="edge16_Node000020_Node000014" title=" " alt="" coords="253,283,169,257,171,252,255,278"/>
+<area shape="rect" id="Node000021" href="$kest__resource_8c.html#ade6c61f0ea389c6775e6a045ff384d5d" title=" " alt="" coords="5,350,195,395"/>
+<area shape="poly" id="edge14_Node000020_Node000021" title=" " alt="" coords="260,321,169,352,168,347,258,316"/>
+<area shape="poly" id="edge18_Node000022_Node000015" title=" " alt="" coords="429,80,392,79,392,74,429,75"/>
+</map>
