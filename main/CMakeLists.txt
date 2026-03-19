@@ -1,4 +1,4 @@
-idf_component_register(SRCS "m_int.c"
+idf_component_register(SRCS "kest_int.c"
 					REQUIRES
 							esp_timer
 							fatfs

@@ -2,34 +2,34 @@
   <img src="docs/resources/image.png" alt="Demo Screenshots" width="100%">
 </p>
 
-# M-interface
+# Kestrel Interface
 
-M-interface is the control system and compiler for M: The Everything Pedal. It uses FreeRTOS and LVGL to provide a graphical user interface for M (The Everything Pedal). It allows users to create, edit, manage, apply and sequence presets using effects from a local library of effects stored in text files on the local SD card. 
+This is the control system, graphical user interface and compiler for Kestrel. It uses FreeRTOS and LVGL and allows users to create, edit, manage, apply and sequence presets using effects from a local library of effects stored in text files on the local SD card. 
 
 ## Features
 
 - Live, real-time smoothed parameter control
 - Apply effects in any combination and any order
 - Persistent state: resumes where left off on restart
-- Preset management; create, save, edit and sequence profiles
+- Preset management; create, save, edit and sequence presets
 - Effects stored in plain text on SD card; new effects can easily be created and shared
 - Symbolic math engine with range estimation for fixed-point format control
-- High performance, lightweight UI: framerates over 100fps at 720p on esp32-p4
+- High performance, lightweight UI: framerates over 100fps at 720p on ESP32-P4
 - Input transmitted to FPGA in milliseconds
 
 ## Components
 
 - Effect compiler
-- FPGA control engine
-- Effect/profile/sequence engine
+- FPGA core control engine
+- Effect/preset/sequence engine
 - Parameter control subsystem
-- LVGL Based GUI framework
+- LVGL-based GUI framework
 - Symbolic math engine
 - File system
 
 ## Effect Descriptors
 
-The M interface includes a parser and assembler for .eff files. These "effect descriptor" files are simple, small files containing metadata and descriptions of parameters and resource requirements as well as assembly code for the FPGA engine, in an intuitive syntax. For example, here is a biquadratic low-pass filter.
+The Kestrel interface includes a parser and assembler for .eff files. These "effect descriptor" files are simple, small files containing metadata and descriptions of parameters and resource requirements as well as assembly code for the Kestrel core, in an intuitive syntax. For example, here is a biquad low-pass filter.
 
 ```
 v1.0
@@ -83,6 +83,8 @@ mov_acc c0
 mem_write $y1 c0
 ```
 
+(Note: the filter engine allows for filters to be implemented more succinctly, and with better performance, this is just for demonstration).
+
 All files in /sdcard/eff/ are read, parsed and assembled at startup, and used to populate the UI effect list. At runtime, effects are encoded on-the-fly using real-time parameter values and pipeline configurations and transmitted to the FPGA as programming commands over SPI.
 Additionally, there are hooks for the UI framework in the .eff parser. For instance, the field "widget_type" can control whether a parameter is presented as a dial or a slider.
 
@@ -105,11 +107,11 @@ Additionally, there are hooks for the UI framework in the .eff parser. For insta
 
 ## Getting Started
 
-### esp32
+### ESP32
 
-The display subsystem uses the Waveshare board support package for esp32-p4-nano (also works for esp32-p4-pico) and the Waveshare touch-LCD-5A. Aside from the display driver, LVGL port, pin assignment, and driver for FPGA control, the rest of the system is largely platform independent. Additionally, 
+The display subsystem uses the Waveshare board support package for ESP32-P4-nano (also works for ESP32-P4-pico) and the Waveshare touch-LCD-5A. Aside from the display driver, LVGL port, pin assignment, and driver for FPGA control, the rest of the system is largely platform independent. Additionally, 
 
-To build for the esp32-p4, simply run, in the repo root directory
+To build for the ESP32-P4, simply run, in the repo root directory
 
 ```bash
 # idf.py build
@@ -131,19 +133,19 @@ The repo includes an interface demo which will run on any POSIX system. To build
 in the repo root directory. To run it, run
 
 ```bash
-# ./M
+# ./kest
 ```
-There is an additional makefile target to compile the non-GUI/hardware components (profile library, .eff assembler) as a shared object library. To build the library,
+There is an additional makefile target to compile the non-GUI/hardware components (preset library, .eff assembler) as a shared object library. To build the library,
 
 ```bash
 # make lib
 ```
-and to install the libM.so to /usr/lib/ and the headers to /usr/include/libM, run 
+and to install the libkest.so to /usr/lib/ and the headers to /usr/include/libkest, run 
 
 ```bash
 # make lib_install
 ```
-as root. Then you can #include <libM/m_lib.h> and link with "-lM" (if using ld)
+as root. Then you can #include <libkest/kest_lib.h> and link with "-lkest" (if using ld)
 
 
 
@@ -154,12 +156,12 @@ The repo is structured as an ESP-IDF project currently. Future plans include sup
 ```
 /docs           Documentation
 /components
-    /core       Core engine logic; handling profiles, sequences, etc
+    /core       Core engine logic; handling presets, sequences, etc
     /parser     Parser for .eff files
-    /fpga       FPGA engine driver/encoding
+    /fpga       Kestrel core driver/encoding
     /drivers    Other hardware drivers
     /ui         LVGL GUI code
-/main           Headers and 'main.c' for esp32
+/main           Headers and 'main.c' for ESP32
 /desktop        Headers and 'main.c' for desktop demo
 ```
 

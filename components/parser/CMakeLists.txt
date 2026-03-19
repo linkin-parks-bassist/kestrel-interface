@@ -1,10 +1,10 @@
-idf_component_register(SRCS "m_asm_parser.c"
-							"m_dictionary.c"
-							"m_expr_parser.c"
-							"m_eff_parser.c"
-							"m_eff_section.c"
-							"m_tokenizer.c"
-							"m_dict_extract.c"
+idf_component_register(SRCS "kest_asm_parser.c"
+							"kest_dictionary.c"
+							"kest_expr_parser.c"
+							"kest_eff_parser.c"
+							"kest_eff_section.c"
+							"kest_tokenizer.c"
+							"kest_dict_extract.c"
 					REQUIRES
 							driver
 							drivers

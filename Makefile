@@ -3,92 +3,92 @@ app_objdir := $(top_objdir)/app
 lib_objdir := $(top_objdir)/lib
 test_objdir := $(top_objdir)/tests
 
-app_cfiles := 	core/m_error_codes.c	\
-				core/m_alloc.c			\
-				core/m_block.c			\
-				core/m_bump_arena.c		\
-				core/m_context.c		\
-				core/m_eff_desc.c		\
-				core/m_expression.c		\
-				core/m_expr_scope.c		\
-				core/m_files.c			\
-				core/m_hfunc.c			\
-				core/m_lv_log.c			\
-				core/m_parameter.c		\
-				core/m_param_update.c	\
-				core/m_effect.c			\
-				core/m_pipeline.c		\
-				core/m_state.c			\
-				core/m_sequence.c		\
-				core/m_profile.c		\
-				core/m_resource.c		\
-				core/m_representation.c	\
-				core/m_printf.c			\
-				core/m_string.c			\
-				ui/m_button.c			\
-				ui/m_home_view.c		\
-				ui/m_menu.c				\
-				ui/m_parameter_widget.c	\
-				ui/m_profile_settings.c	\
-				ui/m_profile_view.c		\
-				ui/m_sequence_list.c	\
-				ui/m_sequence_view.c	\
-				ui/m_effect_select.c	\
-				ui/m_effect_settings.c	\
-				ui/m_effect_view.c		\
-				ui/m_page_id.c			\
-				ui/m_ui.c				\
-				fpga/m_fpga_encoding.c	\
-				fpga/m_fpga_comms.c		\
-				fpga/m_fpga_io.c		\
-				fpga/m_reg_format.c		\
-				fpga/m_fixed_point.c	\
-				parser/m_asm_parser.c	\
-				parser/m_dict_extract.c	\
-				parser/m_dictionary.c	\
-				parser/m_eff_parser.c	\
-				parser/m_eff_section.c	\
-				parser/m_expr_parser.c	\
-				parser/m_tokenizer.c
+app_cfiles := 	core/kest_error_codes.c	\
+				core/kest_alloc.c			\
+				core/kest_block.c			\
+				core/kest_bump_arena.c		\
+				core/kest_context.c		\
+				core/kest_eff_desc.c		\
+				core/kest_expression.c		\
+				core/kest_expr_scope.c		\
+				core/kest_files.c			\
+				core/kest_hfunc.c			\
+				core/kest_lv_log.c			\
+				core/kest_parameter.c		\
+				core/kest_param_update.c	\
+				core/kest_effect.c			\
+				core/kest_pipeline.c		\
+				core/kest_state.c			\
+				core/kest_sequence.c		\
+				core/kest_profile.c		\
+				core/kest_resource.c		\
+				core/kest_representation.c	\
+				core/kest_printf.c			\
+				core/kest_string.c			\
+				ui/kest_button.c			\
+				ui/kest_home_view.c		\
+				ui/kest_menu.c				\
+				ui/kest_parameter_widget.c	\
+				ui/kest_profile_settings.c	\
+				ui/kest_profile_view.c		\
+				ui/kest_sequence_list.c	\
+				ui/kest_sequence_view.c	\
+				ui/kest_effect_select.c	\
+				ui/kest_effect_settings.c	\
+				ui/kest_effect_view.c		\
+				ui/kest_page_id.c			\
+				ui/kest_ui.c				\
+				fpga/kest_fpga_encoding.c	\
+				fpga/kest_fpga_comms.c		\
+				fpga/kest_fpga_io.c		\
+				fpga/kest_reg_format.c		\
+				fpga/kest_fixed_point.c	\
+				parser/kest_asm_parser.c	\
+				parser/kest_dict_extract.c	\
+				parser/kest_dictionary.c	\
+				parser/kest_eff_parser.c	\
+				parser/kest_eff_section.c	\
+				parser/kest_expr_parser.c	\
+				parser/kest_tokenizer.c
 
-lib_cfiles := 	core/m_error_codes.c	\
-				core/m_alloc.c			\
-				core/m_representation.c	\
-				core/m_parameter.c		\
-				core/m_resource.c		\
-				core/m_expression.c		\
-				core/m_expr_scope.c		\
-				core/m_block.c			\
-				core/m_eff_desc.c		\
-				core/m_effect.c			\
-				core/m_pipeline.c		\
-				core/m_profile.c		\
-				core/m_printf.c			\
-				core/m_hfunc.c			\
-				core/m_string.c			\
-				core/m_bump_arena.c		\
-				parser/m_tokenizer.c	\
-				parser/m_expr_parser.c	\
-				parser/m_dictionary.c	\
-				parser/m_eff_parser.c	\
-				parser/m_eff_section.c	\
-				parser/m_asm_parser.c	\
-				parser/m_dict_extract.c	\
-				fpga/m_fpga_encoding.c	\
-				fpga/m_reg_format.c		\
-				fpga/m_fixed_point.c	\
-				fpga/m_fpga_io.c
+lib_cfiles := 	core/kest_error_codes.c	\
+				core/kest_alloc.c			\
+				core/kest_representation.c	\
+				core/kest_parameter.c		\
+				core/kest_resource.c		\
+				core/kest_expression.c		\
+				core/kest_expr_scope.c		\
+				core/kest_block.c			\
+				core/kest_eff_desc.c		\
+				core/kest_effect.c			\
+				core/kest_pipeline.c		\
+				core/kest_profile.c		\
+				core/kest_printf.c			\
+				core/kest_hfunc.c			\
+				core/kest_string.c			\
+				core/kest_bump_arena.c		\
+				parser/kest_tokenizer.c	\
+				parser/kest_expr_parser.c	\
+				parser/kest_dictionary.c	\
+				parser/kest_eff_parser.c	\
+				parser/kest_eff_section.c	\
+				parser/kest_asm_parser.c	\
+				parser/kest_dict_extract.c	\
+				fpga/kest_fpga_encoding.c	\
+				fpga/kest_reg_format.c		\
+				fpga/kest_fixed_point.c	\
+				fpga/kest_fpga_io.c
 
 
-lib_hfiles := core/m_linked_list.h $(lib_cfiles:.c=.h)
-app_hfiles := core/m_linked_list.h $(app_cfiles:.c=.h)
+lib_hfiles := core/kest_linked_list.h $(lib_cfiles:.c=.h)
+app_hfiles := core/kest_linked_list.h $(app_cfiles:.c=.h)
 
 lib_srcs := $(addprefix $(components)/,$(lib_cfiles))
 lib_objs := $(addprefix $(lib_objdir)/,$(lib_cfiles:.c=.o))
-lib_hdrs := main/m_lib.h main/m_lib_cmph.h components/core/m_list.h $(addprefix components/,$(lib_hfiles))
+lib_hdrs := main/kest_lib.h main/kest_lib_cmph.h components/core/kest_list.h $(addprefix components/,$(lib_hfiles))
 
-app_objs := $(app_objdir)/m_desktop.o $(addprefix $(app_objdir)/,$(app_cfiles:.c=.o))
-app_hdrs := desktop/m_desktop.h $(addprefix components/,$(app_hfiles))
+app_objs := $(app_objdir)/kest_desktop.o $(addprefix $(app_objdir)/,$(app_cfiles:.c=.o))
+app_hdrs := desktop/kest_desktop.h $(addprefix components/,$(app_hfiles))
 
 COMP_DIRS := $(wildcard components/*)
 INC_FLAGS_LIB := $(addprefix -I,$(COMP_DIRS))
@@ -100,19 +100,19 @@ INC_FLAGS_APP := \
 	-Idesktop/freertos/portable/MemMang \
 	$(addprefix -I,$(COMP_DIRS))
 
-CFLAGS_LIB := -fPIC -lm -DM_LIBRARY -Imain $(INC_FLAGS_LIB) -g
-CFLAGS_APP := -DM_DESKTOP -Idesktop -Imain $(INC_FLAGS_APP) -g
+CFLAGS_LIB := -fPIC -lm -DKEST_LIBRARY -Imain $(INC_FLAGS_LIB) -g
+CFLAGS_APP := -DKEST_DESKTOP -Idesktop -Imain $(INC_FLAGS_APP) -g
 LDFLAGS_APP := -lm -lSDL2 -lpthread
 CFLAGS_TEST := $(CFLAGS_APP) -Itests
 
-HDR_INSTALL_DIR := /usr/include/libM/
+HDR_INSTALL_DIR := /usr/include/libkest/
 
 LVGL_DIR := desktop/lvgl
 
 LVGL_SRC := $(shell find $(LVGL_DIR)/src -name "*.c"  ! -name "lv_linux.c"  ! -name "lv_pthread.c")
 LVGL_OBJ := $(patsubst $(LVGL_DIR)/src/%.c,$(app_objdir)/lvgl/%.o,$(LVGL_SRC))
 
-APP_SRC := desktop/m_desktop.c $(addprefix components/,$(app_cfiles))
+APP_SRC := desktop/kest_desktop.c $(addprefix components/,$(app_cfiles))
 APP_OBJ := $(patsubst %.c,$(app_objdir)/%.o,$(APP_SRC))
 
 FREERTOS_DIR := desktop/freertos
@@ -143,11 +143,11 @@ ALL_APP_OBJ := $(APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
 
 TEST_SRC := $(shell find tests -name "*.c")
 TEST_OBJ := $(patsubst tests/%.c,$(test_objdir)/%.o,$(TEST_SRC))
-TEST_APP_OBJ := $(filter-out $(app_objdir)/desktop/m_desktop.o,$(APP_OBJ))
+TEST_APP_OBJ := $(filter-out $(app_objdir)/desktop/kest_desktop.o,$(APP_OBJ))
 
-app: M
+app: kest
 
-tests: M_tests
+tests: kest_tests
 
 clean:
 	rm -r $(top_objdir)
@@ -161,10 +161,10 @@ appclean_full:
 fullclean:
 	rm -r $(top_objdir)
 	
-M: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/desktop
+kest: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/desktop
 	gcc -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
-M_tests: $(TEST_OBJ) $(TEST_APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
+kest_tests: $(TEST_OBJ) $(TEST_APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
 	gcc -Wl,--undefined=__start___m_tests -Wl,--undefined=__stop___m_tests \
 	    -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
@@ -193,13 +193,13 @@ $(test_objdir)/%.o: tests/%.c | $(test_objdir)
 	mkdir -p $(dir $@)
 	gcc $(CFLAGS_TEST) -c $< -o $@
 
-lib: $(lib_objdir)/libM.so
+lib: $(lib_objdir)/libkest.so
 
-$(lib_objdir)/libM.so: $(lib_objs)
+$(lib_objdir)/libkest.so: $(lib_objs)
 	gcc -shared -o $@ $^
 
 lib_install: | $(HDR_INSTALL_DIR)
-	cp $(lib_objdir)/libM.so /usr/lib/
+	cp $(lib_objdir)/libkest.so /usr/lib/
 	cp $(lib_hdrs) $(HDR_INSTALL_DIR)
 	ldconfig
 

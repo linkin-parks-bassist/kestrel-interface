@@ -1,0 +1,108 @@
+#ifndef EXPR_H_
+#define EXPR_H_
+
+#define KEST_EXPR_FORM_ATOMIC   0
+#define KEST_EXPR_FORM_UNARY_OP 1
+#define KEST_EXPR_FORM_UNARY_FN 2
+#define KEST_EXPR_FORM_INFIX_OP 3
+#define KEST_EXPR_FORM_NORM	 4
+
+#define KEST_EXPR_CONST 	0
+#define KEST_EXPR_REF 		1
+#define KEST_EXPR_NEG		2
+#define KEST_EXPR_ADD 		3
+#define KEST_EXPR_SUB 		4
+#define KEST_EXPR_MUL 		5
+#define KEST_EXPR_DIV 		6
+#define KEST_EXPR_ABS 		7
+#define KEST_EXPR_SQR 		8
+#define KEST_EXPR_SQRT 	9
+#define KEST_EXPR_EXP 		10
+#define KEST_EXPR_LN 		11
+#define KEST_EXPR_POW 		12
+#define KEST_EXPR_SIN 		13
+#define KEST_EXPR_SINH 	14
+#define KEST_EXPR_COS 		15
+#define KEST_EXPR_COSH 	16
+#define KEST_EXPR_TAN 		17
+#define KEST_EXPR_TANH 	18
+#define KEST_EXPR_ASIN 	19
+#define KEST_EXPR_ACOS 	20
+#define KEST_EXPR_ATAN 	21
+
+#define KEST_EXPR_TYPE_MAX_VAL KEST_EXPR_ATAN
+
+#define KEST_EXPR_REC_MAX_DEPTH 128
+
+//#define KEST_BOUNDS_CHECK_VERBOSE
+
+typedef struct kest_expression
+{
+	int type;
+	int constant;
+	int cached;
+	float cached_val;
+	union {
+		float val_float;
+		char *ref_name;
+		struct kest_expression **sub_exprs;
+	} val;
+} kest_expression;
+
+DECLARE_PTR_LIST(kest_expression);
+
+kest_expression kest_expression_const(float v);
+kest_expression *new_m_expression_const(float v);
+kest_expression *new_m_expression_reference(char *ref_name);
+kest_expression *new_m_expression_unary(int unary_type, kest_expression *rhs);
+kest_expression *new_m_expression_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2);
+
+int kest_expression_references_param(kest_expression *expr, kest_parameter *param);
+
+float kest_expression_evaluate(kest_expression *expr, kest_expr_scope *scope);
+
+int kest_expression_is_constant(kest_expression *expr);
+
+float kest_expression_min(kest_expression *expr, kest_parameter_pll *params);
+float kest_expression_max(kest_expression *expr, kest_parameter_pll *params);
+
+int kest_expression_detect_constants(kest_expression *expr);
+
+typedef struct kest_interval
+{
+	float a;
+	float b;
+} kest_interval;
+
+kest_interval kest_interval_real_line();
+kest_interval kest_interval_ab(float a, float b);
+kest_interval kest_interval_a_(float a);
+kest_interval kest_interval__b(float b);
+kest_interval kest_interval_singleton(float v);
+
+kest_interval kest_expression_compute_range(kest_expression *expr, kest_expr_scope *scope);
+
+char *kest_expression_type_to_str(int type);
+int kest_expression_print(kest_expression *expr);
+const char *kest_expression_to_string(kest_expression *expr);
+
+extern kest_expression kest_expression_standard_gain_min;
+extern kest_expression kest_expression_standard_gain_max;
+extern kest_expression kest_expression_zero;
+extern kest_expression kest_expression_one;
+extern kest_expression kest_expression_minus_one;
+extern kest_expression kest_expression_pi;
+extern kest_expression kest_expression_e;
+extern kest_expression kest_expression_sample_rate;
+extern kest_expression kest_expression_int_max;
+extern kest_expression kest_expression_int_min;
+extern kest_expression kest_expression_freq_max;
+
+typedef struct {
+	const char *name;
+	kest_expression *expr;
+} kest_named_expression;
+
+DECLARE_LINKED_PTR_LIST(kest_named_expression);
+
+#endif

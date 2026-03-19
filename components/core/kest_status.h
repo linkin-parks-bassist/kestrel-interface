@@ -1,0 +1,8 @@
+#ifndef KEST_STATUS_H_
+#define KEST_STATUS_H_
+
+#define KEST_STATUS_OK				 0
+#define KEST_STATUS_BOOTING	0b0001
+#define KEST_STATUS_FRESH_BOOT 0b0010
+
+#endif

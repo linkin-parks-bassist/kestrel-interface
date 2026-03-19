@@ -1,0 +1,289 @@
+#include "kest_int.h"
+
+#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 0
+#endif
+
+static const char *FNAME = "kest_fpga_io.c";
+
+#ifndef KEST_FPGA_SIMULATED
+#include <driver/spi_master.h>
+
+#define PIN_NUM_MISO  	14
+#define PIN_NUM_MOSI  	6
+#define PIN_NUM_CLK   	5
+#define PIN_NUM_CS		4
+
+spi_device_handle_t spi_handle;
+#endif
+
+int kest_fpga_spi_init()
+{
+	#ifndef KEST_FPGA_SIMULATED
+    esp_err_t ret;
+
+    spi_bus_config_t buscfg = {
+        .mosi_io_num = PIN_NUM_MOSI,
+        .miso_io_num = PIN_NUM_MISO,
+        .sclk_io_num = PIN_NUM_CLK,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 4096,
+    };
+
+    ret = spi_bus_initialize(SPI2_HOST, &buscfg, SPI_DMA_CH_AUTO);
+    if (ret != ESP_OK)
+        return ERR_SPI_FAIL;
+
+    spi_device_interface_config_t devcfg = {
+        .clock_speed_hz = 1 * 1000 * 1000,
+        .mode = 0,
+        .spics_io_num = PIN_NUM_CS,
+        .queue_size = 4,
+    };
+
+    ret = spi_bus_add_device(SPI2_HOST, &devcfg, &spi_handle);
+    if (ret != ESP_OK)
+        return ERR_SPI_FAIL;
+    
+    #endif
+    return NO_ERROR;
+}
+
+int kest_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
+{
+	#ifndef KEST_FPGA_SIMULATED
+	if (len == 0)
+		return 0;
+	
+    spi_transaction_t t = {
+        .length = len * 8,
+        .tx_buffer = tx,
+        .rx_buffer = rx,
+    };
+
+	esp_err_t err = spi_device_transmit(spi_handle, &t);
+	
+	#ifdef PRINT_SPI_BYTES
+	char print_buf[len * 10 + 1];
+	int buf_index = 0;
+	for (int i = 0; i < len; i++)
+	{
+		sprintf(&print_buf[buf_index], "SEND 0x%02x\n", tx[i]);
+		buf_index += 10;
+	}
+	print_buf[buf_index] = 0;
+	KEST_PRINTF("\n\n\n\n\n\n\n\n\n\n\n\n\nSPI send to FPGA (%d bytes):\n", len);
+	KEST_PRINTF(print_buf);
+	
+	KEST_PRINTF("FPGA replied with\n");
+	buf_index = 0;
+	for (int i = 0; i < len; i++)
+	{
+		sprintf(&print_buf[buf_index], "RCVD 0x%02x\n", reply_buf[i]);
+		buf_index += 10;
+	}
+	print_buf[buf_index] = 0;
+	KEST_PRINTF(print_buf);
+	#endif
+	
+	return (err == ESP_OK) ? NO_ERROR : ERR_SPI_FAIL;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
+}
+
+int kest_fpga_send_byte(uint8_t byte)
+{
+	return kest_fpga_txrx(&byte, NULL, 1);
+}
+
+uint8_t kest_fpga_read_byte()
+{
+	uint8_t tx = 0;
+	uint8_t rx;
+	kest_fpga_txrx(&tx, &rx, 1);
+	return rx;
+}
+
+kest_fpga_transfer_batch kest_new_fpga_transfer_batch()
+{
+	kest_fpga_transfer_batch seq;
+	
+	seq.buf = kest_alloc(sizeof(uint32_t) * KEST_FPGA_N_BLOCKS);
+	seq.len = 0;
+	seq.buf_len = (int)(sizeof(uint32_t) * KEST_FPGA_N_BLOCKS);
+	seq.buffer_owned = 0;
+	
+	return seq;
+}
+
+void kest_free_fpga_transfer_batch(kest_fpga_transfer_batch batch)
+{
+	if (batch.buf && !batch.buffer_owned) kest_free(batch.buf);
+}
+
+int kest_fpga_batch_append(kest_fpga_transfer_batch *seq, uint8_t x)
+{
+	if (!seq)
+		return ERR_NULL_PTR;
+	
+	if (seq->len >= seq->buf_len)
+	{
+		uint8_t *new_ptr = kest_realloc(seq->buf,(seq->buf_len * 2) * sizeof(uint8_t));
+		
+		if (!new_ptr)
+			return ERR_ALLOC_FAIL;
+		
+		seq->buf = new_ptr;
+		seq->buf_len *= 2;
+	}
+	
+	seq->buf[seq->len++] = x;
+	
+	return NO_ERROR;
+}
+
+
+int kest_fpga_batch_append_16(kest_fpga_transfer_batch *seq, uint16_t x)
+{
+	uint8_t bytes[2];
+	
+	bytes[0] = range_bits(x, 8,  8);
+	bytes[1] = range_bits(x, 8,  0);
+	
+	int ret_val;
+	
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[0])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[1])) != NO_ERROR) return ret_val;
+	
+	return ret_val;
+}
+
+
+int kest_fpga_batch_append_24(kest_fpga_transfer_batch *seq, uint32_t x)
+{
+	uint8_t bytes[3];
+	
+	bytes[0] = range_bits(x, 8,  16);
+	bytes[1] = range_bits(x, 8,  8);
+	bytes[2] = range_bits(x, 8,  0);
+	
+	int ret_val;
+	
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[0])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[1])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[2])) != NO_ERROR) return ret_val;
+	
+	return ret_val;
+}
+
+int kest_fpga_batch_append_32(kest_fpga_transfer_batch *seq, uint32_t x)
+{
+	uint8_t bytes[4];
+	
+	bytes[0] = range_bits(x, 8, 24);
+	bytes[1] = range_bits(x, 8, 16);
+	bytes[2] = range_bits(x, 8,  8);
+	bytes[3] = range_bits(x, 8,  0);
+	
+	int ret_val;
+	
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[0])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[1])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[2])) != NO_ERROR) return ret_val;
+	if ((ret_val = kest_fpga_batch_append(seq, bytes[3])) != NO_ERROR) return ret_val;
+	
+	return ret_val;
+}
+
+int kest_fpga_batch_concat(kest_fpga_transfer_batch *seq, kest_fpga_transfer_batch *seq2)
+{
+	if (!seq || !seq2)
+		return ERR_NULL_PTR;
+	
+	if (!seq2->buf)
+		return ERR_BAD_ARGS;
+	
+	if (!seq->buf)
+	{
+		seq->buf = kest_alloc(seq2->len);
+		
+		if (!seq->buf)
+			return ERR_ALLOC_FAIL;
+		
+		seq->buf_len = seq2->len;
+		seq->len = 0;
+	}
+	else if (seq->len + seq2->len > seq->buf_len)
+	{
+		int new_len = seq->buf_len;
+		while (new_len < seq->len + seq2->len)
+			new_len *= 2;
+		
+		uint8_t *new_ptr = kest_realloc(seq->buf, new_len * sizeof(uint8_t));
+		
+		if (!new_ptr) return ERR_ALLOC_FAIL;
+		
+		seq->buf_len = new_len;
+		seq->buf = new_ptr;
+	}
+	
+	for (int i = 0; i < seq2->len; i++)
+		seq->buf[seq->len + i] = seq2->buf[i];
+	
+	seq->len += seq2->len;
+	
+	return 0;
+}
+
+int kest_fpga_transfer_batch_send(kest_fpga_transfer_batch batch)
+{	
+	return kest_fpga_txrx(batch.buf, NULL, batch.len);
+}
+
+void kest_fpga_set_input_gain(float gain_db)
+{
+	float v = powf(10, gain_db / 20.0);
+	uint16_t s = float_to_q_nminus1(v, 5);
+	
+	kest_fpga_send_byte(COMMAND_SET_INPUT_GAIN);
+	kest_fpga_send_byte((s & 0xFF00) >> 8);
+	kest_fpga_send_byte(s & 0x00FF);
+}
+
+void kest_fpga_set_output_gain(float gain_db)
+{
+	float v = powf(10, gain_db / 20.0);
+	uint16_t s = float_to_q_nminus1(v, 5);
+	
+	kest_fpga_send_byte(COMMAND_SET_OUTPUT_GAIN);
+	kest_fpga_send_byte((s & 0xFF00) >> 8);
+	kest_fpga_send_byte(s & 0x00FF);
+}
+
+
+void kest_fpga_commit_reg_updates()
+{
+	kest_fpga_send_byte(COMMAND_COMMIT_REG_UPDATES);
+}
+
+char *kest_fpga_command_to_string(int command)
+{
+	switch (command)
+	{
+		case COMMAND_BEGIN_PROGRAM: 	 return "COMMAND_BEGIN_PROGRAM";
+		case COMMAND_WRITE_BLOCK_INSTR:  return "COMMAND_WRITE_BLOCK_INSTR";
+		case COMMAND_WRITE_BLOCK_REG_0:  return "COMMAND_WRITE_BLOCK_REG_0";
+		case COMMAND_WRITE_BLOCK_REG_1:  return "COMMAND_WRITE_BLOCK_REG_1";
+		case COMMAND_ALLOC_DELAY: 		 return "COMMAND_ALLOC_DELAY";
+		case COMMAND_END_PROGRAM: 		 return "COMMAND_END_PROGRAM";
+		case COMMAND_SET_INPUT_GAIN: 	 return "COMMAND_SET_INPUT_GAIN";
+		case COMMAND_SET_OUTPUT_GAIN: 	 return "COMMAND_SET_OUTPUT_GAIN";
+		case COMMAND_UPDATE_BLOCK_REG_0: return "COMMAND_UPDATE_BLOCK_REG_0";
+		case COMMAND_UPDATE_BLOCK_REG_1: return "COMMAND_UPDATE_BLOCK_REG_1";
+		case COMMAND_COMMIT_REG_UPDATES: return "COMMAND_COMMIT_REG_UPDATES";
+	}
+	
+	return "UNKNOWN";
+}

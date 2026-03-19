@@ -1,5 +1,5 @@
-#ifndef M_WAVESHARE_5A_H_
-#define M_WAVESHARE_5A_H_
+#ifndef KEST_WAVESHARE_5A_H_
+#define KEST_WAVESHARE_5A_H_
 
 #include "esp_log.h"
 #include "esp_heap_caps.h"

@@ -1,9 +1,0 @@
-<map id="m_fpga_set_input_gain" name="m_fpga_set_input_gain">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,32,178,60"/>
-<area shape="rect" id="Node000002" href="$m__fpga__io_8c.html#ac4ecd8804864719b441aab2f560c654d" title=" " alt="" coords="226,5,375,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,32,210,28,211,33,178,37"/>
-<area shape="rect" id="Node000003" href="$m__fpga__io_8c.html#a8f720f994d6e306cdf5f9db887aa6b52" title=" " alt="" coords="228,57,372,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,54,213,58,213,63,178,59"/>
-<area shape="rect" id="Node000004" href="$m__fpga__io_8c.html#a8cc733ae65cd129cf6e63dae62fa6fb4" title=" " alt="" coords="423,57,526,85"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="373,68,407,68,407,74,373,74"/>
-</map>

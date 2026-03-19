@@ -1,9 +1,9 @@
-idf_component_register(SRCS "m_sgtl5000.c"
-							"m_sd.c"
-							"m_footswitch.c"
+idf_component_register(SRCS "kest_sgtl5000.c"
+							"kest_sd.c"
+							"kest_footswitch.c"
 							"waveshare_dsi_touch_5_a.c"
-							"m_touch_irq.c"
-							"m_i2c.c"
+							"kest_touch_irq.c"
+							"kest_i2c.c"
 					REQUIRES
 							driver
 							esp_lcd_touch_gt911

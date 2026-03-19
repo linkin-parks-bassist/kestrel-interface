@@ -1,9 +1,0 @@
-<map id="print_instruction_format_a" name="print_instruction_format_a">
-<area shape="rect" id="Node000001" title=" " alt="" coords="587,5,781,33"/>
-<area shape="rect" id="Node000002" href="$m__fpga__encoding_8c.html#a9f3d76916b565e27599aebdb6c624499" title=" " alt="" coords="412,5,539,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="572,22,539,22,539,16,572,16"/>
-<area shape="rect" id="Node000003" href="$m__fpga__encoding_8c.html#af8fd2e0f6f91b421e40171f4c00b2f81" title=" " alt="" coords="214,5,364,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,22,364,22,364,16,396,16"/>
-<area shape="rect" id="Node000004" href="$m__fpga__comms_8c.html#abfe39a66ff3496fa4bbb972c7ce434c0" title=" " alt="" coords="5,5,166,33"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="198,22,166,22,166,16,198,16"/>
-</map>

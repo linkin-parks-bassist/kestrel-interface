@@ -1,5 +1,5 @@
-#ifndef M_DESKTOP_FREERTOS_CONFIG_H_
-#define M_DESKTOP_FREERTOS_CONFIG_H_
+#ifndef KEST_DESKTOP_FREERTOS_CONFIG_H_
+#define KEST_DESKTOP_FREERTOS_CONFIG_H_
 
 #define configUSE_PREEMPTION                    1
 #define configUSE_IDLE_HOOK                     0
