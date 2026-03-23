@@ -23,6 +23,7 @@ idf_component_register(SRCS "kest_alloc.c"
 							"kest_effect_enum.c"
 							"kest_effect_init.c"
 							"kest_effect_table.c"
+							"kest_global.c"
 					REQUIRES
 							driver
 							drivers

@@ -63,9 +63,7 @@
 #include "kest_list.h"
 #include "kest_string.h"
 #include "kest_linked_list.h"
-
-DECLARE_LINKED_PTR_LIST(char);
-typedef char_pll string_ll;
+#include "kest_global.h"
 
 #define KEST_FILENAME_LEN 256
 

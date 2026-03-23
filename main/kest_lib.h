@@ -21,6 +21,7 @@ extern "C" {
 #include "kest_linked_list.h"
 #include "kest_list.h"
 #include "kest_string.h"
+#include "kest_global.h"
 
 #include "kest_lib_cmph.h"
 

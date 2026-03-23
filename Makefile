@@ -25,6 +25,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_representation.c	\
 				core/kest_printf.c			\
 				core/kest_string.c			\
+				core/kest_global.c			\
 				ui/kest_button.c			\
 				ui/kest_home_view.c			\
 				ui/kest_menu.c				\
@@ -67,6 +68,7 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				core/kest_helper_fn.c		\
 				core/kest_string.c			\
 				core/kest_bump_arena.c		\
+				core/kest_global.c			\
 				parser/kest_tokenizer.c		\
 				parser/kest_expr_parser.c	\
 				parser/kest_dictionary.c	\

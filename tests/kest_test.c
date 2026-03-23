@@ -4,7 +4,7 @@ kest_test_entry *kest_test_list;
 
 kest_context global_cxt;
 
-int init_sd_card()   {return NO_ERROR;}
+int init_sd_card()   	{return NO_ERROR;}
 int kest_sd_mode_msc()  {return NO_ERROR;}
 int kest_sd_mode_local(){return NO_ERROR;}
 int kest_sd_toggle_msc(){return NO_ERROR;}

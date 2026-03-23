@@ -6,7 +6,7 @@
 
 static const char *FNAME = "kest_desktop.c";
 
-int init_sd_card()   {return NO_ERROR;}
+int init_sd_card()   	{return NO_ERROR;}
 int kest_sd_mode_msc()  {return NO_ERROR;}
 int kest_sd_mode_local(){return NO_ERROR;}
 int kest_sd_toggle_msc(){return NO_ERROR;}
