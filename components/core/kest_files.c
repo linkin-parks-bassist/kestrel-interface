@@ -996,7 +996,9 @@ int load_saved_presets(kest_context *cxt)
 		ret_val = read_preset_from_file(preset, current_file->data);
 		
 		if (ret_val == NO_ERROR)
-		{	
+		{
+			KEST_PRINTF("Sucessfully read preset %s, giving it ID %d\n", current_file->data, preset->id);
+			kest_preset_rectify_ids(preset);
 			nl = kest_preset_pll_append(cxt->presets, preset);
 		
 			if (!nl)

@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
@@ -97,6 +97,8 @@ int init_effect(kest_effect *effect)
 	kest_representation_pll_safe_append(&effect->reps, &effect->preset_rep);
 	#endif
 	
+	kest_effect_fpga_position_init(&effect->position_);
+	
 	return NO_ERROR;
 }
 
@@ -129,10 +131,22 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 
 int effect_rectify_param_ids(kest_effect *effect)
 {
+	KEST_PRINTF("configure_parameter_widget(effect = %p)\n");
 	if (!effect)
 		return ERR_NULL_PTR;
 	
 	kest_parameter_pll *current_param = effect->parameters;
+	
+	if (effect->preset)
+	{
+		KEST_PRINTF("effect->preset->id = %d\n", effect->preset->id);
+	}
+	else
+	{
+		KEST_PRINTF("effect->preset = NULL !\n");
+	}
+	
+	KEST_PRINTF("effect->id = %d\n", effect->id);
 	
 	while (current_param)
 	{
@@ -433,10 +447,11 @@ kest_setting *effect_get_setting(kest_effect *effect, int n)
 	return current ? current->data : NULL;
 }
 
-int kest_effect_update_fpga_registers(kest_effect *effect)
+int kest_effect_update_fpga(kest_effect *effect)
 {
+	KEST_PRINTF("kest_effect_update_fpga(effect = %p)\n", effect);
 	#ifdef KEST_ENABLE_FPGA
-
+	
 	if (!effect)
 		return ERR_NULL_PTR;
 	
@@ -449,6 +464,7 @@ int kest_effect_update_fpga_registers(kest_effect *effect)
 		return ERR_ALLOC_FAIL;
 	
 	kest_fpga_transfer_batch_append_effect_register_updates(&batch, effect->eff, effect->scope, effect->block_position);
+	kest_fpga_transfer_batch_append_effect_resource_updates(&batch, effect->eff, effect->scope, &effect->position_);
 	
 	int ret_val = kest_fpga_queue_transfer_batch(batch);
 	

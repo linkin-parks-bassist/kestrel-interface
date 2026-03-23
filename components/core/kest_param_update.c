@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_param_update.c";
@@ -75,16 +75,18 @@ void kest_param_update_task(void *arg)
 	int commit;
 	int k;
 	
+	int ret_val;
+	
 	while (1)
 	{
 		while ((update_queue_tail + 1) % UPDATE_QUEUE_LENGTH != update_queue_head && xQueueReceive(update_rtos_queue, &current, 0) == pdPASS)
 		{
-			//print_parameter_update(current);
+			print_parameter_update(current);
 			
 			enqueue = 1;
 			for (int i = 0; i < n_updates; i++)
 			{
-				//print_parameter_update(current);
+				print_parameter_update(current);
 				if (update_array[i].id.preset_id 		== current.id.preset_id
 				 && update_array[i].id.effect_id 	== current.id.effect_id
 				 && update_array[i].id.parameter_id 	== current.id.parameter_id)
@@ -100,7 +102,7 @@ void kest_param_update_task(void *arg)
 			
 			for (int j = update_queue_head; j != update_queue_tail; j = (j + 1) % UPDATE_QUEUE_LENGTH)
 			{
-				//print_parameter_update(update_queue[j]);
+				print_parameter_update(update_queue[j]);
 				
 				if (update_queue[j].id.preset_id 		== current.id.preset_id
 				 && update_queue[j].id.effect_id 	== current.id.effect_id
@@ -123,20 +125,23 @@ void kest_param_update_task(void *arg)
 		{
 			update_array[n_updates++] = update_queue[update_queue_head];
 			update_queue_head = (update_queue_head + 1) % UPDATE_QUEUE_LENGTH;
-			//print_parameter_update(update_array[n_updates - 1]);
+			print_parameter_update(update_array[n_updates - 1]);
 		}
 		
 		
 		commit = 0;
 		
+		//KEST_PRINTF("n parameter updates: %d\n", n_updates);
+		
 		for (int i = 0; i < n_updates; i++)
 		{
 			current = update_array[i];
-			//print_parameter_update(current);
+			print_parameter_update(current);
 			
-			if (cxt_get_parameter_and_effect_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t) != NO_ERROR)
+			if ((ret_val = cxt_get_parameter_and_effect_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t)) != NO_ERROR)
 			{
 				remove_param_update(i);
+				kest_printf("Removing update %d from queue for reason: cxt_get_parameter_and_effect_by_id returned %s!\n", i, kest_error_code_to_string(ret_val));
 				i--;
 				continue;
 			}
@@ -185,8 +190,8 @@ void kest_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			//kest_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
-			//	diff, param->value, param->value + diff, update_array[i].target);
+			kest_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
+				diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
 			
@@ -209,12 +214,15 @@ void kest_param_update_task(void *arg)
 			
 		}
 		
+		//KEST_PRINTF("commit = %d\n", commit);
 		for (int i = 0; i < n_updates; i++)
 		{			
 			if (update_array[i].t && update_array[i].send)
 			{
 				if (global_cxt.active_preset && global_cxt.active_preset->id == update_array[i].id.preset_id)
-					kest_effect_update_fpga_registers(update_array[i].t);
+				{
+					kest_effect_update_fpga(update_array[i].t);
+				}
 				xSemaphoreGive(update_array[i].t->mutex);
 			}
 		}
@@ -223,6 +231,7 @@ void kest_param_update_task(void *arg)
 		{
 			if (!update_array[i].p)
 			{
+				kest_printf("Removing update %d from queue for reason: no parameter!\n", i);
 				remove_param_update(i);
 				i--;
 				continue;
@@ -230,7 +239,7 @@ void kest_param_update_task(void *arg)
 			
 			if (update_array[i].p->value == update_array[i].target)
 			{
-				//kest_printf("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
+				kest_printf("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
 				if (update_array[i].p->id.preset_id == CONTEXT_PRESET_ID)
 					kest_cxt_queue_save_state(&global_cxt);
 				

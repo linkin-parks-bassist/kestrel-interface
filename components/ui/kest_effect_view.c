@@ -105,7 +105,7 @@ void effect_view_enter_settings_cb(lv_event_t *e)
 
 int configure_effect_view(kest_ui_page *page, void *data)
 {
-	//kest_printf("Conpfigure effect view... page = %p, data = %p\n", page, data);
+	KEST_PRINTF("Conpfigure effect view... page = %p, data = %p\n", page, data);
 	if (!page || !data)
 	{
 		if (page)

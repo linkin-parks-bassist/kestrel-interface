@@ -49,6 +49,7 @@ int init_m_preset(kest_preset *preset);
 int init_m_pipeline(kest_pipeline *pipeline);
 
 int preset_set_id(kest_preset *preset, uint16_t id);
+int kest_preset_rectify_ids(kest_preset *preset);
 
 int kest_preset_set_default_name_from_id(kest_preset *preset);
 

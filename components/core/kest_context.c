@@ -199,13 +199,28 @@ kest_sequence *kest_context_add_sequence_rp(kest_context *cxt)
 
 kest_preset *cxt_get_preset_by_id(kest_context *cxt, uint16_t preset_id)
 {
+	KEST_PRINTF("cxt_get_preset_by_id(cxt = %p, preset_id = %d)\n", cxt, preset_id);
+	
 	if (!cxt)
 		return NULL;
 	
 	preset_ll *current = cxt->presets;
 	
+	KEST_PRINTF("cxt->presets = %p\n", current);
+	
 	while (current)
 	{
+		KEST_PRINTF("Consider preset at %p.\n", current->data);
+		
+		if (!current->data)
+		{
+			KEST_PRINTF("It is NULL; ignoring\n");
+		}
+		else 
+		{
+			KEST_PRINTF("It has ID %d; we are looking for ID %d\n", current->data->id, preset_id);
+		}
+			
 		if (current->data && current->data->id == preset_id)
 		{
 			return current->data;
@@ -219,13 +234,17 @@ kest_preset *cxt_get_preset_by_id(kest_context *cxt, uint16_t preset_id)
 
 kest_effect *cxt_get_effect_by_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_id)
 {
+	KEST_PRINTF("cxt_get_effect_by_id(cxt = %p, preset_id = %d, effect_id = %d)\n", cxt, preset_id, effect_id);
 	if (!cxt)
 		return NULL;
 	
 	kest_preset *preset = cxt_get_preset_by_id(cxt, preset_id);
 	
 	if (!preset)
+	{
+		KEST_PRINTF("preset = NULL !\n");
 		return NULL;
+	}
 	
 	
 	kest_effect_pll *current = preset->pipeline.effects;
@@ -258,6 +277,8 @@ kest_parameter *cxt_get_parameter_by_id(kest_context *cxt, uint16_t preset_id, u
 
 int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, kest_parameter **pp, kest_effect **tp)
 {
+	KEST_PRINTF("cxt_get_parameter_and_effect_by_id(cxt = %p, id = %d.%d.%d, pp = %p, tp = %p)\n",
+		cxt, id.preset_id, id.effect_id, id.parameter_id, pp, tp);
 	if (!cxt || !pp || !tp)
 		return ERR_NULL_PTR;
 	
@@ -266,6 +287,7 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 	
 	if (id.preset_id == CONTEXT_PRESET_ID)
 	{
+		KEST_PRINTF("id.preset_id = CONTEXT_PRESET_ID (%d = %d)\n", id.preset_id, CONTEXT_PRESET_ID);
 		if (id.effect_id == 0)
 		{
 			switch (id.parameter_id)
@@ -291,6 +313,7 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 	
 	if (!effect)
 	{
+		KEST_PRINTF("effect = NULL !\n");
 		return ERR_BAD_ARGS;
 	}
 
@@ -298,6 +321,7 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 	
 	if (!param)
 	{
+		KEST_PRINTF("param = NULL !\n");
 		return ERR_BAD_ARGS;
 	}
 	

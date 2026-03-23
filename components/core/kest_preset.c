@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_preset.c";
@@ -14,8 +14,6 @@ int init_m_preset(kest_preset *preset)
 {
 	if (!preset)
 		return ERR_NULL_PTR;
-	
-	preset->id = 0;
 	
 	int ret_val = init_m_pipeline(&preset->pipeline);
 	
@@ -65,6 +63,20 @@ int preset_set_id(kest_preset *preset, uint16_t id)
 	
 	preset->id = id;
 	preset->volume.id.preset_id = id;
+	
+	return NO_ERROR;
+}
+
+int kest_preset_rectify_ids(kest_preset *preset)
+{
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	int id = preset->id;
+	
+	preset->volume.id.preset_id = id;
+	
+	kest_pipeline_rectify_ids(&preset->pipeline, id);
 	
 	return NO_ERROR;
 }
@@ -183,6 +195,7 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	if (!effect)
 		return NULL;
 	
+	effect->preset = preset;
 	effect_rectify_param_ids(effect);
 	
 	return effect;

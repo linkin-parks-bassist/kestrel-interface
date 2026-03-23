@@ -120,7 +120,7 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	
 	kest_preset_update_representations(preset);
 	
-	#ifdef USE_FPGA
+	#ifdef KEST_ENABLE_FPGA
 	kest_preset_if_active_update_fpga(preset);
 	#endif
 	

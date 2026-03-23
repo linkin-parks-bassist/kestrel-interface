@@ -10,8 +10,6 @@
 
 static const char *FNAME = "kest_tokenizer.c";
 
-IMPLEMENT_LINKED_PTR_LIST(char);
-
 int char_is_letter(char c)
 {
 	return (('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z'));

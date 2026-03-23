@@ -14,7 +14,7 @@ static const char *FNAME = "kest_fpga_encoding.c";
 #ifdef PRINTLINES_ALLOWED
 #undef PRINTLINES_ALLOWED
 #endif
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 */
 
@@ -200,6 +200,66 @@ int kest_fpga_batch_append_block_register_updates(kest_fpga_transfer_batch *batc
 	return NO_ERROR;
 }
 
+int kest_fpga_batch_append_filter_updates(kest_fpga_transfer_batch *batch, int handle, kest_filter *filter, kest_expr_scope *scope)
+{
+	KEST_PRINTF("kest_fpga_batch_append_filter_updates(batch = %p, handle = %d, filter = &p, scope = &p)\n",
+		batch, handle, filter, scope);
+	
+	if (!batch || !filter || !scope)
+		return ERR_NULL_PTR;
+	
+	if (!filter->coefs.entries && filter->coefs.count)
+		return ERR_BAD_ARGS;
+	
+	float c;
+	int32_t s;
+	
+	for (int i = 0; i < filter->coefs.count; i++)
+	{
+		c = kest_expression_evaluate(filter->coefs.entries[i], scope);
+		KEST_PRINTF("Update filter %d coefficient %d to %f\n", handle, i, c);
+		s = float_to_q_nminus1_18bit(c, filter->format);
+
+		kest_fpga_batch_append(batch, COMMAND_UPDATE_FILTER_COEF);
+		kest_fpga_batch_append(batch, handle & 0xFF);
+		kest_fpga_batch_append_16(batch, i);
+		
+		if (s & ((1ul << 17)))
+		{
+			s |= (0b111111) << 18;
+		}
+		
+		kest_fpga_batch_append_24(batch, s);
+	}
+	
+	kest_fpga_batch_append(batch, COMMAND_COMMIT_FILTER_COEF);
+	kest_fpga_batch_append(batch, handle & 0xFF);
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_batch_append_resource_updates(kest_fpga_transfer_batch *batch, kest_dsp_resource *resource, kest_expr_scope *scope, kest_effect_fpga_position *pos)
+{
+	KEST_PRINTF("kest_fpga_batch_append_resource_updates(batch = &p, resource = %p, scope = %p, pos = %p)\n",
+		batch, resource, scope, pos);
+	
+	if (!batch || !resource || !pos)
+		return ERR_NULL_PTR;
+	
+	kest_filter *filter = NULL;
+	
+	int ret_val = NO_ERROR;
+	
+	switch (resource->type)
+	{
+		case KEST_DSP_RESOURCE_FILTER:
+			ret_val = kest_fpga_batch_append_filter_updates(batch, resource->handle + pos->filter_start, (kest_filter*)resource->data, scope);
+			break;
+	}
+	
+	return ret_val;
+}
+
 int kest_fpga_transfer_batch_append_effect_register_updates(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, kest_expr_scope *scope, int pos)
 {
 	if (!batch || !eff)
@@ -211,6 +271,27 @@ int kest_fpga_transfer_batch_append_effect_register_updates(kest_fpga_transfer_b
 	while (current)
 	{
 		kest_fpga_batch_append_block_register_updates(batch, current->data, scope, pos + i);
+		
+		current = current->next;
+		i++;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_transfer_batch_append_effect_resource_updates(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, kest_expr_scope *scope, kest_effect_fpga_position *pos)
+{
+	KEST_PRINTF("kest_fpga_transfer_batch_append_effect_resource_updates(batch = %p, eff = %p, scope = %p, pos = %p)\n");
+	
+	if (!batch || !eff || !pos)
+		return ERR_NULL_PTR;
+	
+	int i = 0;
+	kest_dsp_resource_pll *current = eff->resources;
+	
+	while (current)
+	{
+		kest_fpga_batch_append_resource_updates(batch, current->data, scope, pos);
 		
 		current = current->next;
 		i++;
@@ -304,9 +385,15 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 				c = kest_expression_evaluate(filter->coefs.entries[i], scope);
 				KEST_PRINTF("Coefficient %d: %.06f\n", i, c);
 				s = float_to_q_nminus1_18bit(c, filter->format);
+				
+				if (s & ((1ul << 17)))
+				{
+					s |= (0b111111) << 18;
+				}
+				
 				KEST_PRINTF("Converting to q%d.%d, we get %d. Masked to 18 bits, that's %d.\n",
 					1 + filter->format, KEST_FPGA_FILTER_WIDTH - 1 - filter->format, s, s & ((1u << 18) - 1));
-				kest_fpga_batch_append_24(batch, s & ((1u << 18) - 1));
+				kest_fpga_batch_append_24(batch, s);
 			}
 			
 			break;
@@ -353,7 +440,9 @@ int kest_fpga_batch_append_effect(kest_fpga_transfer_batch *batch, kest_effect *
 	kest_expr_scope *scope = effect->scope;
 	
 	effect->block_position = *pos;
-	KEST_PRINTF("Updating effect %p's block position to %d. New value: %d\n", effect, *pos, effect->block_position);
+	effect->position_.block_start = *pos;
+	effect->position_.filter_start = res->filters;
+	KEST_PRINTF("Updating effect %p's position to {.block_start = %d, .filter_start = %d}\n", effect, effect->position_.block_start, effect->position_.filter_start);
 	
 	kest_fpga_batch_append_eff_desc(batch, effect->eff, res, scope, *pos);
 	
@@ -647,6 +736,23 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						shift = 0;
 						break;
 
+					case COMMAND_UPDATE_FILTER_COEF:
+						KEST_PRINTF_("Command COMMAND_UPDATE_FILTER_COEF");
+						state = 7;
+						ret_state = 0;
+						value = 0;
+						ctr = 0;
+						ctr_2 = 0;
+						shift = 0;
+						break;
+					
+					case COMMAND_COMMIT_FILTER_COEF:
+						KEST_PRINTF_("Command COMMAND_COMMIT_FILTER_COEF");
+						state = 8;
+						ret_state = 0;
+						value = 0;
+						ctr = 0;
+						break;
 				}
 				break;
 			
@@ -731,6 +837,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				else
 				{
 					value = (value << 8) | byte;
+					
 					ctr++;
 				}
 				break;
@@ -819,6 +926,11 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				}
 				break;
 			
+			case 8: // expecting 1-byte resource handle
+					KEST_PRINTF_("Handle: %d", byte);
+					state = ret_state;
+				break;
+				
 			default:
 				KEST_PRINTF_("Unknown :(\n");
 				return 1;

@@ -18,6 +18,7 @@ uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_ef
 
 int kest_fpga_batch_append_effect(kest_fpga_transfer_batch *batch, kest_effect *effect, kest_eff_resource_report *res, int *pos);
 int kest_fpga_transfer_batch_append_effect_register_updates(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, kest_expr_scope *scope, int pos);
+int kest_fpga_transfer_batch_append_effect_resource_updates(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, kest_expr_scope *scope, kest_effect_fpga_position *pos);
 int kest_fpga_batch_append_effects(kest_fpga_transfer_batch *batch, kest_effect_pll *list, kest_eff_resource_report *res, int *pos);
 
 int kest_fpga_batch_print(kest_fpga_transfer_batch seq);

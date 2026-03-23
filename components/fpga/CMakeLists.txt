@@ -3,6 +3,7 @@ idf_component_register(SRCS "kest_fpga_comms.c"
 							"kest_fpga_io.c"
 							"kest_reg_format.c"
 							"kest_fixed_point.c"
+							"kest_fpga_position.c"
 					REQUIRES
 							driver
 							drivers

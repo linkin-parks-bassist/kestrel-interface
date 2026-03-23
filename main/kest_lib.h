@@ -25,6 +25,7 @@ extern "C" {
 
 #include "kest_lib_cmph.h"
 
+#include "kest_fpga_position.h"
 #include "kest_bump_arena.h"
 #include "kest_representation.h"
 #include "kest_parameter.h"

@@ -304,3 +304,23 @@ kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id)
 	
 	return NULL;
 }
+
+int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int preset_id)
+{
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		if (current->data)
+		{
+			effect_rectify_param_ids(current->data);
+		}
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}

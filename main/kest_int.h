@@ -69,6 +69,7 @@
 
 #define KEST_FILENAME_LEN 32
 
+#include "kest_fpga_position.h"
 #include "kest_representation.h"
 #include "kest_parameter.h"
 #include "kest_expr_scope.h"

@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 #include "kest_param_update.h"
 
@@ -166,8 +166,11 @@ void parameter_widget_update_value_label(kest_parameter_widget *pw)
 
 int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, kest_preset *preset, kest_ui_page *parent)
 {
+	KEST_PRINTF("configure_parameter_widget(pw = %p, param = %p, preset = %p, parent = %p)\n", pw, param, preset, parent);
 	if (!pw || !param)
 		return ERR_NULL_PTR;
+	
+	KEST_PRINTF("param->id = %d.%d.%d\n", param->id.preset_id, param->id.effect_id, param->id.parameter_id);
 	
 	pw->param = param;
 	pw->preset = preset;

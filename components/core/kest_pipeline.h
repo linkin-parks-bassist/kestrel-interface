@@ -22,4 +22,6 @@ void gut_pipeline(kest_pipeline *pipeline);
 
 int kest_pipeline_create_fpga_transfer_batch(kest_pipeline *pipeline, kest_fpga_transfer_batch *batch);
 
+int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int id);
+
 #endif
