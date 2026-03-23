@@ -187,53 +187,6 @@ int effect_set_id(kest_effect *effect, uint16_t profile_id, uint16_t effect_id)
 	return NO_ERROR;
 }
 
-int request_append_effect(uint16_t type, kest_effect *local)
-{
-	#ifdef USE_TEENSY
-	if (!local)
-		return ERR_NULL_PTR;
-	
-	if (!local->profile)
-		return ERR_BAD_ARGS;
-	
-	kest_message msg = create_m_message(KEST_MESSAGE_APPEND_TRANSFORMER, "ss", local->profile->id, local->type);
-	msg.callback = effect_receive_id;
-	msg.cb_arg = local;
-	
-	return queue_msg_to_teensy(msg);
-	#endif
-	
-	return NO_ERROR;
-}
-
-#ifdef USE_TEENSY
-void effect_receive_id(kest_message message, kest_response response)
-{
-	KEST_PRINTF("Transformer receive ID!\n");
-	kest_effect *effect = message.cb_arg;
-	
-	if (!effect)
-		return;
-	
-	uint16_t pid, tid;
-	
-	memcpy(&pid, &response.data[0], sizeof(uint16_t));
-	memcpy(&tid, &response.data[2], sizeof(uint16_t));
-	
-	if (!effect->profile || pid != effect->profile->id)
-	{
-		KEST_PRINTF("Transformer ID for effect in profile %d sent to effect in %d\n", pid, effect->profile->id);
-	}
-	else
-	{
-		KEST_PRINTF("Transformer %p obtains id %d.%d\n", effect, pid, tid);
-		effect->id = tid;
-		
-		effect_rectify_param_ids(effect);
-	}
-}
-#endif
-
 kest_parameter *effect_add_parameter(kest_effect *effect)
 {
 	if (!effect)

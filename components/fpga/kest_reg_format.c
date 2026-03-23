@@ -34,9 +34,8 @@ int kest_compute_register_formats(kest_block_pll *blocks, kest_expr_scope *scope
 	int i = 0;
 	while (current)
 	{
-		if (current->data)
+		if (current->data && !current->data->shift_set)
 		{
-			shift_set = current->data->shift_set;
 			format_0 = 0;
 			format_1 = 0;
 			
@@ -46,7 +45,7 @@ int kest_compute_register_formats(kest_block_pll *blocks, kest_expr_scope *scope
 			*/
 			if (current->data->reg_0.active)
 			{
-				if (!shift_set && current->data->reg_0.expr)
+				if (current->data->reg_0.expr)
 					format_0 = kest_expression_compute_format(current->data->reg_0.expr, scope, 8, KEST_FPGA_DATA_WIDTH);
 				
 				current->data->reg_0.format = format_0;
@@ -54,7 +53,7 @@ int kest_compute_register_formats(kest_block_pll *blocks, kest_expr_scope *scope
 			
 			if (current->data->reg_1.active)
 			{
-				if (!shift_set && current->data->reg_1.expr)
+				if (current->data->reg_1.expr)
 					format_1 = kest_expression_compute_format(current->data->reg_1.expr, scope, 8, KEST_FPGA_DATA_WIDTH);
 				
 				current->data->reg_1.format = format_1;

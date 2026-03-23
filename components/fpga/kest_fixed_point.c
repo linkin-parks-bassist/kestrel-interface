@@ -25,7 +25,7 @@ int32_t float_to_q_nminus1_18bit(float x, int shift)
 
 kest_fpga_sample_t float_to_q_nminus1(float x, int shift)
 {
-	if (shift < 0 || KEST_FPGA_DATA_WIDTH - 1) return 0;
+	if (shift < 0 || shift > KEST_FPGA_DATA_WIDTH - 1) return 0;
 	
     int n = (KEST_FPGA_DATA_WIDTH - 1) - shift;
 

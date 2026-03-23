@@ -4,9 +4,9 @@
 
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+//#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+//#endif
 
 static const char *FNAME = "kest_asm_parser.c";
 
@@ -20,7 +20,8 @@ IMPLEMENT_LINKED_PTR_LIST(kest_asm_line);
 static const char *instrs [] = {
 	"nop", "mov", "add", "sub", "mul",
 	"madd", "arsh", "lsh", "rsh", "abs",
-	"min", "max", "clamp", "mov_acc",
+	"min", "max", "clamp",
+	"mov_acc", "mov_lacc", "mov_uacc",
 	"macz", "umacz", "mac", "umac",
 	"delay_read", "delay_write", "delay_mwrite",
 	"mem_read", "mem_write", "filter",
@@ -138,6 +139,17 @@ static const kest_arg_format arg_format_res_read = {
 	.shift_pos = KEST_ARG_POS_NONE
 };
 
+static const kest_arg_format arg_format_res_read_2 = {
+	.n_args = 3,
+	
+	.arg_a_pos = 1,
+	.arg_b_pos = KEST_ARG_POS_NONE,
+	.arg_c_pos = KEST_ARG_POS_NONE,
+	.res_pos   = 0,
+	.dest_pos  = 2,
+	.shift_pos = KEST_ARG_POS_NONE
+};
+
 static const kest_arg_format arg_format_res_write = {
 	.n_args = 2,
 	
@@ -189,11 +201,13 @@ const kest_arg_format *kest_instr_arg_format(const char *instr)
 	if (strcmp(instr, "max"         ) == 0) return &arg_format_std_2;
 	if (strcmp(instr, "clamp"       ) == 0) return &arg_format_std_3;
 	if (strcmp(instr, "mov_acc"     ) == 0) return &arg_format_read;
+	if (strcmp(instr, "mov_uacc"    ) == 0) return &arg_format_read;
+	if (strcmp(instr, "mov_lacc"    ) == 0) return &arg_format_read;
 	if (strcmp(instr, "macz"        ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "mac"         ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "umac"        ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
+	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read_2;
 	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
 	if (strcmp(instr, "delay_mwrite") == 0) return &arg_format_res_write_2;
 	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
@@ -223,6 +237,8 @@ int kest_instr_opcode(const char *instr)
 	if (strcmp(instr, "max"         ) == 0) return BLOCK_INSTR_MAX;
 	if (strcmp(instr, "clamp"       ) == 0) return BLOCK_INSTR_CLAMP;
 	if (strcmp(instr, "mov_acc"     ) == 0) return BLOCK_INSTR_MOV_ACC;
+	if (strcmp(instr, "mov_lacc"    ) == 0) return BLOCK_INSTR_MOV_LACC;
+	if (strcmp(instr, "mov_uacc"    ) == 0) return BLOCK_INSTR_MOV_UACC;
 	if (strcmp(instr, "macz"        ) == 0) return BLOCK_INSTR_MACZ;
 	if (strcmp(instr, "umacz"       ) == 0) return BLOCK_INSTR_UMACZ;
 	if (strcmp(instr, "mac"         ) == 0) return BLOCK_INSTR_MAC;
@@ -528,7 +544,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 	}
 	else 
 	{
-		KEST_PRINTF("Syntax error: \"%s\"\n", current->data);
+		kest_parser_error_at(ps, current, "Syntax error");
 		ret_val = ERR_BAD_ARGS;
 		goto asm_parse_arg_fin;
 	}
@@ -675,568 +691,6 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 	KEST_PRINTF("Line has %d args\n", line->n_args);
 	
 	kest_asm_line_pll_safe_append(&ps->asm_lines, line);
-	
-#if 0
-	if (strcmp(current->data, "nop") == 0)
-	{
-		block->instr = BLOCK_INSTR_NOP;
-		
-		dest_pos  = -1;
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		
-		n_args_expected = 0;
-	}
-	else if (strcmp(current->data, "mov") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		block->arg_b = operand_const_one();
-		block->arg_c = operand_const_zero();
-		block->shift = 1;
-		
-		arg_b_pos = -1;
-		
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "add") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		block->arg_b = operand_const_one();
-		block->shift = 1;
-		
-		arg_b_pos = -1;
-		arg_c_pos =  2;
-	}
-	else if (strcmp(current->data, "sub") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		block->arg_b = operand_const_minus_one();
-		
-		arg_b_pos = -1;
-		arg_c_pos =  2;
-	}
-	else if (strcmp(current->data, "mul") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		
-		block->arg_c = operand_const_zero();
-		block->shift = 0;
-		
-		arg_b_pos =  2;
-	}
-	else if (strcmp(current->data, "madd") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		
-		arg_c_pos = 3;
-		
-		n_args_expected = 4;
-	}
-	else if (strcmp(current->data, "arsh") == 0)
-	{
-		block->instr = BLOCK_INSTR_MADD;
-		block->arg_b = operand_const_one();
-		block->shift = 1;
-		shift_mode = 0;
-		
-		arg_b_pos = -1;
-		shift_pos =  2;
-	}
-	else if (strcmp(current->data, "lsh") == 0)
-	{
-		block->instr = BLOCK_INSTR_LSH;
-		shift_mode = 0;
-		
-		arg_b_pos = -1;
-		shift_pos =  2;
-	}
-	else if (strcmp(current->data, "rsh") == 0)
-	{
-		block->instr = BLOCK_INSTR_RSH;
-		shift_mode = 0;
-		
-		arg_b_pos = -1;
-		shift_pos =  2;
-	}
-	else if (strcmp(current->data, "abs") == 0)
-	{
-		block->instr = BLOCK_INSTR_RSH;
-		
-		arg_b_pos = -1;
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "min") == 0)
-	{
-		block->instr = BLOCK_INSTR_MIN;
-	}
-	else if (strcmp(current->data, "max") == 0)
-	{
-		block->instr = BLOCK_INSTR_MAX;
-	}
-	else if (strcmp(current->data, "clamp") == 0)
-	{
-		block->instr = BLOCK_INSTR_CLAMP;
-		
-		arg_c_pos = 3;
-		
-		n_args_expected = 4;
-	}
-	else if (strcmp(current->data, "mov_acc") == 0)
-	{
-		block->instr = BLOCK_INSTR_MOV_ACC;
-		
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		
-		n_args_expected = 1;
-	}
-	else if (strcmp(current->data, "mov_lacc") == 0)
-	{
-		block->instr = BLOCK_INSTR_MOV_LACC;
-		
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		
-		n_args_expected = 1;
-	}
-	else if (strcmp(current->data, "mov_uacc") == 0)
-	{
-		block->instr = BLOCK_INSTR_MOV_UACC;
-		
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		
-		n_args_expected = 1;
-	}
-	else if (strcmp(current->data, "macz") == 0)
-	{
-		block->instr = BLOCK_INSTR_MACZ;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "macz_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_MACZ;
-		
-		block->shift = 15;
-		n_args_expected = 2;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umacz") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMACZ;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-		
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "umacz_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMACZ;
-		
-		block->shift = 15;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "macz_unsat") == 0)
-	{
-		block->instr = BLOCK_INSTR_MACZ;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "macz_unsat_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_MACZ;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umacz_unsat") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMACZ;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umacz_unsat_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMACZ;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "mac") == 0)
-	{
-		block->instr = BLOCK_INSTR_MAC;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "mac_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_MAC;
-		
-		n_args_expected = 2;
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umac") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMAC;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umac_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMAC;
-		n_args_expected = 2;
-		
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "mac_unsat") == 0)
-	{
-		block->instr = BLOCK_INSTR_MAC;
-		n_args_expected = 2;
-		block->saturate_disable = 1;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "mac_unsat_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_MAC;
-		n_args_expected = 2;
-		block->saturate_disable = 1;
-		
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umac_unsat") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMAC;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "umac_unsat_noshift") == 0)
-	{
-		block->instr = BLOCK_INSTR_UMAC;
-		block->saturate_disable = 1;
-		n_args_expected = 2;
-		
-		block->shift = 15;
-		
-		arg_a_pos = 0;
-		arg_b_pos = 1;
-		dest_pos = -1;
-	}
-	else if (strcmp(current->data, "delay_read") == 0)
-	{
-		block->instr = BLOCK_INSTR_DELAY_READ;
-		
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		res_pos = 1;
-		
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "delay_write") == 0)
-	{
-		block->instr = BLOCK_INSTR_DELAY_WRITE;
-		
-		arg_a_pos = 1;
-		arg_b_pos = -1;
-		dest_pos = -1;
-		res_pos = 0;
-		
-		block->arg_b.type = BLOCK_OPERAND_TYPE_R;
-		block->arg_b.addr = ZERO_REGISTER_ADDR;
-		
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "delay_mwrite") == 0)
-	{
-		block->instr = BLOCK_INSTR_DELAY_WRITE;
-		
-		res_pos = 0;
-		dest_pos = -1;
-		
-		n_args_expected = 3;
-	}
-	else if (strcmp(current->data, "mem_read") == 0)
-	{
-		block->instr = BLOCK_INSTR_MEM_READ;
-		
-		arg_a_pos = -1;
-		arg_b_pos = -1;
-		res_pos = 1;
-		
-		n_args_expected = 2;
-	}
-	else if (strcmp(current->data, "mem_write") == 0)
-	{
-		block->instr = BLOCK_INSTR_MEM_WRITE;
-		
-		dest_pos = -1;
-		arg_b_pos = -1;
-		res_pos = 0;
-		
-		n_args_expected = 2;
-	}
-	else
-	{
-		KEST_PRINTF("Error: unknown instruction \"%s\"\n", current->data);
-		ret_val = ERR_BAD_ARGS;
-		goto asm_line_parse_fin;
-	}
-	
-	if (shift_mode)
-	{
-		n_args_expected++;
-		shift_pos = dest_pos;
-		
-		if (arg_a_pos > shift_pos)
-			shift_pos = arg_a_pos;
-		if (arg_b_pos > shift_pos)
-			shift_pos = arg_b_pos;
-		if (arg_c_pos > shift_pos)
-			shift_pos = arg_c_pos;
-		if (arg_c_pos > res_pos)
-			shift_pos = arg_c_pos;
-		
-		shift_pos++;
-	}
-	
-	current = current->next;
-	
-	ps->current_token = current;
-	
-	for (int i = 0; ; i++)
-	{
-		if (!current || !current->data || current->data[0] == '\n')
-			break;
-		
-		if ((arg_ret_val = kest_parse_asm_arg(ps, (i < INSTR_MAX_ARGS) ? &args[i] : NULL)) != NO_ERROR)
-		{
-			current = ps->current_token;
-			ret_val = arg_ret_val;
-			goto asm_line_parse_fin;
-		}
-		
-		n_args_read++;
-		
-		current = ps->current_token;
-	}
-	
-	if (n_args_read < n_args_expected)
-	{
-		KEST_PRINTF("Error: too few arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
-		ret_val = ERR_BAD_ARGS;
-		goto asm_line_parse_fin;
-	}
-	else if (n_args_read > n_args_expected)
-	{
-		KEST_PRINTF("Error: too many arguments for instruction \"%s\" (expected %d, given %d)\n", instr_char, n_args_expected, n_args_read);
-		ret_val = ERR_BAD_ARGS;
-		goto asm_line_parse_fin;
-	}
-	
-	if (dest_pos != -1)
-	{
-		if (args[dest_pos].type != KEST_ASM_ARG_CHANNEL)
-		{
-			KEST_PRINTF("Error: destination must be a channel\n");
-			ret_val = ERR_BAD_ARGS;
-			goto asm_line_parse_fin;
-		}
-		else
-		{
-			block->dest = args[dest_pos].addr;
-		}
-	}
-	
-	if (shift_pos != -1)
-	{
-		if (args[shift_pos].type != KEST_ASM_ARG_INT || args[shift_pos].val < 0 || args[shift_pos].val > 15)
-		{
-			KEST_PRINTF("Error: shift value must be an integer between 0 and 15\n");
-			ret_val = ERR_BAD_ARGS;
-			goto asm_line_parse_fin;
-		}
-		else
-		{
-			block->shift = args[shift_pos].val;
-		}
-	}
-	
-	if (arg_a_pos != -1)
-	{
-		switch (args[arg_a_pos].type)
-		{
-			case KEST_ASM_ARG_CHANNEL:
-				block->arg_a.type = BLOCK_OPERAND_TYPE_C;
-				block->arg_a.addr = args[arg_a_pos].addr;
-				break;
-			
-			case KEST_ASM_ARG_EXPR:
-				block->arg_a.type = BLOCK_OPERAND_TYPE_R;
-				block->arg_a.addr = 0;
-				reg_0_taken = 1;
-				
-				block->reg_0.expr = args[arg_a_pos].expr;
-				block->reg_0.active = 1;
-				break;
-			
-			default:
-				KEST_PRINTF("Error: wrong type given for arg a\n");
-				break;
-		}
-	}
-	
-	if (arg_b_pos != -1)
-	{
-		switch (args[arg_b_pos].type)
-		{
-			case KEST_ASM_ARG_CHANNEL:
-				block->arg_b.type = BLOCK_OPERAND_TYPE_C;
-				block->arg_b.addr = args[arg_b_pos].addr;
-				break;
-			
-			case KEST_ASM_ARG_EXPR:
-				block->arg_b.type = BLOCK_OPERAND_TYPE_R;
-				
-				if (!reg_0_taken)
-				{
-					block->arg_b.addr = 0;
-					reg_0_taken = 1;
-					
-					block->reg_0.expr = args[arg_b_pos].expr;
-					block->reg_0.active = 1;
-				}
-				else
-				{
-					block->arg_b.addr = 1;
-					reg_1_taken = 1;
-					
-					block->reg_1.expr = args[arg_b_pos].expr;
-					block->reg_1.active = 1;
-				}
-				break;
-			
-			default:
-				KEST_PRINTF("Error: wrong type given for arg b\n");
-				ret_val = ERR_BAD_ARGS;
-				goto asm_line_parse_fin;
-				break;
-		}
-	}
-	
-	if (arg_c_pos != -1)
-	{
-		switch (args[arg_c_pos].type)
-		{
-			case KEST_ASM_ARG_CHANNEL:
-				block->arg_c.type = BLOCK_OPERAND_TYPE_C;
-				block->arg_c.addr = args[arg_c_pos].addr;
-				break;
-			
-			case KEST_ASM_ARG_EXPR:
-				block->arg_c.type = BLOCK_OPERAND_TYPE_R;
-				if (!reg_0_taken)
-				{
-					block->arg_c.addr = 0;
-					reg_0_taken = 1;
-					
-					block->reg_0.expr = args[arg_c_pos].expr;
-					block->reg_0.active = 1;
-				}
-				else if (!reg_1_taken)
-				{
-					block->arg_c.addr = 1;
-					reg_1_taken = 1;
-					
-					block->reg_1.expr = args[arg_c_pos].expr;
-					block->reg_1.active = 1;
-				}
-				else
-				{
-					KEST_PRINTF("Error: too many constants\n");
-					ret_val = ERR_BAD_ARGS;
-					goto asm_line_parse_fin;
-				}
-				break;
-			
-			default:
-				KEST_PRINTF("Error: wrong type given for arg c\n");
-				ret_val = ERR_BAD_ARGS;
-				goto asm_line_parse_fin;
-				break;
-		}
-	}
-	
-	if (res_pos != -1)
-	{
-		if (args[res_pos].type != KEST_ASM_ARG_RES)
-		{
-			KEST_PRINTF("Error: resource must be a resource\n");
-			ret_val = ERR_BAD_ARGS;
-			goto asm_line_parse_fin;
-		}
-		else
-		{
-			block->res = args[res_pos].res;
-		}
-	}
-	
-	block->shift_set = shift_mode;
-	
-	kest_block_pll_safe_append(&ps->blocks, block);
-	
-#endif
 
 asm_line_parse_fin:
 	
@@ -1265,7 +719,7 @@ int kest_parse_asm(kest_eff_parsing_state *ps)
 		
 		if (ret_val != NO_ERROR)
 		{
-			KEST_PRINTF("ASM parsing failed: %s\n", kest_error_code_to_string(ret_val));
+			kest_parser_error_at(ps, ps->current_token, "ASM parsing failed: %s", kest_error_code_to_string(ret_val));
 			return ret_val;
 		}
 		
@@ -1457,10 +911,14 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	{
 		block->arg_b = operand_const_one();
 		block->arg_c = operand_const_zero();
+		block->shift = 1;
+		block->shift_set = 1;
 	}
 	else if (strcmp(line->instr, "add") == 0)
 	{
 		block->arg_b = operand_const_one();
+		block->shift = 1;
+		block->shift_set = 1;
 	}
 	else if (strcmp(line->instr, "sub") == 0)
 	{
@@ -1472,7 +930,7 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	}
 	else if (strcmp(line->instr, "delay_write") == 0)
 	{
-		block->arg_c = operand_const_zero();
+		block->arg_b = operand_const_zero();
 	}
 	else if (strcmp(line->instr, "sin2pi") == 0)
 	{

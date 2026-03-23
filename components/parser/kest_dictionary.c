@@ -805,10 +805,14 @@ int kest_parse_dict_val(kest_eff_parsing_state *ps, kest_dictionary *dict, kest_
 	kest_token_ll *current = ps->current_token;
 	
 	if (!current)
+	{
 		return ERR_BAD_ARGS;
+	}
 	
 	if (!current->data)
+	{
 		return ERR_BAD_ARGS;
+	}
 	
 	kest_string *string;
 	char *str;
@@ -1004,7 +1008,7 @@ int kest_parse_dictionary(kest_eff_parsing_state *ps, kest_dictionary **result, 
 		ps->current_token = current;
 		if ((ret_val = kest_parse_dict_val(ps, dict, &centry)) != NO_ERROR)
 		{
-			kest_parser_error(ps, "Error parsing attribute %s.%s", dict->name, cname);
+			kest_parser_error_at(ps, ps->current_token, "Error parsing attribute %s.%s: %s", dict->name, cname, kest_error_code_to_string(ret_val));
 			goto parse_dict_fin;
 		}
 		else

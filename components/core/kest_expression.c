@@ -6,10 +6,11 @@
 
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+//#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+//#endif
 
+#define KEST_EXPR_EVAL_VERBOSE
 //#define KEST_BOUNDS_CHECK_VERBOSE
 
 static const char *FNAME = "kest_expression.c";
@@ -17,24 +18,24 @@ static const char *FNAME = "kest_expression.c";
 IMPLEMENT_PTR_LIST(kest_expression);
 IMPLEMENT_LINKED_PTR_LIST(kest_named_expression);
 
-#define KEST_EXPRESSION_CONST(x) { \
+#define KEST_EXPRESSION_CONST(x) { 	\
 	.type = KEST_EXPR_CONST,		\
-	.val = {.val_float = x},	\
-	.constant = 1,				\
-	.cached = 1,				\
-	.cached_val = x				\
+	.val = {.val_float = x},		\
+	.constant = 1,					\
+	.cached = 1,					\
+	.cached_val = x					\
 };
 
-kest_expression kest_expression_standard_gain_min = KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MIN);
-kest_expression kest_expression_standard_gain_max = KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MAX);
+kest_expression kest_expression_standard_gain_min 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MIN);
+kest_expression kest_expression_standard_gain_max 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MAX);
 kest_expression kest_expression_zero 				= KEST_EXPRESSION_CONST(0);
 kest_expression kest_expression_one 				= KEST_EXPRESSION_CONST(1);
-kest_expression kest_expression_minus_one 		= KEST_EXPRESSION_CONST(-1);
-kest_expression kest_expression_pi 				= KEST_EXPRESSION_CONST(M_PI);
-kest_expression kest_expression_e 				= KEST_EXPRESSION_CONST(exp(1));
+kest_expression kest_expression_minus_one 			= KEST_EXPRESSION_CONST(-1);
+kest_expression kest_expression_pi 					= KEST_EXPRESSION_CONST(M_PI);
+kest_expression kest_expression_e 					= KEST_EXPRESSION_CONST(exp(1));
 kest_expression kest_expression_sample_rate 		= KEST_EXPRESSION_CONST(KEST_FPGA_SAMPLE_RATE);
-kest_expression kest_expression_int_max			= KEST_EXPRESSION_CONST( pow(2, KEST_FPGA_DATA_WIDTH - 1) - 1);
-kest_expression kest_expression_int_min			= KEST_EXPRESSION_CONST(-pow(2, KEST_FPGA_DATA_WIDTH - 1));
+kest_expression kest_expression_int_max				= KEST_EXPRESSION_CONST( pow(2, KEST_FPGA_DATA_WIDTH - 1) - 1);
+kest_expression kest_expression_int_min				= KEST_EXPRESSION_CONST(-pow(2, KEST_FPGA_DATA_WIDTH - 1));
 kest_expression kest_expression_freq_max 			= KEST_EXPRESSION_CONST(KEST_FPGA_SAMPLE_RATE / 2 - 50);
 
 char *kest_expression_type_to_str(int type)
@@ -42,7 +43,7 @@ char *kest_expression_type_to_str(int type)
 	switch (type)
 	{
 		case KEST_EXPR_CONST: 	return "CONST";
-		case KEST_EXPR_NEG:	return "NEG";
+		case KEST_EXPR_NEG:		return "NEG";
 		case KEST_EXPR_REF: 	return "REF";
 		case KEST_EXPR_ADD: 	return "ADD";
 		case KEST_EXPR_SUB: 	return "SUB";
@@ -52,7 +53,7 @@ char *kest_expression_type_to_str(int type)
 		case KEST_EXPR_SQR: 	return "SQR";
 		case KEST_EXPR_SQRT: 	return "SQRT";
 		case KEST_EXPR_EXP: 	return "EXP";
-		case KEST_EXPR_LN: 	return "LN";
+		case KEST_EXPR_LN: 		return "LN";
 		case KEST_EXPR_POW: 	return "POW";
 		case KEST_EXPR_SIN: 	return "SIN";
 		case KEST_EXPR_SINH: 	return "SINH";
@@ -77,7 +78,7 @@ int kest_expression_form(kest_expression *expr)
 	{
 		case KEST_EXPR_CONST: 	return KEST_EXPR_FORM_ATOMIC;
 		case KEST_EXPR_REF: 	return KEST_EXPR_FORM_ATOMIC;
-		case KEST_EXPR_NEG:	return KEST_EXPR_FORM_UNARY_OP;
+		case KEST_EXPR_NEG:		return KEST_EXPR_FORM_UNARY_OP;
 		case KEST_EXPR_ADD: 	return KEST_EXPR_FORM_INFIX_OP;
 		case KEST_EXPR_SUB: 	return KEST_EXPR_FORM_INFIX_OP;
 		case KEST_EXPR_MUL: 	return KEST_EXPR_FORM_INFIX_OP;
@@ -86,7 +87,7 @@ int kest_expression_form(kest_expression *expr)
 		case KEST_EXPR_SQR: 	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_SQRT: 	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_EXP: 	return KEST_EXPR_FORM_UNARY_FN;
-		case KEST_EXPR_LN: 	return KEST_EXPR_FORM_UNARY_FN;
+		case KEST_EXPR_LN: 		return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_POW: 	return KEST_EXPR_FORM_INFIX_OP;
 		case KEST_EXPR_SIN: 	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_SINH: 	return KEST_EXPR_FORM_UNARY_FN;
@@ -233,18 +234,24 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 	float x = 0.0;
 	float ret_val;
 	
-	KEST_PRINTF("[Depth %d] kest_expression_evaluate_rec(\"%s\") in scope %p\n", depth, kest_expression_to_string(expr), scope);
+	#ifdef KEST_EXPR_EVAL_VERBOSE
+	KEST_PRINTF("[Depth %d] kest_expression_evaluate_rec(%p = \"%s\") in scope %p\n", depth, expr, kest_expression_to_string(expr), scope);
+	#endif
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
+		#ifdef KEST_EXPR_EVAL_VERBOSE
 		KEST_PRINTF("kest_expression_evaluate(): Error: maximum recursion depth %d exceeded (possible dependency loop)\n", KEST_EXPR_REC_MAX_DEPTH);
+		#endif
 		ret_val = 0.0;
 		goto expr_compute_return;
 	}
 	
 	if (!expr)
 	{
+		#ifdef KEST_EXPR_EVAL_VERBOSE
 		KEST_PRINTF("expr compute: NULL expr!\n");
+		#endif
 		return 0.0;
 	}
 	
@@ -339,7 +346,7 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 				
 			default:
 				KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
-					kest_expression_to_string(expr), ref->type);
+					kest_expression_to_string(expr), ref->name, ref->type);
 				ret_val = 0.0;
 				break;
 		}
@@ -378,7 +385,9 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 			
 			if (fabsf(x) < 1e-20)
 			{
+				#ifdef KEST_EXPR_EVAL_VERBOSE
 				KEST_PRINTF("expr compute: division by zero!\n");
+				#endif
 				ret_val = 0.0;
 				goto expr_compute_return; // avoid division by zero by just returning 0 lol. idk. what else to do?
 			}
@@ -450,6 +459,10 @@ expr_compute_return:
 
 	expr->cached = 1;
 	expr->cached_val = ret_val;
+	
+	#ifdef KEST_EXPR_EVAL_VERBOSE
+	KEST_PRINTF("[Depth %d] kest_expression_evaluate_rec(%p = \"%s\") result: %f\n", depth, expr, kest_expression_to_string(expr), ret_val);
+	#endif
 	
 	return ret_val;
 }
@@ -767,10 +780,32 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr
 					#endif
 				}
 				break;
-				
+			
+			case KEST_SCOPE_ENTRY_TYPE_SETTING:
+				if (!ref->val.setting)
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("The reference is to a setting, but, ultimately, it turned up NULL!\n");
+					#endif
+					ret = kest_interval_real_line();
+				}
+				else
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] The reference is to a setting. We compute its range.\n", depth);
+					#endif
+					ret.a = ref->val.setting->min;
+					ret.b = ref->val.setting->max;
+					
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] Obtained setting range [%.4f, %.4f].\n", depth, ret.a, ret.b);
+					#endif
+				}
+				break;
+			
 			default:
-				KEST_PRINTF("Error evaluating expression (%p): expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
-					expr->val.ref_name, ref->type);
+				KEST_PRINTF("Error estimating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
+					kest_expression_to_string(expr), ref->name, ref->type);
 				ret = kest_interval_real_line();
 				break;
 		}

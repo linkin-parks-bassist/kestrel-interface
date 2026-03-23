@@ -124,16 +124,20 @@ int kest_fpga_batch_append_block_instr(kest_fpga_transfer_batch *batch, kest_blo
 
 int kest_fpga_batch_append_block_regs(kest_fpga_transfer_batch *batch, kest_block *block, kest_expr_scope *scope, int pos)
 {
+	KEST_PRINTF("kest_fpga_batch_append_block_regs(batch = %p, block = %p, scope = %p, pos = %d)\n");
 	if (!batch || !block)
 		return ERR_NULL_PTR;
 	
 	float v;
-	int16_t s;
+	int32_t s;
 	
 	if (block->reg_0.active && block->reg_0.expr)
 	{
+		KEST_PRINTF("register 0 active. evaluating...\n");
 		v = kest_expression_evaluate(block->reg_0.expr, scope);
+		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_0.format, 15-block->reg_0.format);
 		s = float_to_q_nminus1(v, block->reg_0.format);
+		KEST_PRINTF("result: %d = 0x%02x\n", s, s);
 		
 		kest_fpga_batch_append(batch, COMMAND_WRITE_BLOCK_REG_0);
 		kest_fpga_batch_append_block_number(batch, pos);
@@ -142,8 +146,11 @@ int kest_fpga_batch_append_block_regs(kest_fpga_transfer_batch *batch, kest_bloc
 	
 	if (block->reg_1.active && block->reg_1.expr)
 	{
+		KEST_PRINTF("register 1 active. evaluating...\n");
 		v = kest_expression_evaluate(block->reg_1.expr, scope);
+		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_1.format, 15-block->reg_1.format);
 		s = float_to_q_nminus1(v, block->reg_1.format);
+		KEST_PRINTF("result: %d = 0x%02x\n", s, s);
 		
 		kest_fpga_batch_append(batch, COMMAND_WRITE_BLOCK_REG_1);
 		kest_fpga_batch_append_block_number(batch, pos);
@@ -426,6 +433,8 @@ char *kest_block_opcode_to_name(uint32_t opcode)
 		case BLOCK_INSTR_MACZ: 			return (char*)"macz";
 		case BLOCK_INSTR_MAC: 			return (char*)"mac";
 		case BLOCK_INSTR_MOV_ACC: 		return (char*)"mov_acc";
+		case BLOCK_INSTR_MOV_LACC: 		return (char*)"mov_lacc";
+		case BLOCK_INSTR_MOV_UACC: 		return (char*)"mov_uacc";
 	}
 	
 	return "";
