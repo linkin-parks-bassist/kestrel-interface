@@ -41,7 +41,7 @@ const char *kest_error_code_to_string(int error_code)
 		case ERR_INVALID_PARAMETER_ID: 	return "ERR_INVALID_PARAMETER_ID";
 		case ERR_INVALID_SETTING_ID: 	return "ERR_INVALID_SETTING_ID";
 		case ERR_INVALID_TRANSFORMER_ID:return "ERR_INVALID_TRANSFORMER_ID";
-		case ERR_INVALID_PROFILE_ID: 	return "ERR_INVALID_PROFILE_ID";
+		case ERR_INVALID_PRESET_ID: 	return "ERR_INVALID_PRESET_ID";
 		case ERR_SPI_INIT_FAIL: 		return "ERR_SPI_INIT_FAIL";
 		case ERR_SD_INIT_FAIL: 			return "ERR_SD_INIT_FAIL";
 		case ERR_SD_MOUNT_FAIL: 		return "ERR_SD_MOUNT_FAIL";

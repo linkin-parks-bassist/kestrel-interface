@@ -7,7 +7,7 @@ typedef struct kest_state
 	float output_gain;
 	
 	kest_page_identifier current_page;
-	char active_profile_fname[32];
+	char active_preset_fname[32];
 	char active_sequence_fname[32];
 } kest_state;
 

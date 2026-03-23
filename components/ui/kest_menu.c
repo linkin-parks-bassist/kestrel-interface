@@ -67,7 +67,7 @@ int configure_menu_item(kest_menu_item *item)
 				configure_ui_page(item->linked_page, item->lp_configure_arg);
 			break;
 	
-		case MENU_ITEM_PROFILE_LISTING:
+		case MENU_ITEM_PRESET_LISTING:
 		case MENU_ITEM_SEQUENCE_LISTING:
 		case MENU_ITEM_PAGE_LINK_INDIRECT:
 			if (item->linked_page_indirect && *item->linked_page_indirect && !(*item->linked_page_indirect)->configured)
@@ -130,8 +130,8 @@ int refresh_menu_item(kest_menu_item *item)
 	
 	switch (item->type)
 	{
-		case MENU_ITEM_PROFILE_LISTING:
-			//profile_listing_menu_item_refresh_active(item);
+		case MENU_ITEM_PRESET_LISTING:
+			//preset_listing_menu_item_refresh_active(item);
 			break;
 		
 		default:
@@ -205,32 +205,32 @@ void danger_button_activate_popup_cb(lv_event_t *e)
 	lv_obj_center(item->extra[0]);*/
 }
 
-kest_menu_item *create_profile_listing_menu_item(char *text, kest_profile *profile, kest_ui_page *parent)
+kest_menu_item *create_preset_listing_menu_item(char *text, kest_preset *preset, kest_ui_page *parent)
 {
 	kest_menu_item *item = kest_alloc(sizeof(kest_menu_item));
 	
-	if (!item || !profile)
+	if (!item || !preset)
 		return NULL;
 	
 	init_menu_item(item);
 	
-	item->type = MENU_ITEM_PROFILE_LISTING;
+	item->type = MENU_ITEM_PRESET_LISTING;
 	if (text)
 		item->text = kest_strndup(text, MENU_ITEM_TEXT_MAX_LEN);
 	else
 		item->text = "Profile";
 	
-	item->linked_page_indirect = &profile->view_page;
-	item->data = profile;
+	item->linked_page_indirect = &preset->view_page;
+	item->data = preset;
 	
 	item->parent = parent;
 	
 	return item;
 }
 
-int profile_listing_menu_item_refresh_active(kest_menu_item *item)
+int preset_listing_menu_item_refresh_active(kest_menu_item *item)
 {
-	KEST_PRINTF("profile_listing_menu_item_refresh_active\n");
+	KEST_PRINTF("preset_listing_menu_item_refresh_active\n");
 	if (!item)
 		return ERR_NULL_PTR;
 	
@@ -240,26 +240,26 @@ int profile_listing_menu_item_refresh_active(kest_menu_item *item)
 	if (!item->extra[1])
 		return NO_ERROR;
 	
-	if (item->data && ((kest_profile*)item->data)->active)
+	if (item->data && ((kest_preset*)item->data)->active)
 	{
-		KEST_PRINTF("profile is active. going about it\n");
+		KEST_PRINTF("preset is active. going about it\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_PLAY);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	else
 	{
-		KEST_PRINTF("profile is not active. hiding play\n");
+		KEST_PRINTF("preset is not active. hiding play\n");
 		lv_label_set_text(item->extra[1], LV_SYMBOL_TRASH);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 		lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_CLICKABLE);
 	}
 	
-	KEST_PRINTF("profile_listing_menu_item_refresh_active done\n");
+	KEST_PRINTF("preset_listing_menu_item_refresh_active done\n");
 	return NO_ERROR;
 }
 
-int profile_listing_menu_item_change_name(kest_menu_item *item, char *name)
+int preset_listing_menu_item_change_name(kest_menu_item *item, char *name)
 {
 	if (!item)
 		return ERR_NULL_PTR;
@@ -274,27 +274,27 @@ int profile_listing_menu_item_change_name(kest_menu_item *item, char *name)
 	return NO_ERROR;
 }
 
-void profile_listing_delete_button_cb(lv_event_t *e)
+void preset_listing_delete_button_cb(lv_event_t *e)
 {
 	kest_menu_item *item = lv_event_get_user_data(e);
 	
 	if (!item)
 		return;
 	
-	kest_profile *profile = (kest_profile*)item->data;
+	kest_preset *preset = (kest_preset*)item->data;
 	
-	if (!profile)
+	if (!preset)
 		return;
 	
-	if (!profile->active)
+	if (!preset->active)
 	{
-		cxt_remove_profile(&global_cxt, profile);
+		cxt_remove_preset(&global_cxt, preset);
 		
 		menu_page_remove_item(item->parent, item);
 	}
 }
 
-void disappear_profile_listing_delete_button(lv_timer_t *timer)
+void disappear_preset_listing_delete_button(lv_timer_t *timer)
 {
 	kest_menu_item *item = lv_timer_get_user_data(timer);
 	
@@ -303,29 +303,29 @@ void disappear_profile_listing_delete_button(lv_timer_t *timer)
 	item->timer = NULL;
 }
 
-void menu_item_profile_listing_released_cb(lv_event_t *e)
+void menu_item_preset_listing_released_cb(lv_event_t *e)
 {
 	kest_menu_item *item = (kest_menu_item*)lv_event_get_user_data(e);
 	
 	if (!item)
 		return;
 	
-	kest_profile *profile = item->data;
+	kest_preset *preset = item->data;
 	
 	if (!item->long_pressed)
 	{
-		if (profile && profile->view_page)
+		if (preset && preset->view_page)
 		{
-			profile->view_page->parent = &global_cxt.pages.main_menu;
+			preset->view_page->parent = &global_cxt.pages.main_menu;
 			
-			enter_ui_page_forwards(profile->view_page);
+			enter_ui_page_forwards(preset->view_page);
 		}
 	}
 	else
 	{
-		if (profile && !profile->active)
+		if (preset && !preset->active)
 		{
-			item->timer = lv_timer_create(disappear_profile_listing_delete_button, STANDARD_DEL_BTN_REMAIN_MS, item);
+			item->timer = lv_timer_create(disappear_preset_listing_delete_button, STANDARD_DEL_BTN_REMAIN_MS, item);
 			lv_timer_set_repeat_count(item->timer, 1);
 		}
 	}
@@ -333,7 +333,7 @@ void menu_item_profile_listing_released_cb(lv_event_t *e)
 	item->long_pressed = 0;
 }
 
-void menu_item_profile_listing_long_pressed_cb(lv_event_t *e)
+void menu_item_preset_listing_long_pressed_cb(lv_event_t *e)
 {
 	kest_menu_item *item = (kest_menu_item*)lv_event_get_user_data(e);
 	
@@ -342,9 +342,9 @@ void menu_item_profile_listing_long_pressed_cb(lv_event_t *e)
 	
 	item->long_pressed = 1;
 	
-	kest_profile *profile = item->data;
+	kest_preset *preset = item->data;
 	
-	if (profile && !profile->active)
+	if (preset && !preset->active)
 	{
 		lv_obj_clear_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 	}
@@ -397,10 +397,10 @@ int create_menu_item_ui(kest_menu_item *item, lv_obj_t *parent)
 			lv_obj_center(item->extra[1]);
 			break;
 		
-		case MENU_ITEM_PROFILE_LISTING:
+		case MENU_ITEM_PRESET_LISTING:
 			create_standard_button_long_press_release(&item->obj, &item->label, parent, item->text,
-				menu_item_profile_listing_long_pressed_cb, item,
-				menu_item_profile_listing_released_cb, item);
+				menu_item_preset_listing_long_pressed_cb, item,
+				menu_item_preset_listing_released_cb, item);
 			
 			item->extra = kest_alloc(sizeof(lv_obj_t*) * 2);
 			
@@ -411,7 +411,7 @@ int create_menu_item_ui(kest_menu_item *item, lv_obj_t *parent)
 			
 			lv_obj_align(item->extra[0], LV_ALIGN_RIGHT_MID, 10, 0);
 			lv_obj_set_size(item->extra[0], 0.75 * STANDARD_BUTTON_HEIGHT, 0.75 * STANDARD_BUTTON_HEIGHT);
-			lv_obj_add_event_cb(item->extra[0], profile_listing_delete_button_cb, LV_EVENT_CLICKED, item);
+			lv_obj_add_event_cb(item->extra[0], preset_listing_delete_button_cb, LV_EVENT_CLICKED, item);
 			lv_obj_add_flag(item->extra[0], LV_OBJ_FLAG_HIDDEN);
 			
 			item->extra[1] = lv_label_create(item->extra[0]);
@@ -802,13 +802,13 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	configure_parameter_widget( &str->input_gain,  &global_cxt.input_gain, NULL, page);
 	configure_parameter_widget(&str->output_gain, &global_cxt.output_gain, NULL, page);
 	
-	init_button(&str->profiles_button);
+	init_button(&str->presets_button);
 	init_button(&str->sequences_button);
 	init_button(&str->msc_button);
 	init_danger_button(&str->erase_sd_card_button, erase_sd_card_void_cb, NULL, page);
 	
-	kest_button_set_label(&str->profiles_button, "Profiles");
-	kest_button_disable_alignment(&str->profiles_button);
+	kest_button_set_label(&str->presets_button, "Profiles");
+	kest_button_disable_alignment(&str->presets_button);
 	kest_button_set_label(&str->sequences_button, "Sequences");
 	kest_button_disable_alignment(&str->sequences_button);
 	kest_button_set_label(&str->msc_button, "Unmount SD card");
@@ -816,7 +816,7 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	kest_button_set_label(&str->erase_sd_card_button.button, "Erase SD card");
 	kest_button_disable_alignment(&str->erase_sd_card_button.button);
 	
-	button_set_clicked_cb( &str->profiles_button, enter_ui_page_forwards_cb, &global_cxt.pages.main_sequence_view);
+	button_set_clicked_cb( &str->presets_button, enter_ui_page_forwards_cb, &global_cxt.pages.main_sequence_view);
 	button_set_clicked_cb(&str->sequences_button, enter_ui_page_forwards_cb, &global_cxt.pages.sequence_list);
 	button_set_clicked_cb(&str->msc_button, kest_msc_button_cb, &str->msc_button);
 	
@@ -830,11 +830,11 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	item = create_parameter_widget_menu_item(&global_cxt.state.output_gain, page);
 	menu_page_add_item(str, item);
 	
-	kest_ui_page *profile_list = &global_cxt.pages.main_sequence_view;
+	kest_ui_page *preset_list = &global_cxt.pages.main_sequence_view;
 	
-	profile_list->parent = page;
+	preset_list->parent = page;
 	
-	item = create_page_link_menu_item("Profiles", profile_list, page);
+	item = create_page_link_menu_item("Profiles", preset_list, page);
 	
 	menu_page_add_item(str, item);
 	
@@ -904,7 +904,7 @@ int create_main_menu_ui(kest_ui_page *page)
 	lv_obj_remove_style_all(str->top_pad);
 	lv_obj_set_size(str->top_pad, LV_PCT(100), 20);
 	
-	create_button_ui(&str->profiles_button,  page->container);
+	create_button_ui(&str->presets_button,  page->container);
 	create_button_ui(&str->sequences_button, page->container);
 	create_button_ui(&str->msc_button, 		 page->container);
 	

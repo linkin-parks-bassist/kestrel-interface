@@ -17,7 +17,7 @@ kest_ui_page *kest_page_id_find_page(kest_context *cxt, kest_page_identifier id)
 	kest_ui_page *page;
 	kest_effect_view_str *tv_str;
 	kest_effect *effect = NULL;
-	kest_profile *profile = NULL;
+	kest_preset *preset = NULL;
 	kest_sequence *seq = NULL;
 	
 	switch (id.type)
@@ -33,17 +33,17 @@ kest_ui_page *kest_page_id_find_page(kest_context *cxt, kest_page_identifier id)
 			else return seq->view_page;
 			
 		case KEST_UI_PAGE_PROF_VIEW: 
-			KEST_PRINTF("It is a profile view.\n");
-			profile = cxt_get_profile_by_fname(cxt, id.fname);
+			KEST_PRINTF("It is a preset view.\n");
+			preset = cxt_get_preset_by_fname(cxt, id.fname);
 			
-			if (!profile) return NULL;
-			else return profile->view_page;
+			if (!preset) return NULL;
+			else return preset->view_page;
 			
 		case KEST_UI_PAGE_TRANS_VIEW: 
-			KEST_PRINTF("It is a effect view. First, search for the profile with fname \"%s\"\n", id.fname);
-			profile = cxt_get_profile_by_fname(cxt, id.fname);
-			KEST_PRINTF("The returned profile: %p\n", profile);
-			if (!profile)
+			KEST_PRINTF("It is a effect view. First, search for the preset with fname \"%s\"\n", id.fname);
+			preset = cxt_get_preset_by_fname(cxt, id.fname);
+			KEST_PRINTF("The returned preset: %p\n", preset);
+			if (!preset)
 			{
 				KEST_PRINTF("Unforunately, it is NULL! All is lost!\n");
 				return NULL;
@@ -51,7 +51,7 @@ kest_ui_page *kest_page_id_find_page(kest_context *cxt, kest_page_identifier id)
 			
 			KEST_PRINTF("It is non-NULL! Yay!. Now we must try to find among it the desired effect; it has ID %d\n", id.id);
 			
-			effect = kest_profile_get_effect_by_id(profile, id.id);
+			effect = kest_preset_get_effect_by_id(preset, id.id);
 			
 			if (!effect)
 			{
@@ -67,11 +67,11 @@ kest_ui_page *kest_page_id_find_page(kest_context *cxt, kest_page_identifier id)
 			
 		case KEST_UI_PAGE_TRANS_SET: 
 			KEST_PRINTF("It is a effect settings page.\n");
-			profile = cxt_get_profile_by_fname(cxt, id.fname);
+			preset = cxt_get_preset_by_fname(cxt, id.fname);
 			
-			if (!profile) return NULL;
+			if (!preset) return NULL;
 			
-			effect = kest_profile_get_effect_by_id(profile, id.id);
+			effect = kest_preset_get_effect_by_id(preset, id.id);
 			
 			if (!effect) return NULL;
 			page = effect->view_page;
@@ -112,12 +112,12 @@ int kest_ui_page_create_identifier(kest_ui_page *page, kest_page_identifier *id)
 	if (!page->data_struct)
 		return ERR_BAD_ARGS;
 	
-	kest_profile_view_str		*pv_str = (kest_profile_view_str*)		page->data_struct;
+	kest_preset_view_str		*pv_str = (kest_preset_view_str*)		page->data_struct;
 	kest_sequence_view_str 	*sv_str = (kest_sequence_view_str*)	page->data_struct;
 	kest_effect_view_str 	*tv_str = (kest_effect_view_str*)	page->data_struct;
 	effect_settings_page_str *ts_str = (effect_settings_page_str*)page->data_struct;
 	kest_effect *effect = NULL;
-	kest_profile *profile = NULL;
+	kest_preset *preset = NULL;
 	kest_sequence *seq = NULL;
 	
 	char *fname = NULL;
@@ -129,7 +129,7 @@ int kest_ui_page_create_identifier(kest_ui_page *page, kest_page_identifier *id)
 			break;
 			
 		case KEST_UI_PAGE_PROF_VIEW: 
-			profile = pv_str->profile;
+			preset = pv_str->preset;
 			break;
 			
 		case KEST_UI_PAGE_TRANS_VIEW:
@@ -151,13 +151,13 @@ int kest_ui_page_create_identifier(kest_ui_page *page, kest_page_identifier *id)
 	if (effect)
 	{
 		id->id = effect->id;
-		profile = effect->profile;
+		preset = effect->preset;
 	}
 	
 	if (seq)
 		fname = seq->fname;
-	else if (profile)
-		fname = profile->fname;
+	else if (preset)
+		fname = preset->fname;
 	else
 		return ERR_BAD_ARGS;
 	

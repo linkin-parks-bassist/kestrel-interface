@@ -3,16 +3,16 @@ app_objdir := $(top_objdir)/app
 lib_objdir := $(top_objdir)/lib
 test_objdir := $(top_objdir)/tests
 
-app_cfiles := 	core/kest_error_codes.c	\
+app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_alloc.c			\
 				core/kest_block.c			\
 				core/kest_bump_arena.c		\
-				core/kest_context.c		\
+				core/kest_context.c			\
 				core/kest_eff_desc.c		\
 				core/kest_expression.c		\
 				core/kest_expr_scope.c		\
 				core/kest_files.c			\
-				core/kest_hfunc.c			\
+				core/kest_helper_fn.c		\
 				core/kest_lv_log.c			\
 				core/kest_parameter.c		\
 				core/kest_param_update.c	\
@@ -20,29 +20,29 @@ app_cfiles := 	core/kest_error_codes.c	\
 				core/kest_state.c			\
 				core/kest_pipeline.c		\
 				core/kest_sequence.c		\
-				core/kest_profile.c		\
+				core/kest_preset.c			\
 				core/kest_resource.c		\
 				core/kest_representation.c	\
 				core/kest_printf.c			\
 				core/kest_string.c			\
 				ui/kest_button.c			\
-				ui/kest_home_view.c		\
+				ui/kest_home_view.c			\
 				ui/kest_menu.c				\
 				ui/kest_parameter_widget.c	\
-				ui/kest_profile_settings.c	\
-				ui/kest_profile_view.c		\
-				ui/kest_sequence_list.c	\
-				ui/kest_sequence_view.c	\
-				ui/kest_effect_select.c	\
+				ui/kest_preset_settings.c	\
+				ui/kest_preset_view.c		\
+				ui/kest_sequence_list.c		\
+				ui/kest_sequence_view.c		\
+				ui/kest_effect_select.c		\
 				ui/kest_effect_settings.c	\
 				ui/kest_effect_view.c		\
 				ui/kest_page_id.c			\
 				ui/kest_ui.c				\
 				fpga/kest_fpga_encoding.c	\
 				fpga/kest_fpga_comms.c		\
-				fpga/kest_fpga_io.c		\
+				fpga/kest_fpga_io.c			\
 				fpga/kest_reg_format.c		\
-				fpga/kest_fixed_point.c	\
+				fpga/kest_fixed_point.c		\
 				parser/kest_asm_parser.c	\
 				parser/kest_dict_extract.c	\
 				parser/kest_dictionary.c	\
@@ -51,7 +51,7 @@ app_cfiles := 	core/kest_error_codes.c	\
 				parser/kest_expr_parser.c	\
 				parser/kest_tokenizer.c
 
-lib_cfiles := 	core/kest_error_codes.c	\
+lib_cfiles := 	core/kest_error_codes.c		\
 				core/kest_alloc.c			\
 				core/kest_representation.c	\
 				core/kest_parameter.c		\
@@ -62,12 +62,12 @@ lib_cfiles := 	core/kest_error_codes.c	\
 				core/kest_eff_desc.c		\
 				core/kest_effect.c			\
 				core/kest_pipeline.c		\
-				core/kest_profile.c		\
+				core/kest_preset.c			\
 				core/kest_printf.c			\
-				core/kest_hfunc.c			\
+				core/kest_helper_fn.c		\
 				core/kest_string.c			\
 				core/kest_bump_arena.c		\
-				parser/kest_tokenizer.c	\
+				parser/kest_tokenizer.c		\
 				parser/kest_expr_parser.c	\
 				parser/kest_dictionary.c	\
 				parser/kest_eff_parser.c	\
@@ -76,7 +76,7 @@ lib_cfiles := 	core/kest_error_codes.c	\
 				parser/kest_dict_extract.c	\
 				fpga/kest_fpga_encoding.c	\
 				fpga/kest_reg_format.c		\
-				fpga/kest_fixed_point.c	\
+				fpga/kest_fixed_point.c		\
 				fpga/kest_fpga_io.c
 
 

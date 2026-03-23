@@ -28,18 +28,18 @@ int kest_cxt_clone_state(kest_context *cxt, kest_state *state)
 	
 	kest_ui_page_create_identifier(cxt->pages.current_page, &state->current_page);
 	
-	if (cxt->active_profile && cxt->active_profile->has_fname)
+	if (cxt->active_preset && cxt->active_preset->has_fname)
 	{
-		len = strlen(cxt->active_profile->fname);
+		len = strlen(cxt->active_preset->fname);
 		if (len > 31)
 			len = 31;
 		
-		memcpy(state->active_profile_fname, cxt->active_profile->fname, len);
-		state->active_profile_fname[len] = 0;
+		memcpy(state->active_preset_fname, cxt->active_preset->fname, len);
+		state->active_preset_fname[len] = 0;
 	}
 	else
 	{
-		state->active_profile_fname[0] = 0;
+		state->active_preset_fname[0] = 0;
 	}
 	
 	if (cxt->sequence && cxt->sequence->has_fname)
@@ -98,17 +98,17 @@ int kest_cxt_restore_state(kest_context *cxt, kest_state *state)
 	if (!cxt || !state)
 		return ERR_NULL_PTR;
 	
-	kest_profile *profile = NULL;
+	kest_preset *preset = NULL;
 	kest_sequence *sequence = NULL;
 	kest_ui_page *page;
 	
 	int ret_val = NO_ERROR;
 	int tries = 0;
 	
-	profile = cxt_get_profile_by_fname(cxt, state->active_profile_fname);
+	preset = cxt_get_preset_by_fname(cxt, state->active_preset_fname);
 	
-	if (profile)
-		set_active_profile_from_sequence(profile);
+	if (preset)
+		set_active_preset_from_sequence(preset);
 	
 	kest_cxt_set_input_gain (cxt, state->input_gain);
 	kest_cxt_set_output_gain(cxt, state->output_gain);

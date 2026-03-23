@@ -21,11 +21,11 @@ int refresh_sequence_view  (kest_ui_page *page);
 int free_sequence_view_ui  (kest_ui_page *page);
 int sequence_view_free_all (kest_ui_page *page);
 
-int sequence_view_append_profile(kest_ui_page *page, kest_profile *sequence);
+int sequence_view_append_preset(kest_ui_page *page, kest_preset *sequence);
 
 int create_sequence_view_for(kest_sequence *sequence);
 
 void sequence_view_rep_update(void *representer, void *representee);
-void sequence_view_profile_button_rep_update(void *representer, void *representee);
+void sequence_view_preset_button_rep_update(void *representer, void *representee);
 
 #endif

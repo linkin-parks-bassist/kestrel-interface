@@ -1,10 +1,10 @@
 #ifndef KEST_FILES_H_
 #define KEST_FILES_H_
 
-#define KEST_PROFILE_MAGIC_BYTE  			0x4a
-#define KEST_PROFILE_PIPELINE_LINEAR  		0x01
+#define KEST_PRESET_MAGIC_BYTE  			0x4a
+#define KEST_PRESET_PIPELINE_LINEAR  		0x01
 
-#define KEST_PROFILE_BROKEN_TRANSFORMER	0xfffd
+#define KEST_PRESET_BROKEN_TRANSFORMER	0xfffd
 
 #define KEST_STATE_MAGIC_BYTE  			0x4b
 
@@ -16,25 +16,25 @@
 #ifdef KEST_DESKTOP
 #define MAIN_SEQUENCE_FNAME "./sdcard/ms.seq"
 #define SETTINGS_FNAME 		"./sdcard/conf"
-#define KEST_PROFILES_DIR  	"./sdcard/prof/"
+#define KEST_PRESETS_DIR  	"./sdcard/prof/"
 #define KEST_SEQUENCES_DIR 	"./sdcard/seq/"
 #define KEST_EFFECT_DESC_DIR 	"./sdcard/eff/"
 #else
 #define MAIN_SEQUENCE_FNAME "/sdcard/ms.seq"
 #define SETTINGS_FNAME 		"/sdcard/conf"
-#define KEST_PROFILES_DIR  	"/sdcard/prof/"
+#define KEST_PRESETS_DIR  	"/sdcard/prof/"
 #define KEST_SEQUENCES_DIR 	"/sdcard/seq/"
 #define KEST_EFFECT_DESC_DIR 	"/sdcard/eff/"
 #endif
 
 
-#define PROFILE_EXTENSION  ".prf"
+#define PRESET_EXTENSION  ".prf"
 #define SEQUENCE_EXTENSION ".seq"
 #define EFF_DESC_EXTENSION ".eff"
 
-int save_profile_as_file		(kest_profile *profile, const char *fname);
-int save_profile_as_file_safe	(kest_profile *profile, const char *fname);
-int read_profile_from_file		(kest_profile *profile, const char *fname);
+int save_preset_as_file		(kest_preset *preset, const char *fname);
+int save_preset_as_file_safe	(kest_preset *preset, const char *fname);
+int read_preset_from_file		(kest_preset *preset, const char *fname);
 
 int save_sequence_as_file		(kest_sequence *sequence, const char *fname);
 int save_sequence_as_file_safe	(kest_sequence *sequence, const char *fname);
@@ -48,8 +48,8 @@ int load_effects(kest_context *cxt);
 
 int init_periodic_backup_task();
 
-int save_profile(kest_profile *profile);
-int load_saved_profiles(kest_context *cxt);
+int save_preset(kest_preset *preset);
+int load_saved_presets(kest_context *cxt);
 
 int save_sequence(kest_sequence *sequence);
 int load_saved_sequences(kest_context *cxt);

@@ -24,7 +24,7 @@ int init_parameter_str(kest_parameter *param)
 	param->max_expr = NULL;
 	param->max_velocity = DEFAULT_MAX_VELOCITY;
 	param->factor = 1.0;
-	param->id = (kest_parameter_id){.profile_id = 0, .effect_id = 0, .parameter_id = 0};
+	param->id = (kest_parameter_id){.preset_id = 0, .effect_id = 0, .parameter_id = 0};
 	param->name = NULL;
 	param->name_internal = NULL;
 	param->units = NULL;
@@ -172,7 +172,7 @@ int parameter_set_id(kest_parameter *param, uint16_t pid, uint16_t tid, uint16_t
 	if (!param)
 		return ERR_NULL_PTR;
 	
-	param->id.profile_id 	= pid;
+	param->id.preset_id 	= pid;
 	param->id.effect_id = tid;
 	param->id.parameter_id 	= ppid;
 	
@@ -405,7 +405,7 @@ kest_interval kest_parameter_get_range(kest_parameter *param)
 	
 	if (!param) return i;
 	
-	kest_effect *effect = cxt_get_effect_by_id(&global_cxt, param->id.profile_id, param->id.effect_id);
+	kest_effect *effect = cxt_get_effect_by_id(&global_cxt, param->id.preset_id, param->id.effect_id);
 	
 	if (effect && !effect->scope)
 	{

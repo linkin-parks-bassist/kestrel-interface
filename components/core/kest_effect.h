@@ -12,7 +12,7 @@
 #define TRANSFORMER_BAND_HP_CUTOFF_PID 	0xFFFD
 #define TRANSFORMER_BAND_MODE_SID 		0xFFFF
 
-struct kest_profile;
+struct kest_preset;
 struct kest_ui_page;
 
 typedef struct kest_effect
@@ -34,7 +34,7 @@ typedef struct kest_effect
 	kest_parameter_pll *parameters;
 	kest_setting_pll *settings;
 	
-	struct kest_profile *profile;
+	struct kest_preset *preset;
 	
 	#ifdef KEST_ENABLE_UI
 	struct kest_ui_page *view_page;
@@ -49,7 +49,7 @@ typedef struct kest_effect
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_representation_pll *reps;
-	kest_representation profile_rep;
+	kest_representation preset_rep;
 	#endif
 } kest_effect;
 
@@ -59,13 +59,13 @@ DECLARE_LINKED_PTR_LIST(kest_effect);
 
 int init_effect(kest_effect *effect);
 
-int effect_set_id(kest_effect *effect, uint16_t profile_id, uint16_t effect_id);
+int effect_set_id(kest_effect *effect, uint16_t preset_id, uint16_t effect_id);
 int effect_rectify_param_ids(kest_effect *effect);
 
 kest_parameter *effect_add_parameter(kest_effect *effect);
 kest_setting *effect_add_setting(kest_effect *effect);
 
-int init_default_effect_by_type(kest_effect *effect, uint16_t type, uint16_t profile_id, uint16_t effect_id);
+int init_default_effect_by_type(kest_effect *effect, uint16_t type, uint16_t preset_id, uint16_t effect_id);
 int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff);
 
 #ifdef KEST_ENABLE_UI
@@ -101,7 +101,7 @@ int kest_effect_set_parameter(kest_effect *effect, const char *name, float value
 int kest_effect_set_setting(kest_effect *effect, const char *name, int value);
 
 int kest_effect_update_reps(kest_effect *effect);
-void kest_effect_profile_rep_update(void *representer, void *representee);
+void kest_effect_preset_rep_update(void *representer, void *representee);
 
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);

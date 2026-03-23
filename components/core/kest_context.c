@@ -4,8 +4,8 @@
 #define PRINTLINES_ALLOWED 0
 #endif
 
-#define INITIAL_PROFILE_ARRAY_LENGTH 8
-#define PROFILE_ARRAY_CHUNK_SIZE	 8
+#define INITIAL_PRESET_ARRAY_LENGTH 8
+#define PRESET_ARRAY_CHUNK_SIZE	 8
 
 static const char *FNAME = "kest_context.c";
 
@@ -14,12 +14,12 @@ int kest_init_context(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	cxt->n_profiles = 0;
+	cxt->n_presets = 0;
 	
-	cxt->active_profile  = NULL;
-	cxt->working_profile = NULL;
+	cxt->active_preset  = NULL;
+	cxt->working_preset = NULL;
 	
-	cxt->profiles  = NULL;
+	cxt->presets  = NULL;
 	cxt->sequences = NULL;
 	cxt->sequence  = NULL;
 	
@@ -27,7 +27,7 @@ int kest_init_context(kest_context *cxt)
 	
 	cxt->main_sequence.name = "Profiles";
 	
-	cxt->saved_profiles_loaded  = 0;
+	cxt->saved_presets_loaded  = 0;
 	cxt->saved_sequences_loaded = 0;
 	
 	cxt->pages.backstage = NULL;
@@ -37,14 +37,14 @@ int kest_init_context(kest_context *cxt)
 	
 	init_parameter(&cxt->input_gain, "Input Gain", -100, -30.0, 30.0);
 	cxt->input_gain.units = " dB";
-	cxt->input_gain.id = (kest_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .effect_id = 0, .parameter_id = INPUT_GAIN_PID};
+	cxt->input_gain.id = (kest_parameter_id){.preset_id = CONTEXT_PRESET_ID, .effect_id = 0, .parameter_id = INPUT_GAIN_PID};
 	cxt->input_gain.max_velocity = 0.4;
 	cxt->input_gain.min_expr = &kest_expression_standard_gain_min;
 	cxt->input_gain.max_expr = &kest_expression_standard_gain_max;
 	
 	init_parameter(&cxt->output_gain, "Output Gain", -100, -30.0, 30.0);
 	cxt->output_gain.units = " dB";
-	cxt->output_gain.id = (kest_parameter_id){.profile_id = CONTEXT_PROFILE_ID, .effect_id = 0, .parameter_id = OUTPUT_GAIN_PID};
+	cxt->output_gain.id = (kest_parameter_id){.preset_id = CONTEXT_PRESET_ID, .effect_id = 0, .parameter_id = OUTPUT_GAIN_PID};
 	cxt->output_gain.max_velocity = 0.4;
 	cxt->output_gain.min_expr = &kest_expression_standard_gain_min;
 	cxt->output_gain.max_expr = &kest_expression_standard_gain_max;
@@ -111,65 +111,65 @@ int kest_context_init_ui(kest_context *cxt)
 	return NO_ERROR;
 }
 
-int kest_context_add_profile(kest_context *cxt)
+int kest_context_add_preset(kest_context *cxt)
 {
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	kest_profile *profile = kest_alloc(sizeof(kest_profile));
+	kest_preset *preset = kest_alloc(sizeof(kest_preset));
 	
-	if (!profile)
+	if (!preset)
 		return ERR_ALLOC_FAIL;
 	
-	init_m_profile(profile);
+	init_m_preset(preset);
 	
-	profile_ll *nl = kest_profile_pll_append(cxt->profiles, profile);
+	preset_ll *nl = kest_preset_pll_append(cxt->presets, preset);
 	
 	if (!nl)
 	{
-		free_profile(profile);
+		free_preset(preset);
 		return ERR_ALLOC_FAIL;
 	}
 	
-	cxt->profiles = nl;
+	cxt->presets = nl;
 	
-	cxt->n_profiles++;
+	cxt->n_presets++;
 	
 	return NO_ERROR;
 }
 
-kest_profile *kest_context_add_profile_rp(kest_context *cxt)
+kest_preset *kest_context_add_preset_rp(kest_context *cxt)
 {
 	if (!cxt)
 		return NULL;
 	
-	KEST_PRINTF("kest_context_add_profile_rp\n");
+	KEST_PRINTF("kest_context_add_preset_rp\n");
 	
-	kest_profile *profile = kest_alloc(sizeof(kest_profile));
+	kest_preset *preset = kest_alloc(sizeof(kest_preset));
 	
-	if (!profile)
+	if (!preset)
 		return NULL;
 	
-	KEST_PRINTF("profile = %p\n", profile);
+	KEST_PRINTF("preset = %p\n", preset);
 	
-	init_m_profile(profile);
+	init_m_preset(preset);
 	
-	KEST_PRINTF("profile->name = %p\n", profile->name);
-	KEST_PRINTF("\t\t\t= %s\n", profile->name ? profile->name : "(NULL)");
+	KEST_PRINTF("preset->name = %p\n", preset->name);
+	KEST_PRINTF("\t\t\t= %s\n", preset->name ? preset->name : "(NULL)");
 	
-	profile_ll *nl = kest_profile_pll_append(cxt->profiles, profile);
+	preset_ll *nl = kest_preset_pll_append(cxt->presets, preset);
 	
 	if (!nl)
 	{
-		free_profile(profile);
+		free_preset(preset);
 		return NULL;
 	}
 	
-	cxt->profiles = nl;
+	cxt->presets = nl;
 	
-	cxt->n_profiles++;
+	cxt->n_presets++;
 	
-	return profile;
+	return preset;
 }
 
 kest_sequence *kest_context_add_sequence_rp(kest_context *cxt)
@@ -197,16 +197,16 @@ kest_sequence *kest_context_add_sequence_rp(kest_context *cxt)
 	return sequence;
 }
 
-kest_profile *cxt_get_profile_by_id(kest_context *cxt, uint16_t profile_id)
+kest_preset *cxt_get_preset_by_id(kest_context *cxt, uint16_t preset_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	profile_ll *current = cxt->profiles;
+	preset_ll *current = cxt->presets;
 	
 	while (current)
 	{
-		if (current->data && current->data->id == profile_id)
+		if (current->data && current->data->id == preset_id)
 		{
 			return current->data;
 		}
@@ -217,18 +217,18 @@ kest_profile *cxt_get_profile_by_id(kest_context *cxt, uint16_t profile_id)
 	return NULL;
 }
 
-kest_effect *cxt_get_effect_by_id(kest_context *cxt, uint16_t profile_id, uint16_t effect_id)
+kest_effect *cxt_get_effect_by_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	kest_profile *profile = cxt_get_profile_by_id(cxt, profile_id);
+	kest_preset *preset = cxt_get_preset_by_id(cxt, preset_id);
 	
-	if (!profile)
+	if (!preset)
 		return NULL;
 	
 	
-	kest_effect_pll *current = profile->pipeline.effects;
+	kest_effect_pll *current = preset->pipeline.effects;
 	
 	while (current)
 	{
@@ -243,12 +243,12 @@ kest_effect *cxt_get_effect_by_id(kest_context *cxt, uint16_t profile_id, uint16
 	return NULL;
 }
 
-kest_parameter *cxt_get_parameter_by_id(kest_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id)
+kest_parameter *cxt_get_parameter_by_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_id, uint16_t parameter_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	kest_effect *effect = cxt_get_effect_by_id(cxt, profile_id, effect_id);
+	kest_effect *effect = cxt_get_effect_by_id(cxt, preset_id, effect_id);
 	
 	if (!effect)
 		return NULL;
@@ -264,7 +264,7 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 	*pp = NULL;
 	*tp = NULL;
 	
-	if (id.profile_id == CONTEXT_PROFILE_ID)
+	if (id.preset_id == CONTEXT_PRESET_ID)
 	{
 		if (id.effect_id == 0)
 		{
@@ -286,7 +286,7 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 		return ERR_BAD_ARGS;
 	}
 	
-	kest_effect *effect = cxt_get_effect_by_id(cxt, id.profile_id, id.effect_id);
+	kest_effect *effect = cxt_get_effect_by_id(cxt, id.preset_id, id.effect_id);
 	
 	
 	if (!effect)
@@ -307,12 +307,12 @@ int cxt_get_parameter_and_effect_by_id(kest_context *cxt, kest_parameter_id id, 
 	return NO_ERROR;
 }
 
-kest_setting *cxt_get_setting_by_id(kest_context *cxt, uint16_t profile_id, uint16_t effect_id, uint16_t parameter_id)
+kest_setting *cxt_get_setting_by_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_id, uint16_t parameter_id)
 {
 	if (!cxt)
 		return NULL;
 	
-	kest_effect *effect = cxt_get_effect_by_id(cxt, profile_id, effect_id);
+	kest_effect *effect = cxt_get_effect_by_id(cxt, preset_id, effect_id);
 	
 	if (!effect)
 		return NULL;
@@ -320,17 +320,17 @@ kest_setting *cxt_get_setting_by_id(kest_context *cxt, uint16_t profile_id, uint
 	return effect_get_setting(effect, parameter_id);
 }
 
-int cxt_effect_id_to_position(kest_context *cxt, uint16_t profile_id, uint16_t effect_id)
+int cxt_effect_id_to_position(kest_context *cxt, uint16_t preset_id, uint16_t effect_id)
 {
 	if (!cxt)
 		return -ERR_NULL_PTR;
 	
-	kest_profile *profile = cxt_get_profile_by_id(cxt, profile_id);
+	kest_preset *preset = cxt_get_preset_by_id(cxt, preset_id);
 	
-	if (!profile)
-		return -ERR_INVALID_PROFILE_ID;
+	if (!preset)
+		return -ERR_INVALID_PRESET_ID;
 	
-	kest_effect_pll *current = profile->pipeline.effects;
+	kest_effect_pll *current = preset->pipeline.effects;
 	
 	int i = 0;
 	while (current)
@@ -345,17 +345,17 @@ int cxt_effect_id_to_position(kest_context *cxt, uint16_t profile_id, uint16_t e
 	return -ERR_INVALID_TRANSFORMER_ID;
 }
 
-int cxt_effect_position_to_id(kest_context *cxt, uint16_t profile_id, uint16_t effect_pos)
+int cxt_effect_position_to_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_pos)
 {
 	if (!cxt)
 		return -ERR_NULL_PTR;
 	
-	kest_profile *profile = cxt_get_profile_by_id(cxt, profile_id);
+	kest_preset *preset = cxt_get_preset_by_id(cxt, preset_id);
 	
-	if (!profile)
-		return -ERR_INVALID_PROFILE_ID;
+	if (!preset)
+		return -ERR_INVALID_PRESET_ID;
 	
-	kest_effect_pll *current = profile->pipeline.effects;
+	kest_effect_pll *current = preset->pipeline.effects;
 	
 	int i = 0;
 	while (current)
@@ -375,35 +375,35 @@ int cxt_effect_position_to_id(kest_context *cxt, uint16_t profile_id, uint16_t e
 	return -ERR_INVALID_TRANSFORMER_ID;
 }
 
-int cxt_remove_profile(kest_context *cxt, kest_profile *profile)
+int cxt_remove_preset(kest_context *cxt, kest_preset *preset)
 {
-	if (!cxt || !profile)
+	if (!cxt || !preset)
 		return ERR_NULL_PTR;
 	
-	profile_ll *current = cxt->profiles;
-	profile_ll *prev = NULL;
+	preset_ll *current = cxt->presets;
+	preset_ll *prev = NULL;
 	
-	if (profile && profile->has_fname)
-		remove(profile->fname);
+	if (preset && preset->has_fname)
+		remove(preset->fname);
 	
 	while (current)
 	{
-		if (current->data == profile)
+		if (current->data == preset)
 		{
 			#ifdef USE_TEENSY
-			queue_msg_to_teensy(create_m_message(KEST_MESSAGE_DELETE_PROFILE, "s", profile->id));
+			queue_msg_to_teensy(create_m_message(KEST_MESSAGE_DELETE_PRESET, "s", preset->id));
 			#endif
 			
 			if (!prev)
 			{
-				cxt->profiles = current->next;
+				cxt->presets = current->next;
 			}
 			else
 			{
 				prev->next = current->next;
 			}
 			
-			free_profile(profile);
+			free_preset(preset);
 			kest_free(current);
 			
 			return NO_ERROR;
@@ -413,7 +413,7 @@ int cxt_remove_profile(kest_context *cxt, kest_profile *profile)
 		current = current->next;
 	}
 	
-	return ERR_INVALID_PROFILE_ID;
+	return ERR_INVALID_PRESET_ID;
 }
 
 int cxt_remove_sequence(kest_context *cxt, kest_sequence *sequence)
@@ -450,7 +450,7 @@ int cxt_remove_sequence(kest_context *cxt, kest_sequence *sequence)
 		current = current->next;
 	}
 	
-	return ERR_INVALID_PROFILE_ID;
+	return ERR_INVALID_PRESET_ID;
 }
 
 int cxt_remove_effect(kest_context *cxt, uint16_t pid, uint16_t tid)
@@ -458,7 +458,7 @@ int cxt_remove_effect(kest_context *cxt, uint16_t pid, uint16_t tid)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	int ret_val = kest_profile_remove_effect(cxt_get_profile_by_id(cxt, pid), tid);
+	int ret_val = kest_preset_remove_effect(cxt_get_preset_by_id(cxt, pid), tid);
 	
 	if (ret_val == NO_ERROR)
 	{
@@ -470,28 +470,28 @@ int cxt_remove_effect(kest_context *cxt, uint16_t pid, uint16_t tid)
 	return ret_val;
 }
 
-int set_active_profile(kest_profile *profile)
+int set_active_preset(kest_preset *preset)
 {
-	if (profile)
-		kest_profile_set_active(profile);
+	if (preset)
+		kest_preset_set_active(preset);
 	
-	if (profile == global_cxt.active_profile)
+	if (preset == global_cxt.active_preset)
 		return NO_ERROR;
 	
-	if (profile && profile->sequence)
+	if (preset && preset->sequence)
 	{
-		KEST_PRINTF("profile has a sequence. call kest_sequence_activate_at\n");
-		kest_sequence_activate_at(profile->sequence, profile);
+		KEST_PRINTF("preset has a sequence. call kest_sequence_activate_at\n");
+		kest_sequence_activate_at(preset->sequence, preset);
 	}
 	
-	kest_profile_set_inactive(global_cxt.active_profile);
+	kest_preset_set_inactive(global_cxt.active_preset);
 	
-	global_cxt.active_profile = profile;
+	global_cxt.active_preset = preset;
 	
-	uint16_t id = profile ? profile->id : 0;
+	uint16_t id = preset ? preset->id : 0;
 	
 	#ifdef USE_TEENSY
-	int ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PROFILE, "s", id));
+	int ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PRESET, "s", id));
 	#endif
 	
 	return NO_ERROR;
@@ -499,49 +499,49 @@ int set_active_profile(kest_profile *profile)
 
 // This version is called from a sequence-related-cb, so there is no need to
 // tell the sequence about it; it is handled from the caller
-int set_active_profile_from_sequence(kest_profile *profile)
+int set_active_preset_from_sequence(kest_preset *preset)
 {
-	KEST_PRINTF("set_active_profile_from_sequence, profile = %p\n", profile);
-	if (profile)
-		kest_profile_set_active(profile);
+	KEST_PRINTF("set_active_preset_from_sequence, preset = %p\n", preset);
+	if (preset)
+		kest_preset_set_active(preset);
 	
-	if (profile == global_cxt.active_profile)
+	if (preset == global_cxt.active_preset)
 		return NO_ERROR;
 	
-	kest_profile_set_inactive(global_cxt.active_profile);
+	kest_preset_set_inactive(global_cxt.active_preset);
 	
-	global_cxt.active_profile = profile;
+	global_cxt.active_preset = preset;
 	
 	int ret_val = NO_ERROR;
 	#ifdef USE_TEENSY
-	uint16_t id = profile ? profile->id : 0;
-	ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PROFILE, "s", id));
+	uint16_t id = preset ? preset->id : 0;
+	ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PRESET, "s", id));
 	#endif
 	
 	return ret_val;
 }
 
-int set_working_profile(kest_profile *profile)
+int set_working_preset(kest_preset *preset)
 {
-	if (!profile)
+	if (!preset)
 		return ERR_NULL_PTR;
 	
-	if (profile == global_cxt.working_profile)
+	if (preset == global_cxt.working_preset)
 		return NO_ERROR;
 	
-	global_cxt.working_profile = profile;
+	global_cxt.working_preset = preset;
 	
 	return NO_ERROR;
 }
 
-void context_print_profiles(kest_context *cxt)
+void context_print_presets(kest_context *cxt)
 {
 	if (!cxt)
 		return;
 		
-	KEST_PRINTF("Printing profiles...\n");
+	KEST_PRINTF("Printing presets...\n");
 	
-	profile_ll *current = global_cxt.profiles;
+	preset_ll *current = global_cxt.presets;
 	
 	
 	int i = 0;
@@ -579,18 +579,18 @@ void context_print_profiles(kest_context *cxt)
 	}
 }
 
-int cxt_set_all_profiles_left_button_to_main_menu(kest_context *cxt)
+int cxt_set_all_presets_left_button_to_main_menu(kest_context *cxt)
 {
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	profile_ll *current = cxt->profiles;
+	preset_ll *current = cxt->presets;
 	
 	while (current)
 	{
 		if (current->data && current->data->view_page)
 		{
-			//profile_view_set_left_button_mode(current->data->view_page, LEFT_BUTTON_MENU);
+			//preset_view_set_left_button_mode(current->data->view_page, LEFT_BUTTON_MENU);
 		}
 		
 		current = current->next;
@@ -617,20 +617,20 @@ int cxt_handle_hw_switch(kest_context *cxt, int sw)
 	return NO_ERROR;
 }
 
-kest_profile *cxt_find_profile(kest_context *cxt, const char *fname)
+kest_preset *cxt_find_preset(kest_context *cxt, const char *fname)
 {
 	if (!cxt)
 		return NULL;
 	
-	profile_ll *current = cxt->profiles;
+	preset_ll *current = cxt->presets;
 	
-	KEST_PRINTF("Searching for profile with fname %s...\n", fname);
+	KEST_PRINTF("Searching for preset with fname %s...\n", fname);
 	while (current)
 	{
 		if (current->data && current->data->has_fname)
 		{
 			KEST_PRINTF("Check %s\n", current->data->fname);
-			if (strncmp(current->data->fname, fname, PROFILE_NAME_MAX_LEN) == 0)
+			if (strncmp(current->data->fname, fname, PRESET_NAME_MAX_LEN) == 0)
 			{
 				KEST_PRINTF("Match!\n");
 				return current->data;
@@ -644,18 +644,18 @@ kest_profile *cxt_find_profile(kest_context *cxt, const char *fname)
 	return NULL;
 }
 
-int cxt_save_all_profiles(kest_context *cxt)
+int cxt_save_all_presets(kest_context *cxt)
 {
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	profile_ll *current = cxt->profiles;
+	preset_ll *current = cxt->presets;
 	
 	while (current)
 	{
 		if (current->data)
 		{
-			kest_profile_save(current->data);
+			kest_preset_save(current->data);
 		}
 		
 		current = current->next;
@@ -718,14 +718,14 @@ int kest_cxt_queue_save_state(kest_context *cxt)
 	return NO_ERROR;
 }
 
-kest_profile *cxt_get_profile_by_fname(kest_context *cxt, const char *fname)
+kest_preset *cxt_get_preset_by_fname(kest_context *cxt, const char *fname)
 {
-	KEST_PRINTF("cxt_get_profile_by_fname(cxt = %p, fname = %s)\n", cxt, fname ? fname : "(NULL)");
+	KEST_PRINTF("cxt_get_preset_by_fname(cxt = %p, fname = %s)\n", cxt, fname ? fname : "(NULL)");
 	
 	if (!cxt || !fname)
 		return NULL;
 	
-	kest_profile_pll *current = cxt->profiles;
+	kest_preset_pll *current = cxt->presets;
 	
 	KEST_PRINTF("Searching the list. %s\n", !current ? "... but it is empty!" : "");
 	int i = 0;

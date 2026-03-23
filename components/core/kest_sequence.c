@@ -14,7 +14,7 @@ int init_m_sequence(kest_sequence *sequence)
 		return ERR_NULL_PTR;
 	
 	sequence->name 	  = NULL;
-	sequence->profiles = NULL;
+	sequence->presets = NULL;
 	
 	sequence->active = 0;
 	sequence->unsaved_changes = 1;
@@ -42,27 +42,27 @@ int init_m_sequence(kest_sequence *sequence)
 	return NO_ERROR;
 }
 
-int sequence_append_profile(kest_sequence *sequence, kest_profile *profile)
+int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 {
-	if (!sequence || !profile)
+	if (!sequence || !preset)
 		return ERR_NULL_PTR;
 	
-	seq_profile_ll *new_node = kest_alloc(sizeof(seq_profile_ll));
+	seq_preset_ll *new_node = kest_alloc(sizeof(seq_preset_ll));
 	
 	if (!new_node)
 		return ERR_ALLOC_FAIL;
 	
-	new_node->data = profile;
+	new_node->data = preset;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	
-	if (!sequence->profiles)
+	if (!sequence->presets)
 	{
-		sequence->profiles = new_node;
+		sequence->presets = new_node;
 		return NO_ERROR;
 	}
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	while (current)
 	{
@@ -74,46 +74,46 @@ int sequence_append_profile(kest_sequence *sequence, kest_profile *profile)
 	current->next = new_node;
 	new_node->prev = current;
 	
-	profile->sequence = sequence;
+	preset->sequence = sequence;
 	
 	return NO_ERROR;
 }
 
 
-seq_profile_ll *sequence_append_profile_rp(kest_sequence *sequence, kest_profile *profile)
+seq_preset_ll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset)
 {
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	
-	if (!sequence || !profile)
+	if (!sequence || !preset)
 		return NULL;
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
-	seq_profile_ll *new_node = kest_alloc(sizeof(seq_profile_ll));
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+	seq_preset_ll *new_node = kest_alloc(sizeof(seq_preset_ll));
 	
 	if (!new_node)
 		return NULL;
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
-	new_node->data = profile;
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+	new_node->data = preset;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
-	if (!sequence->profiles)
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+	if (!sequence->presets)
 	{
-		sequence->profiles = new_node;
+		sequence->presets = new_node;
 		return new_node;
 	}
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	while (current)
 	{
 		if (!current->next)
@@ -122,20 +122,20 @@ seq_profile_ll *sequence_append_profile_rp(kest_sequence *sequence, kest_profile
 	}
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	current->next = new_node;
 	new_node->prev = current;
 	
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	kest_sequence_update_representations(sequence);
 	
-	KEST_PRINTF("sequence_append_profile_rp, line %d\n", __LINE__);
+	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	
 	return new_node;
 }
 
-int kest_sequence_move_profile(kest_sequence *sequence, int pos, int new_pos)
+int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos)
 {
 	if (!sequence)
 		return ERR_NULL_PTR;
@@ -143,8 +143,8 @@ int kest_sequence_move_profile(kest_sequence *sequence, int pos, int new_pos)
 	if (pos < 0 || new_pos < 0)
 		return ERR_BAD_ARGS;
 	
-	seq_profile_ll *target = sequence->profiles;
-	seq_profile_ll *prev = NULL;
+	seq_preset_ll *target = sequence->presets;
+	seq_preset_ll *prev = NULL;
 	
 	for (int i = 0; i < pos; i++)
 	{
@@ -165,12 +165,12 @@ int kest_sequence_move_profile(kest_sequence *sequence, int pos, int new_pos)
 	
 	if (new_pos == 0)
 	{
-		target->next = sequence->profiles;
-		sequence->profiles = target;
+		target->next = sequence->presets;
+		sequence->presets = target;
 		return NO_ERROR;
 	}
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	for (int i = 0; i < new_pos; i++)
 	{
@@ -194,16 +194,16 @@ int kest_sequence_move_profile(kest_sequence *sequence, int pos, int new_pos)
 	return NO_ERROR;
 }
 
-int kest_sequence_remove_profile(kest_sequence *sequence, kest_profile *profile)
+int kest_sequence_remove_preset(kest_sequence *sequence, kest_preset *preset)
 {
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	while (current)
 	{
-		if (current->data == profile)
+		if (current->data == preset)
 			break;
 		
 		current = current->next;
@@ -214,7 +214,7 @@ int kest_sequence_remove_profile(kest_sequence *sequence, kest_profile *profile)
 		if (current->prev)
 			current->prev->next = current->next;
 		else
-			sequence->profiles = current->next;
+			sequence->presets = current->next;
 		
 		kest_free(current);
 	}
@@ -228,16 +228,16 @@ int kest_sequence_remove_profile(kest_sequence *sequence, kest_profile *profile)
 	return NO_ERROR;
 }
 
-int kest_sequence_delete_profile(kest_sequence *sequence, kest_profile *profile)
+int kest_sequence_delete_preset(kest_sequence *sequence, kest_preset *preset)
 {
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	int ret_val = kest_sequence_remove_profile(sequence, profile);
+	int ret_val = kest_sequence_remove_preset(sequence, preset);
 	
-	if (profile && ret_val == NO_ERROR)
+	if (preset && ret_val == NO_ERROR)
 	{
-		kest_free_profile(profile);
+		kest_free_preset(preset);
 	}
 	
 	return NO_ERROR;
@@ -272,7 +272,7 @@ int kest_sequence_begin(kest_sequence *sequence)
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	if (!sequence->profiles)
+	if (!sequence->presets)
 	{
 		KEST_PRINTF("Sequence is empty !\n");
 		return NO_ERROR;
@@ -281,21 +281,21 @@ int kest_sequence_begin(kest_sequence *sequence)
 	global_cxt.sequence = sequence;
 	sequence->active = 1;
 	
-	set_active_profile_from_sequence(sequence->profiles->data);
+	set_active_preset_from_sequence(sequence->presets->data);
 	
-	sequence->position = sequence->profiles;
+	sequence->position = sequence->presets;
 	
 	kest_sequence_update_representations(sequence);
 	
 	return NO_ERROR;
 }
 
-int kest_sequence_begin_at(kest_sequence *sequence, kest_profile *profile)
+int kest_sequence_begin_at(kest_sequence *sequence, kest_preset *preset)
 {
-	if (!sequence || !profile)
+	if (!sequence || !preset)
 		return ERR_NULL_PTR;
 	
-	if (!sequence->profiles)
+	if (!sequence->presets)
 	{
 		KEST_PRINTF("Sequence is empty !\n");
 		return NO_ERROR;
@@ -304,12 +304,12 @@ int kest_sequence_begin_at(kest_sequence *sequence, kest_profile *profile)
 	global_cxt.sequence = sequence;
 	sequence->active = 1;
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	int found = 0;
 	
 	while (current && !found)
 	{
-		if (current->data == profile)
+		if (current->data == preset)
 			found = 1;
 		else
 			current = current->next;
@@ -318,7 +318,7 @@ int kest_sequence_begin_at(kest_sequence *sequence, kest_profile *profile)
 	if (!found)
 		return ERR_BAD_ARGS;
 	
-	set_active_profile_from_sequence(current->data);
+	set_active_preset_from_sequence(current->data);
 	
 	sequence->position = current;
 	
@@ -335,7 +335,7 @@ int kest_sequence_regress(kest_sequence *sequence)
 	
 	KEST_PRINTF("regressing sequence\n");
 	
-	if (!sequence->profiles)
+	if (!sequence->presets)
 	{
 		KEST_PRINTF("Error: empty sequence\n");
 		return ERR_BAD_ARGS;
@@ -355,7 +355,7 @@ int kest_sequence_regress(kest_sequence *sequence)
 	
 	sequence->position = sequence->position->prev;
 	
-	set_active_profile_from_sequence(sequence->position->data);
+	set_active_preset_from_sequence(sequence->position->data);
 	
 	return NO_ERROR;
 }
@@ -367,7 +367,7 @@ int kest_sequence_advance(kest_sequence *sequence)
 	
 	KEST_PRINTF("advancing sequence. sequence = %p\n", sequence);
 	
-	if (!sequence->profiles)
+	if (!sequence->presets)
 	{
 		KEST_PRINTF("Error: empty sequence\n");
 		return ERR_BAD_ARGS;
@@ -396,7 +396,7 @@ int kest_sequence_advance(kest_sequence *sequence)
 	KEST_PRINTF("New sequence->position: %p. sequence->position->data: %p\n", 
 		sequence->position, (sequence->position) ? sequence->position->data : NULL);
 	
-	return set_active_profile_from_sequence(sequence->position->data);
+	return set_active_preset_from_sequence(sequence->position->data);
 }
 
 int kest_sequence_stop(kest_sequence *sequence)
@@ -407,7 +407,7 @@ int kest_sequence_stop(kest_sequence *sequence)
 	global_cxt.sequence = NULL;
 	sequence->active = 0;
 	
-	set_active_profile_from_sequence(NULL);
+	set_active_preset_from_sequence(NULL);
 	
 	sequence->position = NULL;
 	
@@ -417,7 +417,7 @@ int kest_sequence_stop(kest_sequence *sequence)
 }
 
 
-int kest_sequence_stop_from_profile(kest_sequence *sequence)
+int kest_sequence_stop_from_preset(kest_sequence *sequence)
 {
 	if (!sequence)
 		return ERR_NULL_PTR;
@@ -432,17 +432,17 @@ int kest_sequence_stop_from_profile(kest_sequence *sequence)
 	return NO_ERROR;
 }
 
-int kest_sequence_activate_at(kest_sequence *sequence, kest_profile *profile)
+int kest_sequence_activate_at(kest_sequence *sequence, kest_preset *preset)
 {
 	KEST_PRINTF("kest_sequence_activate_at\n");
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	while (current)
 	{
-		if (current->data && current->data == profile)
+		if (current->data && current->data == preset)
 		{
 			sequence->position = current;
 			sequence->active = 1;

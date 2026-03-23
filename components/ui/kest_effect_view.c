@@ -148,7 +148,7 @@ int configure_effect_view(kest_ui_page *page, void *data)
 				return ERR_ALLOC_FAIL;
 			
 			nullify_parameter_widget(pw);
-			ret_val = configure_parameter_widget(pw, current_param->data, effect->profile, page);
+			ret_val = configure_parameter_widget(pw, current_param->data, effect->preset, page);
 			
 			str->parameter_widgets = kest_parameter_widget_pll_append(str->parameter_widgets, pw);
 			
@@ -173,7 +173,7 @@ int configure_effect_view(kest_ui_page *page, void *data)
 				return ERR_ALLOC_FAIL;
 			
 			nullify_setting_widget(sw);
-			ret_val = configure_setting_widget(sw, current_setting->data, effect->profile, page);
+			ret_val = configure_setting_widget(sw, current_setting->data, effect->preset, page);
 			
 			str->setting_widgets = kest_setting_widget_pll_append(str->setting_widgets, sw);
 		}

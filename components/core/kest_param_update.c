@@ -37,7 +37,7 @@ int add_param_update(kest_parameter_update up)
 {
 	for (int i = 0; i < n_updates; i++)
 	{
-		if (update_queue[i].id.profile_id 		== up.id.profile_id
+		if (update_queue[i].id.preset_id 		== up.id.preset_id
 		 && update_queue[i].id.effect_id 	== up.id.effect_id
 		 && update_queue[i].id.parameter_id 	== up.id.parameter_id)
 		{
@@ -55,7 +55,7 @@ int add_param_update(kest_parameter_update up)
 
 void print_parameter_update(kest_parameter_update up)
 {
-	KEST_PRINTF("%d.%d.%d -> %s%.03f\n", up.id.profile_id, up.id.effect_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
+	KEST_PRINTF("%d.%d.%d -> %s%.03f\n", up.id.preset_id, up.id.effect_id, up.id.parameter_id, (up.target >= 0) ? " " : "", up.target);
 }
 
 void kest_param_update_task(void *arg)
@@ -85,7 +85,7 @@ void kest_param_update_task(void *arg)
 			for (int i = 0; i < n_updates; i++)
 			{
 				//print_parameter_update(current);
-				if (update_array[i].id.profile_id 		== current.id.profile_id
+				if (update_array[i].id.preset_id 		== current.id.preset_id
 				 && update_array[i].id.effect_id 	== current.id.effect_id
 				 && update_array[i].id.parameter_id 	== current.id.parameter_id)
 				{
@@ -102,7 +102,7 @@ void kest_param_update_task(void *arg)
 			{
 				//print_parameter_update(update_queue[j]);
 				
-				if (update_queue[j].id.profile_id 		== current.id.profile_id
+				if (update_queue[j].id.preset_id 		== current.id.preset_id
 				 && update_queue[j].id.effect_id 	== current.id.effect_id
 				 && update_queue[j].id.parameter_id 	== current.id.parameter_id)
 				{
@@ -150,7 +150,7 @@ void kest_param_update_task(void *arg)
 				continue;
 			}
 			
-			if (update_array[i].id.profile_id != CONTEXT_PROFILE_ID)
+			if (update_array[i].id.preset_id != CONTEXT_PRESET_ID)
 			{
 				update_array[i].send = (update_array[i].t != NULL);
 			
@@ -185,12 +185,12 @@ void kest_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			//kest_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.profile_id, param->id.effect_id, param->id.parameter_id,
+			//kest_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
 			//	diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
 			
-			if (update_array[i].id.profile_id == CONTEXT_PROFILE_ID)
+			if (update_array[i].id.preset_id == CONTEXT_PRESET_ID)
 			{
 				update_array[i].send = 0;
 				if (param == &global_cxt.input_gain)
@@ -213,7 +213,7 @@ void kest_param_update_task(void *arg)
 		{			
 			if (update_array[i].t && update_array[i].send)
 			{
-				if (global_cxt.active_profile && global_cxt.active_profile->id == update_array[i].id.profile_id)
+				if (global_cxt.active_preset && global_cxt.active_preset->id == update_array[i].id.preset_id)
 					kest_effect_update_fpga_registers(update_array[i].t);
 				xSemaphoreGive(update_array[i].t->mutex);
 			}
@@ -231,7 +231,7 @@ void kest_param_update_task(void *arg)
 			if (update_array[i].p->value == update_array[i].target)
 			{
 				//kest_printf("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
-				if (update_array[i].p->id.profile_id == CONTEXT_PROFILE_ID)
+				if (update_array[i].p->id.preset_id == CONTEXT_PRESET_ID)
 					kest_cxt_queue_save_state(&global_cxt);
 				
 				queue_representation_list_update(update_array[i].p->reps);
@@ -258,7 +258,7 @@ int kest_parameter_trigger_update(kest_parameter *param, float target)
 		return ERR_NULL_PTR;
 	
 	KEST_PRINTF("Parameter %s, ID %d.%d.%d. Current value: %f. Update target: %f. Max velocity: %f\n",
-		param->name, param->id.profile_id, param->id.effect_id, param->id.parameter_id,
+		param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
 		param->value, target, param->max_velocity);
 	
 	kest_parameter_update up;

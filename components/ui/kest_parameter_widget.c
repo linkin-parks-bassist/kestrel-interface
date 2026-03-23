@@ -87,7 +87,7 @@ int parameter_widget_update_value(kest_parameter_widget *pw)
 	kest_effect *effect = NULL;
 	
 	KEST_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f\n",
-		param->id.profile_id, param->id.effect_id, param->id.parameter_id,
+		param->id.preset_id, param->id.effect_id, param->id.parameter_id,
 		param->name ? param->name : "(NULL)", param->value);
 	
 	uint32_t val;
@@ -164,13 +164,13 @@ void parameter_widget_update_value_label(kest_parameter_widget *pw)
 	return;
 }
 
-int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, kest_profile *profile, kest_ui_page *parent)
+int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, kest_preset *preset, kest_ui_page *parent)
 {
 	if (!pw || !param)
 		return ERR_NULL_PTR;
 	
 	pw->param = param;
-	pw->profile = profile;
+	pw->preset = preset;
 	
 	pw->parent = parent;
 	
@@ -253,15 +253,15 @@ void parameter_widget_change_cb_inner(kest_parameter_widget *pw)
 	kest_parameter_trigger_update(pw->param, val);
 	
 	#ifdef USE_TEENSY
-	kest_message msg = create_m_message(KEST_MESSAGE_SET_PARAM_VALUE, "sssf", pw->param->id.profile_id, pw->param->id.effect_id, pw->param->id.parameter_id, pw->param->value);
+	kest_message msg = create_m_message(KEST_MESSAGE_SET_PARAM_VALUE, "sssf", pw->param->id.preset_id, pw->param->id.effect_id, pw->param->id.parameter_id, pw->param->value);
 	queue_msg_to_teensy(msg);
 	#endif
 	
-	if (pw->profile)
+	if (pw->preset)
 	{
-		pw->profile->unsaved_changes = 1;
+		pw->preset->unsaved_changes = 1;
 	}
-	else if (pw->param->id.profile_id == CONTEXT_PROFILE_ID)
+	else if (pw->param->id.preset_id == CONTEXT_PRESET_ID)
 	{
 		// do something
 	}
@@ -306,7 +306,7 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 	lv_obj_remove_style_all(pw->container);
 	
 	KEST_PRINTF("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
-		pw->param->id.profile_id, 
+		pw->param->id.preset_id, 
 		pw->param->id.effect_id, 
 		pw->param->id.parameter_id, 
 		pw->param->name, 
@@ -505,13 +505,13 @@ int setting_widget_update_value(kest_setting_widget *sw)
 	return NO_ERROR;
 }
 
-int configure_setting_widget(kest_setting_widget *sw, kest_setting *setting, kest_profile *profile, kest_ui_page *parent)
+int configure_setting_widget(kest_setting_widget *sw, kest_setting *setting, kest_preset *preset, kest_ui_page *parent)
 {
 	if (!sw || !setting)
 		return ERR_NULL_PTR;
 	
 	sw->setting = setting;
-	sw->profile = profile;
+	sw->preset = preset;
 	sw->parent  = parent;
 	
 	sw->type = sw->setting->widget_type;
@@ -591,7 +591,7 @@ void sw_field_save_cb(lv_event_t *e)
 		return;
 	
 	// Parse an int!
-	kest_profile *profile;
+	kest_preset *preset;
 	
 	char *content = kest_strndup(lv_textarea_get_text(sw->obj), 32);
 	
@@ -646,17 +646,17 @@ void sw_field_save_cb(lv_event_t *e)
 		sw->setting->updated = 1;
 		
 		#ifdef KEST_ENABLE_FPGA
-		profile = cxt_get_profile_by_id(&global_cxt, sw->setting->id.profile_id);
-		KEST_PRINTF("Setting widget value changed from %d to %d; reprogramming FPGA in light. profile = %p\n",
-				sw->setting->old_value, sw->setting->value, profile);
-		if (profile)
+		preset = cxt_get_preset_by_id(&global_cxt, sw->setting->id.preset_id);
+		KEST_PRINTF("Setting widget value changed from %d to %d; reprogramming FPGA in light. preset = %p\n",
+				sw->setting->old_value, sw->setting->value, preset);
+		if (preset)
 		{
-			kest_profile_if_active_update_fpga(profile);
+			kest_preset_if_active_update_fpga(preset);
 		}
 		#endif
 		
 		#ifdef USE_TEENSY
-		kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.effect_id, sw->setting->id.setting_id, read_int);
+		kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.preset_id, sw->setting->id.effect_id, sw->setting->id.setting_id, read_int);
 		
 		queue_msg_to_teensy(msg);
 		#endif
@@ -741,14 +741,14 @@ void setting_widget_change_cb_inner(kest_setting_widget *sw)
 	
 	KEST_PRINTF("setting_widget_change_cb_inner. value = %d\n", value);
 	#ifdef USE_TEENSY
-	kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.profile_id, sw->setting->id.effect_id, sw->setting->id.setting_id, value);
+	kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", sw->setting->id.preset_id, sw->setting->id.effect_id, sw->setting->id.setting_id, value);
 
 	queue_msg_to_teensy(msg);
 	#endif
 	
-	if (sw->profile)
+	if (sw->preset)
 	{
-		sw->profile->unsaved_changes = 1;
+		sw->preset->unsaved_changes = 1;
 	}
 	else
 	{

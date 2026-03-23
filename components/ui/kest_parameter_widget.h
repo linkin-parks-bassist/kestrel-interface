@@ -37,7 +37,7 @@
 #define VSLIDER_TALL_PAD_H  ((int)((130.0 / 1024.0) * DISPLAY_VRES))
 #define VSLIDER_TALL_PAD_W  ((int)((80.0  / 600.0)  * DISPLAY_HRES))
 
-struct kest_profile;
+struct kest_preset;
 
 typedef struct
 {
@@ -45,7 +45,7 @@ typedef struct
 	kest_parameter_id id;
 	
 	kest_parameter *param;
-	struct kest_profile *profile;
+	struct kest_preset *preset;
 	kest_ui_page *parent;
 	
 	char val_label_text[PARAM_WIDGET_LABEL_BUFSIZE];
@@ -58,7 +58,7 @@ typedef struct
 } kest_parameter_widget;
 
 int nullify_parameter_widget(kest_parameter_widget *pw);
-int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, struct kest_profile *profile, kest_ui_page *parent);
+int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, struct kest_preset *preset, kest_ui_page *parent);
 
 int parameter_widget_create_ui(kest_parameter_widget *pw, lv_obj_t *parent);
 int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *parent);
@@ -94,7 +94,7 @@ typedef struct
 	kest_parameter_id id;
 	
 	kest_setting *setting;
-	struct kest_profile *profile;
+	struct kest_preset *preset;
 	kest_ui_page *parent;
 	
 	lv_obj_t *container;
@@ -110,7 +110,7 @@ typedef struct
 } kest_setting_widget;
 
 int nullify_setting_widget(kest_setting_widget *pw);
-int configure_setting_widget(kest_setting_widget *pw, kest_setting *setting, struct kest_profile *profile, kest_ui_page *parent);
+int configure_setting_widget(kest_setting_widget *pw, kest_setting *setting, struct kest_preset *preset, kest_ui_page *parent);
 
 int setting_widget_create_ui(kest_setting_widget *pw, lv_obj_t *parent);
 int setting_widget_create_ui_no_callback(kest_setting_widget *pw, lv_obj_t *parent);

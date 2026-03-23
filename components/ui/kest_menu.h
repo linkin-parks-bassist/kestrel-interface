@@ -9,7 +9,7 @@ struct kest_menu_page_str;
 #define MENU_ITEM_PAGE_LINK 			1
 #define MENU_ITEM_PAGE_LINK_INDIRECT 	2
 #define MENU_ITEM_CALLBACK_BUTTON 		3
-#define MENU_ITEM_PROFILE_LISTING 		4
+#define MENU_ITEM_PRESET_LISTING 		4
 #define MENU_ITEM_SEQUENCE_LISTING 		5
 #define MENU_ITEM_PARAMETER_WIDGET		6
 #define MENU_ITEM_DANGER_BUTTON			7
@@ -69,7 +69,7 @@ typedef struct kest_main_menu_str
 	kest_parameter_widget input_gain;
 	kest_parameter_widget output_gain;
 	
-	kest_button profiles_button;
+	kest_button presets_button;
 	kest_button sequences_button;
 	
 	kest_button msc_button;
@@ -103,14 +103,14 @@ int menu_page_remove_item(kest_ui_page *page, kest_menu_item *item);
 
 void enter_main_menu_cb(lv_event_t *e);
 
-kest_menu_item *create_profile_listing_menu_item(char *text, kest_profile *profile, kest_ui_page *parent);
+kest_menu_item *create_preset_listing_menu_item(char *text, kest_preset *preset, kest_ui_page *parent);
 
-void profile_listing_delete_button_cb(lv_event_t *e);
-void disappear_profile_listing_delete_button(lv_timer_t *timer);
-void menu_item_profile_listing_released_cb(lv_event_t *e);
-void menu_item_profile_listing_long_pressed_cb(lv_event_t *e);
+void preset_listing_delete_button_cb(lv_event_t *e);
+void disappear_preset_listing_delete_button(lv_timer_t *timer);
+void menu_item_preset_listing_released_cb(lv_event_t *e);
+void menu_item_preset_listing_long_pressed_cb(lv_event_t *e);
 
-int profile_listing_menu_item_refresh_active(struct kest_menu_item *item);
-int profile_listing_menu_item_change_name(struct kest_menu_item *item, char *name);
+int preset_listing_menu_item_refresh_active(struct kest_menu_item *item);
+int preset_listing_menu_item_change_name(struct kest_menu_item *item, char *name);
 
 #endif

@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "kest_hfunc.h"
+#include "kest_helper_fn.h"
 
 char binary_print_buffer[35];
 

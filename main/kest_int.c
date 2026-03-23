@@ -51,9 +51,9 @@ void app_main()
 	kest_init_directories();
 	load_effects(&global_cxt);
 	init_effect_selector_eff(&global_cxt.pages.effect_selector);
-	load_saved_profiles(&global_cxt);
+	load_saved_presets(&global_cxt);
 	
-	context_print_profiles(&global_cxt);
+	context_print_presets(&global_cxt);
 	load_saved_sequences(&global_cxt);
 	kest_state state;
 	ret_val = load_state_from_file(&state, SETTINGS_FNAME);

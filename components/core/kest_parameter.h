@@ -11,7 +11,7 @@
 
 typedef struct kest_parameter_id
 {
-	uint16_t profile_id;
+	uint16_t preset_id;
 	uint16_t effect_id;
 	uint16_t parameter_id;
 } kest_parameter_id;
@@ -60,7 +60,7 @@ typedef struct kest_setting_option
 
 typedef struct kest_setting_id
 {
-	uint16_t profile_id;
+	uint16_t preset_id;
 	uint16_t effect_id;
 	uint16_t setting_id;
 } kest_setting_id;

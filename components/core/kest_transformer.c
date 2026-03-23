@@ -43,7 +43,7 @@ int init_effect(kest_effect *effect)
 	#ifdef KEST_ENABLE_UI
 	effect->view_page = NULL;
 	#endif
-	effect->profile = NULL;
+	effect->preset = NULL;
 	
 	init_parameter(&effect->wet_mix, "Wet Mix", 1.0, 0.0, 1.0);
 	effect->wet_mix.id.parameter_id = TRANSFORMER_WET_MIX_PID;
@@ -91,10 +91,10 @@ int init_effect(kest_effect *effect)
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	effect->reps = NULL;
-	effect->profile_rep.representer = NULL;
-	effect->profile_rep.representee = effect;
-	effect->profile_rep.update = kest_effect_profile_rep_update;
-	kest_representation_pll_safe_append(&effect->reps, &effect->profile_rep);
+	effect->preset_rep.representer = NULL;
+	effect->preset_rep.representee = effect;
+	effect->preset_rep.update = kest_effect_preset_rep_update;
+	kest_representation_pll_safe_append(&effect->reps, &effect->preset_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -138,8 +138,8 @@ int effect_rectify_param_ids(kest_effect *effect)
 	{
 		if (current_param->data)
 		{
-			if (effect->profile)
-				current_param->data->id.profile_id = effect->profile->id;
+			if (effect->preset)
+				current_param->data->id.preset_id = effect->preset->id;
 			current_param->data->id.effect_id = effect->id;
 		}
 		
@@ -152,30 +152,30 @@ int effect_rectify_param_ids(kest_effect *effect)
 	{
 		if (current_setting->data)
 		{
-			if (effect->profile)
-				current_setting->data->id.profile_id = effect->profile->id;
+			if (effect->preset)
+				current_setting->data->id.preset_id = effect->preset->id;
 			current_setting->data->id.effect_id = effect->id;
 		}
 		
 		current_setting = current_setting->next;
 	}
 	
-	if (effect->profile)
-		effect->band_mode.id.profile_id = effect->profile->id;
+	if (effect->preset)
+		effect->band_mode.id.preset_id = effect->preset->id;
 	effect->band_mode.id.effect_id = effect->id;
 	
-	if (effect->profile)
-		effect->band_lp_cutoff.id.profile_id = effect->profile->id;
+	if (effect->preset)
+		effect->band_lp_cutoff.id.preset_id = effect->preset->id;
 	effect->band_lp_cutoff.id.effect_id = effect->id;
 	
-	if (effect->profile)
-		effect->band_hp_cutoff.id.profile_id = effect->profile->id;
+	if (effect->preset)
+		effect->band_hp_cutoff.id.preset_id = effect->preset->id;
 	effect->band_hp_cutoff.id.effect_id = effect->id;
 	
 	return NO_ERROR;
 }
 
-int effect_set_id(kest_effect *effect, uint16_t profile_id, uint16_t effect_id)
+int effect_set_id(kest_effect *effect, uint16_t preset_id, uint16_t effect_id)
 {
 	if (!effect)
 		return ERR_NULL_PTR;
@@ -193,10 +193,10 @@ int request_append_effect(uint16_t type, kest_effect *local)
 	if (!local)
 		return ERR_NULL_PTR;
 	
-	if (!local->profile)
+	if (!local->preset)
 		return ERR_BAD_ARGS;
 	
-	kest_message msg = create_m_message(KEST_MESSAGE_APPEND_TRANSFORMER, "ss", local->profile->id, local->type);
+	kest_message msg = create_m_message(KEST_MESSAGE_APPEND_TRANSFORMER, "ss", local->preset->id, local->type);
 	msg.callback = effect_receive_id;
 	msg.cb_arg = local;
 	
@@ -220,9 +220,9 @@ void effect_receive_id(kest_message message, kest_response response)
 	memcpy(&pid, &response.data[0], sizeof(uint16_t));
 	memcpy(&tid, &response.data[2], sizeof(uint16_t));
 	
-	if (!effect->profile || pid != effect->profile->id)
+	if (!effect->preset || pid != effect->preset->id)
 	{
-		KEST_PRINTF("Transformer ID for effect in profile %d sent to effect in %d\n", pid, effect->profile->id);
+		KEST_PRINTF("Transformer ID for effect in preset %d sent to effect in %d\n", pid, effect->preset->id);
 	}
 	else
 	{
@@ -327,14 +327,14 @@ int kest_effect_init_view_page(kest_effect *effect)
 	if ((ret_val = init_effect_view(effect->view_page)) != NO_ERROR) return ret_val;
 	if ((ret_val = configure_effect_view(effect->view_page, effect)) != NO_ERROR) return ret_val;
 	
-	kest_profile *profile = effect->profile;
+	kest_preset *preset = effect->preset;
 	
-	KEST_PRINTF("effect->profile = %p\n", effect->profile);
+	KEST_PRINTF("effect->preset = %p\n", effect->preset);
 	
-	if (profile)
+	if (preset)
 	{
-		KEST_PRINTF("effect->profile->view_page = %p\n", effect->profile->view_page);
-		effect->view_page->parent = profile->view_page;
+		KEST_PRINTF("effect->preset->view_page = %p\n", effect->preset->view_page);
+		effect->view_page->parent = preset->view_page;
 	}
 	
 	KEST_PRINTF("kest_effect_init_view_page done\n");
@@ -347,7 +347,7 @@ int clone_effect(kest_effect *dest, kest_effect *src)
 	if (!src || !dest)
 		return ERR_NULL_PTR;
 	
-	uint16_t profile_id;
+	uint16_t preset_id;
 	uint16_t effect_id;
 	
 	init_effect(dest);
@@ -595,16 +595,16 @@ int kest_effect_set_setting(kest_effect *effect, const char *name, int value)
 }
 
 
-void kest_effect_profile_rep_update(void *representer, void *representee)
+void kest_effect_preset_rep_update(void *representer, void *representee)
 {
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_profile *profile = representer;
+	kest_preset *preset = representer;
 	kest_effect *effect = representee;
 	
 	if (!representer || !representee)
 		return;
 	
-	save_profile(profile);
+	save_preset(preset);
 	#endif
 	
 	return;

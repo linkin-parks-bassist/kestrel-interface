@@ -93,11 +93,11 @@ int file_validity_check(FILE *file, uint8_t magic_byte, uint8_t *byte_out)
 	return 0;
 }
 
-int save_profile_as_file(kest_profile *profile, const char *fname)
+int save_preset_as_file(kest_preset *preset, const char *fname)
 {
-	KEST_PRINTF("save_profile_as_file\n");
+	KEST_PRINTF("save_preset_as_file\n");
 	
-	if (!fname || !profile)
+	if (!fname || !preset)
 	{
 		KEST_PRINTF("NULL pointer lol\n");
 		return ERR_NULL_PTR;
@@ -113,8 +113,8 @@ int save_profile_as_file(kest_profile *profile, const char *fname)
 		return ERR_FOPEN_FAIL;
 	}
 	
-	// Declare that this is a profile file
-	write_byte(KEST_PROFILE_MAGIC_BYTE);
+	// Declare that this is a preset file
+	write_byte(KEST_PRESET_MAGIC_BYTE);
 	
 	// Write status byte; overwritten at the end
 	write_byte(KEST_WRITE_UNFINISHED_BYTE);
@@ -126,11 +126,11 @@ int save_profile_as_file(kest_profile *profile, const char *fname)
 	int n;
 	
 	char *units;
-	char *name = profile->name ? profile->name : "Unnamed Profile";
+	char *name = preset->name ? preset->name : "Unnamed Profile";
 	
 	write_string(name);
 	
-	kest_effect_pll *current_effect = profile->pipeline.effects;
+	kest_effect_pll *current_effect = preset->pipeline.effects;
 	kest_parameter_pll *current_param;
 	kest_setting_pll *current_setting;
 	
@@ -144,13 +144,13 @@ int save_profile_as_file(kest_profile *profile, const char *fname)
 	
 	write_short(n);
 	
-	current_effect = profile->pipeline.effects;
+	current_effect = preset->pipeline.effects;
 	
 	while (current_effect)
 	{
 		if (!current_effect->data || !current_effect->data->eff)
 		{
-			write_short(KEST_PROFILE_BROKEN_TRANSFORMER);
+			write_short(KEST_PRESET_BROKEN_TRANSFORMER);
 			current_effect = current_effect->next;
 			continue;
 		}
@@ -186,7 +186,7 @@ int save_profile_as_file(kest_profile *profile, const char *fname)
 	
 	fclose(file);
 	
-	KEST_PRINTF("save_profile_as_file done\n");
+	KEST_PRINTF("save_preset_as_file done\n");
 	
 	return NO_ERROR;
 }
@@ -213,28 +213,28 @@ int save_sequence_as_file(kest_sequence *sequence, const char *fname)
 	
 	write_string(name);
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
-	uint16_t n_profiles = 0;
+	uint16_t n_presets = 0;
 	uint16_t arg16;
 	
 	while (current)
 	{
-		n_profiles++;
+		n_presets++;
 		current = current->next;
 	}
 	
-	KEST_PRINTF("Sequence has %d profiles...\n", n_profiles);
-	write_short(n_profiles);
+	KEST_PRINTF("Sequence has %d presets...\n", n_presets);
+	write_short(n_presets);
 	
-	current = sequence->profiles;
+	current = sequence->presets;
 	while (current)
 	{
 		if (current->data)
 		{
 			if (!current->data->has_fname || current->data->unsaved_changes)
 			{
-				save_profile(current->data);
+				save_preset(current->data);
 			}
 			
 			KEST_PRINTF("Profile %s...\n", current->data->fname);
@@ -277,7 +277,7 @@ int save_state_to_file(kest_state *state, const char *fname)
 	write_float(state->input_gain);
 	write_float(state->output_gain);
 	
-	write_string(state->active_profile_fname);
+	write_string(state->active_preset_fname);
 	
 	KEST_PRINTF("Write state->current_page.type = %d = 0x%08x\n", state->current_page.type, state->current_page.type);
 	write_int32(state->current_page.type);
@@ -356,21 +356,21 @@ int load_state_from_file(kest_state *state, const char *fname)
 	KEST_PRINTF("Obtained output gain as %f = 0x%08x\n", state->output_gain, *((int*)(&content[6])));
 	
 	i = 10;
-	KEST_PRINTF("Reading active profile fname from position %d\n", i);
+	KEST_PRINTF("Reading active preset fname from position %d\n", i);
 	if (content[i])
 	{
 		j = 10;
 		while (content[i] && i - j < 31)
 		{
 			KEST_PRINTF("\t0x%02x = '%c'\n", content[i], content[i]);
-			state->active_profile_fname[i - j] = (char)content[i];
+			state->active_preset_fname[i - j] = (char)content[i];
 			i++;
 		}
-		state->active_profile_fname[i - j] = 0;
+		state->active_preset_fname[i - j] = 0;
 	}
 	else
 	{
-		state->active_profile_fname[0] = 0;
+		state->active_preset_fname[0] = 0;
 		i++;
 	}
 	
@@ -421,7 +421,7 @@ int load_state_from_file(kest_state *state, const char *fname)
 
 	KEST_PRINTF("read input gain: %f\n",  state->input_gain);
 	KEST_PRINTF("read output gain: %f\n", state->output_gain);
-	KEST_PRINTF("read active profile fname: %s\n", state->active_profile_fname);
+	KEST_PRINTF("read active preset fname: %s\n", state->active_preset_fname);
 	KEST_PRINTF("read active sequence fname: %s\n", state->active_sequence_fname);
 	KEST_PRINTF("read current page: {type = %d, id = %d, fname = \"%s\"}\n", state->current_page.type, state->current_page.id,
 		state->current_page.fname);
@@ -431,10 +431,10 @@ read_settings_exit:
 	return ret_val;
 }
 
-int read_profile_from_file(kest_profile *profile, const char *fname)
+int read_preset_from_file(kest_preset *preset, const char *fname)
 {
-	//kest_printf("read_profile_from_file\n");
-	if (!fname || !profile)
+	//kest_printf("read_preset_from_file\n");
+	if (!fname || !preset)
 	{
 		//kest_printf("NULL pointer lol\n");
 		return ERR_NULL_PTR;
@@ -451,7 +451,7 @@ int read_profile_from_file(kest_profile *profile, const char *fname)
 	}
 	
 	
-	KEST_PRINTF("Reading profile from %s\n", fname);
+	KEST_PRINTF("Reading preset from %s\n", fname);
 	
 	uint8_t byte;
 	uint16_t arg16;
@@ -464,15 +464,15 @@ int read_profile_from_file(kest_profile *profile, const char *fname)
 	kest_parameter_pll *current_param = NULL;
 	kest_setting_pll *current_setting = NULL;
 	
-	// Check that this is a profile file
+	// Check that this is a preset file
 	byte = fgetc(file);
 	
-	if (byte != KEST_PROFILE_MAGIC_BYTE)
+	if (byte != KEST_PRESET_MAGIC_BYTE)
 	{
-		KEST_PRINTF("Attempted load of profile from file \"%s\", whose first byte 0x%02x is not the profile magic byte 0x%02x\n",
-			fname, byte, KEST_PROFILE_MAGIC_BYTE);
+		KEST_PRINTF("Attempted load of preset from file \"%s\", whose first byte 0x%02x is not the preset magic byte 0x%02x\n",
+			fname, byte, KEST_PRESET_MAGIC_BYTE);
 		ret_val = ERR_BAD_ARGS;
-		goto profile_read_bail;
+		goto preset_read_bail;
 	}
 	
 	// Check that the write was finished
@@ -480,23 +480,23 @@ int read_profile_from_file(kest_profile *profile, const char *fname)
 	
 	if (byte != KEST_WRITE_FINISHED_BYTE)
 	{
-		KEST_PRINTF("Attempted load of profile from file \"%s\", whose second byte 0x%02x indicates that its write was unfinished\n",
+		KEST_PRINTF("Attempted load of preset from file \"%s\", whose second byte 0x%02x indicates that its write was unfinished\n",
 			fname, byte);
 		ret_val = ERR_UNFINISHED_WRITE;
-		goto profile_read_bail;
+		goto preset_read_bail;
 	}
 	
 	read_and_strndup_string(name);
 	
 	if (!name)
 	{
-		KEST_PRINTF("Allocation fail allocating string of length %d for profile name from file %s\n", (int)byte, fname);
-		goto profile_read_bail;
+		KEST_PRINTF("Allocation fail allocating string of length %d for preset name from file %s\n", (int)byte, fname);
+		goto preset_read_bail;
 	}
 	
-	profile->name = name;
+	preset->name = name;
 	
-	KEST_PRINTF("Loaded profile name: %s\n", profile->name);
+	KEST_PRINTF("Loaded preset name: %s\n", preset->name);
 	
 	read_short(n_effects);
 	
@@ -514,18 +514,18 @@ int read_profile_from_file(kest_profile *profile, const char *fname)
 		{
 			KEST_PRINTF("Profile references non-existent effect. Aborting.\n");
 			ret_val = ERR_MANGLED_FILE;
-			goto profile_read_bail;
+			goto preset_read_bail;
 		}
 		
 		KEST_PRINTF("Encountered %s in position %d\n", eff->name, (int)i);
 		
-		effect = kest_profile_append_effect_eff(profile, eff);
+		effect = kest_preset_append_effect_eff(preset, eff);
 		
 		if (!effect)
 		{
 			KEST_PRINTF("Failed to append effect \"%s\"", eff->name);
 			ret_val = ERR_MANGLED_FILE;
-			goto profile_read_bail;
+			goto preset_read_bail;
 		}
 		
 		// Get effect ID
@@ -564,22 +564,22 @@ int read_profile_from_file(kest_profile *profile, const char *fname)
 	{
 		if (!fname[k])
 		{
-			profile->fname[k] = 0;
+			preset->fname[k] = 0;
 			break;
 		}
 		
-		profile->fname[k] = fname[k];
+		preset->fname[k] = fname[k];
 	}
 	
-	profile->has_fname = 1;
+	preset->has_fname = 1;
 	
 	
 	
-	profile->unsaved_changes = 0;
+	preset->unsaved_changes = 0;
 	
 	return ret_val;
 	
-profile_read_bail:
+preset_read_bail:
 	//kest_printf("BAILING\n");
 	fclose(file);
 	
@@ -609,10 +609,10 @@ int read_sequence_from_file(kest_sequence *sequence, const char *fname)
 	
 	uint8_t byte;
 	uint16_t arg16;
-	uint16_t n_profiles;
+	uint16_t n_presets;
 	char string_read_buffer[IO_BUFFER_SIZE];
 	char *name = NULL;
-	char *profile_fname = NULL;
+	char *preset_fname = NULL;
 	
 	int ret_val = NO_ERROR;
 	
@@ -623,7 +623,7 @@ int read_sequence_from_file(kest_sequence *sequence, const char *fname)
 		
 		case 1:
 			KEST_PRINTF("Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
-				fname, byte, KEST_PROFILE_MAGIC_BYTE);
+				fname, byte, KEST_PRESET_MAGIC_BYTE);
 			ret_val = ERR_BAD_ARGS;
 			goto sequence_read_bail;
 		
@@ -646,24 +646,24 @@ int read_sequence_from_file(kest_sequence *sequence, const char *fname)
 	
 	KEST_PRINTF("Loaded sequence name: %s\n", sequence->name);
 	
-	read_short(n_profiles);
+	read_short(n_presets);
 	
-	kest_profile *profile;
+	kest_preset *preset;
 	
-	for (int i = 0; i < n_profiles; i++)
+	for (int i = 0; i < n_presets; i++)
 	{
 		read_string();
 		
-		KEST_PRINTF("Sequence contains profile %s...\n", string_read_buffer);
-		profile = cxt_get_profile_by_fname(&global_cxt, string_read_buffer);
+		KEST_PRINTF("Sequence contains preset %s...\n", string_read_buffer);
+		preset = cxt_get_preset_by_fname(&global_cxt, string_read_buffer);
 		
-		if (profile)
+		if (preset)
 		{
-			sequence_append_profile(sequence, profile);
+			sequence_append_preset(sequence, preset);
 		}
 		else
 		{
-			KEST_PRINTF("Error: sequence %s contains profile %s, but no such profile found!\n", fname, string_read_buffer);
+			KEST_PRINTF("Error: sequence %s contains preset %s, but no such preset found!\n", fname, string_read_buffer);
 		}
 	}
 	
@@ -698,16 +698,16 @@ int kest_init_directories()
 {
 	struct stat statbuf;
 
-	if (stat(KEST_PROFILES_DIR, &statbuf) == 0)
+	if (stat(KEST_PRESETS_DIR, &statbuf) == 0)
 	{
-		KEST_PRINTF("Profiles directory %s found\n", KEST_PROFILES_DIR);
+		KEST_PRINTF("Profiles directory %s found\n", KEST_PRESETS_DIR);
 	}
 	else
 	{
-		KEST_PRINTF("Profiles directory %s doesn't exist. Creating...\n", KEST_PROFILES_DIR);
-		if (mkdir(KEST_PROFILES_DIR, 07777) != 0)
+		KEST_PRINTF("Profiles directory %s doesn't exist. Creating...\n", KEST_PRESETS_DIR);
+		if (mkdir(KEST_PRESETS_DIR, 07777) != 0)
 		{
-			KEST_PRINTF("Failed to create profiles directory\n");
+			KEST_PRINTF("Failed to create presets directory\n");
 		}
 		else
 		{
@@ -783,7 +783,7 @@ int safe_file_write(int (*write_func)(void *arg, const char *fname), void *arg, 
 	return ret_val;
 }
 
-int save_profile_as_file_safe(kest_profile *profile, const char *fname)
+int save_preset_as_file_safe(kest_preset *preset, const char *fname)
 {
 	// Check if the file exists
 	FILE *target = fopen(fname, "r");
@@ -812,7 +812,7 @@ int save_profile_as_file_safe(kest_profile *profile, const char *fname)
 		fclose(target);
 	}
 	
-	int ret_val = save_profile_as_file(profile, fname);
+	int ret_val = save_preset_as_file(preset, fname);
 	
 	// If we backed up but the write failed,
 	// replace the newly written file with
@@ -880,19 +880,19 @@ void generate_filename(char *prefix, char *suffix, char *dest)
 	return;
 }
 
-int save_profile(kest_profile *profile)
+int save_preset(kest_preset *preset)
 {
-	if (!profile->has_fname)
+	if (!preset->has_fname)
 	{
 		FILE *test = NULL;
 		
 		do {
-			generate_filename(KEST_PROFILES_DIR, PROFILE_EXTENSION, profile->fname);
+			generate_filename(KEST_PRESETS_DIR, PRESET_EXTENSION, preset->fname);
 			
-			if (!profile)
+			if (!preset)
 				return ERR_ALLOC_FAIL;
 			
-			test = fopen(profile->fname, "r");
+			test = fopen(preset->fname, "r");
 			
 			if (test)
 			{
@@ -900,15 +900,15 @@ int save_profile(kest_profile *profile)
 			}
 		} while (test);
 		
-		profile->has_fname = 1;
+		preset->has_fname = 1;
 	}
 	
-	int ret_val = save_profile_as_file(profile, profile->fname);
+	int ret_val = save_preset_as_file(preset, preset->fname);
 	
 	if (ret_val == NO_ERROR)
 	{
-		KEST_PRINTF("Sucessfully saved profile as %s. Dumping file...\n", profile->fname);
-		dump_file_contents(profile->fname);
+		KEST_PRINTF("Sucessfully saved preset as %s. Dumping file...\n", preset->fname);
+		dump_file_contents(preset->fname);
 	}
 	else
 	{
@@ -957,10 +957,10 @@ int save_sequence(kest_sequence *sequence)
 	return ret_val;
 }
 
-int load_saved_profiles(kest_context *cxt)
+int load_saved_presets(kest_context *cxt)
 {
-	KEST_PRINTF("load_saved_profiles...\n");
-	string_ll *current_file = list_files_in_directory(KEST_PROFILES_DIR);
+	KEST_PRINTF("load_saved_presets...\n");
+	string_ll *current_file = list_files_in_directory(KEST_PRESETS_DIR);
 	
 	string_ll *cf = current_file;
 	
@@ -978,45 +978,45 @@ int load_saved_profiles(kest_context *cxt)
 		}
 	}
 	
-	kest_profile *profile;
+	kest_preset *preset;
 	
-	kest_profile_pll *nl;
+	kest_preset_pll *nl;
 	
 	int ret_val;
 	
 	while (current_file)
 	{
-		KEST_PRINTF("Loading profile %s...\n", current_file->data);
-		profile = kest_alloc(sizeof(kest_profile));
+		KEST_PRINTF("Loading preset %s...\n", current_file->data);
+		preset = kest_alloc(sizeof(kest_preset));
 		
-		if (!profile)
+		if (!preset)
 			return ERR_ALLOC_FAIL;
 		
-		init_m_profile(profile);
-		ret_val = read_profile_from_file(profile, current_file->data);
+		init_m_preset(preset);
+		ret_val = read_preset_from_file(preset, current_file->data);
 		
 		if (ret_val == NO_ERROR)
 		{	
-			nl = kest_profile_pll_append(cxt->profiles, profile);
+			nl = kest_preset_pll_append(cxt->presets, preset);
 		
 			if (!nl)
 			{
-				free_profile(profile);
+				free_preset(preset);
 				return ERR_ALLOC_FAIL;
 			}
-			cxt->profiles = nl;
+			cxt->presets = nl;
 			
-			create_profile_view_for(profile);
+			create_preset_view_for(preset);
 		}
 		else
 		{
-			free_profile(profile);
+			free_preset(preset);
 		}
 		
 		current_file = current_file->next;
 	}
 	
-	global_cxt.saved_profiles_loaded = 1;
+	global_cxt.saved_presets_loaded = 1;
 	
 	return NO_ERROR;
 }

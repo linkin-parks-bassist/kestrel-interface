@@ -96,41 +96,41 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	kest_ui_page *pv = NULL;
 	kest_effect *effect = NULL;
 	
-	kest_profile *profile = global_cxt.working_profile;
+	kest_preset *preset = global_cxt.working_preset;
 	
 	kest_effect_desc *eff = button->eff;
 	
 	KEST_PRINTF("User wishes to add a \"%s\"\n", button->name);
 	
-	if (!profile->view_page)
+	if (!preset->view_page)
 	{
 		KEST_PRINTF("Profile does not have a view page!\n");
 	}
 	else
 	{
-		enter_ui_page_backwards(profile->view_page);
-		pv = profile->view_page;
+		enter_ui_page_backwards(preset->view_page);
+		pv = preset->view_page;
 	}
 	
-	effect = kest_profile_append_effect_eff(profile, eff);
+	effect = kest_preset_append_effect_eff(preset, eff);
 	
-	if (pv) profile_view_append_effect(pv, effect);
+	if (pv) preset_view_append_effect(pv, effect);
 	
-	profile->unsaved_changes = 1;
+	preset->unsaved_changes = 1;
 	
-	kest_profile_update_representations(profile);
+	kest_preset_update_representations(preset);
 	
 	#ifdef USE_FPGA
-	kest_profile_if_active_update_fpga(profile);
+	kest_preset_if_active_update_fpga(preset);
 	#endif
 	
-	kest_effect_init_view_page(effect, profile->view_page);
+	kest_effect_init_view_page(effect, preset->view_page);
 	create_effect_view_ui(effect->view_page);
 }
 
 int init_effect_selector_button_from_effect(kest_effect_selector_button *button, kest_effect_desc *eff)
 {
-	//kest_printf("Init effect selector button. Button = %p, index = %d, profile = %p\n", button, index, profile);
+	//kest_printf("Init effect selector button. Button = %p, index = %d, preset = %p\n", button, index, preset);
 	if (!button || !eff)
 		return ERR_NULL_PTR;
 	

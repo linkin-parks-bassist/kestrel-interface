@@ -73,9 +73,9 @@ int configure_effect_settings_page(kest_ui_page *page, void *data)
 	
 	str->effect = effect;
 	
-	configure_parameter_widget(&str->band_lp_cutoff, &effect->band_lp_cutoff, effect->profile, page);
-	configure_parameter_widget(&str->band_hp_cutoff, &effect->band_hp_cutoff, effect->profile, page);
-	configure_setting_widget(&str->band_mode, &effect->band_mode, effect->profile, page);
+	configure_parameter_widget(&str->band_lp_cutoff, &effect->band_lp_cutoff, effect->preset, page);
+	configure_parameter_widget(&str->band_hp_cutoff, &effect->band_hp_cutoff, effect->preset, page);
+	configure_setting_widget(&str->band_mode, &effect->band_mode, effect->preset, page);
 	
 	page->configured = 1;
 	
@@ -128,7 +128,7 @@ void band_control_value_changed_cb(lv_event_t *e)
 	refresh_effect_settings_page(page);
 	
 	#ifdef USE_TEENSY
-	kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", setting->id.profile_id, setting->id.effect_id, setting->id.setting_id, value);
+	kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", setting->id.preset_id, setting->id.effect_id, setting->id.setting_id, value);
 	
 	queue_msg_to_teensy(msg);
 	#endif

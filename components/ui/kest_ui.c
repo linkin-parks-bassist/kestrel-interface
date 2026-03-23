@@ -83,7 +83,7 @@ int kest_init_global_pages(kest_global_pages *pages)
 	init_main_menu(&pages->main_menu);
 	//init_effect_selector_eff(&pages->effect_selector);
 	
-	//init_profile_list(&pages->profile_list);
+	//init_preset_list(&pages->preset_list);
 	init_sequence_list(&pages->sequence_list);
 	pages->sequence_list.type = KEST_UI_PAGE_SEQ_LIST;
 	
@@ -131,7 +131,7 @@ void kest_create_ui(lv_disp_t *disp)
     
 	lv_disp_set_theme(disp, lv_theme_default_get());*/
 	
-	//configure_profile_list(&global_cxt.pages.profile_list, &global_cxt.pages.main_menu);
+	//configure_preset_list(&global_cxt.pages.preset_list, &global_cxt.pages.main_menu);
 	
 	configure_sequence_list(&global_cxt.pages.sequence_list, &global_cxt.pages.main_menu);
 	

@@ -27,18 +27,18 @@ int seq_view_clicked_cb(kest_active_button *button)
 	if (!button)
 		return ERR_NULL_PTR;
 	
-	kest_profile *profile = button->data;
+	kest_preset *preset = button->data;
 	
-	if (!profile)
+	if (!preset)
 		return ERR_BAD_ARGS;
 	
-	if (!profile->view_page)
+	if (!preset->view_page)
 	{
-		if (!create_profile_view_for(profile))
+		if (!create_preset_view_for(preset))
 			return ERR_ALLOC_FAIL;
 	}
 	
-	enter_ui_page_forwards(profile->view_page);
+	enter_ui_page_forwards(preset->view_page);
 	
 	return NO_ERROR;
 }
@@ -48,7 +48,7 @@ int seq_view_moved_cb(kest_active_button *button)
 	if (!button)
 		return ERR_NULL_PTR;
 	
-	kest_profile *profile = (kest_profile*)button->data;
+	kest_preset *preset = (kest_preset*)button->data;
 	
 	if (!button->array || !button->array->parent || !button->array->parent->data_struct)
 		return ERR_BAD_ARGS;
@@ -57,7 +57,7 @@ int seq_view_moved_cb(kest_active_button *button)
 	
 	kest_sequence *sequence = str->sequence;
 	
-	kest_sequence_move_profile(sequence, button->index, button->prev_index);
+	kest_sequence_move_preset(sequence, button->index, button->prev_index);
 	
 	return NO_ERROR;
 }
@@ -144,15 +144,15 @@ void seq_plus_cb(lv_event_t *e)
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
-	kest_profile *new_profile = create_new_profile();
+	kest_preset *new_preset = create_new_preset();
 	
-	if (!new_profile) return;
+	if (!new_preset) return;
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	
-	new_profile->sequence = str->sequence;
+	new_preset->sequence = str->sequence;
 	
-	seq_profile_ll *node = sequence_append_profile_rp(str->sequence, new_profile);
+	seq_preset_ll *node = sequence_append_preset_rp(str->sequence, new_preset);
 	
 	if (!node) return;
 	
@@ -162,7 +162,7 @@ void seq_plus_cb(lv_event_t *e)
 	
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
-	kest_active_button_set_representation(button, button, new_profile, sequence_view_profile_button_rep_update);
+	kest_active_button_set_representation(button, button, new_preset, sequence_view_preset_button_rep_update);
 	
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
@@ -171,7 +171,7 @@ void seq_plus_cb(lv_event_t *e)
 	
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
-	kest_profile_add_representation(new_profile, &button->rep);
+	kest_preset_add_representation(new_preset, &button->rep);
 	
 	return;
 }
@@ -192,7 +192,7 @@ void seq_save_cb(lv_event_t *e)
 	
 	if (sequence == &global_cxt.main_sequence)
 	{
-		cxt_save_all_profiles(&global_cxt);
+		cxt_save_all_presets(&global_cxt);
 	}
 	else
 	{
@@ -226,9 +226,9 @@ int seq_view_delete_cb(kest_active_button *button)
 	
 	if (!sequence) return ERR_NULL_PTR;
 	
-	kest_profile *profile = (kest_profile*)button->data;
+	kest_preset *preset = (kest_preset*)button->data;
 	
-	kest_sequence_delete_profile(sequence, profile);
+	kest_sequence_delete_preset(sequence, preset);
 	
 	// no dangling pointers tyvm
 	button->data = NULL;
@@ -246,7 +246,7 @@ void sequence_view_set_name(lv_event_t *e)
 	if (str->sequence->name)
 		kest_free(str->sequence->name);
 	
-	str->sequence->name = kest_strndup(new_name, PROFILE_NAME_MAX_LEN);
+	str->sequence->name = kest_strndup(new_name, PRESET_NAME_MAX_LEN);
 	
 	lv_obj_clear_state(page->panel->title, LV_STATE_FOCUSED);
 	lv_obj_add_state(page->container, LV_STATE_FOCUSED);
@@ -315,7 +315,7 @@ int configure_sequence_view(kest_ui_page *page, void *data)
 	if (sequence != &global_cxt.main_sequence)
 		ui_page_set_title_rw(page, sequence_view_set_name, sequence_view_revert_name);
 	
-	seq_profile_ll *current = sequence->profiles;
+	seq_preset_ll *current = sequence->presets;
 	
 	kest_active_button *button;
 	
@@ -331,7 +331,7 @@ int configure_sequence_view(kest_ui_page *page, void *data)
 				return ERR_ALLOC_FAIL;
 			}
 			
-			kest_active_button_set_representation(button, button, current->data, sequence_view_profile_button_rep_update);
+			kest_active_button_set_representation(button, button, current->data, sequence_view_preset_button_rep_update);
 			
 			
 			//button = append_new_glide_button_to_array(str->buttons, current->data, current->data->name);
@@ -447,34 +447,34 @@ void sequence_view_rep_update(void *representer, void *representee)
 }
 
 
-void sequence_view_profile_button_rep_update(void *representer, void *representee)
+void sequence_view_preset_button_rep_update(void *representer, void *representee)
 {
-	KEST_PRINTF("sequence_view_profile_button_rep_update\n");
+	KEST_PRINTF("sequence_view_preset_button_rep_update\n");
 	kest_active_button *button  = (kest_active_button*)representer;
-	kest_profile *profile = (kest_profile*)representee;
+	kest_preset *preset = (kest_preset*)representee;
 	
-	KEST_PRINTF("button = %p, profile = %s\n", button, profile ? (profile->name ? profile->name : "Unnamed Profile") : "NULL");
+	KEST_PRINTF("button = %p, preset = %s\n", button, preset ? (preset->name ? preset->name : "Unnamed Profile") : "NULL");
 	
-	if (!button || !profile)
+	if (!button || !preset)
 	{
-		KEST_PRINTF("sequence_view_profile_button_rep_update bailing...\n");
+		KEST_PRINTF("sequence_view_preset_button_rep_update bailing...\n");
 		return;
 	}
 	
-	kest_active_button_change_label(button, profile->name);
+	kest_active_button_change_label(button, preset->name);
 	
-	if (profile->active)
+	if (preset->active)
 	{
-		KEST_PRINTF("profile is active; activating active symbol\n");
+		KEST_PRINTF("preset is active; activating active symbol\n");
 		kest_active_button_swap_del_button_for_persistent_unclickable(button, LV_SYMBOL_PLAY);
 	}
 	else
 	{
-		KEST_PRINTF("profile is inactive; disabling active symbol\n");
+		KEST_PRINTF("preset is inactive; disabling active symbol\n");
 		kest_active_button_reset_del_button(button);
 	}
 	
-	KEST_PRINTF("sequence_view_profile_button_rep_update done\n");
+	KEST_PRINTF("sequence_view_preset_button_rep_update done\n");
 	
 	return;
 }
