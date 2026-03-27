@@ -218,7 +218,7 @@ kest_menu_item *create_preset_listing_menu_item(char *text, kest_preset *preset,
 	if (text)
 		item->text = kest_strndup(text, MENU_ITEM_TEXT_MAX_LEN);
 	else
-		item->text = "Profile";
+		item->text = "Preset";
 	
 	item->linked_page_indirect = &preset->view_page;
 	item->data = preset;
@@ -807,7 +807,7 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	init_button(&str->msc_button);
 	init_danger_button(&str->erase_sd_card_button, erase_sd_card_void_cb, NULL, page);
 	
-	kest_button_set_label(&str->presets_button, "Profiles");
+	kest_button_set_label(&str->presets_button, "Presets");
 	kest_button_disable_alignment(&str->presets_button);
 	kest_button_set_label(&str->sequences_button, "Sequences");
 	kest_button_disable_alignment(&str->sequences_button);
@@ -834,7 +834,7 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	
 	preset_list->parent = page;
 	
-	item = create_page_link_menu_item("Profiles", preset_list, page);
+	item = create_page_link_menu_item("Presets", preset_list, page);
 	
 	menu_page_add_item(str, item);
 	

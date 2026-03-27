@@ -453,7 +453,7 @@ void sequence_view_preset_button_rep_update(void *representer, void *representee
 	kest_active_button *button  = (kest_active_button*)representer;
 	kest_preset *preset = (kest_preset*)representee;
 	
-	KEST_PRINTF("button = %p, preset = %s\n", button, preset ? (preset->name ? preset->name : "Unnamed Profile") : "NULL");
+	KEST_PRINTF("button = %p, preset = %s\n", button, preset ? (preset->name ? preset->name : "Unnamed Preset") : "NULL");
 	
 	if (!button || !preset)
 	{

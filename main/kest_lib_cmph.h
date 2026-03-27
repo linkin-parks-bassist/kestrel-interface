@@ -16,7 +16,4 @@
 
 #define KEST_FPGA_SIMULATED
 
-DECLARE_LINKED_PTR_LIST(char);
-typedef char_pll string_ll;
-
 #endif

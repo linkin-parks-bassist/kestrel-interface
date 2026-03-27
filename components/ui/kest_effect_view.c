@@ -42,7 +42,7 @@ kest_ui_page *create_effect_view_for(kest_effect *effect)
 
 int init_effect_view(kest_ui_page *page)
 {
-	//kest_printf("Init effect view...\n");
+	KEST_PRINTF("init_effect_view(page = %p)\n", page);
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -72,7 +72,7 @@ int init_effect_view(kest_ui_page *page)
 	page->create_ui  		 = create_effect_view_ui;
 	page->enter_page 		 = enter_effect_view;
 	
-	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
+	for (int i = 0; i < EFFECT_VIEW_MAX_GROUPS; i++)
 	{
 		str->group_containers[i] = NULL;
 		str->group_inhabited[i] = 0;
@@ -154,7 +154,7 @@ int configure_effect_view(kest_ui_page *page, void *data)
 			
 			group = current_param->data->group;
 			
-			if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
+			if (0 <= group && group < EFFECT_VIEW_MAX_GROUPS)
 				str->group_inhabited[group] = 1;
 		}
 		
@@ -163,9 +163,11 @@ int configure_effect_view(kest_ui_page *page, void *data)
 	
 	kest_setting_pll *current_setting = effect->settings;
 	
+	i = 0;
 	while (current_setting)
 	{
-		if (current_setting->data && current_setting->data->page == TRANSFORMER_SETTING_PAGE_MAIN)
+		KEST_PRINTF("Considering setting %d, at %p...\n", i + 1, current_setting->data);
+		if (current_setting->data && current_setting->data->page == EFFECT_SETTING_PAGE_MAIN)
 		{
 			sw = kest_alloc(sizeof(kest_setting_widget));
 		
@@ -176,9 +178,15 @@ int configure_effect_view(kest_ui_page *page, void *data)
 			ret_val = configure_setting_widget(sw, current_setting->data, effect->preset, page);
 			
 			str->setting_widgets = kest_setting_widget_pll_append(str->setting_widgets, sw);
+			
+			group = current_setting->data->group;
+			
+			if (0 <= group && group < EFFECT_VIEW_MAX_GROUPS)
+				str->group_inhabited[group] = 1;
 		}
 		
 		current_setting = current_setting->next;
+		i++;
 	}
 	
 	configure_effect_settings_page(str->settings_page, effect);
@@ -214,8 +222,9 @@ int create_effect_view_ui(kest_ui_page *page)
     lv_obj_set_flex_flow(page->container, LV_FLEX_FLOW_ROW_WRAP);
     lv_obj_set_flex_align(page->container, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_SPACE_EVENLY);
 	
-	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
+	for (int i = 0; i < EFFECT_VIEW_MAX_GROUPS; i++)
 	{
+		KEST_PRINTF("str->group_inhabited[%d] = %d\n", i, str->group_inhabited[i]);
 		if (str->group_inhabited[i])
 		{
 			str->group_containers[i] = lv_obj_create(page->container);
@@ -239,7 +248,7 @@ int create_effect_view_ui(kest_ui_page *page)
 			if (current_setting->data->setting)
 			{
 				group = current_setting->data->setting->group;
-				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
+				if (0 <= group && group < EFFECT_VIEW_MAX_GROUPS)
 				{
 					setting_widget_create_ui(current_setting->data, str->group_containers[group]);
 				}
@@ -265,7 +274,7 @@ int create_effect_view_ui(kest_ui_page *page)
 				group = current_param->data->param->group;
 				KEST_PRINTF("Creating parameter widget for parameter \"%s\" (%s). Group = %d\n",
 					current_param->data->param->name, current_param->data->param->name_internal, group);
-				if (0 <= group && group < TRANSFORMER_VIEW_MAX_GROUPS)
+				if (0 <= group && group < EFFECT_VIEW_MAX_GROUPS)
 				{
 					parameter_widget_create_ui(current_param->data, str->group_containers[group]);
 				}
@@ -279,7 +288,7 @@ int create_effect_view_ui(kest_ui_page *page)
 		i++;
 	}
 	
-	for (int i = 0; i < TRANSFORMER_VIEW_MAX_GROUPS; i++)
+	for (int i = 0; i < EFFECT_VIEW_MAX_GROUPS; i++)
 	{
 		if (str->group_containers[i] && str->group_inhabited[i])
 		{

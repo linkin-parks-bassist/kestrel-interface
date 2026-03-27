@@ -305,22 +305,22 @@ kest_setting *kest_extract_setting_from_dict(kest_eff_parsing_state *ps, kest_as
 		goto setting_extract_abort;
 	}
 	
-	setting->type = TRANSFORMER_SETTING_ENUM;
+	setting->type = EFFECT_SETTING_ENUM;
 	if ((ret_val = kest_dictionary_lookup_str(dict, "type", (void*)&str)) == NO_ERROR)
 	{
 		KEST_PRINTF("Obtained setting type; \"%s\"\n", str);
 		
 		if (strcmp(str, "enum") == 0)
 		{
-			setting->type = TRANSFORMER_SETTING_ENUM;
+			setting->type = EFFECT_SETTING_ENUM;
 		}
 		else if (strcmp(str, "bool") == 0)
 		{
-			setting->type = TRANSFORMER_SETTING_BOOL;
+			setting->type = EFFECT_SETTING_BOOL;
 		}
 		else if (strcmp(str, "int") == 0)
 		{
-			setting->type = TRANSFORMER_SETTING_INT;
+			setting->type = EFFECT_SETTING_INT;
 		}
 		else
 		{
@@ -335,21 +335,21 @@ kest_setting *kest_extract_setting_from_dict(kest_eff_parsing_state *ps, kest_as
 	
 	switch (setting->type)
 	{
-		case TRANSFORMER_SETTING_ENUM:
+		case EFFECT_SETTING_ENUM:
 			ret_val = kest_extract_enum_setting_from_dict(ps, dict_node, dict, setting);
 			
 			if (ret_val != NO_ERROR)
 				goto setting_extract_abort;
 			break;
 		
-		case TRANSFORMER_SETTING_BOOL:
+		case EFFECT_SETTING_BOOL:
 			ret_val = kest_extract_bool_setting_from_dict(ps, dict_node, dict, setting);
 			
 			if (ret_val != NO_ERROR)
 				goto setting_extract_abort;
 			break;
 		
-		case TRANSFORMER_SETTING_INT:
+		case EFFECT_SETTING_INT:
 			ret_val = kest_extract_int_setting_from_dict(ps, dict_node, dict, setting);
 			
 			if (ret_val != NO_ERROR)
@@ -360,16 +360,16 @@ kest_setting *kest_extract_setting_from_dict(kest_eff_parsing_state *ps, kest_as
 	if ((ret_val = kest_dictionary_lookup_str(dict, "units", (void*)&str)) == NO_ERROR)
 		setting->units = kest_strndup(str, 128);
 	
-	setting->page = TRANSFORMER_SETTING_PAGE_SETTINGS;
+	setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 	
 	if ((ret_val = kest_dictionary_lookup_str(dict, "page", (void*)&str)) == NO_ERROR)
 	{
 		KEST_PRINTF("Obtained setting page; \"%s\"\n", str);
 		
 		if (strcmp(str, "main") == 0)
-			setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
+			setting->page = EFFECT_SETTING_PAGE_MAIN;
 		else if (strcmp(str, "settings") == 0)
-			setting->page = TRANSFORMER_SETTING_PAGE_SETTINGS;
+			setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 		else
 			kest_parser_warn_at_node(ps, dict_node, "Unknown page \"%s\" given for setting \"%s\". Defaulting to settings page.", str, setting->name_internal);
 	}
@@ -388,7 +388,7 @@ kest_setting *kest_extract_setting_from_dict(kest_eff_parsing_state *ps, kest_as
 	KEST_PRINTF("Extracted a setting;\n");
 	KEST_PRINTF("\tname: \"%s\"\n", setting->name);
 	KEST_PRINTF("\tname_internal: \"%s\"\n", setting->name_internal);
-	KEST_PRINTF("\tpage: %s\n", (setting->page == TRANSFORMER_SETTING_PAGE_MAIN) ? "main" : "settings");
+	KEST_PRINTF("\tpage: %s\n", (setting->page == EFFECT_SETTING_PAGE_MAIN) ? "main" : "settings");
 	
 	return setting;
 	

@@ -308,13 +308,18 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 	KEST_PRINTF("pw->container = %p\n", pw->container);
 	lv_obj_remove_style_all(pw->container);
 	
-	KEST_PRINTF("parameter_widget_create_ui_no_callback, parameter %d.%d.%d, \"%s\" (%s). param->min_expr = %p, param->max_expr = %p\n",
+	KEST_PRINTF("parameter_widget_create_ui_no_callback, parameter %d.%d.%d at %p\n",
 		pw->param->id.preset_id, 
 		pw->param->id.effect_id, 
-		pw->param->id.parameter_id, 
-		pw->param->name, 
-		pw->param->name_internal, 
-		pw->param->min_expr, 
+		pw->param->id.parameter_id,
+		pw->param);
+	KEST_PRINTF("parameter name: \"%s\"\n",
+		pw->param->name);
+	KEST_PRINTF("cname: (%s)\n",
+		pw->param->name_internal ? pw->param->name_internal : "NULL");
+	KEST_PRINTF("param->min_expr = %p,\n",
+		pw->param->min_expr);
+	KEST_PRINTF("param->max_expr = %p\n",
 		pw->param->max_expr);
 	switch (pw->param->widget_type)
 	{	
@@ -401,15 +406,6 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 	return NO_ERROR;
 }
 
-
-//
-//
-//
-// === setting widget ===
-//
-//
-//
-
 void free_parameter_widget(kest_parameter_widget *pw)
 {
 	if (!pw)
@@ -419,6 +415,15 @@ void free_parameter_widget(kest_parameter_widget *pw)
 	// it owns itself. This may change !
 	kest_free(pw);
 }
+
+//
+//
+//
+// === setting widget ===
+//
+//
+//
+
 
 int setting_widget_update_value(kest_setting_widget *sw);
 
@@ -454,6 +459,35 @@ int nullify_setting_widget(kest_setting_widget *sw)
 	return NO_ERROR;
 }
 
+
+void sw_field_display_bare_value(kest_setting_widget *sw)
+{
+	if (!sw) return;
+	if (!sw->setting || !sw->obj) return;
+	
+	char buf[32];
+	
+	snprintf(buf, 32, "%d", sw->setting->value);
+	
+	KEST_PRINTF("setting field value to \"%s\"\n", buf);
+	lv_textarea_set_text(sw->obj, buf);
+}
+
+void sw_field_display_value_with_units(kest_setting_widget *sw)
+{
+	if (!sw) return;
+	if (!sw->setting || !sw->obj) return;
+	
+	char buf[32];
+	
+	int l = snprintf(buf, 32, "%d", sw->setting->value);
+	if (l < 32 && sw->setting->units)
+		snprintf(&buf[l], 32 - l, "%s", sw->setting->units);
+	
+	KEST_PRINTF("setting field value to \"%s\"\n", buf);
+	lv_textarea_set_text(sw->obj, buf);
+}
+
 int setting_widget_update_value(kest_setting_widget *sw)
 {
 	KEST_PRINTF("setting_widget_update_value(sw = %p)\n", sw);
@@ -463,8 +497,6 @@ int setting_widget_update_value(kest_setting_widget *sw)
 	KEST_PRINTF(" ... sw->setting = %p, sw->obj = %p\n", sw->setting, sw->obj);
 	if (!sw->setting || !sw->obj)
 		return ERR_BAD_ARGS;
-	
-	char buf[32];
 	
 	KEST_PRINTF("sw->type = %d = %s\n", sw->type, (sw->type == SETTING_WIDGET_DROPDOWN)
 		? "SETTING_WIDGET_DROPDOWN"
@@ -495,9 +527,7 @@ int setting_widget_update_value(kest_setting_widget *sw)
 			
 		case SETTING_WIDGET_FIELD:
 			KEST_PRINTF("It is a field\n");
-			snprintf(buf, 32, "%d", sw->setting->value);
-			KEST_PRINTF("Set textarea text to \"%s\"\n", buf);
-			lv_textarea_set_text(sw->obj, buf);
+			sw_field_display_value_with_units(sw);
 			break;
 		
 		default:
@@ -514,7 +544,7 @@ int configure_setting_widget(kest_setting_widget *sw, kest_setting *setting, kes
 		return ERR_NULL_PTR;
 	
 	sw->setting = setting;
-	sw->preset = preset;
+	sw->preset  = preset;
 	sw->parent  = parent;
 	
 	sw->type = sw->setting->widget_type;
@@ -532,6 +562,8 @@ void setting_widget_refresh_cb(lv_event_t *event)
 	
 	if (!sw)
 		return;
+	
+	sw_field_display_value_with_units(sw);
 }
 
 int setting_widget_calc_value(kest_setting_widget *sw, int16_t *target)
@@ -576,11 +608,12 @@ int setting_widget_calc_value(kest_setting_widget *sw, int16_t *target)
 	return NO_ERROR;
 }
 
-
 void sw_field_reject(kest_setting_widget *sw)
 {
 	if (!sw)
 		return;
+	
+	sw_field_display_value_with_units(sw);
 }
 
 void sw_field_save_cb(lv_event_t *e)
@@ -602,6 +635,8 @@ void sw_field_save_cb(lv_event_t *e)
 	{
 		return;
 	}
+	
+	KEST_PRINTF("Field contains the text \"%s\"...\n", content);
 	
 	int read_int = 0;
 	int valid_string = 0;
@@ -667,11 +702,7 @@ void sw_field_save_cb(lv_event_t *e)
 	
 	kest_free(content);
 	
-	char buf[32];
-	
-	snprintf(buf, 32, "%d", read_int);
-	KEST_PRINTF("setting field value to \"%s\"\n", buf);
-	lv_textarea_set_text(sw->obj, buf);
+	sw_field_display_value_with_units(sw);
 	
 	hide_keyboard();
 	lv_obj_clear_state(sw->obj, LV_STATE_FOCUSED);
@@ -699,6 +730,8 @@ void sw_field_cancel_cb(lv_event_t *e)
 		KEST_PRINTF("%s:%d\n", __func__, __LINE__);
 	}
 	hide_keyboard();
+	
+	sw_field_display_value_with_units(sw);
 	KEST_PRINTF("sw_field_cancel_cb done\n");
 }
 
@@ -713,12 +746,15 @@ void edit_sw_field_cb(lv_event_t *e)
 	if (!sw->obj || !sw->parent)
 		return;
 	
+	sw->saved_field_text = kest_strndup(lv_textarea_get_text(sw->obj), 32);
+	
+	KEST_PRINTF("sw->setting->value = %d\n", sw->setting->value);
+	sw_field_display_bare_value(sw);
+	KEST_PRINTF("edit_sw_field_cb done\n");
+	
 	spawn_numerical_keyboard(sw->parent->screen, sw->obj, sw_field_save_cb, sw, sw_field_cancel_cb, sw);
 	KEST_PRINTF("spawned numerical keyboard\n");
 	lv_obj_add_state(sw->obj, LV_STATE_FOCUSED);
-	
-	sw->saved_field_text = kest_strndup(lv_textarea_get_text(sw->obj), 32);
-	KEST_PRINTF("edit_sw_field_cb done\n");
 }
 
 void setting_widget_change_cb_inner(kest_setting_widget *sw)
@@ -807,10 +843,10 @@ int setting_widget_create_ui(kest_setting_widget *sw, lv_obj_t *parent)
 
 int setting_widget_create_ui_no_callback(kest_setting_widget *sw, lv_obj_t *parent)
 {
+	KEST_PRINTF("setting_widget_create_ui_no_callback(sw = %p, parent = %p)\n", sw, parent);
 	
 	if (!sw || !sw->setting || !parent)
 	{
-		KEST_PRINTF("setting_widget_create_ui_no_callback(sw = %p, parent = %p)\n", sw, parent);
 		return ERR_NULL_PTR;
 	}
 	
@@ -875,9 +911,9 @@ int setting_widget_create_ui_no_callback(kest_setting_widget *sw, lv_obj_t *pare
 			sw->obj = lv_textarea_create(sw->container);
 			lv_obj_set_style_text_align(sw->obj, LV_TEXT_ALIGN_RIGHT, 0);
 			lv_textarea_set_one_line(sw->obj, true);
-			lv_obj_set_width(sw->obj, STANDARD_CONTAINER_WIDTH / 3);
+			lv_obj_set_width(sw->obj, STANDARD_CONTAINER_WIDTH / 3 - 20);
 			
-			lv_obj_set_size(sw->container, STANDARD_CONTAINER_WIDTH - 40, STANDARD_BUTTON_SHORT_HEIGHT);
+			lv_obj_set_size(sw->container, STANDARD_CONTAINER_WIDTH - 60, STANDARD_BUTTON_SHORT_HEIGHT);
 			break;
 	}
 	

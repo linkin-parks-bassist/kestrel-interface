@@ -25,7 +25,7 @@ int kest_init_context(kest_context *cxt)
 	
 	kest_context_init_main_sequence(cxt);
 	
-	cxt->main_sequence.name = "Profiles";
+	cxt->main_sequence.name = "Presets";
 	
 	cxt->saved_presets_loaded  = 0;
 	cxt->saved_sequences_loaded = 0;
@@ -71,7 +71,7 @@ int kest_context_init_main_sequence(kest_context *cxt)
 	
 	init_m_sequence(&cxt->main_sequence);
 	
-	cxt->main_sequence.name = "Profiles";
+	cxt->main_sequence.name = "Presets";
 	cxt->main_sequence.view_page = &cxt->pages.main_sequence_view;
 	
 	for (int k = 0; k < KEST_FILENAME_LEN; k++)
@@ -366,7 +366,7 @@ int cxt_effect_id_to_position(kest_context *cxt, uint16_t preset_id, uint16_t ef
 		i++;
 	}
 	
-	return -ERR_INVALID_TRANSFORMER_ID;
+	return -ERR_INVALID_EFFECT_ID;
 }
 
 int cxt_effect_position_to_id(kest_context *cxt, uint16_t preset_id, uint16_t effect_pos)
@@ -396,7 +396,7 @@ int cxt_effect_position_to_id(kest_context *cxt, uint16_t preset_id, uint16_t ef
 		i++;
 	}
 	
-	return -ERR_INVALID_TRANSFORMER_ID;
+	return -ERR_INVALID_EFFECT_ID;
 }
 
 int cxt_remove_preset(kest_context *cxt, kest_preset *preset)
@@ -487,7 +487,7 @@ int cxt_remove_effect(kest_context *cxt, uint16_t pid, uint16_t tid)
 	if (ret_val == NO_ERROR)
 	{
 		#ifdef USE_TEENSY
-		queue_msg_to_teensy(create_m_message(KEST_MESSAGE_REMOVE_TRANSFORMER, "ss", pid, tid));
+		queue_msg_to_teensy(create_m_message(KEST_MESSAGE_REMOVE_EFFECT, "ss", pid, tid));
 		#endif
 	}
 	
@@ -571,7 +571,7 @@ void context_print_presets(kest_context *cxt)
 	int i = 0;
 	while (current)
 	{
-		KEST_PRINTF("Profile %d, stored at %p, ", i, current->data);
+		KEST_PRINTF("Preset %d, stored at %p, ", i, current->data);
 		
 		if (current->data)
 		{
@@ -755,7 +755,7 @@ kest_preset *cxt_get_preset_by_fname(kest_context *cxt, const char *fname)
 	int i = 0;
 	while (current)
 	{
-		KEST_PRINTF("Profile %d ", i);
+		KEST_PRINTF("Preset %d ", i);
 		if (current->data)
 		{
 			KEST_PRINTF("has fname \"%s\".\n", current->data->has_fname ? current->data->fname : "(NULL)");

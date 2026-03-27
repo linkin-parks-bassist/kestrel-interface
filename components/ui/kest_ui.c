@@ -734,20 +734,22 @@ int create_panel_with_left_and_right_buttons(kest_ui_page *page,
     return NO_ERROR;
 }
 
+void delete_keyboard()
+{
+	if (keyboard)
+		lv_obj_delete(keyboard);
+	keyboard = NULL;
+}
+
 void spawn_keyboard(lv_obj_t *parent, lv_obj_t *text_area, void (*ok_cb)(lv_event_t*), void *ok_arg, void (*cancel_cb)(lv_event_t*), void *cancel_arg)
 {
-	if (!keyboard)
+	if (keyboard)
 	{
-		keyboard = lv_keyboard_create(parent);
-		lv_obj_set_size(keyboard, LV_PCT(100), LV_PCT(33));
-		lv_obj_add_flag(keyboard, LV_OBJ_FLAG_HIDDEN);
+		delete_keyboard();
 	}
-	else
-	{
-		lv_obj_set_parent(keyboard, parent);
-	}
-	
-	lv_obj_clear_flag(keyboard, LV_OBJ_FLAG_HIDDEN);
+
+	keyboard = lv_keyboard_create(parent);
+	lv_obj_set_size(keyboard, LV_PCT(100), LV_PCT(33));
 	lv_keyboard_set_textarea(keyboard, text_area);
 	
 	lv_obj_add_event_cb(keyboard, ok_cb, 		LV_EVENT_READY, 	ok_arg);
@@ -758,28 +760,19 @@ void spawn_keyboard(lv_obj_t *parent, lv_obj_t *text_area, void (*ok_cb)(lv_even
 
 void spawn_numerical_keyboard(lv_obj_t *parent, lv_obj_t *text_area, void (*ok_cb)(lv_event_t*), void *ok_arg, void (*cancel_cb)(lv_event_t*), void *cancel_arg)
 {
-	//kest_printf("spawn_numerical_keyboard\n");
-	
 	spawn_keyboard(parent, text_area, ok_cb, ok_arg, cancel_cb, cancel_arg);
 	
 	lv_keyboard_set_mode(keyboard, LV_KEYBOARD_MODE_NUMBER);
-	//kest_printf("spawn_numerical_keyboard done\n");
 }
 
 void hide_keyboard()
 {
-	if (keyboard)
-		lv_obj_add_flag(keyboard, LV_OBJ_FLAG_HIDDEN);
-	
-	lv_keyboard_set_mode(keyboard, LV_KEYBOARD_MODE_TEXT_LOWER);
+	delete_keyboard();
 }
 
 void hide_keyboard_cb(lv_event_t *e)
 {
-	if (keyboard)
-		lv_obj_add_flag(keyboard, LV_OBJ_FLAG_HIDDEN);
-	
-	lv_keyboard_set_mode(keyboard, LV_KEYBOARD_MODE_TEXT_LOWER);
+	hide_keyboard();
 }
 
 int create_standard_container(lv_obj_t **cont, lv_obj_t *parent)

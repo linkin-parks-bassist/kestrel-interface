@@ -96,7 +96,7 @@ int init_setting_str(kest_setting *setting)
 	if (!setting)
 		return ERR_NULL_PTR;
 	
-	setting->type = TRANSFORMER_SETTING_INT;
+	setting->type = EFFECT_SETTING_INT;
 	
 	setting->name = NULL;
 	setting->name_internal = NULL;
@@ -106,7 +106,7 @@ int init_setting_str(kest_setting *setting)
 	setting->options = NULL;
 	
 	setting->widget_type = SETTING_WIDGET_FIELD;
-	setting->page = TRANSFORMER_SETTING_PAGE_SETTINGS;
+	setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 	setting->group = -1;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS

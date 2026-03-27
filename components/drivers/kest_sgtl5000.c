@@ -15,6 +15,9 @@
 
 #include "kest_sgtl5000.h"
 
+static const char *FNAME = "kest_sgtl5000.c";
+#define PRINTLINES_ALLOWED 1
+
 #define SGTL5000_SDA 15
 #define SGTL5000_SCL 16
 
@@ -218,10 +221,10 @@ static void read_and_print(uint16_t reg, const char *name)
     int ret_val = sgtl5000_read_reg(reg, &v);
     if (ret_val != NO_ERROR)
     {
-        kest_printf("RD  %-18s (0x%04X): ERROR\n", name, reg);
+        KEST_PRINTF("RD  %-18s (0x%04X): ERROR\n", name, reg);
         return;
     }
-    kest_printf("RD  %-18s (0x%04X): 0x%04X\n", name, reg, v);
+    KEST_PRINTF("RD  %-18s (0x%04X): 0x%04X\n", name, reg, v);
 }
 
 typedef struct {
@@ -275,8 +278,6 @@ void kest_sgtl5000_init(void *param)
         .i2c_hz   = 400000,
     };
     
-    
-    
 	vTaskDelay(pdMS_TO_TICKS(3000));
 
     int ret_val;
@@ -300,6 +301,8 @@ void kest_sgtl5000_init(void *param)
 	
 	sgtl5000_line_in_level(7);
 	sgtl5000_line_out_level(31);
+	
+	sgtl5000_readout_registers();
 	
 	sgtl5000_status = 1;
 	

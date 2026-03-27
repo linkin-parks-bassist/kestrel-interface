@@ -1,22 +1,22 @@
 // Code generated from config/effect/*.yaml by codegen.py
-#ifndef KEST_TRANSFORMER_ENUM_H_
-#define KEST_TRANSFORMER_ENUM_H_
+#ifndef KEST_EFFECT_ENUM_H_
+#define KEST_EFFECT_ENUM_H_
 
-#define TRANSFORMER_3_BAND_EQ          0
-#define TRANSFORMER_AMPLIFIER          1
-#define TRANSFORMER_BAND_PASS_FILTER   2
-#define TRANSFORMER_COMPRESSOR         3
-#define TRANSFORMER_DELAY              4
-#define TRANSFORMER_DIRTY_OCTAVE       5
-#define TRANSFORMER_DISTORTION         6
-#define TRANSFORMER_ENVELOPE           7
-#define TRANSFORMER_FLANGER            8
-#define TRANSFORMER_HIGH_PASS_FILTER   9
-#define TRANSFORMER_LOW_END_COMPRESSOR 10
-#define TRANSFORMER_LOW_PASS_FILTER    11
-#define TRANSFORMER_NOISE_SUPPRESSOR   12
-#define TRANSFORMER_PERCUSSIFIER       13
-#define TRANSFORMER_WARBLER            14
+#define EFFECT_3_BAND_EQ          0
+#define EFFECT_AMPLIFIER          1
+#define EFFECT_BAND_PASS_FILTER   2
+#define EFFECT_COMPRESSOR         3
+#define EFFECT_DELAY              4
+#define EFFECT_DIRTY_OCTAVE       5
+#define EFFECT_DISTORTION         6
+#define EFFECT_ENVELOPE           7
+#define EFFECT_FLANGER            8
+#define EFFECT_HIGH_PASS_FILTER   9
+#define EFFECT_LOW_END_COMPRESSOR 10
+#define EFFECT_LOW_PASS_FILTER    11
+#define EFFECT_NOISE_SUPPRESSOR   12
+#define EFFECT_PERCUSSIFIER       13
+#define EFFECT_WARBLER            14
 
 typedef enum
 {

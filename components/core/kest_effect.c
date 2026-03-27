@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
@@ -46,12 +46,12 @@ int init_effect(kest_effect *effect)
 	effect->preset = NULL;
 	
 	init_parameter(&effect->wet_mix, "Wet Mix", 1.0, 0.0, 1.0);
-	effect->wet_mix.id.parameter_id = TRANSFORMER_WET_MIX_PID;
+	effect->wet_mix.id.parameter_id = EFFECT_WET_MIX_PID;
 	effect->wet_mix.min_expr = &kest_expression_zero;
 	effect->wet_mix.max_expr = &kest_expression_one;
 	
-	init_setting(&effect->band_mode, "Apply to", TRANSFORMER_MODE_FULL_SPECTRUM);
-	effect->band_mode.id.setting_id = TRANSFORMER_BAND_MODE_SID;
+	init_setting(&effect->band_mode, "Apply to", EFFECT_MODE_FULL_SPECTRUM);
+	effect->band_mode.id.setting_id = EFFECT_BAND_MODE_SID;
 	
 	effect->band_mode.n_options = 4;
 	effect->band_mode.options = kest_alloc(sizeof(kest_setting_option) * effect->band_mode.n_options);
@@ -59,27 +59,27 @@ int init_effect(kest_effect *effect)
 	if (!effect->band_mode.options)
 		return ERR_ALLOC_FAIL;
 	
-	effect->band_mode.options[0].value = TRANSFORMER_MODE_FULL_SPECTRUM;
+	effect->band_mode.options[0].value = EFFECT_MODE_FULL_SPECTRUM;
 	effect->band_mode.options[0].name  = "All freq";
 	
-	effect->band_mode.options[1].value = TRANSFORMER_MODE_UPPER_SPECTRUM;
+	effect->band_mode.options[1].value = EFFECT_MODE_UPPER_SPECTRUM;
 	effect->band_mode.options[1].name  = "Freq > cutoff";
 	
-	effect->band_mode.options[2].value = TRANSFORMER_MODE_LOWER_SPECTRUM;
+	effect->band_mode.options[2].value = EFFECT_MODE_LOWER_SPECTRUM;
 	effect->band_mode.options[2].name  = "Freq < cutoff";
 	
-	effect->band_mode.options[3].value = TRANSFORMER_MODE_BAND;
+	effect->band_mode.options[3].value = EFFECT_MODE_BAND;
 	effect->band_mode.options[3].name  = "Freq in band";
 	
 	init_parameter(&effect->band_lp_cutoff, "Cutoff", 4000.0, 1, 4000);
 	effect->band_lp_cutoff.scale = PARAMETER_SCALE_LOGARITHMIC;
-	effect->band_lp_cutoff.id.parameter_id = TRANSFORMER_BAND_LP_CUTOFF_PID;
+	effect->band_lp_cutoff.id.parameter_id = EFFECT_BAND_LP_CUTOFF_PID;
 	effect->band_lp_cutoff.min_expr = &kest_expression_one;
 	effect->band_lp_cutoff.max_expr = &kest_expression_freq_max;
 	
 	init_parameter(&effect->band_hp_cutoff, "Cutoff", 1.0, 1, 4000);
 	effect->band_hp_cutoff.scale = PARAMETER_SCALE_LOGARITHMIC;
-	effect->band_hp_cutoff.id.parameter_id = TRANSFORMER_BAND_HP_CUTOFF_PID;
+	effect->band_hp_cutoff.id.parameter_id = EFFECT_BAND_HP_CUTOFF_PID;
 	effect->band_hp_cutoff.min_expr = &kest_expression_one;
 	effect->band_hp_cutoff.max_expr = &kest_expression_freq_max;
 	

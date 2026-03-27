@@ -785,7 +785,7 @@ void kest_active_button_clicked_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		KEST_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
+		KEST_PRINTF("Effect widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -806,7 +806,7 @@ void kest_active_button_long_pressed_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		KEST_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
+		KEST_PRINTF("Effect widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 	
@@ -864,7 +864,7 @@ void kest_active_button_pressing_cb(lv_event_t *e)
 	
 	if (!button)
 	{
-		KEST_PRINTF("Transformer widget long press callback triggered but pointer to struct not passed");
+		KEST_PRINTF("Effect widget long press callback triggered but pointer to struct not passed");
 		return;
 	}
 

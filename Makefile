@@ -44,6 +44,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fpga_io.c			\
 				fpga/kest_reg_format.c		\
 				fpga/kest_fixed_point.c		\
+				fpga/kest_fpga_position.c	\
 				parser/kest_asm_parser.c	\
 				parser/kest_dict_extract.c	\
 				parser/kest_dictionary.c	\
@@ -79,6 +80,7 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fpga_encoding.c	\
 				fpga/kest_reg_format.c		\
 				fpga/kest_fixed_point.c		\
+				fpga/kest_fpga_position.c	\
 				fpga/kest_fpga_io.c
 
 

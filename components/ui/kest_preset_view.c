@@ -77,7 +77,7 @@ int preset_view_effect_moved_cb(kest_active_button *button)
 		return ERR_BAD_ARGS;
 	
 	#ifdef USE_TEENSY
-	queue_msg_to_teensy(create_m_message(KEST_MESSAGE_MOVE_TRANSFORMER, "sss", effect->preset->id, effect->id, button->index));
+	queue_msg_to_teensy(create_m_message(KEST_MESSAGE_MOVE_EFFECT, "sss", effect->preset->id, effect->id, button->index));
 	#endif
 	
 	#ifdef USE_FPGA
@@ -317,7 +317,7 @@ void preset_view_play_button_cb(lv_event_t *e)
 	
 	if (!str->preset)
 	{
-		KEST_PRINTF("Profile is NULL\n");
+		KEST_PRINTF("Preset is NULL\n");
 		set_active_preset(NULL);
 		return;
 	}

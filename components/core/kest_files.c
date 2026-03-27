@@ -47,12 +47,12 @@ static const char *FNAME = "kest_files.c";
 
 void dump_file_contents(char *fname)
 {
-	KEST_PRINTF("FILE HEX DUMP: %s\n", fname);
+	KEST_PRINTF_("FILE HEX DUMP: %s\n", fname);
 	FILE *file = fopen(fname, "rb");
 	
 	if (!file)
 	{
-		KEST_PRINTF("Failed to open file %s\n", fname);
+		KEST_PRINTF_("Failed to open file %s\n", fname);
 		return;
 	}
 	
@@ -61,12 +61,12 @@ void dump_file_contents(char *fname)
 	int i = 1;
 	while (fread(&byte, 1, 1, file))
 	{
-		if (i % 8 == 1) KEST_PRINTF("\n %s%d | ", (i < 10) ? "  " : ((i < 100) ? " " : ""), i - 1);
-		KEST_PRINTF("0x%02x ", byte);
+		if (i % 8 == 1) KEST_PRINTF_("\n %s%d | ", (i < 10) ? "  " : ((i < 100) ? " " : ""), i - 1);
+		KEST_PRINTF_("0x%02x ", byte);
 		i++;
 	}
 	
-	KEST_PRINTF((i % 8 == 1) ? "" : "\n");
+	KEST_PRINTF_((i % 8 == 1) ? "" : "\n");
 	fclose(file);
 }
 
@@ -126,7 +126,7 @@ int save_preset_as_file(kest_preset *preset, const char *fname)
 	int n;
 	
 	char *units;
-	char *name = preset->name ? preset->name : "Unnamed Profile";
+	char *name = preset->name ? preset->name : "Unnamed Preset";
 	
 	write_string(name);
 	
@@ -150,7 +150,7 @@ int save_preset_as_file(kest_preset *preset, const char *fname)
 	{
 		if (!current_effect->data || !current_effect->data->eff)
 		{
-			write_short(KEST_PRESET_BROKEN_TRANSFORMER);
+			write_short(KEST_PRESET_BROKEN_EFFECT);
 			current_effect = current_effect->next;
 			continue;
 		}
@@ -237,7 +237,7 @@ int save_sequence_as_file(kest_sequence *sequence, const char *fname)
 				save_preset(current->data);
 			}
 			
-			KEST_PRINTF("Profile %s...\n", current->data->fname);
+			KEST_PRINTF("Preset %s...\n", current->data->fname);
 			write_string(current->data->fname);
 		}
 		
@@ -504,7 +504,7 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 	
 	for (int i = 0; i < n_effects; i++)
 	{
-		KEST_PRINTF("Profile professes to contain %d effects\n", n_effects);
+		KEST_PRINTF("Preset professes to contain %d effects\n", n_effects);
 		//Get effect type
 		read_string();
 		
@@ -512,7 +512,7 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		
 		if (!eff)
 		{
-			KEST_PRINTF("Profile references non-existent effect. Aborting.\n");
+			KEST_PRINTF("Preset references non-existent effect. Aborting.\n");
 			ret_val = ERR_MANGLED_FILE;
 			goto preset_read_bail;
 		}
@@ -532,7 +532,7 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		read_short(arg16);
 		
 		
-		KEST_PRINTF("Transformer ID: %d\n", (int)arg16);
+		KEST_PRINTF("Effect ID: %d\n", (int)arg16);
 		effect->id = arg16;
 		
 		current_param = effect->parameters;
@@ -700,11 +700,11 @@ int kest_init_directories()
 
 	if (stat(KEST_PRESETS_DIR, &statbuf) == 0)
 	{
-		KEST_PRINTF("Profiles directory %s found\n", KEST_PRESETS_DIR);
+		KEST_PRINTF("Presets directory %s found\n", KEST_PRESETS_DIR);
 	}
 	else
 	{
-		KEST_PRINTF("Profiles directory %s doesn't exist. Creating...\n", KEST_PRESETS_DIR);
+		KEST_PRINTF("Presets directory %s doesn't exist. Creating...\n", KEST_PRESETS_DIR);
 		if (mkdir(KEST_PRESETS_DIR, 07777) != 0)
 		{
 			KEST_PRINTF("Failed to create presets directory\n");
@@ -912,7 +912,7 @@ int save_preset(kest_preset *preset)
 	}
 	else
 	{
-		KEST_PRINTF("Profile save error: %s\n", kest_error_code_to_string(ret_val));
+		KEST_PRINTF("Preset save error: %s\n", kest_error_code_to_string(ret_val));
 	}
 	
 	return ret_val;
@@ -964,7 +964,7 @@ int load_saved_presets(kest_context *cxt)
 	
 	string_ll *cf = current_file;
 	
-	KEST_PRINTF("Profile files fonund:\n");
+	KEST_PRINTF("Preset files fonund:\n");
 	if (!cf)
 	{
 		KEST_PRINTF("none!!!\n");

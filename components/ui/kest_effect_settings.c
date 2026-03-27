@@ -193,7 +193,7 @@ int refresh_effect_settings_page(kest_ui_page *page)
 	{
 		switch (str->band_mode.setting->value)
 		{
-			case TRANSFORMER_MODE_FULL_SPECTRUM:
+			case EFFECT_MODE_FULL_SPECTRUM:
 				if (str->band_lp_cutoff.container)
 				{
 					lv_obj_set_parent(str->band_lp_cutoff.container, global_cxt.pages.backstage);
@@ -206,7 +206,7 @@ int refresh_effect_settings_page(kest_ui_page *page)
 				
 				break;
 				
-			case TRANSFORMER_MODE_UPPER_SPECTRUM:
+			case EFFECT_MODE_UPPER_SPECTRUM:
 				if (str->band_lp_cutoff.container)
 				{
 					lv_obj_set_parent(str->band_lp_cutoff.container, global_cxt.pages.backstage);
@@ -219,7 +219,7 @@ int refresh_effect_settings_page(kest_ui_page *page)
 				
 				break;
 			
-			case TRANSFORMER_MODE_LOWER_SPECTRUM:
+			case EFFECT_MODE_LOWER_SPECTRUM:
 				if (str->band_lp_cutoff.container)
 				{
 					lv_obj_set_parent(str->band_lp_cutoff.container, str->band_control_cont);
@@ -232,7 +232,7 @@ int refresh_effect_settings_page(kest_ui_page *page)
 				
 				break;
 				
-			case TRANSFORMER_MODE_BAND:
+			case EFFECT_MODE_BAND:
 				if (str->band_hp_cutoff.container)
 				{
 					lv_obj_set_parent(str->band_hp_cutoff.container, str->band_control_cont);

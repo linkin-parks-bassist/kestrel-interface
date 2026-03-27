@@ -16,7 +16,7 @@ int init_3_band_eq(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_3_BAND_EQ;
+	effect->type = EFFECT_3_BAND_EQ;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -78,7 +78,7 @@ int init_amplifier(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_AMPLIFIER;
+	effect->type = EFFECT_AMPLIFIER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -116,7 +116,7 @@ int init_amplifier(kest_effect *effect)
 	setting->units = unit_string_;
 	setting->group = -1;
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
-	setting->page = TRANSFORMER_SETTING_PAGE_SETTINGS;
+	setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 	setting->n_options = 2;
 	setting->options = kest_alloc(sizeof(kest_setting) * 2);
 	if (!setting->options) return ERR_ALLOC_FAIL;
@@ -136,7 +136,7 @@ int init_band_pass_filter(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_BAND_PASS_FILTER;
+	effect->type = EFFECT_BAND_PASS_FILTER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -182,7 +182,7 @@ int init_compressor(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_COMPRESSOR;
+	effect->type = EFFECT_COMPRESSOR;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -260,7 +260,7 @@ int init_delay(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_DELAY;
+	effect->type = EFFECT_DELAY;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -298,7 +298,7 @@ int init_delay(kest_effect *effect)
 	setting->units = unit_string_;
 	setting->group = 1;
 	setting->widget_type = SETTING_WIDGET_FIELD;
-	setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
+	setting->page = EFFECT_SETTING_PAGE_MAIN;
 	setting->n_options = 0;
 	setting->options = NULL;
 	setting = effect_add_setting(effect);
@@ -315,7 +315,7 @@ int init_delay(kest_effect *effect)
 	setting->units = unit_string_;
 	setting->group = 2;
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
-	setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
+	setting->page = EFFECT_SETTING_PAGE_MAIN;
 	setting->n_options = 5;
 	setting->options = kest_alloc(sizeof(kest_setting) * 5);
 	if (!setting->options) return ERR_ALLOC_FAIL;
@@ -344,7 +344,7 @@ int init_dirty_octave(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_DIRTY_OCTAVE;
+	effect->type = EFFECT_DIRTY_OCTAVE;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -374,7 +374,7 @@ int init_distortion(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_DISTORTION;
+	effect->type = EFFECT_DISTORTION;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -460,7 +460,7 @@ int init_distortion(kest_effect *effect)
 	setting->units = unit_string_;
 	setting->group = -1;
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
-	setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
+	setting->page = EFFECT_SETTING_PAGE_MAIN;
 	setting->n_options = 4;
 	setting->options = kest_alloc(sizeof(kest_setting) * 4);
 	if (!setting->options) return ERR_ALLOC_FAIL;
@@ -486,7 +486,7 @@ int init_envelope(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_ENVELOPE;
+	effect->type = EFFECT_ENVELOPE;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -596,7 +596,7 @@ int init_flanger(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_FLANGER;
+	effect->type = EFFECT_FLANGER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -682,7 +682,7 @@ int init_flanger(kest_effect *effect)
 	setting->units = unit_string_;
 	setting->group = -1;
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
-	setting->page = TRANSFORMER_SETTING_PAGE_MAIN;
+	setting->page = EFFECT_SETTING_PAGE_MAIN;
 	setting->n_options = 5;
 	setting->options = kest_alloc(sizeof(kest_setting) * 5);
 	if (!setting->options) return ERR_ALLOC_FAIL;
@@ -711,7 +711,7 @@ int init_high_pass_filter(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_HIGH_PASS_FILTER;
+	effect->type = EFFECT_HIGH_PASS_FILTER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -741,7 +741,7 @@ int init_low_end_compressor(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_LOW_END_COMPRESSOR;
+	effect->type = EFFECT_LOW_END_COMPRESSOR;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -883,7 +883,7 @@ int init_low_pass_filter(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_LOW_PASS_FILTER;
+	effect->type = EFFECT_LOW_PASS_FILTER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -913,7 +913,7 @@ int init_noise_suppressor(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_NOISE_SUPPRESSOR;
+	effect->type = EFFECT_NOISE_SUPPRESSOR;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -975,7 +975,7 @@ int init_percussifier(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_PERCUSSIFIER;
+	effect->type = EFFECT_PERCUSSIFIER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -1101,7 +1101,7 @@ int init_warbler(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 
-	effect->type = TRANSFORMER_WARBLER;
+	effect->type = EFFECT_WARBLER;
 	effect->view_page = NULL;
 
 	kest_parameter *param;
@@ -1217,21 +1217,21 @@ int init_effect_of_type(kest_effect *effect, uint16_t type)
 		return ret_val;
 	switch (type)
 	{
-		case TRANSFORMER_3_BAND_EQ:          return init_3_band_eq(effect);
-		case TRANSFORMER_AMPLIFIER:          return init_amplifier(effect);
-		case TRANSFORMER_BAND_PASS_FILTER:   return init_band_pass_filter(effect);
-		case TRANSFORMER_COMPRESSOR:         return init_compressor(effect);
-		case TRANSFORMER_DELAY:              return init_delay(effect);
-		case TRANSFORMER_DIRTY_OCTAVE:       return init_dirty_octave(effect);
-		case TRANSFORMER_DISTORTION:         return init_distortion(effect);
-		case TRANSFORMER_ENVELOPE:           return init_envelope(effect);
-		case TRANSFORMER_FLANGER:            return init_flanger(effect);
-		case TRANSFORMER_HIGH_PASS_FILTER:   return init_high_pass_filter(effect);
-		case TRANSFORMER_LOW_END_COMPRESSOR: return init_low_end_compressor(effect);
-		case TRANSFORMER_LOW_PASS_FILTER:    return init_low_pass_filter(effect);
-		case TRANSFORMER_NOISE_SUPPRESSOR:   return init_noise_suppressor(effect);
-		case TRANSFORMER_PERCUSSIFIER:       return init_percussifier(effect);
-		case TRANSFORMER_WARBLER:            return init_warbler(effect);
+		case EFFECT_3_BAND_EQ:          return init_3_band_eq(effect);
+		case EFFECT_AMPLIFIER:          return init_amplifier(effect);
+		case EFFECT_BAND_PASS_FILTER:   return init_band_pass_filter(effect);
+		case EFFECT_COMPRESSOR:         return init_compressor(effect);
+		case EFFECT_DELAY:              return init_delay(effect);
+		case EFFECT_DIRTY_OCTAVE:       return init_dirty_octave(effect);
+		case EFFECT_DISTORTION:         return init_distortion(effect);
+		case EFFECT_ENVELOPE:           return init_envelope(effect);
+		case EFFECT_FLANGER:            return init_flanger(effect);
+		case EFFECT_HIGH_PASS_FILTER:   return init_high_pass_filter(effect);
+		case EFFECT_LOW_END_COMPRESSOR: return init_low_end_compressor(effect);
+		case EFFECT_LOW_PASS_FILTER:    return init_low_pass_filter(effect);
+		case EFFECT_NOISE_SUPPRESSOR:   return init_noise_suppressor(effect);
+		case EFFECT_PERCUSSIFIER:       return init_percussifier(effect);
+		case EFFECT_WARBLER:            return init_warbler(effect);
 		default: return ERR_BAD_ARGS;
 	}
 

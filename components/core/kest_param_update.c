@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 
 static const char *FNAME = "kest_param_update.c";
@@ -141,7 +141,7 @@ void kest_param_update_task(void *arg)
 			if ((ret_val = cxt_get_parameter_and_effect_by_id(&global_cxt, update_array[i].id, &update_array[i].p, &update_array[i].t)) != NO_ERROR)
 			{
 				remove_param_update(i);
-				kest_printf("Removing update %d from queue for reason: cxt_get_parameter_and_effect_by_id returned %s!\n", i, kest_error_code_to_string(ret_val));
+				KEST_PRINTF("Removing update %d from queue for reason: cxt_get_parameter_and_effect_by_id returned %s!\n", i, kest_error_code_to_string(ret_val));
 				i--;
 				continue;
 			}
@@ -190,7 +190,7 @@ void kest_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			kest_printf("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
+			KEST_PRINTF("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
 				diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
@@ -214,7 +214,18 @@ void kest_param_update_task(void *arg)
 			
 		}
 		
-		//KEST_PRINTF("commit = %d\n", commit);
+		//KEST_PRINTF("commit = %d, n_updates = %d\n", commit, n_updates);
+		
+		if (n_updates)
+		{
+			KEST_PRINTF("Processed %d updates. Send array:\n", n_updates);
+			
+			for (int i = 0; i < n_updates; i++)
+			{
+				KEST_PRINTF("update_array[%d].send = %d (update_array[%d].t = %p)\n", i, update_array[i].send, i, update_array[i].t);
+			}
+		}
+		
 		for (int i = 0; i < n_updates; i++)
 		{			
 			if (update_array[i].t && update_array[i].send)
@@ -231,7 +242,7 @@ void kest_param_update_task(void *arg)
 		{
 			if (!update_array[i].p)
 			{
-				kest_printf("Removing update %d from queue for reason: no parameter!\n", i);
+				KEST_PRINTF("Removing update %d from queue for reason: no parameter!\n", i);
 				remove_param_update(i);
 				i--;
 				continue;
@@ -239,7 +250,7 @@ void kest_param_update_task(void *arg)
 			
 			if (update_array[i].p->value == update_array[i].target)
 			{
-				kest_printf("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
+				KEST_PRINTF("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
 				if (update_array[i].p->id.preset_id == CONTEXT_PRESET_ID)
 					kest_cxt_queue_save_state(&global_cxt);
 				

@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 
 static const char *FNAME = "kest_preset.c";
@@ -176,7 +176,7 @@ int kest_preset_set_default_name_from_id(kest_preset *preset)
 	if (!preset->name)
 		return ERR_ALLOC_FAIL;
 	
-	sprintf(preset->name, "Profile %d", preset->id);
+	sprintf(preset->name, "Preset %d", preset->id);
 	
 	KEST_PRINTF("Resulting name: %s\n", preset->name);
 	
@@ -308,7 +308,7 @@ void new_preset_receive_id(kest_message msg, kest_response response)
 	
 	if (!preset)
 	{
-		KEST_PRINTF("ERROR: Profile ID recieved, but no preset associated !\n");
+		KEST_PRINTF("ERROR: Preset ID recieved, but no preset associated !\n");
 		return;
 	}
 	

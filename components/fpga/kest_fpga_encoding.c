@@ -7,7 +7,7 @@ static const char *FNAME = "kest_fpga_encoding.c";
 #include "kest_int.h"
 
 //#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 //#endif
 /*
 #ifdef PRINT_TRANSFER_BATCHES
@@ -358,11 +358,11 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 			else
 				size = delay;
 			
-			if (size < delay + 1)
-				size = delay + 1;
+			if (size < delay + 128)
+				size = delay + 128;
 			
 			kest_fpga_batch_append_24(batch, size);
-			kest_fpga_batch_append_24(batch, delay << DELAY_FORMAT);
+			kest_fpga_batch_append_24(batch, delay);
 			
 			break;
 		case KEST_DSP_RESOURCE_FILTER:
@@ -547,7 +547,7 @@ void print_instruction_format_a(uint32_t instr)
 	int sat = !!(instr & (1 << 30));
 	int no_shift = !!(instr & (1 << 31));
 	
-	KEST_PRINTF_("%s %s%d %s%d %s%d, c%d (%d%s)",
+	KEST_PRINTF_FORCE("%s %s%d %s%d %s%d, c%d (%d%s)",
 		kest_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -574,7 +574,7 @@ void print_instruction_format_b(uint32_t instr)
 	
 	int res_addr = range_bits(instr, 8, 20);
 	
-	KEST_PRINTF_("%s %s%d %s%d $%d c%d",
+	KEST_PRINTF_FORCE("%s %s%d %s%d $%d c%d",
 		kest_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -591,11 +591,80 @@ void print_instruction(uint32_t instr)
 		print_instruction_format_a(instr);
 }
 
+void str_print_instruction_format_a(kest_string *str, uint32_t instr)
+{
+	if (!str)
+		return;
+	
+	int opcode = range_bits(instr, 5, 0);
+	
+	int src_a 	 = range_bits(instr, 4, 6);
+	int src_a_reg = !!(instr & (1 << 10));
+	
+	int src_b 	 = range_bits(instr, 4, 11);
+	int src_b_reg = !!(instr & (1 << 15));
+	
+	int src_c 	 = range_bits(instr, 4, 16);
+	int src_c_reg = !!(instr & (1 << 20));
+	
+	int dest = range_bits(instr, 4, 21);
+	int shift = range_bits(instr, 5, 25);
+	int sat = !!(instr & (1 << 30));
+	int no_shift = !!(instr & (1 << 31));
+	
+	kest_string_appendf(str, "%s %s%d %s%d %s%d, c%d (%d%s)",
+		kest_block_opcode_to_name(opcode),
+			src_a_reg ? "r" : "c", src_a,
+			src_b_reg ? "r" : "c", src_b,
+			src_c_reg ? "r" : "c", src_c, dest,
+			shift, sat ? ", unsat" : "");
+}
+
+void str_print_instruction_format_b(kest_string *str, uint32_t instr)
+{
+	if (!str)
+		return;
+	int opcode = range_bits(instr, 5, 0);
+	
+	int src_a 	 = range_bits(instr, 4, 6);
+	int src_a_reg = !!(instr & (1 << 10));
+	
+	int src_b 	 = range_bits(instr, 4, 11);
+	int src_b_reg = !!(instr & (1 << 15));
+	
+	int no_shift = 0;
+	
+	int src_c = 0;
+	int src_c_reg = 0;
+	
+	int dest = range_bits(instr, 4, 16);
+	
+	int res_addr = range_bits(instr, 8, 20);
+	
+	kest_string_appendf(str, "%s %s%d %s%d $%d c%d",
+		kest_block_opcode_to_name(opcode),
+			src_a_reg ? "r" : "c", src_a,
+			src_b_reg ? "r" : "c", src_b,
+			res_addr, dest);
+}
+
+void str_print_instruction(kest_string *str, uint32_t instr)
+{
+	if (!str)
+		return;
+	int format = !!(instr & (1 << 5));
+	
+	if (format)
+		str_print_instruction_format_b(str, instr);
+	else
+		str_print_instruction_format_a(str, instr);
+}
+
 int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 {
 	int n = seq.len;
 	
-	KEST_PRINTF_("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
+	KEST_PRINTF_FORCE("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
 	
 	if (!seq.buf)
 	{
@@ -623,14 +692,24 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 	uint8_t reg_no = 0;
 	kest_fpga_block_addr_t block = 0;
 	uint32_t value = 0;
-	int32_t signed_val;
+	int32_t signed_val = 0;
 	uint32_t instruction = 0;
+	
+	kest_string str;
+	kest_string_init(&str);
 	
 	while (i < n)
 	{
+		if (str.count >= 512)
+		{
+			kest_string_append(&str, '\0');
+			KEST_PRINTF_FORCE(str.entries);
+			kest_string_drain(&str);
+		}
+		
 		byte = seq.buf[i];
 		
-		KEST_PRINTF_("\tByte %s%d: 0x%02X. ", (n > 9 && i < 10) ? " " : "", i, byte);
+		kest_string_appendf(&str, "\tByte %s%d: 0x%02X. ", (n > 9 && i < 10) ? " " : "", i, byte);
 		
 		switch (state)
 		{
@@ -638,11 +717,11 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				switch (byte)
 				{
 					case COMMAND_BEGIN_PROGRAM:
-						KEST_PRINTF_("Command BEGIN_PROGRAM");
+						kest_string_appendf(&str, "Command BEGIN_PROGRAM");
 						break;
 						
 					case COMMAND_WRITE_BLOCK_INSTR:
-						KEST_PRINTF_("Command WRITE_BLOCK_INSTR");
+						kest_string_appendf(&str, "Command WRITE_BLOCK_INSTR");
 						state = 1;
 						ret_state = 2;
 						ctr = 0;
@@ -650,7 +729,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_WRITE_BLOCK_REG_0:
-						KEST_PRINTF_("Command WRITE_BLOCK_REG_0");
+						kest_string_appendf(&str, "Command WRITE_BLOCK_REG_0");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -658,7 +737,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_WRITE_BLOCK_REG_1:
-						KEST_PRINTF_("Command WRITE_BLOCK_REG_1");
+						kest_string_appendf(&str, "Command WRITE_BLOCK_REG_1");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -666,7 +745,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_ALLOC_DELAY:
-						KEST_PRINTF_("Command ALLOC_DELAY");
+						kest_string_appendf(&str, "Command ALLOC_DELAY");
 						state = 5;
 						value = 0;
 						ctr = 0;
@@ -675,11 +754,11 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 						
 					case COMMAND_END_PROGRAM:
-						KEST_PRINTF_("Command END_PROGRAM");
+						kest_string_appendf(&str, "Command END_PROGRAM");
 						break;
 
 					case COMMAND_UPDATE_BLOCK_REG_0:
-						KEST_PRINTF_("Command UPDATE_BLOCK_REG_0");
+						kest_string_appendf(&str, "Command UPDATE_BLOCK_REG_0");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -687,7 +766,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_UPDATE_BLOCK_REG_1:
-						KEST_PRINTF_("Command UPDATE_BLOCK_REG_1");
+						kest_string_appendf(&str, "Command UPDATE_BLOCK_REG_1");
 						state = 1;
 						ret_state = 4;
 						value = 0;
@@ -695,11 +774,11 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 						
 					case COMMAND_COMMIT_REG_UPDATES:
-						KEST_PRINTF_("Command COMMIT_REG_UPDATES");
+						kest_string_appendf(&str, "Command COMMIT_REG_UPDATES");
 						break;
 
 					case COMMAND_SET_INPUT_GAIN:
-						KEST_PRINTF_("Command SET_INPUT_GAIN");
+						kest_string_appendf(&str, "Command SET_INPUT_GAIN");
 						state = 4;
 						ret_state = 0;
 						value = 0;
@@ -708,7 +787,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_SET_OUTPUT_GAIN:
-						KEST_PRINTF_("Command SET_OUTPUT_GAIN");
+						kest_string_appendf(&str, "Command SET_OUTPUT_GAIN");
 						state = 4;
 						ret_state = 0;
 						value = 0;
@@ -717,7 +796,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_ALLOC_FILTER:
-						KEST_PRINTF_("Command COMMAND_ALLOC_FILTER");
+						kest_string_appendf(&str, "Command COMMAND_ALLOC_FILTER");
 						state = 6;
 						ret_state = 0;
 						value = 0;
@@ -727,7 +806,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_WRITE_FILTER_COEF:
-						KEST_PRINTF_("Command COMMAND_WRITE_FILTER_COEF");
+						kest_string_appendf(&str, "Command COMMAND_WRITE_FILTER_COEF");
 						state = 7;
 						ret_state = 0;
 						value = 0;
@@ -737,7 +816,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 
 					case COMMAND_UPDATE_FILTER_COEF:
-						KEST_PRINTF_("Command COMMAND_UPDATE_FILTER_COEF");
+						kest_string_appendf(&str, "Command COMMAND_UPDATE_FILTER_COEF");
 						state = 7;
 						ret_state = 0;
 						value = 0;
@@ -747,7 +826,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 						break;
 					
 					case COMMAND_COMMIT_FILTER_COEF:
-						KEST_PRINTF_("Command COMMAND_COMMIT_FILTER_COEF");
+						kest_string_appendf(&str, "Command COMMAND_COMMIT_FILTER_COEF");
 						state = 8;
 						ret_state = 0;
 						value = 0;
@@ -761,7 +840,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				
 				if (ctr == KEST_FPGA_BLOCK_ADDR_BYTES - 1)
 				{
-					KEST_PRINTF_("Block number %d", byte);
+					kest_string_appendf(&str, "Block number %d", byte);
 					state = ret_state;
 					ctr = 0;
 				}
@@ -778,7 +857,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					state = 0;
 					instruction = (instruction << 8) | byte;
 					//kest_printf("Word: %s; ", binary_print_32(instruction));
-					print_instruction(instruction);
+					str_print_instruction(&str, instruction);
 					if (kest_fpga_block_opcode_format(instruction & IBM(5)))
 						shift = 0;
 					else
@@ -792,7 +871,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				break;
 			
 			case 3: // expecting register number then register value
-				KEST_PRINTF_("Register %d", byte);
+				kest_string_appendf(&str, "Register %d", byte);
 				state = 4;
 				break;
 			
@@ -802,7 +881,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					state = 0;
 					
 					value = (value << 8) | byte;
-					KEST_PRINTF_("Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, 15 - shift)), 1 + shift, 15 - shift);
+					kest_string_appendf(&str, "Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, 15 - shift)), 1 + shift, 15 - shift);
 				}
 				else
 				{
@@ -820,7 +899,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				else if (ctr == 2)
 				{
 					value = (value << 8) | byte;
-					KEST_PRINTF_("%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, (15 - shift))));
+					kest_string_appendf(&str, "%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, (15 - shift))));
 					
 					ctr = 0;
 					
@@ -830,7 +909,6 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					}
 					else
 					{
-						shift = 7;
 						ctr_2 = 1;
 					}
 				}
@@ -845,7 +923,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 			case 6:
 				if (ctr_2 == 0)
 				{
-					KEST_PRINTF_("Format: q%d.%d", 1 + byte, 17 - byte);
+					kest_string_appendf(&str, "Format: q%d.%d", 1 + byte, 17 - byte);
 					shift = byte;
 					ctr_2++;
 				}
@@ -859,7 +937,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					else
 					{
 						value = (value << 8) | byte;
-						KEST_PRINTF_("Feed-forward: %d", value);
+						kest_string_appendf(&str, "Feed-forward: %d", value);
 						
 						ctr_2++;
 						ctr = 0;
@@ -875,7 +953,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					else
 					{
 						value = (value << 8) | byte;
-						KEST_PRINTF_("Feed-back:    %d", value);
+						kest_string_appendf(&str, "Feed-back:    %d", value);
 						
 						state = 0;
 					}
@@ -886,7 +964,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 			case 7:
 				if (ctr_2 == 0)
 				{
-					KEST_PRINTF_("Filter %d", byte);
+					kest_string_appendf(&str, "Filter %d", byte);
 					ctr_2++;
 					ctr = 0;
 					value = 0;
@@ -897,7 +975,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					
 					if (ctr == 1)
 					{
-						KEST_PRINTF_("Coefficient %d", value);
+						kest_string_appendf(&str, "Coefficient %d", value);
 						ctr = 0;
 						ctr_2++;
 						
@@ -920,26 +998,30 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 							signed_val |= 0xFF000000;
 						}
 						
-						KEST_PRINTF_("Value: %.04f", ((float)signed_val) * pow(2, -(16 - shift)));
+						kest_string_appendf(&str, "Value: %.04f", ((float)signed_val) * pow(2, -(16 - shift)));
 						state = 0;
 					}
 				}
 				break;
 			
 			case 8: // expecting 1-byte resource handle
-					KEST_PRINTF_("Handle: %d", byte);
+					kest_string_appendf(&str, "Handle: %d", byte);
 					state = ret_state;
 				break;
 				
 			default:
-				KEST_PRINTF_("Unknown :(\n");
+				kest_string_appendf(&str, "Unknown :(\n");
 				return 1;
 		}
 		
-		KEST_PRINTF_("\n");
+		kest_string_appendf(&str, "\n");
 		
 		i++;
 	}
+	
+	kest_string_append(&str, '\0');
+	KEST_PRINTF_FORCE(str.entries);
+	kest_string_destroy(&str);
 	
 	return 0;
 }

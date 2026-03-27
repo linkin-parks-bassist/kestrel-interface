@@ -1,10 +1,10 @@
-#ifndef KEST_INT_TRANSFORMER_VIEW_H_
-#define KEST_INT_TRANSFORMER_VIEW_H_
+#ifndef KEST_INT_EFFECT_VIEW_H_
+#define KEST_INT_EFFECT_VIEW_H_
 
-#define TRANSFORMER_VIEW_GRID_CELL_HSIZE 250
-#define TRANSFORMER_VIEW_GRID_CELL_VSIZE 200
+#define EFFECT_VIEW_GRID_CELL_HSIZE 250
+#define EFFECT_VIEW_GRID_CELL_VSIZE 200
 
-#define TRANSFORMER_VIEW_MAX_GROUPS 5
+#define EFFECT_VIEW_MAX_GROUPS 5
 
 typedef struct
 {
@@ -18,8 +18,8 @@ typedef struct
 	
 	lv_obj_t *container;
 	
-	int group_inhabited[TRANSFORMER_VIEW_MAX_GROUPS];
-	lv_obj_t *group_containers[TRANSFORMER_VIEW_MAX_GROUPS];
+	int group_inhabited[EFFECT_VIEW_MAX_GROUPS];
+	lv_obj_t *group_containers[EFFECT_VIEW_MAX_GROUPS];
 	
 	kest_parameter_widget_pll *parameter_widgets;
 	kest_setting_widget_pll   *setting_widgets;

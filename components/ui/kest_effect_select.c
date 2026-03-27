@@ -104,7 +104,7 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	
 	if (!preset->view_page)
 	{
-		KEST_PRINTF("Profile does not have a view page!\n");
+		KEST_PRINTF("Preset does not have a view page!\n");
 	}
 	else
 	{

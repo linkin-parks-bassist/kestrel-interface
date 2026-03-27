@@ -127,7 +127,7 @@ int create_preset_settings_page_ui(kest_ui_page *page)
 	
 	if (page->ui_created)
 	{
-		KEST_PRINTF("Profile settings page: UI already created...\n");
+		KEST_PRINTF("Preset settings page: UI already created...\n");
 		return NO_ERROR;
 	}
 	
@@ -135,13 +135,13 @@ int create_preset_settings_page_ui(kest_ui_page *page)
 	
 	if (!str)
 	{
-		KEST_PRINTF("Error! Profile settings page has no data struct!\n");
+		KEST_PRINTF("Error! Preset settings page has no data struct!\n");
 		return ERR_BAD_ARGS;
 	}
 		
 	if (!str->preset)
 	{
-		KEST_PRINTF("Error! Profile settings page has no preset!\n");
+		KEST_PRINTF("Error! Preset settings page has no preset!\n");
 		return ERR_BAD_ARGS;
 	}
 	
@@ -181,7 +181,7 @@ int create_preset_settings_page_ui(kest_ui_page *page)
 	
 	str->save_button = lv_btn_create(page->screen);
     lv_obj_set_size(str->save_button, PRESET_VIEW_BUTTON_WIDTH / 3, PRESET_VIEW_BUTTON_HEIGHT);
-	lv_obj_align(str->save_button, LV_ALIGN_BOTTOM_MID, PRESET_VIEW_TRANSFORMER_LIST_WIDTH / 3, -50);
+	lv_obj_align(str->save_button, LV_ALIGN_BOTTOM_MID, PRESET_VIEW_EFFECT_LIST_WIDTH / 3, -50);
     
 	str->save_button_label = lv_label_create(str->save_button);
 	lv_label_set_text(str->save_button_label, "Save");

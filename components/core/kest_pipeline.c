@@ -100,7 +100,7 @@ int kest_pipeline_remove_effect(kest_pipeline *pipeline, uint16_t id)
 	
 	
 	KEST_PRINTF("kest_pipeline_remove_effect finished without finding the effect\n");
-	return ERR_INVALID_TRANSFORMER_ID;
+	return ERR_INVALID_EFFECT_ID;
 }
 
 int kest_pipeline_move_effect(kest_pipeline *pipeline, int new_pos, int old_pos)
@@ -281,7 +281,7 @@ kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id)
 	
 	while (current)
 	{
-		KEST_PRINTF("Transformer %d", i);
+		KEST_PRINTF("Effect %d", i);
 		
 		if (current->data)
 		{

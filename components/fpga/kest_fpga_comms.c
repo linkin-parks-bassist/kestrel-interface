@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_fpga_comms.c";
@@ -9,10 +9,10 @@ static const char *FNAME = "kest_fpga_comms.c";
 #define KEST_FPGA_MSG_TYPE_BATCH 			0
 #define KEST_FPGA_MSG_TYPE_PROGRAM_BATCH 	1
 #define KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN 	2
-#define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN 3
+#define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN  3
 #define KEST_FPGA_MSG_TYPE_COMMAND			4
 
-#define FPGA_BOOT_MS 2000
+#define FPGA_BOOT_MS 2500
 
 typedef struct {
 	int type;
@@ -52,10 +52,15 @@ void kest_fpga_comms_task(void *param)
 	
 	
 	kest_fpga_msg msg;
+	BaseType_t ret;
 	
 	while (1)
 	{
-		xQueueReceive(fpga_msg_queue, &msg, portMAX_DELAY);
+		do {
+			ret = xQueueReceive(fpga_msg_queue, &msg, pdMS_TO_TICKS(1000));
+			byte = kest_fpga_read_byte();
+			KEST_PRINTF("FPGA reports status code %d\n", byte);
+		} while (ret != pdPASS);
 		
 		switch (msg.type)
 		{
@@ -94,10 +99,16 @@ void kest_fpga_comms_task(void *param)
 				break;
 			
 			case KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN:
+				#ifdef PRINT_COMMANDS
+				KEST_PRINTF("Set FPGA input gain to %f\n", msg.data.level);
+				#endif
 				kest_fpga_set_input_gain(msg.data.level);
 				break;
 			
 			case KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN:
+				#ifdef PRINT_COMMANDS
+				KEST_PRINTF("Set FPGA output gain to %f\n", msg.data.level);
+				#endif
 				kest_fpga_set_output_gain(msg.data.level);
 				break;
 				

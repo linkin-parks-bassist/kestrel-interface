@@ -65,12 +65,12 @@ typedef struct kest_setting_id
 	uint16_t setting_id;
 } kest_setting_id;
 
-#define TRANSFORMER_SETTING_ENUM 	0
-#define TRANSFORMER_SETTING_BOOL 	1
-#define TRANSFORMER_SETTING_INT 	2
+#define EFFECT_SETTING_ENUM 	0
+#define EFFECT_SETTING_BOOL 	1
+#define EFFECT_SETTING_INT 	2
 
-#define TRANSFORMER_SETTING_PAGE_SETTINGS 0
-#define TRANSFORMER_SETTING_PAGE_MAIN 	  1
+#define EFFECT_SETTING_PAGE_SETTINGS 0
+#define EFFECT_SETTING_PAGE_MAIN 	  1
 
 typedef struct kest_setting
 {
