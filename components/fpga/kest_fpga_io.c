@@ -52,7 +52,14 @@ int kest_fpga_spi_init()
 
 int kest_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 {
-	#ifndef KEST_FPGA_SIMULATED
+	#ifdef KEST_FPGA_SIMULATED
+	if (rx)
+	{
+		for (int i = 0; i < len; i++)
+			rx[i] = 1;
+	}
+	return ERR_FEATURE_DISABLED;
+	#else
 	if (len == 0)
 		return 0;
 	
@@ -88,8 +95,6 @@ int kest_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 	#endif
 	
 	return (err == ESP_OK) ? NO_ERROR : ERR_SPI_FAIL;
-	#else
-	return ERR_FEATURE_DISABLED;
 	#endif
 }
 
@@ -247,9 +252,25 @@ void kest_fpga_set_input_gain(float gain_db)
 	float v = powf(10, gain_db / 20.0);
 	uint16_t s = float_to_q_nminus1(v, 5);
 	
-	kest_fpga_send_byte(COMMAND_SET_INPUT_GAIN);
-	kest_fpga_send_byte((s & 0xFF00) >> 8);
-	kest_fpga_send_byte(s & 0x00FF);
+	uint8_t buf[3];
+	
+	kest_fpga_transfer_batch batch;
+	
+	batch.buf = buf;
+	
+	buf[0] = COMMAND_SET_INPUT_GAIN;
+	buf[1] = (s & 0xFF00) >> 8;
+	buf[2] = s & 0x00FF;
+	
+	batch.len = 3;
+	batch.buf_len = 3;
+	batch.buffer_owned = 1;
+	
+	#ifdef PRINT_TRANSFER_BATCHES
+	kest_fpga_batch_print(batch);
+	#endif
+	
+	kest_fpga_transfer_batch_send(batch);
 }
 
 void kest_fpga_set_output_gain(float gain_db)
@@ -257,9 +278,25 @@ void kest_fpga_set_output_gain(float gain_db)
 	float v = powf(10, gain_db / 20.0);
 	uint16_t s = float_to_q_nminus1(v, 5);
 	
-	kest_fpga_send_byte(COMMAND_SET_OUTPUT_GAIN);
-	kest_fpga_send_byte((s & 0xFF00) >> 8);
-	kest_fpga_send_byte(s & 0x00FF);
+	uint8_t buf[3];
+	
+	kest_fpga_transfer_batch batch;
+	
+	batch.buf = buf;
+	
+	buf[0] = COMMAND_SET_OUTPUT_GAIN;
+	buf[1] = (s & 0xFF00) >> 8;
+	buf[2] = s & 0x00FF;
+	
+	batch.len = 3;
+	batch.buf_len = 3;
+	batch.buffer_owned = 1;
+	
+	#ifdef PRINT_TRANSFER_BATCHES
+	kest_fpga_batch_print(batch);
+	#endif
+	
+	kest_fpga_transfer_batch_send(batch);
 }
 
 
@@ -290,4 +327,44 @@ char *kest_fpga_command_to_string(int command)
 	}
 	
 	return "UNKNOWN";
+}
+
+int kest_fpga_get_status_flags(kest_fpga_status_flags *flags)
+{
+	if (!flags)
+		return ERR_NULL_PTR;
+	
+	uint8_t byte = kest_fpga_read_byte();
+	
+	flags->initialised 	= !!(byte & (1 << 0));
+	flags->busy 		= !!(byte & (1 << 1));
+	flags->timeout 		= !!(byte & (1 << 2));
+	flags->programming 	= !!(byte & (1 << 3));
+	flags->bad 			= !!(byte & (1 << 4));
+	flags->data_ready 	= !!(byte & (1 << 5));
+	flags->cmd_err 		= !!(byte & (1 << 6));
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_status_flags_print(kest_fpga_status_flags *flags)
+{
+	if (!flags)
+		return ERR_NULL_PTR;
+	
+	kest_string str;
+	kest_string_init(&str);
+	
+	kest_string_appendf(&str, "\nFPGA Status Flags:\n");
+	kest_string_appendf(&str, "     Initialised: %d\n", flags->initialised);
+	kest_string_appendf(&str, "     Busy:        %d\n", flags->busy);
+	kest_string_appendf(&str, "     Timeout:     %d\n", flags->timeout);
+	kest_string_appendf(&str, "     Programming: %d\n", flags->programming);
+	kest_string_appendf(&str, "     Bad:         %d\n", flags->bad);
+	kest_string_appendf(&str, "     Data ready:  %d\n", flags->data_ready);
+	kest_string_appendf(&str, "     Command err: %d\n", flags->cmd_err);
+	
+	kest_puts(str);
+	
+	return NO_ERROR;
 }

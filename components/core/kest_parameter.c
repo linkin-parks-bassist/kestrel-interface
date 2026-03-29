@@ -2,7 +2,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 #define DEFAULT_MAX_VELOCITY 1.0
@@ -466,14 +466,17 @@ kest_interval kest_parameter_get_range(kest_parameter *param)
 
 void kest_parameter_effect_rep_update(void *representer, void *representee)
 {
+	KEST_PRINTF("kest_parameter_effect_rep_update");
 	kest_effect *effect = (kest_effect*)representer;
 	kest_parameter *param = (kest_parameter*)representee;
+	KEST_PRINTF("(param = %p, effect = %p)\n", param, effect);
 	
 	if (!effect || !param)
 		return;
 	
 	kest_effect_update_reps(effect);
 	
+	KEST_PRINTF("kest_parameter_effect_rep_update done\n");
 	return;
 }
 

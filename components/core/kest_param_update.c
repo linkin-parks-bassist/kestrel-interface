@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_param_update.c";
@@ -63,6 +63,8 @@ void kest_param_update_task(void *arg)
 	update_rtos_queue = xQueueCreate(16, sizeof(kest_parameter_update));
 	queue_initd = 1;
 	
+	vTaskDelay(pdMS_TO_TICKS(FPGA_BOOT_MS));
+	
 	TickType_t last_wake = xTaskGetTickCount();
 	
 	kest_parameter_update current;
@@ -81,7 +83,7 @@ void kest_param_update_task(void *arg)
 	{
 		while ((update_queue_tail + 1) % UPDATE_QUEUE_LENGTH != update_queue_head && xQueueReceive(update_rtos_queue, &current, 0) == pdPASS)
 		{
-			print_parameter_update(current);
+			//print_parameter_update(current);
 			
 			enqueue = 1;
 			for (int i = 0; i < n_updates; i++)
@@ -190,8 +192,8 @@ void kest_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			KEST_PRINTF("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
-				diff, param->value, param->value + diff, update_array[i].target);
+			//KEST_PRINTF("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
+			//	diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
 			
@@ -253,6 +255,24 @@ void kest_param_update_task(void *arg)
 				KEST_PRINTF("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
 				if (update_array[i].p->id.preset_id == CONTEXT_PRESET_ID)
 					kest_cxt_queue_save_state(&global_cxt);
+				
+				KEST_PRINTF("update_array[i].p->reps = %p\n", update_array[i].p->reps);
+				
+				kest_representation_pll *cr = update_array[i].p->reps;
+				
+				while (cr) {
+					if (cr->data == NULL)
+					{
+						KEST_PRINTF("NULL rep...\n");
+					}
+					else
+					{
+						KEST_PRINTF("Param rep {.representer = %p, representee = %p, update = %p}\n",
+							cr->data->representer, cr->data->representee, cr->data->update);
+					}
+					
+					cr = cr->next;
+				}
 				
 				queue_representation_list_update(update_array[i].p->reps);
 				

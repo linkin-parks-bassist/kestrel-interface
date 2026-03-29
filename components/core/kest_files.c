@@ -5,7 +5,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_files.c";
@@ -47,12 +47,12 @@ static const char *FNAME = "kest_files.c";
 
 void dump_file_contents(char *fname)
 {
-	KEST_PRINTF_("FILE HEX DUMP: %s\n", fname);
+	KEST_PRINTF("FILE HEX DUMP: %s\n", fname);
 	FILE *file = fopen(fname, "rb");
 	
 	if (!file)
 	{
-		KEST_PRINTF_("Failed to open file %s\n", fname);
+		KEST_PRINTF("Failed to open file %s\n", fname);
 		return;
 	}
 	
@@ -66,7 +66,9 @@ void dump_file_contents(char *fname)
 		i++;
 	}
 	
-	KEST_PRINTF_((i % 8 == 1) ? "" : "\n");
+	KEST_PRINTF_((i % 8 == 1) ? "\n" : "\n\n");
+	
+	KEST_PRINTF("Dump of \"%s\" finished. Total bytes: %d\n", fname, i - 1);
 	fclose(file);
 }
 
@@ -213,7 +215,7 @@ int save_sequence_as_file(kest_sequence *sequence, const char *fname)
 	
 	write_string(name);
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	uint16_t n_presets = 0;
 	uint16_t arg16;

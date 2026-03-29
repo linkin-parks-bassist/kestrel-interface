@@ -14,27 +14,27 @@
 #define KEST_WRITE_FINISHED_BYTE  			0xff
 
 #ifdef KEST_DESKTOP
-#define MAIN_SEQUENCE_FNAME "./sdcard/ms.seq"
-#define SETTINGS_FNAME 		"./sdcard/conf"
-#define KEST_PRESETS_DIR  	"./sdcard/prof/"
-#define KEST_SEQUENCES_DIR 	"./sdcard/seq/"
+#define MAIN_SEQUENCE_FNAME 	"./sdcard/ms.seq"
+#define SETTINGS_FNAME 			"./sdcard/conf"
+#define KEST_PRESETS_DIR  		"./sdcard/pre/"
+#define KEST_SEQUENCES_DIR 		"./sdcard/seq/"
 #define KEST_EFFECT_DESC_DIR 	"./sdcard/eff/"
 #else
-#define MAIN_SEQUENCE_FNAME "/sdcard/ms.seq"
-#define SETTINGS_FNAME 		"/sdcard/conf"
-#define KEST_PRESETS_DIR  	"/sdcard/prof/"
-#define KEST_SEQUENCES_DIR 	"/sdcard/seq/"
+#define MAIN_SEQUENCE_FNAME 	"/sdcard/ms.seq"
+#define SETTINGS_FNAME 			"/sdcard/conf"
+#define KEST_PRESETS_DIR  		"/sdcard/pre/"
+#define KEST_SEQUENCES_DIR 		"/sdcard/seq/"
 #define KEST_EFFECT_DESC_DIR 	"/sdcard/eff/"
 #endif
 
 
-#define PRESET_EXTENSION  ".prf"
+#define PRESET_EXTENSION   ".pre"
 #define SEQUENCE_EXTENSION ".seq"
 #define EFF_DESC_EXTENSION ".eff"
 
 int save_preset_as_file		(kest_preset *preset, const char *fname);
-int save_preset_as_file_safe	(kest_preset *preset, const char *fname);
-int read_preset_from_file		(kest_preset *preset, const char *fname);
+int save_preset_as_file_safe(kest_preset *preset, const char *fname);
+int read_preset_from_file	(kest_preset *preset, const char *fname);
 
 int save_sequence_as_file		(kest_sequence *sequence, const char *fname);
 int save_sequence_as_file_safe	(kest_sequence *sequence, const char *fname);

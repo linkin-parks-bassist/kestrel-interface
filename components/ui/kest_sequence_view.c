@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_sequence_view.c";
@@ -152,7 +152,7 @@ void seq_plus_cb(lv_event_t *e)
 	
 	new_preset->sequence = str->sequence;
 	
-	seq_preset_ll *node = sequence_append_preset_rp(str->sequence, new_preset);
+	seq_kest_preset_pll *node = sequence_append_preset_rp(str->sequence, new_preset);
 	
 	if (!node) return;
 	
@@ -214,6 +214,7 @@ int seq_view_free_cb(kest_active_button *button)
 
 int seq_view_delete_cb(kest_active_button *button)
 {
+	KEST_PRINTF("seq_view_delete_cb\n");
 	if (!button) return ERR_NULL_PTR;
 	if (!button->data) return ERR_BAD_ARGS;
 	
@@ -233,6 +234,8 @@ int seq_view_delete_cb(kest_active_button *button)
 	// no dangling pointers tyvm
 	button->data = NULL;
 	
+	
+	KEST_PRINTF("seq_view_delete_cb done\n");
 	return NO_ERROR;
 }
 
@@ -315,7 +318,7 @@ int configure_sequence_view(kest_ui_page *page, void *data)
 	if (sequence != &global_cxt.main_sequence)
 		ui_page_set_title_rw(page, sequence_view_set_name, sequence_view_revert_name);
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	kest_active_button *button;
 	

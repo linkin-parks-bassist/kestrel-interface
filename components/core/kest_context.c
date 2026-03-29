@@ -91,15 +91,6 @@ int kest_context_init_main_sequence(kest_context *cxt)
 	return NO_ERROR;
 }
 
-int kest_context_init_effect_list(kest_context *cxt)
-{
-	KEST_PRINTF("kest_context_init_effect_list\n");
-	if (!cxt)
-		return ERR_NULL_PTR;
-	
-	return NO_ERROR;
-}
-
 int kest_context_init_ui(kest_context *cxt)
 {
 	if (!cxt)
@@ -123,7 +114,7 @@ int kest_context_add_preset(kest_context *cxt)
 	
 	init_m_preset(preset);
 	
-	preset_ll *nl = kest_preset_pll_append(cxt->presets, preset);
+	kest_preset_pll *nl = kest_preset_pll_append(cxt->presets, preset);
 	
 	if (!nl)
 	{
@@ -157,7 +148,7 @@ kest_preset *kest_context_add_preset_rp(kest_context *cxt)
 	KEST_PRINTF("preset->name = %p\n", preset->name);
 	KEST_PRINTF("\t\t\t= %s\n", preset->name ? preset->name : "(NULL)");
 	
-	preset_ll *nl = kest_preset_pll_append(cxt->presets, preset);
+	kest_preset_pll *nl = kest_preset_pll_append(cxt->presets, preset);
 	
 	if (!nl)
 	{
@@ -204,7 +195,7 @@ kest_preset *cxt_get_preset_by_id(kest_context *cxt, uint16_t preset_id)
 	if (!cxt)
 		return NULL;
 	
-	preset_ll *current = cxt->presets;
+	kest_preset_pll *current = cxt->presets;
 	
 	KEST_PRINTF("cxt->presets = %p\n", current);
 	
@@ -404,8 +395,8 @@ int cxt_remove_preset(kest_context *cxt, kest_preset *preset)
 	if (!cxt || !preset)
 		return ERR_NULL_PTR;
 	
-	preset_ll *current = cxt->presets;
-	preset_ll *prev = NULL;
+	kest_preset_pll *current = cxt->presets;
+	kest_preset_pll *prev = NULL;
 	
 	if (preset && preset->has_fname)
 		remove(preset->fname);
@@ -565,7 +556,7 @@ void context_print_presets(kest_context *cxt)
 		
 	KEST_PRINTF("Printing presets...\n");
 	
-	preset_ll *current = global_cxt.presets;
+	kest_preset_pll *current = global_cxt.presets;
 	
 	
 	int i = 0;
@@ -608,7 +599,7 @@ int cxt_set_all_presets_left_button_to_main_menu(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	preset_ll *current = cxt->presets;
+	kest_preset_pll *current = cxt->presets;
 	
 	while (current)
 	{
@@ -646,7 +637,7 @@ kest_preset *cxt_find_preset(kest_context *cxt, const char *fname)
 	if (!cxt)
 		return NULL;
 	
-	preset_ll *current = cxt->presets;
+	kest_preset_pll *current = cxt->presets;
 	
 	KEST_PRINTF("Searching for preset with fname %s...\n", fname);
 	while (current)
@@ -673,7 +664,7 @@ int cxt_save_all_presets(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	preset_ll *current = cxt->presets;
+	kest_preset_pll *current = cxt->presets;
 	
 	while (current)
 	{

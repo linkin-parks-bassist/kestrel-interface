@@ -3,6 +3,8 @@
 
 #define KEST_FPGA_SAMPLE_RATE 44100
 
+#define FPGA_BOOT_MS 2500
+
 //#define PRINT_SPI_BYTES
 
 #define COMMAND_BEGIN_PROGRAM	 	1
@@ -20,6 +22,10 @@
 #define COMMAND_WRITE_FILTER_COEF 	17
 #define COMMAND_UPDATE_FILTER_COEF 	18
 #define COMMAND_COMMIT_FILTER_COEF 	19
+#define COMMAND_READOUT				20
+#define COMMAND_GET_N_BLOCKS 		21
+#define COMMAND_GET_BLOCK_INSTR		22
+#define COMMAND_GET_BLOCK_REG		23
 
 #define SPI_RESPONSE_OK 			0
 #define SPI_RESPONSE_INITIALISING	1
@@ -77,5 +83,19 @@ int kest_fpga_transfer_batch_send(kest_fpga_transfer_batch batch);
 int kest_fpga_spi_init();
 
 char *kest_fpga_command_to_string(int command);
+
+typedef struct
+{
+	int initialised;
+	int busy;
+	int timeout;
+	int programming;
+	int bad;
+	int data_ready;
+	int cmd_err;
+} kest_fpga_status_flags;
+
+int kest_fpga_get_status_flags(kest_fpga_status_flags *flags);
+int kest_fpga_status_flags_print(kest_fpga_status_flags *flags);
 
 #endif

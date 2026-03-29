@@ -23,6 +23,7 @@
 #define BLOCK_INSTR_MEM_READ 		19
 #define BLOCK_INSTR_MEM_WRITE		20
 #define BLOCK_INSTR_FILTER			21
+#define BLOCK_INSTR_FCASC			22
 
 struct kest_dsp_resource;
 

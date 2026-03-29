@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_representation.c";
@@ -15,10 +15,16 @@ int rep_updated_initd = 0;
 
 void kest_representation_pll_update_all(kest_representation_pll *reps)
 {
+	KEST_PRINTF("kest_representation_pll_update_all\n");
 	kest_representation_pll *current = reps;
 	
 	while (current)
 	{
+		if (current->data)
+		{
+			KEST_PRINTF("Representation: {.representer = %p, representee = %p, update = %p}\n",
+				current->data->representer, current->data->representee, current->data->update);
+		}
 		if (current->data && current->data->update)
 		{
 			current->data->update(current->data->representer, current->data->representee);
@@ -27,22 +33,19 @@ void kest_representation_pll_update_all(kest_representation_pll *reps)
 		current = current->next;
 	}
 	
+	KEST_PRINTF("kest_representation_pll_update_all done\n");
 	return;
 }
 
 #ifdef KEST_ENABLE_REPRESENTATIONS
 void update_queued_representations_cb(lv_timer_t *timer)
-{
-	//FUNCTION_START();
-	
+{	
 	kest_representation_pll *list;
 	
 	while (xQueueReceive(kest_rep_update_queue, &list, 0) == pdTRUE)
 	{
 		if (list) kest_representation_pll_update_all(list);
 	}
-	
-	//return;
 }
 
 int init_representation_updater()

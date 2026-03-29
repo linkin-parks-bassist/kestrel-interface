@@ -25,7 +25,8 @@ int kest_fpga_block_opcode_format(int opcode)
 		 || opcode == BLOCK_INSTR_DELAY_WRITE
 		 || opcode == BLOCK_INSTR_MEM_READ
 		 || opcode == BLOCK_INSTR_MEM_WRITE
-		 || opcode == BLOCK_INSTR_FILTER)
+		 || opcode == BLOCK_INSTR_FILTER
+		 || opcode == BLOCK_INSTR_FCASC)
 		 ? INSTR_FORMAT_B : INSTR_FORMAT_A;
 }
 

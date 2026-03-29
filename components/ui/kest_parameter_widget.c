@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 #include "kest_param_update.h"
 

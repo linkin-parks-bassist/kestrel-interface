@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_preset.c";
@@ -196,6 +196,9 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 		return NULL;
 	
 	effect->preset = preset;
+	#ifdef KEST_ENABLE_REPRESENTATIONS
+	effect->preset_rep.representer = preset;
+	#endif
 	effect_rectify_param_ids(effect);
 	
 	return effect;
@@ -448,6 +451,7 @@ int kest_preset_if_active_update_fpga(kest_preset *preset)
 
 void kest_preset_file_rep_update(void *representer, void *representee)
 {
+	KEST_PRINTF("kest_preset_file_rep_update\n");
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	if (!representee)
 		return;
@@ -456,6 +460,7 @@ void kest_preset_file_rep_update(void *representer, void *representee)
 	
 	save_preset(preset);
 	#endif
+	KEST_PRINTF("kest_preset_file_rep_update done\n");
 	return;
 }
 

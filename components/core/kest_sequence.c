@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_sequence.c";
@@ -47,7 +47,7 @@ int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 	if (!sequence || !preset)
 		return ERR_NULL_PTR;
 	
-	seq_preset_ll *new_node = kest_alloc(sizeof(seq_preset_ll));
+	seq_kest_preset_pll *new_node = kest_alloc(sizeof(seq_kest_preset_pll));
 	
 	if (!new_node)
 		return ERR_ALLOC_FAIL;
@@ -62,7 +62,7 @@ int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 		return NO_ERROR;
 	}
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	while (current)
 	{
@@ -76,11 +76,13 @@ int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 	
 	preset->sequence = sequence;
 	
+	kest_sequence_update_representations(sequence);
+	
 	return NO_ERROR;
 }
 
 
-seq_preset_ll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset)
+seq_kest_preset_pll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset)
 {
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	
@@ -89,7 +91,7 @@ seq_preset_ll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *p
 	
 	
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
-	seq_preset_ll *new_node = kest_alloc(sizeof(seq_preset_ll));
+	seq_kest_preset_pll *new_node = kest_alloc(sizeof(seq_kest_preset_pll));
 	
 	if (!new_node)
 		return NULL;
@@ -105,26 +107,29 @@ seq_preset_ll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *p
 	if (!sequence->presets)
 	{
 		sequence->presets = new_node;
-		return new_node;
 	}
-	
-	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
-	
-	seq_preset_ll *current = sequence->presets;
-	
-	
-	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
-	while (current)
+	else
 	{
-		if (!current->next)
-			break;
-		current = current->next;
+	
+		KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+		
+		seq_kest_preset_pll *current = sequence->presets;
+		
+		
+		KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+		while (current)
+		{
+			if (!current->next)
+				break;
+			current = current->next;
+		}
+		
+		
+		KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
+		current->next = new_node;
+		new_node->prev = current;
 	}
 	
-	
-	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
-	current->next = new_node;
-	new_node->prev = current;
 	
 	
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
@@ -143,8 +148,8 @@ int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos)
 	if (pos < 0 || new_pos < 0)
 		return ERR_BAD_ARGS;
 	
-	seq_preset_ll *target = sequence->presets;
-	seq_preset_ll *prev = NULL;
+	seq_kest_preset_pll *target = sequence->presets;
+	seq_kest_preset_pll *prev = NULL;
 	
 	for (int i = 0; i < pos; i++)
 	{
@@ -170,7 +175,7 @@ int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos)
 		return NO_ERROR;
 	}
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	for (int i = 0; i < new_pos; i++)
 	{
@@ -199,7 +204,7 @@ int kest_sequence_remove_preset(kest_sequence *sequence, kest_preset *preset)
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	while (current)
 	{
@@ -304,7 +309,7 @@ int kest_sequence_begin_at(kest_sequence *sequence, kest_preset *preset)
 	global_cxt.sequence = sequence;
 	sequence->active = 1;
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	int found = 0;
 	
 	while (current && !found)
@@ -438,7 +443,7 @@ int kest_sequence_activate_at(kest_sequence *sequence, kest_preset *preset)
 	if (!sequence)
 		return ERR_NULL_PTR;
 	
-	seq_preset_ll *current = sequence->presets;
+	seq_kest_preset_pll *current = sequence->presets;
 	
 	while (current)
 	{
@@ -517,6 +522,7 @@ int kest_sequence_update_representations(kest_sequence *sequence)
 
 void kest_sequence_file_rep_update(void *representer, void *representee)
 {
+	KEST_PRINTF("kest_sequence_file_rep_update\n");
 	if (!representee)
 		return;
 	
@@ -524,5 +530,6 @@ void kest_sequence_file_rep_update(void *representer, void *representee)
 	
 	save_sequence(sequence);
 	
+	KEST_PRINTF("kest_sequence_file_rep_update done\n");
 	return;
 }

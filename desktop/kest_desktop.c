@@ -85,7 +85,6 @@ void main_task(void *arg)
     
 	init_representation_updater();
 	kest_init_context(&global_cxt);
-	kest_context_init_effect_list(&global_cxt);
 	kest_init_global_pages(&global_cxt.pages);
 	
 	xTaskCreate(

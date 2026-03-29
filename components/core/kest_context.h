@@ -3,11 +3,9 @@
 
 #define MAX_N_PRESETS 256
 
-#define CONTEXT_PRESET_ID  0xFFFF
+#define CONTEXT_PRESET_ID  	0xFFFF
 #define INPUT_GAIN_PID		0x0000
 #define OUTPUT_GAIN_PID		0x0001
-
-typedef kest_preset_pll preset_ll;
 
 typedef struct kest_context
 {
@@ -22,7 +20,7 @@ typedef struct kest_context
 	kest_global_pages pages;
 	#endif
 	
-	preset_ll  *presets;
+	kest_preset_pll  *presets;
 	sequence_ll *sequences;
 	
 	kest_sequence main_sequence;
@@ -51,7 +49,6 @@ extern kest_context global_cxt;
 #endif
 
 int kest_init_context(kest_context *cxt);
-int kest_context_init_effect_list(kest_context *cxt);
 int kest_context_init_main_sequence(kest_context *cxt);
 int kest_context_init_ui(kest_context *cxt);
 

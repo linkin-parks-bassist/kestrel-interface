@@ -2,20 +2,20 @@
 #define KEST_INT_SEQUENCE_H_
 
 
-typedef struct seq_preset_ll
+typedef struct seq_kest_preset_pll
 {
 	kest_preset *data;
-	struct seq_preset_ll *next;
-	struct seq_preset_ll *prev;
-} seq_preset_ll;
+	struct seq_kest_preset_pll *next;
+	struct seq_kest_preset_pll *prev;
+} seq_kest_preset_pll;
 
 typedef struct kest_sequence
 {
 	char *name;
 	int active;
 	
-	seq_preset_ll *presets;
-	seq_preset_ll *position;
+	seq_kest_preset_pll *presets;
+	seq_kest_preset_pll *position;
 	
 	#ifdef KEST_ENABLE_UI
 	kest_ui_page *view_page;
@@ -41,7 +41,7 @@ typedef kest_sequence_pll sequence_ll;
 int init_m_sequence(kest_sequence *sequence);
 
 int sequence_append_preset(kest_sequence *sequence, kest_preset *preset);
-seq_preset_ll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset);
+seq_kest_preset_pll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset);
 int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos);
 
 int kest_sequence_remove_preset(kest_sequence *sequence, kest_preset *preset);

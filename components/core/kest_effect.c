@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
@@ -566,27 +566,57 @@ int kest_effect_set_setting(kest_effect *effect, const char *name, int value)
 
 void kest_effect_preset_rep_update(void *representer, void *representee)
 {
+	KEST_PRINTF("kest_effect_preset_rep_update\n");
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_preset *preset = representer;
 	kest_effect *effect = representee;
 	
-	if (!representer || !representee)
+	if (!representee)
+		return;
+	
+	if (!representee)
+		representee = effect->preset;
+	
+	if (!representee)
 		return;
 	
 	save_preset(preset);
 	#endif
 	
+	KEST_PRINTF("kest_effect_preset_rep_update done\n");
 	return;
 }
 
 int kest_effect_update_reps(kest_effect *effect)
 {
+	KEST_PRINTF("kest_effect_update_reps(effect = %p)\n", effect);
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	if (!effect)
 		return ERR_NULL_PTR;
 	
+	KEST_PRINTF("effect->preset_rep = {.repr = %p, .repee = %p, .update = %p}\n",
+		effect->preset_rep.representer, effect->preset_rep.representee, effect->preset_rep.update);
+	
+	kest_representation_pll *cr = effect->reps;
+	
+	int found = 0;
+	while (cr) {
+		if (cr->data == &effect->preset_rep)
+		{
+			KEST_PRINTF("Preset rep is in list\n");
+			found = 1;
+			break;
+		}
+	}
+	
+	if (!found)
+	{
+		KEST_PRINTF("Preset rep is not in list\n");
+	}
+	
 	queue_representation_list_update(effect->reps);
 	#endif
 	
+	KEST_PRINTF("kest_effect_update_reps done\n");
 	return NO_ERROR;
 }

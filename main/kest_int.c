@@ -30,7 +30,6 @@ void app_main()
 	#endif
 	
 	kest_init_context(&global_cxt);
-	kest_context_init_effect_list(&global_cxt);
 	
 	kest_init_global_pages(&global_cxt.pages);
 	
@@ -41,9 +40,6 @@ void app_main()
 	#ifdef USE_FPGA
 	xTaskCreate(kest_fpga_comms_task,   "kest_fpga_comms_task",   4096, NULL, 8, NULL);
 	xTaskCreate(kest_param_update_task, "kest_param_update_task", 4096, NULL, 8, NULL);
-	#else
-	init_m_msg_queue();
-	begin_m_comms();
 	#endif
 	#ifdef USE_SDCARD
 	kest_printf("DOING THE SD CARD STUFF\n");
@@ -71,6 +67,7 @@ void app_main()
 	#endif
 	
 	init_representation_updater();
+	
 	#ifdef KEST_SIMULATED
     while (1)
     {

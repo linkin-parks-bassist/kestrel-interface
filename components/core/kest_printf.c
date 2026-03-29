@@ -38,3 +38,20 @@ void kest_printf(const char *fmt, ...)
 	#endif
 	#endif
 }
+
+void kest_puts(kest_string str)
+{
+	#ifdef KEST_ENABLE_PRINTF
+	#ifdef KEST_USE_FREERTOS
+	if (!prints_initd || xSemaphoreTake(print_mutex, portMAX_DELAY) != pdPASS) return;
+	#endif
+	
+	kest_string_append(&str, 0);
+	
+	fputs(str.entries, stdout);
+	
+	#ifdef KEST_USE_FREERTOS
+	xSemaphoreGive(print_mutex);
+	#endif
+	#endif
+}

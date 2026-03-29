@@ -24,7 +24,7 @@ static const char *instrs [] = {
 	"mov_acc", "mov_lacc", "mov_uacc",
 	"macz", "umacz", "mac", "umac",
 	"delay_read", "delay_write", "delay_mwrite",
-	"mem_read", "mem_write", "filter",
+	"mem_read", "mem_write", "filter", "fcasc",
 	"tanh4", "sin2pi"
 };
 
@@ -213,6 +213,7 @@ const kest_arg_format *kest_instr_arg_format(const char *instr)
 	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "mem_write"   ) == 0) return &arg_format_res_write;
 	if (strcmp(instr, "filter"      ) == 0) return &arg_format_res_rw;
+	if (strcmp(instr, "fcasc"       ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "tanh4"       ) == 0) return &arg_format_std_1;
 	if (strcmp(instr, "sin2pi"      ) == 0) return &arg_format_std_1;
 	
@@ -249,6 +250,7 @@ int kest_instr_opcode(const char *instr)
 	if (strcmp(instr, "mem_read"    ) == 0) return BLOCK_INSTR_MEM_READ;
 	if (strcmp(instr, "mem_write"   ) == 0) return BLOCK_INSTR_MEM_WRITE;
 	if (strcmp(instr, "filter"      ) == 0) return BLOCK_INSTR_FILTER;
+	if (strcmp(instr, "fcasc"       ) == 0) return BLOCK_INSTR_FCASC;
 	if (strcmp(instr, "tanh4"       ) == 0) return BLOCK_INSTR_LUT_READ;
 	if (strcmp(instr, "sin2pi"      ) == 0) return BLOCK_INSTR_LUT_READ;
 	

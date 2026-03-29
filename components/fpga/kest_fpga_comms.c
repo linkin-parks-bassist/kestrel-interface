@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 
 static const char *FNAME = "kest_fpga_comms.c";
@@ -11,8 +11,6 @@ static const char *FNAME = "kest_fpga_comms.c";
 #define KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN 	2
 #define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN  3
 #define KEST_FPGA_MSG_TYPE_COMMAND			4
-
-#define FPGA_BOOT_MS 2500
 
 typedef struct {
 	int type;
@@ -38,18 +36,20 @@ void kest_fpga_comms_task(void *param)
 	
 	vTaskDelay(pdMS_TO_TICKS(FPGA_BOOT_MS));
 	
+	kest_fpga_status_flags status;
+	
+	int status_check_ms = 5;
+	int status_check_ticks = 5 / portTICK_PERIOD_MS;
+	int status_check_delay = (status_check_ticks == 0) ? 1 : status_check_ticks;
+	
+	do {
+		kest_fpga_get_status_flags(&status);
+		vTaskDelay(status_check_delay);
+	} while (!status.initialised);
+	
 	uint8_t byte;
-	byte = kest_fpga_read_byte();
 	
-	KEST_PRINTF("Starting FPGA comms. FPGA reports status code %d\n", byte);
-	
-	kest_fpga_set_input_gain(global_cxt.input_gain.value);
-	kest_fpga_set_output_gain(global_cxt.output_gain.value);
-	
-	int program_check_ms = 5;
-	int program_check_ticks = 5 / portTICK_PERIOD_MS;
-	int program_check_delay = (program_check_ticks == 0) ? 1 : program_check_ticks;
-	
+	kest_fpga_status_flags_print(&status);
 	
 	kest_fpga_msg msg;
 	BaseType_t ret;
@@ -58,8 +58,13 @@ void kest_fpga_comms_task(void *param)
 	{
 		do {
 			ret = xQueueReceive(fpga_msg_queue, &msg, pdMS_TO_TICKS(1000));
-			byte = kest_fpga_read_byte();
-			KEST_PRINTF("FPGA reports status code %d\n", byte);
+			if (ret != pdPASS)
+			{
+				kest_fpga_get_status_flags(&status);
+				#ifdef PRINT_STATUS_CODES
+				kest_fpga_status_flags_print(&status);
+				#endif
+			}
 		} while (ret != pdPASS);
 		
 		switch (msg.type)
@@ -72,7 +77,7 @@ void kest_fpga_comms_task(void *param)
 				for (int i = 0; i < PROGRAM_RETRIES; i++)
 				{
 					kest_fpga_transfer_batch_send(msg.data.batch);
-					vTaskDelay(program_check_delay);
+					vTaskDelay(status_check_delay);
 					byte = kest_fpga_read_byte();
 					
 					if (byte != SPI_RESPONSE_OK)
@@ -119,6 +124,11 @@ void kest_fpga_comms_task(void *param)
 				kest_fpga_send_byte(msg.data.command);
 				break;
 		}
+		
+		byte = kest_fpga_read_byte();
+		#ifdef PRINT_STATUS_CODES
+		KEST_PRINTF("FPGA reports status code %d\n", byte);
+		#endif
 	}
 	
 	vTaskDelete(NULL);
