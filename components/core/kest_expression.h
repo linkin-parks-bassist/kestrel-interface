@@ -5,7 +5,7 @@
 #define KEST_EXPR_FORM_UNARY_OP 1
 #define KEST_EXPR_FORM_UNARY_FN 2
 #define KEST_EXPR_FORM_INFIX_OP 3
-#define KEST_EXPR_FORM_NORM	 4
+#define KEST_EXPR_FORM_NORM	 	4
 
 #define KEST_EXPR_CONST 	0
 #define KEST_EXPR_REF 		1
@@ -16,21 +16,22 @@
 #define KEST_EXPR_DIV 		6
 #define KEST_EXPR_ABS 		7
 #define KEST_EXPR_SQR 		8
-#define KEST_EXPR_SQRT 	9
+#define KEST_EXPR_SQRT 		9
 #define KEST_EXPR_EXP 		10
 #define KEST_EXPR_LN 		11
 #define KEST_EXPR_POW 		12
 #define KEST_EXPR_SIN 		13
-#define KEST_EXPR_SINH 	14
+#define KEST_EXPR_SINH 		14
 #define KEST_EXPR_COS 		15
-#define KEST_EXPR_COSH 	16
+#define KEST_EXPR_COSH 		16
 #define KEST_EXPR_TAN 		17
-#define KEST_EXPR_TANH 	18
-#define KEST_EXPR_ASIN 	19
-#define KEST_EXPR_ACOS 	20
-#define KEST_EXPR_ATAN 	21
+#define KEST_EXPR_TANH 		18
+#define KEST_EXPR_ASIN 		19
+#define KEST_EXPR_ACOS 		20
+#define KEST_EXPR_ATAN 		21
 
 #define KEST_EXPR_TYPE_MAX_VAL KEST_EXPR_ATAN
+#define KEST_EXPR_MAX_ARITY 2
 
 #define KEST_EXPR_REC_MAX_DEPTH 128
 
@@ -45,17 +46,18 @@ typedef struct kest_expression
 	union {
 		float val_float;
 		char *ref_name;
-		struct kest_expression **sub_exprs;
 	} val;
+	
+	struct kest_expression *sub_exprs[KEST_EXPR_MAX_ARITY];
 } kest_expression;
 
 DECLARE_PTR_LIST(kest_expression);
 
 kest_expression kest_expression_const(float v);
-kest_expression *new_m_expression_const(float v);
-kest_expression *new_m_expression_reference(char *ref_name);
-kest_expression *new_m_expression_unary(int unary_type, kest_expression *rhs);
-kest_expression *new_m_expression_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2);
+kest_expression *kest_expr_new_const(float v);
+kest_expression *kest_expr_new_reference(char *ref_name);
+kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs);
+kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2);
 
 int kest_expression_references_param(kest_expression *expr, kest_parameter *param);
 
@@ -90,13 +92,23 @@ extern kest_expression kest_expression_standard_gain_min;
 extern kest_expression kest_expression_standard_gain_max;
 extern kest_expression kest_expression_zero;
 extern kest_expression kest_expression_one;
+extern kest_expression kest_expression_two;
 extern kest_expression kest_expression_minus_one;
+extern kest_expression kest_expression_minus_two;
+extern kest_expression kest_expression_half;
+extern kest_expression kest_expression_minus_half;
 extern kest_expression kest_expression_pi;
+extern kest_expression kest_expression_2pi;
 extern kest_expression kest_expression_e;
 extern kest_expression kest_expression_sample_rate;
 extern kest_expression kest_expression_int_max;
 extern kest_expression kest_expression_int_min;
 extern kest_expression kest_expression_freq_max;
+extern kest_expression kest_expression_2pi_over_fs;
+extern kest_expression kest_expression_root_2_over_2;
+
+int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);
+int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);
 
 typedef struct {
 	const char *name;

@@ -533,6 +533,247 @@ int kest_extract_filter_coefs_from_dict(kest_eff_parsing_state *ps, kest_ast_nod
 	return NO_ERROR;
 }
 
+int kest_extract_lpf_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
+{
+	KEST_PRINTF("kest_extract_lpf_from_dict\n");
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	kest_expression *cutoff = NULL;
+	kest_expression *Q = NULL;
+	
+	int ret_val;
+	kest_dictionary_entry entry;
+	ret_val = kest_dictionary_lookup_entry(dict, "cutoff", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		kest_parser_error_at_node(ps, dict_node, "Could not find mandatory attribute \"cutoff\" for filter \"%s\"", res->name);
+		return ERR_BAD_ARGS;
+	}
+	
+	switch (entry.type)
+	{
+		case DICT_ENTRY_TYPE_INT:
+			cutoff = kest_expr_new_const(entry.value.val_int);
+			if (!cutoff) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_FLOAT:
+			cutoff = kest_expr_new_const(entry.value.val_float);
+			if (!cutoff) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_EXPR:
+			cutoff = entry.value.val_expr;
+			if (!cutoff)
+				return ERR_BAD_ARGS;
+			break;
+		
+		default:
+			kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+			return ERR_BAD_ARGS;
+	}
+	
+	ret_val = kest_dictionary_lookup_entry(dict, "Q", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		ret_val = kest_dictionary_lookup_entry(dict, "resonance", &entry);
+	}
+	
+	if (ret_val != NO_ERROR)
+	{
+		Q = &kest_expression_root_2_over_2;
+	}
+	else
+	{
+		switch (entry.type)
+		{
+			case DICT_ENTRY_TYPE_INT:
+				Q = kest_expr_new_const(entry.value.val_int);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_FLOAT:
+				Q = kest_expr_new_const(entry.value.val_float);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_EXPR:
+				Q = entry.value.val_expr;
+				if (!Q)
+					return ERR_BAD_ARGS;
+				break;
+			
+			default:
+				kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+				return ERR_BAD_ARGS;
+		}
+	}
+	
+	KEST_PRINTF("cutoff  = %s\n", kest_expression_to_string(cutoff));
+    KEST_PRINTF("Q       = %s\n", kest_expression_to_string(Q));
+	
+	kest_filter *filter = kest_filter_create(NULL);
+	
+	res->data = (void*)filter;
+	
+	filter->feed_forward = 3;
+	filter->feed_back = 2;
+	
+	kest_expression *coefs[5];
+	
+	ret_val = kest_expr_create_lpf_coefficients(coefs, cutoff, Q);
+	
+	if (ret_val != NO_ERROR)
+	{
+		res->data = NULL;
+		kest_expression_ptr_list_destroy(&filter->coefs);
+		return ret_val;
+	}
+	
+	kest_expression_ptr_list_append(&filter->coefs, coefs[0]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[1]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[2]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[3]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[4]);
+	
+	KEST_PRINTF("Extracted (%d, %d) filter \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	for (int i = 0; i < filter->coefs.count; i++)
+	{
+		KEST_PRINTF("\t%s\n", kest_expression_to_string(filter->coefs.entries[i]));
+	}
+	
+	
+	KEST_PRINTF("kest_extract_lpf_from_dict done\n");
+	return NO_ERROR;
+}
+
+int kest_extract_hpf_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
+{
+	KEST_PRINTF("kest_extract_hpf_from_dict\n");
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	kest_expression *cutoff = NULL;
+	kest_expression *Q = NULL;
+	
+	int ret_val;
+	kest_dictionary_entry entry;
+	ret_val = kest_dictionary_lookup_entry(dict, "cutoff", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		kest_parser_error_at_node(ps, dict_node, "Could not find mandatory attribute \"cutoff\" for filter \"%s\"", res->name);
+		return ERR_BAD_ARGS;
+	}
+	
+	switch (entry.type)
+	{
+		case DICT_ENTRY_TYPE_INT:
+			cutoff = kest_expr_new_const(entry.value.val_int);
+			if (!cutoff) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_FLOAT:
+			cutoff = kest_expr_new_const(entry.value.val_float);
+			if (!cutoff) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_EXPR:
+			cutoff = entry.value.val_expr;
+			if (!cutoff)
+				return ERR_BAD_ARGS;
+			break;
+		
+		default:
+			kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+			return ERR_BAD_ARGS;
+	}
+	
+	ret_val = kest_dictionary_lookup_entry(dict, "Q", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		ret_val = kest_dictionary_lookup_entry(dict, "resonance", &entry);
+	}
+	
+	if (ret_val != NO_ERROR)
+	{
+		Q = &kest_expression_root_2_over_2;
+	}
+	else
+	{
+		switch (entry.type)
+		{
+			case DICT_ENTRY_TYPE_INT:
+				Q = kest_expr_new_const(entry.value.val_int);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_FLOAT:
+				Q = kest_expr_new_const(entry.value.val_float);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_EXPR:
+				Q = entry.value.val_expr;
+				if (!Q)
+					return ERR_BAD_ARGS;
+				break;
+			
+			default:
+				kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+				return ERR_BAD_ARGS;
+		}
+	}
+	
+	KEST_PRINTF("cutoff  = %s\n", kest_expression_to_string(cutoff));
+    KEST_PRINTF("Q       = %s\n", kest_expression_to_string(Q));
+	
+	kest_filter *filter = kest_filter_create(NULL);
+	
+	res->data = (void*)filter;
+	
+	filter->feed_forward = 3;
+	filter->feed_back = 2;
+	
+	kest_expression *coefs[5];
+	
+	ret_val = kest_expr_create_hpf_coefficients(coefs, cutoff, Q);
+	
+	if (ret_val != NO_ERROR)
+	{
+		res->data = NULL;
+		kest_expression_ptr_list_destroy(&filter->coefs);
+		return ret_val;
+	}
+	
+	kest_expression_ptr_list_append(&filter->coefs, coefs[0]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[1]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[2]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[3]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[4]);
+	
+	KEST_PRINTF("Extracted (%d, %d) filter \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	for (int i = 0; i < filter->coefs.count; i++)
+	{
+		KEST_PRINTF("\t%s\n", kest_expression_to_string(filter->coefs.entries[i]));
+	}
+	
+	
+	KEST_PRINTF("kest_extract_hpf_from_dict done\n");
+	return NO_ERROR;
+}
+
+int kest_extract_bpf_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
+{
+	return ERR_UNIMPLEMENTED;
+}
+
 int kest_extract_biquad_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
 {
 	if (!dict || !res)
@@ -675,6 +916,12 @@ kest_dsp_resource *kest_extract_resource_from_dict(kest_eff_parsing_state *ps, k
 	{
 		if (strcmp(type_str, "biquad") == 0)
 			kest_extract_biquad_from_dict(ps, dict_node, dict, res);
+		else if (strcmp(type_str, "lpf") == 0)
+			kest_extract_lpf_from_dict(ps, dict_node, dict, res);
+		else if (strcmp(type_str, "hpf") == 0)
+			kest_extract_hpf_from_dict(ps, dict_node, dict, res);
+		else if (strcmp(type_str, "bpf") == 0)
+			kest_extract_bpf_from_dict(ps, dict_node, dict, res);
 		else
 			kest_extract_filter_from_dict(ps, dict_node, dict, res);
 	}

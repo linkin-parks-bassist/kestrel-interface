@@ -16,7 +16,7 @@
 #include "kest_sgtl5000.h"
 
 static const char *FNAME = "kest_sgtl5000.c";
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 #define SGTL5000_SDA 15
 #define SGTL5000_SCL 16

@@ -18,25 +18,260 @@ static const char *FNAME = "kest_expression.c";
 IMPLEMENT_PTR_LIST(kest_expression);
 IMPLEMENT_LINKED_PTR_LIST(kest_named_expression);
 
-#define KEST_EXPRESSION_CONST(x) { 	\
-	.type = KEST_EXPR_CONST,		\
-	.val = {.val_float = x},		\
-	.constant = 1,					\
-	.cached = 1,					\
-	.cached_val = x					\
+#define KEST_EXPRESSION_CONST(x) { 		\
+	.type = KEST_EXPR_CONST,			\
+	.val = {.val_float = (float)(x)},	\
+	.constant = 1,						\
+	.cached = 1,						\
+	.cached_val = (float)(x)			\
 };
 
 kest_expression kest_expression_standard_gain_min 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MIN);
 kest_expression kest_expression_standard_gain_max 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MAX);
 kest_expression kest_expression_zero 				= KEST_EXPRESSION_CONST(0);
 kest_expression kest_expression_one 				= KEST_EXPRESSION_CONST(1);
+kest_expression kest_expression_two 				= KEST_EXPRESSION_CONST(2);
 kest_expression kest_expression_minus_one 			= KEST_EXPRESSION_CONST(-1);
+kest_expression kest_expression_minus_two 			= KEST_EXPRESSION_CONST(-2);
+kest_expression kest_expression_half	 			= KEST_EXPRESSION_CONST(0.5);
+kest_expression kest_expression_minus_half 			= KEST_EXPRESSION_CONST(-0.5);
 kest_expression kest_expression_pi 					= KEST_EXPRESSION_CONST(M_PI);
+kest_expression kest_expression_2pi 				= KEST_EXPRESSION_CONST(2 * M_PI);
 kest_expression kest_expression_e 					= KEST_EXPRESSION_CONST(exp(1));
-kest_expression kest_expression_sample_rate 		= KEST_EXPRESSION_CONST(KEST_FPGA_SAMPLE_RATE);
-kest_expression kest_expression_int_max				= KEST_EXPRESSION_CONST( pow(2, KEST_FPGA_DATA_WIDTH - 1) - 1);
-kest_expression kest_expression_int_min				= KEST_EXPRESSION_CONST(-pow(2, KEST_FPGA_DATA_WIDTH - 1));
-kest_expression kest_expression_freq_max 			= KEST_EXPRESSION_CONST(KEST_FPGA_SAMPLE_RATE / 2 - 50);
+kest_expression kest_expression_sample_rate 		= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE);
+kest_expression kest_expression_int_max				= KEST_EXPRESSION_CONST( pow(2, (float)KEST_FPGA_DATA_WIDTH - 1) - 1);
+kest_expression kest_expression_int_min				= KEST_EXPRESSION_CONST(-pow(2, (float)KEST_FPGA_DATA_WIDTH - 1));
+kest_expression kest_expression_freq_max 			= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE / 2 - 50);
+kest_expression kest_expression_2pi_over_fs 		= KEST_EXPRESSION_CONST((2 * M_PI) / (float)KEST_FPGA_SAMPLE_RATE);
+kest_expression kest_expression_root_2_over_2 		= KEST_EXPRESSION_CONST(sqrt(2.0) / 2.0);
+
+kest_expression kest_expression_const(float v)
+{
+	kest_expression result;
+	result.type = KEST_EXPR_CONST;
+	result.val.val_float = v;
+	result.constant = 1;
+	result.cached = 1;
+	result.cached_val = v;
+	return result;
+}
+
+int kest_expr_init_const(kest_expression *expr, float v)
+{
+	if (!expr) return ERR_NULL_PTR;
+	
+	*expr = kest_expression_const(v);
+	
+	return NO_ERROR;
+}
+
+kest_expression *kest_expr_new_const(float v)
+{
+	kest_expression *result = kest_alloc(sizeof(kest_expression));
+	
+	if (!result) return NULL;
+	
+	*result = kest_expression_const(v);
+	
+	return result;
+}
+
+int kest_expr_init_unary(kest_expression *expr, int unary_type, kest_expression *rhs)
+{
+	if (!expr) return ERR_NULL_PTR;
+	
+	expr->type = unary_type;
+	
+	expr->sub_exprs[0] = rhs;
+	expr->cached = 0;
+	if (rhs)
+		expr->constant = rhs->constant;
+	
+	return NO_ERROR;
+}
+
+kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs)
+{
+	if (!rhs) return NULL;
+	
+	kest_expression *lhs = (kest_expression*)kest_alloc(sizeof(kest_expression));
+	
+	if (!lhs) return NULL;
+	
+	lhs->type = unary_type;
+	
+	lhs->sub_exprs[0] = rhs;
+	lhs->cached = 0;
+	lhs->constant = rhs->constant;
+	
+	return lhs;
+}
+
+int kest_expr_init_binary(kest_expression *expr, int binary_type, kest_expression *arg_1, kest_expression *arg_2)
+{
+	if (!expr) return ERR_NULL_PTR;
+	
+	expr->type = binary_type;
+	
+	expr->sub_exprs[0] = arg_1;
+	expr->sub_exprs[1] = arg_2;
+	
+	expr->cached = 0;
+	expr->constant = arg_2->constant && arg_1->constant;
+	
+	return NO_ERROR;
+}
+
+kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2)
+{
+	if (!arg_1 || !arg_2) return NULL;
+	
+	kest_expression *bin = (kest_expression*)kest_alloc(sizeof(kest_expression));
+	
+	if (!bin) return NULL;
+	
+	bin->type = binary_type;
+	
+	bin->sub_exprs[0] = arg_1;
+	bin->sub_exprs[1] = arg_2;
+	
+	bin->cached = 0;
+	bin->constant = arg_2->constant && arg_1->constant;
+	
+	return bin;
+}
+
+int kest_expr_init_reference(kest_expression *expr, char *ref_name)
+{
+	if (!expr) return ERR_NULL_PTR;
+	
+	expr->type = KEST_EXPR_REF;
+	expr->val.ref_name = kest_strndup(ref_name, 64);
+	
+	if (!expr->val.ref_name)
+	{
+		return ERR_ALLOC_FAIL;
+	}
+	
+	expr->constant = 0;
+	expr->cached = 0;
+	
+	return NO_ERROR;
+}
+
+kest_expression *kest_expr_new_reference(char *ref_name)
+{
+	if (!ref_name) return NULL;
+	
+	kest_expression *result = kest_alloc(sizeof(kest_expression));
+	
+	if (!result) return NULL;
+	
+	result->type = KEST_EXPR_REF;
+	result->val.ref_name = kest_strndup(ref_name, 64);
+	
+	if (!result->val.ref_name)
+	{
+		kest_free(result);
+		return NULL;
+	}
+	
+	result->constant = 0;
+	result->cached = 0;
+	
+	return result;
+}
+
+
+int kest_expr_init_neg(kest_expression *expr, kest_expression *a)
+{
+	return kest_expr_init_unary(expr, KEST_EXPR_NEG, a);
+}
+
+kest_expression *kest_expr_new_neg(kest_expression *a)
+{
+	return kest_expr_new_unary(KEST_EXPR_NEG, a);
+}
+
+int kest_expr_init_div(kest_expression *expr, kest_expression *a, kest_expression *b)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_DIV, a, b);
+}
+
+kest_expression *kest_expr_new_div(kest_expression *a, kest_expression *b)
+{
+	return kest_expr_new_binary(KEST_EXPR_DIV, a, b);
+}
+
+int kest_expr_init_mul(kest_expression *expr, kest_expression *a, kest_expression *b)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_MUL, a, b);
+}
+
+kest_expression *kest_expr_new_mul(kest_expression *a, kest_expression *b)
+{
+	return kest_expr_new_binary(KEST_EXPR_MUL, a, b);
+}
+
+int kest_expr_init_2x(kest_expression *expr, kest_expression *x)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_MUL, &kest_expression_two, x);
+}
+
+kest_expression *kest_expr_new_2x(kest_expression *x)
+{
+	return kest_expr_new_binary(KEST_EXPR_MUL, &kest_expression_two, x);
+}
+
+int kest_expr_init_half_x(kest_expression *expr, kest_expression *x)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_MUL, &kest_expression_half, x);
+}
+
+kest_expression *kest_expr_new_half_x(kest_expression *x)
+{
+	return kest_expr_new_binary(KEST_EXPR_MUL, &kest_expression_half, x);
+}
+
+int kest_expr_init_sin(kest_expression *expr, kest_expression *x)
+{
+	return kest_expr_init_unary(expr, KEST_EXPR_SIN, x);
+}
+
+kest_expression *kest_expr_new_sin(kest_expression *x)
+{
+	return kest_expr_new_unary(KEST_EXPR_SIN, x);
+}
+
+int kest_expr_init_cos(kest_expression *expr, kest_expression *x)
+{
+	return kest_expr_init_unary(expr, KEST_EXPR_COS, x);
+}
+
+kest_expression *kest_expr_new_cos(kest_expression *x)
+{
+	return kest_expr_new_unary(KEST_EXPR_COS, x);
+}
+
+int kest_expr_init_sub(kest_expression *expr, kest_expression *a, kest_expression *b)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_SUB, a, b);
+}
+
+kest_expression *kest_expr_new_sub(kest_expression *a, kest_expression *b)
+{
+	return kest_expr_new_binary(KEST_EXPR_SUB, a, b);
+}
+
+int kest_expr_init_sum(kest_expression *expr, kest_expression *a, kest_expression *b)
+{
+	return kest_expr_init_binary(expr, KEST_EXPR_ADD, a, b);
+}
+
+kest_expression *kest_expr_new_sum(kest_expression *a, kest_expression *b)
+{
+	return kest_expr_new_binary(KEST_EXPR_ADD, a, b);
+}
 
 char *kest_expression_type_to_str(int type)
 {
@@ -104,7 +339,7 @@ int kest_expression_form(kest_expression *expr)
 }
 
 // Compute arity in the sense of, how many sub-expr's it uses.
-// this is used to guard accesses to the array expr->val.sub_exprs.
+// this is used to guard accesses to the array expr->sub_exprs.
 // therefore, if in doubt, return 0.
 // it should not return x if expr->val.sub_expr[x-1]
 // is not a valid pointer to another expr
@@ -197,16 +432,9 @@ int kest_expression_detect_constants_rec(kest_expression *expr, int depth)
 	{
 		//KEST_PRINTF("has top-level arity %d. To see if it's constant, we check its %d top-level sub-expressions.\n", arity, arity);
 		
-		if (!expr->val.sub_exprs)
-		{
-			//KEST_PRINTF("Unfortunately, the data is corrupted, and no sub-expressions were found.\n");
-			ret_val = 1;
-			goto detect_constants_finish;
-		}
-		
 		for (int i = 0; ret_val && i < arity; i++)
 		{
-			sub_expr_cst = expr->val.sub_exprs[i] ? kest_expression_detect_constants_rec(expr->val.sub_exprs[i], depth + 1) : 1;
+			sub_expr_cst = expr->sub_exprs[i] ? kest_expression_detect_constants_rec(expr->sub_exprs[i], depth + 1) : 1;
 			
 			ret_val = ret_val && sub_expr_cst;
 		}
@@ -354,34 +582,26 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 		goto expr_compute_return;
 	}
 	
-	if (!expr->val.sub_exprs)
-	{
-		KEST_PRINTF("Error evaluating expression (%p): expression has arity > 0, but has no sub-expressions!\n",
-				expr->val.ref_name);
-		ret_val = 0.0;
-		goto expr_compute_return;
-	}
-	
 	switch (expr->type)
 	{
 		case KEST_EXPR_NEG:
-			ret_val = -(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = -(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_ADD:
-			ret_val = (kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1) + kest_expression_evaluate_rec(expr->val.sub_exprs[1], scope, depth + 1));
+			ret_val = (kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1) + kest_expression_evaluate_rec(expr->sub_exprs[1], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_SUB:
-			ret_val = kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1) - kest_expression_evaluate_rec(expr->val.sub_exprs[1], scope, depth + 1);
+			ret_val = kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1) - kest_expression_evaluate_rec(expr->sub_exprs[1], scope, depth + 1);
 			break;
 
 		case KEST_EXPR_MUL:
-			ret_val = kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1) * kest_expression_evaluate_rec(expr->val.sub_exprs[1], scope, depth + 1);
+			ret_val = kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1) * kest_expression_evaluate_rec(expr->sub_exprs[1], scope, depth + 1);
 			break;
 
 		case KEST_EXPR_DIV:
-			x = kest_expression_evaluate_rec(expr->val.sub_exprs[1], scope, depth + 1);
+			x = kest_expression_evaluate_rec(expr->sub_exprs[1], scope, depth + 1);
 			
 			if (fabsf(x) < 1e-20)
 			{
@@ -392,66 +612,66 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 				goto expr_compute_return; // avoid division by zero by just returning 0 lol. idk. what else to do?
 			}
 			
-			ret_val = kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1) / x;
+			ret_val = kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1) / x;
 			break;
 
 		case KEST_EXPR_ABS:
-			ret_val = fabs(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = fabs(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
-		case KEST_EXPR_SQR: x = kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1); ret_val = x * x;
+		case KEST_EXPR_SQR: x = kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1); ret_val = x * x;
 			break;
 
 		case KEST_EXPR_SQRT:
-			ret_val = sqrt(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = sqrt(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_EXP:
-			ret_val = exp(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = exp(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_LN:
-			ret_val = log(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = log(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_POW:
-			ret_val = pow(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1),
-						  kest_expression_evaluate_rec(expr->val.sub_exprs[1], scope, depth + 1));
+			ret_val = pow(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1),
+						  kest_expression_evaluate_rec(expr->sub_exprs[1], scope, depth + 1));
 			break;
 		case KEST_EXPR_SIN:
-			ret_val = sin(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = sin(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_SINH:
-			ret_val = sinh(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = sinh(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_ASIN:
-			ret_val = asin(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = asin(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_COS:
-			ret_val = cos(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = cos(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_COSH:
-			ret_val = cosh(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = cosh(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_ACOS:
-			ret_val = acos(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = acos(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_TAN:
-			ret_val = tan(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = tan(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 
 		case KEST_EXPR_TANH:
-			ret_val = tanh(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = tanh(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 			
 		case KEST_EXPR_ATAN:
-			ret_val = atan(kest_expression_evaluate_rec(expr->val.sub_exprs[0], scope, depth + 1));
+			ret_val = atan(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
 	}
 	
@@ -500,7 +720,7 @@ int kest_expression_references_param_rec(kest_expression *expr, kest_parameter *
 	
 	for (int i = 0; i < arity; i++)
 	{
-		if (kest_expression_references_param_rec(expr->val.sub_exprs[i], param, depth + 1))
+		if (kest_expression_references_param_rec(expr->sub_exprs[i], param, depth + 1))
 			return ERR_NULL_PTR;
 	}
 	
@@ -510,101 +730,6 @@ int kest_expression_references_param_rec(kest_expression *expr, kest_parameter *
 int kest_expression_references_param(kest_expression *expr, kest_parameter *param)
 {
 	return kest_expression_references_param_rec(expr, param, 0);
-}
-
-kest_expression kest_expression_const(float v)
-{
-	kest_expression result;
-	result.type = KEST_EXPR_CONST;
-	result.val.val_float = v;
-	result.constant = 1;
-	result.cached = 1;
-	result.cached_val = v;
-	return result;
-}
-
-kest_expression *new_m_expression_const(float v)
-{
-	kest_expression *result = kest_alloc(sizeof(kest_expression));
-	
-	if (!result) return NULL;
-	
-	*result = kest_expression_const(v);
-	
-	return result;
-}
-
-kest_expression *new_m_expression_unary(int unary_type, kest_expression *rhs)
-{
-	if (!rhs) return NULL;
-	
-	kest_expression *lhs = (kest_expression*)kest_alloc(sizeof(kest_expression));
-	
-	if (!lhs) return NULL;
-	
-	lhs->type = unary_type;
-	lhs->val.sub_exprs = kest_alloc(sizeof(kest_expression*) * 1);
-	
-	if (!lhs->val.sub_exprs)
-	{
-		kest_free(lhs);
-		return NULL;
-	}
-	
-	lhs->val.sub_exprs[0] = rhs;
-	lhs->cached = 0;
-	lhs->constant = rhs->constant;
-	
-	return lhs;
-}
-
-kest_expression *new_m_expression_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2)
-{
-	if (!arg_1 || !arg_2) return NULL;
-	
-	kest_expression *bin = (kest_expression*)kest_alloc(sizeof(kest_expression));
-	
-	if (!bin) return NULL;
-	
-	bin->type = binary_type;
-	bin->val.sub_exprs = kest_alloc(sizeof(kest_expression*) * 2);
-	
-	if (!bin->val.sub_exprs)
-	{
-		kest_free(bin);
-		return NULL;
-	}
-	
-	bin->val.sub_exprs[0] = arg_1;
-	bin->val.sub_exprs[1] = arg_2;
-	
-	bin->cached = 0;
-	bin->constant = arg_2->constant && arg_1->constant;
-	
-	return bin;
-}
-
-kest_expression *new_m_expression_reference(char *ref_name)
-{
-	if (!ref_name) return NULL;
-	
-	kest_expression *result = kest_alloc(sizeof(kest_expression));
-	
-	if (!result) return NULL;
-	
-	result->type = KEST_EXPR_REF;
-	result->val.ref_name = kest_strndup(ref_name, 64);
-	
-	if (!result->val.ref_name)
-	{
-		kest_free(result);
-		return NULL;
-	}
-	
-	result->constant = 0;
-	result->cached = 0;
-	
-	return result;
 }
 
 kest_interval kest_interval_real_line()
@@ -815,24 +940,12 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr
 	
 	int arity = kest_expression_arity(expr);
 	
-	if (arity == 1 && (!expr->val.sub_exprs || !expr->val.sub_exprs[0]))
-	{
-		ret = kest_interval_real_line();
-		goto expr_int_ret;
-	}
-	
-	if (arity == 2 && (!expr->val.sub_exprs || !expr->val.sub_exprs[0] || !expr->val.sub_exprs[1]))
-	{
-		ret = kest_interval_real_line();
-		goto expr_int_ret;
-	}
-	
 	#ifdef KEST_BOUNDS_CHECK_VERBOSE
 	KEST_PRINTF("[Depth: %d] The expression has top-level arity %d; therefore we recurse and compute ranges of its top-level sub-expressions.\n", depth, arity);
 	#endif
 	
-	if (arity >= 1) x_int = kest_expression_compute_range_rec(expr->val.sub_exprs[0], scope, depth + 1);
-	if (arity >  1) y_int = kest_expression_compute_range_rec(expr->val.sub_exprs[1], scope, depth + 1);
+	if (arity >= 1) x_int = kest_expression_compute_range_rec(expr->sub_exprs[0], scope, depth + 1);
+	if (arity >  1) y_int = kest_expression_compute_range_rec(expr->sub_exprs[1], scope, depth + 1);
 	
 	switch (expr->type)
 	{
@@ -1310,7 +1423,7 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 		case KEST_EXPR_FORM_ATOMIC:
 			if (expr->type == KEST_EXPR_CONST)
 			{
-				snprintf(buf, buf_len, "%.03f", expr->val.val_float);
+				snprintf(buf, buf_len, "%.05f", expr->val.val_float);
 			
 				// snprintf doesn't exaaaaccctly return the number of
 				// characters written, so just find it myself lol
@@ -1343,12 +1456,12 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 			// Currently, there is only one unary operator with standard form. Cbf writing anything fancy
 			buf[buf_pos++] = '-'; if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			
-			if (expr->val.sub_exprs && expr->val.sub_exprs[0] && expr->val.sub_exprs[0]->type == KEST_EXPR_CONST && expr->val.sub_exprs[0]->val.val_float < 0)
+			if (expr->sub_exprs && expr->sub_exprs[0] && expr->sub_exprs[0]->type == KEST_EXPR_CONST && expr->sub_exprs[0]->val.val_float < 0)
 			{
 				goto bracketed_unary_sub_expr;
 			}
 			
-			buf_pos += kest_expression_print_rec(expr->val.sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
+			buf_pos += kest_expression_print_rec(expr->sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
 			break;
 		
 		case KEST_EXPR_FORM_UNARY_FN:
@@ -1367,7 +1480,7 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 			
 		case KEST_EXPR_FORM_INFIX_OP:
 			buf[buf_pos++] = '('; if (buf_len < buf_pos + 1) goto kest_expr_print_end;
-			buf_pos += kest_expression_print_rec(expr->val.sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
+			buf_pos += kest_expression_print_rec(expr->sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
 			if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			str_ptr = kest_expression_infix_operator_string(expr);
 			
@@ -1376,14 +1489,14 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 
 			if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			
-			buf_pos += kest_expression_print_rec(expr->val.sub_exprs[1], &buf[buf_pos], buf_len - buf_pos, depth + 1);
+			buf_pos += kest_expression_print_rec(expr->sub_exprs[1], &buf[buf_pos], buf_len - buf_pos, depth + 1);
 			if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			buf[buf_pos++] = ')';
 			break;
 			
 		case KEST_EXPR_FORM_NORM:
 			buf[buf_pos++] = '|';  if (buf_len < buf_pos + 1) goto kest_expr_print_end;
-			buf_pos += kest_expression_print_rec(expr->val.sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
+			buf_pos += kest_expression_print_rec(expr->sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
 			if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			buf[buf_pos++] = '|';
 			break;
@@ -1392,7 +1505,7 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 	goto kest_expr_print_end;
 bracketed_unary_sub_expr:
 	buf[buf_pos++] = '(';  if (buf_len < buf_pos + 1) goto kest_expr_print_end;
-	buf_pos += kest_expression_print_rec(expr->val.sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
+	buf_pos += kest_expression_print_rec(expr->sub_exprs[0], &buf[buf_pos], buf_len - buf_pos, depth + 1);
 	if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 	buf[buf_pos++] = ')';
 	
@@ -1428,4 +1541,114 @@ const char *kest_expression_to_string(kest_expression *expr)
 	kest_expression_print_rec(expr, expr_print_buf, 256, 0);
 	
 	return expr_print_buf;
+}
+
+int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q)
+{
+	if (!array || !cutoff || !Q)
+		return ERR_NULL_PTR;
+	
+	int ret_val = NO_ERROR;
+	
+	array[0] = NULL;
+	array[1] = NULL;
+	array[2] = NULL;
+	array[3] = NULL;
+	array[4] = NULL;
+	
+	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 13);
+	
+	if (!exprs) return ERR_ALLOC_FAIL;
+	
+	kest_expression *alpha 					= &exprs[0];
+	kest_expression *omega 					= &exprs[1];
+	kest_expression *sin_omega 				= &exprs[2];
+	kest_expression *cos_omega 				= &exprs[3];
+	kest_expression *Q2 					= &exprs[4];
+	kest_expression *one_minus_cos_omega 	= &exprs[5];
+	kest_expression *alpha_minus_one  		= &exprs[6];
+	kest_expression *cos_omega_2  			= &exprs[7];
+	kest_expression *one_plus_alpha			= &exprs[8];
+	kest_expression *main  					= &exprs[9];
+	kest_expression *half_main  			= &exprs[10];
+	kest_expression *a1  					= &exprs[11];
+	kest_expression *a2  					= &exprs[12];
+	
+	kest_expr_init_2x(Q2, Q);
+	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
+	kest_expr_init_sin(sin_omega, omega);
+	kest_expr_init_cos(cos_omega, omega);
+	kest_expr_init_div(alpha, sin_omega, Q2);
+	kest_expr_init_sub(one_minus_cos_omega, &kest_expression_one, cos_omega);
+	kest_expr_init_sum(one_plus_alpha, &kest_expression_one, alpha);
+	kest_expr_init_sub(alpha_minus_one, alpha, &kest_expression_one);
+	kest_expr_init_2x(cos_omega_2, cos_omega);
+	kest_expr_init_div(main, one_minus_cos_omega, one_plus_alpha);
+	kest_expr_init_half_x(half_main, main);
+	kest_expr_init_div(a1, cos_omega_2, one_plus_alpha);
+	kest_expr_init_div(a2, alpha_minus_one, one_plus_alpha);
+	
+	array[0] = half_main;
+	array[1] = main;
+	array[2] = half_main;
+	array[3] = a1;
+	array[4] = a2;
+	
+	return NO_ERROR;
+}
+
+int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q)
+{
+	if (!array || !cutoff || !Q)
+		return ERR_NULL_PTR;
+	
+	int ret_val = NO_ERROR;
+	
+	array[0] = NULL;
+	array[1] = NULL;
+	array[2] = NULL;
+	array[3] = NULL;
+	array[4] = NULL;
+	
+	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 14);
+	
+	if (!exprs) return ERR_ALLOC_FAIL;
+	
+	kest_expression *alpha 					= &exprs[0];
+	kest_expression *omega 					= &exprs[1];
+	kest_expression *sin_omega 				= &exprs[2];
+	kest_expression *cos_omega 				= &exprs[3];
+	kest_expression *Q2 					= &exprs[4];
+	kest_expression *one_plus_cos_omega 	= &exprs[5];
+	kest_expression *alpha_minus_one  		= &exprs[6];
+	kest_expression *cos_omega_2  			= &exprs[7];
+	kest_expression *one_plus_alpha			= &exprs[8];
+	kest_expression *main  					= &exprs[9];
+	kest_expression *neg_main				= &exprs[10];
+	kest_expression *half_main  			= &exprs[11];
+	kest_expression *a1  					= &exprs[12];
+	kest_expression *a2  					= &exprs[13];
+	
+	kest_expr_init_2x(Q2, Q);
+	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
+	kest_expr_init_sin(sin_omega, omega);
+	kest_expr_init_cos(cos_omega, omega);
+	kest_expr_init_div(alpha, sin_omega, Q2);
+	kest_expr_init_sum(one_plus_cos_omega, &kest_expression_one, cos_omega);
+	kest_expr_init_sum(one_plus_alpha, &kest_expression_one, alpha);
+	kest_expr_init_sub(alpha_minus_one, alpha, &kest_expression_one);
+	kest_expr_init_2x(cos_omega_2, cos_omega);
+	kest_expr_init_div(main, one_plus_cos_omega, one_plus_alpha);
+	kest_expr_init_neg(neg_main, main);
+	kest_expr_init_half_x(half_main, main);
+	kest_expr_init_div(a1, cos_omega_2, one_plus_alpha);
+	kest_expr_init_div(a2, alpha_minus_one, one_plus_alpha);
+	
+	array[0] = half_main;
+	array[1] = neg_main;
+	array[2] = half_main;
+	array[3] = a1;
+	array[4] = a2;
+	
+	return NO_ERROR;
 }

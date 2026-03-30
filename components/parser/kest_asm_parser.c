@@ -480,7 +480,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 		
 		if (arg)
 		{
-			arg->expr = new_m_expression_const(n);
+			arg->expr = kest_expr_new_const(n);
 		}
 	}
 	else if (strcmp(current->data, KEST_EXPR_DELIMITER) == 0)
@@ -530,7 +530,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 			goto asm_parse_arg_fin;
 		}
 		
-		expr = new_m_expression_reference(current->data);
+		expr = kest_expr_new_reference(current->data);
 		if (arg)
 		{
 			arg->expr = expr;
@@ -541,7 +541,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 		if (arg)
 		{
 			arg->type = KEST_ASM_ARG_INT;
-			arg->expr = new_m_expression_const(token_to_float(current->data));
+			arg->expr = kest_expr_new_const(token_to_float(current->data));
 		}
 	}
 	else 

@@ -301,6 +301,23 @@ int kest_dictionary_bucket_add_entry_dict(kest_dictionary_bucket *bucket, const 
 	return NO_ERROR;
 }
 
+int kest_dictionary_bucket_lookup_entry(kest_dictionary_bucket *bucket, const char *name, kest_dictionary_entry *result)
+{
+	if (!bucket || !result || !name)
+		return ERR_NULL_PTR;
+	
+	for (int i = 0; i < bucket->n_entries; i++)
+	{
+		if (strcmp(bucket->entries[i].name, name) == 0)
+		{
+			*result = bucket->entries[i];
+			return NO_ERROR;
+		}
+	}
+	
+	return ERR_NOT_FOUND;
+}
+
 int kest_dictionary_bucket_lookup(kest_dictionary_bucket *bucket, const char *name, void *result, int type)
 {
 	if (!bucket || !result || !name)
@@ -572,6 +589,16 @@ int kest_dictionary_add_entry_dict(kest_dictionary *dict, const char *name, kest
 	uint32_t bucket = hash(name) & (KEST_DICTIONARY_N_BUCKETS - 1);
 	
 	return kest_dictionary_bucket_add_entry_dict(&dict->buckets[bucket], name, value);
+}
+
+int kest_dictionary_lookup_entry(kest_dictionary *dict, const char *name, kest_dictionary_entry *result)
+{
+	if (!dict || !result || !name)
+		return ERR_NULL_PTR;
+	
+	uint32_t bucket = hash(name) & (KEST_DICTIONARY_N_BUCKETS - 1);
+	
+	return kest_dictionary_bucket_lookup_entry(&dict->buckets[bucket], name, result);
 }
 
 int kest_dictionary_lookup(kest_dictionary *dict, const char *name, void *result, int type)

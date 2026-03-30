@@ -103,7 +103,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 	
 	if (token_is_number(current->data))
 	{
-		lhs = new_m_expression_const(token_to_float(tokens->data));
+		lhs = kest_expr_new_const(token_to_float(tokens->data));
 		if (!lhs) return NULL;
 		
 		current = current->next;
@@ -138,7 +138,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 		
 		if (!rhs) goto pratt_bail;
 		
-		lhs = new_m_expression_unary(unary_type, rhs);
+		lhs = kest_expr_new_unary(unary_type, rhs);
 		
 		if (!lhs) goto pratt_bail;
 		
@@ -146,7 +146,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 	}
 	else if (token_is_name(current->data))
 	{
-		lhs = new_m_expression_reference(current->data);
+		lhs = kest_expr_new_reference(current->data);
 		
 		current = current->next;
 	}
@@ -179,7 +179,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 
 		if (!rhs) goto pratt_bail;
 			
-		bin = new_m_expression_binary(infix_type, lhs, rhs);
+		bin = kest_expr_new_binary(infix_type, lhs, rhs);
 		
 		if (!bin) goto pratt_bail;
 		

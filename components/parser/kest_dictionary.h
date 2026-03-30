@@ -49,6 +49,7 @@ int kest_dictionary_bucket_add_entry_float(kest_dictionary_bucket *dict, const c
 int kest_dictionary_bucket_add_entry_expr (kest_dictionary_bucket *dict, const char *name, kest_expression *value);
 int kest_dictionary_bucket_add_entry_dict (kest_dictionary_bucket *dict, const char *name, struct kest_dictionary *value);
 
+int kest_dictionary_bucket_lookup_entry(kest_dictionary_bucket *dict, const char *name, kest_dictionary_entry *result);
 int kest_dictionary_bucket_lookup_str  (kest_dictionary_bucket *dict, const char *name, const char **result);
 int kest_dictionary_bucket_lookup_float(kest_dictionary_bucket *dict, const char *name, float *result);
 int kest_dictionary_bucket_lookup_int  (kest_dictionary_bucket *dict, const char *name, int *result);
@@ -77,6 +78,7 @@ int kest_dictionary_add_entry_float(kest_dictionary *dict, const char *name, flo
 int kest_dictionary_add_entry_expr (kest_dictionary *dict, const char *name, kest_expression *value);
 int kest_dictionary_add_entry_dict (kest_dictionary *dict, const char *name, kest_dictionary *value);
 
+int kest_dictionary_lookup_entry(kest_dictionary *dict, const char *name, kest_dictionary_entry *result);
 int kest_dictionary_lookup_str  (kest_dictionary *dict, const char *name, const char **result);
 int kest_dictionary_lookup_float(kest_dictionary *dict, const char *name, float *result);
 int kest_dictionary_lookup_int  (kest_dictionary *dict, const char *name, int *result);

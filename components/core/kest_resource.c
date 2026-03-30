@@ -77,7 +77,11 @@ int string_to_resource_type(const char *type_str)
 	{
 		return KEST_DSP_RESOURCE_MEM;
 	}
-	else if ((strcmp(type_str, "filter") == 0) || (strcmp(type_str, "biquad") == 0))
+	else if ((strcmp(type_str, "filter"			) == 0)
+		 || (strcmp(type_str, "biquad"			) == 0)
+		 || (strcmp(type_str, "lpf"				) == 0)
+		 || (strcmp(type_str, "hpf"				) == 0)
+		 || (strcmp(type_str, "bpf"				) == 0))
 	{
 		return KEST_DSP_RESOURCE_FILTER;
 	}

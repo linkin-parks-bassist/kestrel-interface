@@ -63,6 +63,30 @@ char *kest_parser_strndup(const char *str, int n)
     return new_str;
 }
 
+char *kest_cname_from_name(char *name)
+{
+	if (!name) return NULL;
+	
+	char *cname = kest_parser_strndup(name, 128);
+	
+	if (!cname) return NULL;
+	
+	int i = 0;
+	while (cname[i])
+	{
+		if ('A' <= cname[i] && cname[i] <= 'Z')
+			cname[i] -= 'A' - 'a';
+		
+		if (cname[i] == ' ')
+			cname[i] = '_';
+		
+		i++;
+	}
+	
+	printf("Generated cname \"%s\"\n", cname);
+	return cname;
+}
+
 int kest_parse_tokens(kest_eff_parsing_state *ps)
 {
 	if (!ps)
@@ -281,8 +305,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		}
 		if ((ret_val = kest_dictionary_section_lookup_str(info_section, "cname", &ps->cname)) != NO_ERROR)
 		{
-			kest_parser_error(ps, "Effect cname missing");
-			return ret_val;
+			ps->cname = kest_cname_from_name(ps->name);
 		}
 		else
 		{
@@ -461,7 +484,7 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 	if (!fname)
 		return NULL;
 	
-	printf("kest_read_eff_desc_from_file\n");
+	KEST_PRINTF("kest_read_eff_desc_from_file\n");
 	
 	kest_effect_desc *result = NULL;
 	kest_eff_parsing_state ps;

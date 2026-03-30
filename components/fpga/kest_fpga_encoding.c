@@ -487,6 +487,7 @@ char *kest_block_opcode_to_string(uint32_t opcode)
 		case BLOCK_INSTR_DELAY_WRITE: 	return (char*)"BLOCK_INSTR_DELAY_WRITE";
 		case BLOCK_INSTR_MEM_WRITE:		return (char*)"BLOCK_INSTR_MEM_WRITE";
 		case BLOCK_INSTR_FILTER:		return (char*)"BLOCK_INSTR_FILTER";
+		case BLOCK_INSTR_FCASC:			return (char*)"BLOCK_INSTR_FCASC";
 		case BLOCK_INSTR_MEM_READ:		return (char*)"BLOCK_INSTR_MEM_READ";
 		case BLOCK_INSTR_MIN: 			return (char*)"BLOCK_INSTR_MIN";
 		case BLOCK_INSTR_MAX: 			return (char*)"BLOCK_INSTR_MAX";
@@ -517,6 +518,7 @@ char *kest_block_opcode_to_name(uint32_t opcode)
 		case BLOCK_INSTR_MEM_WRITE:		return (char*)"mem_write";
 		case BLOCK_INSTR_MEM_READ:		return (char*)"mem_read";
 		case BLOCK_INSTR_FILTER:		return (char*)"filter";
+		case BLOCK_INSTR_FCASC:			return (char*)"fcasc";
 		case BLOCK_INSTR_MIN: 			return (char*)"min";
 		case BLOCK_INSTR_MAX: 			return (char*)"max";
 		case BLOCK_INSTR_CLAMP: 		return (char*)"clamp";
