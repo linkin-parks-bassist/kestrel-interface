@@ -55,7 +55,7 @@ void main_task(void *arg)
 	
     SDL_Init(SDL_INIT_VIDEO);
 
-    window = SDL_CreateWindow("M",
+    window = SDL_CreateWindow("Kestrel",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               DISPLAY_HRES, DISPLAY_VRES,
