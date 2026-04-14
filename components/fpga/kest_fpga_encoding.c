@@ -41,6 +41,8 @@ uint32_t kest_encode_dsp_block_instr_type_a(kest_block *block)
 {
 	if (!block) return 0;
 	
+	KEST_PRINTF("Encoding instruction of format A. dest = %d\n", block->dest);
+	
 	return place_bits( 5,  0, block->instr)
 	 | place_bits( 9,  6, block->arg_a.addr) | ((!!(block->arg_a.type == KEST_ASM_ARG_EXPR)) << 10)
 	 | place_bits(14, 11, block->arg_b.addr) | ((!!(block->arg_b.type == KEST_ASM_ARG_EXPR)) << 15)
@@ -51,6 +53,8 @@ uint32_t kest_encode_dsp_block_instr_type_a(kest_block *block)
 
 uint32_t kest_encode_dsp_block_instr_type_b(kest_block *block, int res_handle)
 {
+	
+	KEST_PRINTF("Encoding instruction of format B\n");
 	return place_bits(5, 0, block->instr) | (1 << 5)
 			 | place_bits( 9,  6, block->arg_a.addr) | ((!!(block->arg_a.type == KEST_ASM_ARG_EXPR)) << 10)
 			 | place_bits(14, 11, block->arg_b.addr) | ((!!(block->arg_b.type == KEST_ASM_ARG_EXPR)) << 15)
@@ -100,10 +104,7 @@ uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_ef
 
 int kest_fpga_batch_append_block_number(kest_fpga_transfer_batch *batch, int block)
 {
-	if (KEST_FPGA_N_BLOCKS > 256)
-		return kest_fpga_batch_append_16(batch, block & 0xFFFF);
-	else
-		return kest_fpga_batch_append(batch, block & 0xFF);
+	kest_fpga_batch_append_16(batch, block & 0xFFFF);
 	
 	return NO_ERROR;
 }
@@ -693,7 +694,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 	int ctr_2 = 0;
 	
 	uint8_t reg_no = 0;
-	kest_fpga_block_addr_t block = 0;
+	uint16_t block = 0;
 	uint32_t value = 0;
 	int32_t signed_val = 0;
 	uint32_t instruction = 0;
@@ -841,7 +842,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 			case 1: // expecting block number
 				block = (block << 8) | byte;
 				
-				if (ctr == KEST_FPGA_BLOCK_ADDR_BYTES - 1)
+				if (ctr == 1)
 				{
 					kest_string_appendf(&str, "Block number %d", byte);
 					state = ret_state;
@@ -860,7 +861,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					state = 0;
 					instruction = (instruction << 8) | byte;
 					//kest_printf("Word: %s; ", binary_print_32(instruction));
-					str_print_instruction(&str, instruction);
+					kest_instr_print(&str, instruction);
 					if (kest_fpga_block_opcode_format(instruction & IBM(5)))
 						shift = 0;
 					else

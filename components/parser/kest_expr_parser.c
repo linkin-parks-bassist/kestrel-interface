@@ -15,6 +15,8 @@ int kest_expression_token_unary_type(char *token)
 	if (strcmp(token, "sqr" ) == 0) return KEST_EXPR_SQR;
 	if (strcmp(token, "sqrt") == 0) return KEST_EXPR_SQRT;
 	if (strcmp(token, "exp" ) == 0) return KEST_EXPR_EXP;
+	if (strcmp(token, "ln"  ) == 0) return KEST_EXPR_LN;
+	if (strcmp(token, "log" ) == 0) return KEST_EXPR_LN;
 	if (strcmp(token, "sin" ) == 0) return KEST_EXPR_SIN;
 	if (strcmp(token, "cos" ) == 0) return KEST_EXPR_COS;
 	if (strcmp(token, "tan" ) == 0) return KEST_EXPR_TAN;
@@ -24,6 +26,7 @@ int kest_expression_token_unary_type(char *token)
 	if (strcmp(token, "asin") == 0) return KEST_EXPR_ASIN;
 	if (strcmp(token, "acos") == 0) return KEST_EXPR_ACOS;
 	if (strcmp(token, "atan") == 0) return KEST_EXPR_ATAN;
+	if (strcmp(token, "log10") == 0) return KEST_EXPR_LOG10;
 	
 	return 0;
 }

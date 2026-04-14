@@ -25,7 +25,7 @@ static const char *instrs [] = {
 	"macz", "umacz", "mac", "umac",
 	"delay_read", "delay_write", "delay_mwrite",
 	"mem_read", "mem_write", "filter", "fcasc",
-	"tanh4", "sin2pi"
+	"tanh4", "sin2pi", "svf", "svf_low", "svf_high", "svf_band"
 };
 
 static const int n_instrs = sizeof(instrs) / sizeof(instrs[0]);
@@ -138,7 +138,7 @@ static const kest_arg_format arg_format_res_read = {
 	.dest_pos  = 1,
 	.shift_pos = KEST_ARG_POS_NONE
 };
-
+/*
 static const kest_arg_format arg_format_res_read_2 = {
 	.n_args = 3,
 	
@@ -149,7 +149,7 @@ static const kest_arg_format arg_format_res_read_2 = {
 	.dest_pos  = 2,
 	.shift_pos = KEST_ARG_POS_NONE
 };
-
+*/
 static const kest_arg_format arg_format_res_write = {
 	.n_args = 2,
 	
@@ -160,7 +160,7 @@ static const kest_arg_format arg_format_res_write = {
 	.dest_pos  = KEST_ARG_POS_NONE,
 	.shift_pos = KEST_ARG_POS_NONE
 };
-
+/*
 static const kest_arg_format arg_format_res_write_2 = {
 	.n_args = 3,
 	
@@ -171,7 +171,7 @@ static const kest_arg_format arg_format_res_write_2 = {
 	.dest_pos  = KEST_ARG_POS_NONE,
 	.shift_pos = KEST_ARG_POS_NONE
 };
-
+*/
 static const kest_arg_format arg_format_res_rw = {
 	.n_args = 3,
 	
@@ -201,15 +201,14 @@ const kest_arg_format *kest_instr_arg_format(const char *instr)
 	if (strcmp(instr, "max"         ) == 0) return &arg_format_std_2;
 	if (strcmp(instr, "clamp"       ) == 0) return &arg_format_std_3;
 	if (strcmp(instr, "mov_acc"     ) == 0) return &arg_format_read;
-	if (strcmp(instr, "mov_uacc"    ) == 0) return &arg_format_read;
 	if (strcmp(instr, "mov_lacc"    ) == 0) return &arg_format_read;
+	if (strcmp(instr, "mov_uacc"    ) == 0) return &arg_format_read;
 	if (strcmp(instr, "macz"        ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "mac"         ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "umac"        ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read_2;
+	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
-	if (strcmp(instr, "delay_mwrite") == 0) return &arg_format_res_write_2;
 	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "mem_write"   ) == 0) return &arg_format_res_write;
 	if (strcmp(instr, "filter"      ) == 0) return &arg_format_res_rw;
@@ -246,7 +245,6 @@ int kest_instr_opcode(const char *instr)
 	if (strcmp(instr, "umac"        ) == 0) return BLOCK_INSTR_UMAC;
 	if (strcmp(instr, "delay_read"  ) == 0) return BLOCK_INSTR_DELAY_READ;
 	if (strcmp(instr, "delay_write" ) == 0) return BLOCK_INSTR_DELAY_WRITE;
-	if (strcmp(instr, "delay_mwrite") == 0) return BLOCK_INSTR_DELAY_WRITE;
 	if (strcmp(instr, "mem_read"    ) == 0) return BLOCK_INSTR_MEM_READ;
 	if (strcmp(instr, "mem_write"   ) == 0) return BLOCK_INSTR_MEM_WRITE;
 	if (strcmp(instr, "filter"      ) == 0) return BLOCK_INSTR_FILTER;
@@ -438,6 +436,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 	
 	if (!current || !current->data)
 	{
+		KEST_PRINTF("Error: current = %p, current->data = %p\n", current, current ? current->data : NULL);
 		ret_val = ERR_BAD_ARGS;
 		goto asm_parse_arg_fin;
 	}
@@ -507,6 +506,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 			arg->expr = kest_parse_expression(ps, current->next, tok);
 			if (!arg->expr)
 			{
+				kest_parser_error_at(ps, current, "Error parsing expression \"%s\"", kest_expression_to_string(arg->expr));
 				ret_val = ERR_BAD_ARGS;
 				goto asm_parse_arg_fin;
 			}
@@ -658,6 +658,7 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 		{
 			current = ps->current_token;
 			ret_val = arg_ret_val;
+			kest_parser_error_at_line(ps, line_number, "Argument %d invalid", i);
 			goto asm_line_parse_fin;
 		}
 		
@@ -758,13 +759,22 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	int ret_val = NO_ERROR;
 	int line_number = line->line_number;
 	
+	kest_asm_instr_desc *desc = kest_instr_name_to_desc(line->instr);
+	
+	KEST_PRINTF_("Processing instruction %s online %d\n", line->instr ? line->instr : "(NULL)", line_number);
+	
+	if (!desc)
+	{
+		kest_parser_error_at_line(ps, line_number, "Instruction \"%s\" does not exist\n", line->instr ? line->instr : "(NULL)");
+		return ERR_BAD_ARGS;
+	}
+	
+	KEST_PRINTF_("Obtained instruction descriptor. Name: \"%s\", opcode: %d\n", desc->name, desc->opcode);
+	
 	kest_block *block = NULL;
-	const kest_arg_format *arg_format = kest_instr_arg_format(line->instr);
+	const kest_instr_arg_fmt *arg_format = &desc->arg_fmt;
 	
 	kest_dsp_resource *resource;
-	
-	if (!arg_format)
-		return ERR_BAD_ARGS;
 	
 	if (line->n_args != arg_format->n_args)
 	{
@@ -778,9 +788,7 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	if (!block)
 		return ERR_ALLOC_FAIL;
 	
-	memset(block, 0, sizeof(kest_block));
-	
-	block->instr = kest_instr_opcode(line->instr);
+	kest_init_block_from_instr_desc(block, desc);
 	
 	kest_asm_arg arg;
 	kest_block_operand *op = NULL;
@@ -799,7 +807,9 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 				return ERR_BAD_ARGS;
 			}
 			
+			KEST_PRINTF("Evaluating destination; \"%s\"\n", kest_expression_to_string(line->args[i].expr));
 			block->dest = (int)roundf(kest_expression_evaluate(line->args[i].expr, NULL));
+			KEST_PRINTF("Result: c%d\n", block->dest);
 		}
 		else if (i == arg_format->res_pos)
 		{
@@ -930,6 +940,10 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	{
 		block->arg_c = operand_const_zero();
 	}
+	else if (strcmp(line->instr, "delay_read") == 0)
+	{
+		block->arg_a = operand_const_zero();
+	}
 	else if (strcmp(line->instr, "delay_write") == 0)
 	{
 		block->arg_b = operand_const_zero();
@@ -962,7 +976,14 @@ int kest_process_asm_lines(kest_eff_parsing_state *ps)
 	while (current)
 	{
 		KEST_PRINTF("kest_process_asm_lines, line %d\n", i);
-		kest_process_asm_line(ps, current->data);
+		if ((ret_val = kest_process_asm_line(ps, current->data)) != NO_ERROR)
+		{
+			if (current->data)
+				kest_parser_error_at_line(ps, current->data->line_number, "%s", kest_error_code_to_string(ret_val));
+			else
+				kest_parser_error(ps, "%s", kest_error_code_to_string(ret_val));
+			return ret_val;
+		}
 		current = current->next; i++;
 	}
 	

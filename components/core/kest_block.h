@@ -24,6 +24,10 @@
 #define BLOCK_INSTR_MEM_WRITE		20
 #define BLOCK_INSTR_FILTER			21
 #define BLOCK_INSTR_FCASC			22
+#define BLOCK_INSTR_SVF				23
+#define BLOCK_INSTR_SVF_LOW			24
+#define BLOCK_INSTR_SVF_HIGH		25
+#define BLOCK_INSTR_SVF_BAND		26
 
 struct kest_dsp_resource;
 
@@ -66,10 +70,16 @@ typedef struct {
 	int shift_set;
 	int saturate_disable;
 	
+	int shift_policy;
+	
 	kest_dsp_resource *res;
 } kest_block;
 
 int kest_init_block(kest_block *block);
+
+struct kest_asm_instr_desc;
+
+int kest_init_block_from_instr_desc(kest_block *block, struct kest_asm_instr_desc *desc);
 
 DECLARE_LINKED_PTR_LIST(kest_block);
 

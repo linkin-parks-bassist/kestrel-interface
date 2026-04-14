@@ -236,8 +236,6 @@ int kest_pipeline_create_fpga_transfer_batch(kest_pipeline *pipeline, kest_fpga_
 	
 	kest_fpga_transfer_batch result = kest_new_fpga_transfer_batch();
 	
-	kest_fpga_batch_append(&result, COMMAND_BEGIN_PROGRAM);
-	
 	kest_eff_resource_report rpt = empty_m_eff_resource_report();
 	
 	int pos = 0;
@@ -249,8 +247,6 @@ int kest_pipeline_create_fpga_transfer_batch(kest_pipeline *pipeline, kest_fpga_
 		kest_free_fpga_transfer_batch(result);
 		goto return_nothing;
 	}
-	
-	kest_fpga_batch_append(&result, COMMAND_END_PROGRAM);
 	
 	*batch = result;
 	

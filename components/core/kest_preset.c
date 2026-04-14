@@ -437,7 +437,7 @@ int kest_preset_program_fpga(kest_preset *preset)
 
 int kest_preset_if_active_update_fpga(kest_preset *preset)
 {
-	KEST_PRINTF("kest_preset_if_active_update_fpga");
+	KEST_PRINTF("kest_preset_if_active_update_fpga(preset = %p)\n", preset);
 	if (!preset)
 		return ERR_NULL_PTR;
 	

@@ -5,15 +5,13 @@
 #include "esp_check.h"
 #include "esp_log.h"
 
-#include "kest_error_codes.h"
-#include "kest_printf.h"
+#include "kest_int.h"
 
 #include "driver/spi_master.h"
 #include "driver/i2c_master.h"
 #include "driver/pulse_cnt.h"
 #include "driver/gpio.h"
 
-#include "kest_sgtl5000.h"
 
 static const char *FNAME = "kest_sgtl5000.c";
 #define PRINTLINES_ALLOWED 0
@@ -153,6 +151,7 @@ int sgtl5000_enable(void)
 	int ret_val;
 
     if ((ret_val = sgtl5000_write_reg(CHIP_LINREG_CTRL, 	0x006C)) != NO_ERROR) return ret_val;
+    
     if ((ret_val = sgtl5000_write_reg(CHIP_REF_CTRL, 		0x01F2)) != NO_ERROR) return ret_val;
     if ((ret_val = sgtl5000_write_reg(CHIP_LINE_OUT_CTRL, 	0x0F22)) != NO_ERROR) return ret_val;
     if ((ret_val = sgtl5000_write_reg(CHIP_SHORT_CTRL, 		0x4446)) != NO_ERROR) return ret_val;
@@ -295,7 +294,7 @@ void kest_sgtl5000_init(void *param)
     kest_printf("Initialising SGTL5000...\n");
     if ((ret_val = sgtl5000_enable()) != NO_ERROR)
 	{
-		kest_printf("Error initialising SGTL5000...\n");
+		kest_printf("Error initialising SGTL5000L %s\n", kest_error_code_to_string(ret_val));
 		return;
 	}
 	

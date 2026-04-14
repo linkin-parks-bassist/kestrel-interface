@@ -6,7 +6,7 @@
 #include "kest_int.h"
 
 //#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 //#endif
 
 static const char *FNAME = "kest_eff_parser.c";
@@ -83,7 +83,6 @@ char *kest_cname_from_name(char *name)
 		i++;
 	}
 	
-	printf("Generated cname \"%s\"\n", cname);
 	return cname;
 }
 

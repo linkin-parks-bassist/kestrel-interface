@@ -5,7 +5,7 @@
 #define PRINTLINES_ALLOWED 0
 #endif
 
-#define DEFAULT_MAX_VELOCITY 1.0
+#define DEFAULT_MAX_VELOCITY 0.2
 
 IMPLEMENT_LINKED_PTR_LIST(kest_parameter);
 IMPLEMENT_LINKED_PTR_LIST(kest_setting);

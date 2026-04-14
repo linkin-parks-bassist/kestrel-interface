@@ -10,7 +10,7 @@
 #define PRINTLINES_ALLOWED 0
 //#endif
 
-#define KEST_EXPR_EVAL_VERBOSE
+//#define KEST_EXPR_EVAL_VERBOSE
 //#define KEST_BOUNDS_CHECK_VERBOSE
 
 static const char *FNAME = "kest_expression.c";
@@ -299,6 +299,7 @@ char *kest_expression_type_to_str(int type)
 		case KEST_EXPR_ASIN: 	return "ASIN";
 		case KEST_EXPR_ACOS:	return "ACOS";
 		case KEST_EXPR_ATAN: 	return "ATAN";
+		case KEST_EXPR_LOG10: 	return "LOG10";
 	}
 	
 	return "TYPE_UNKNOWN";
@@ -333,6 +334,7 @@ int kest_expression_form(kest_expression *expr)
 		case KEST_EXPR_ASIN: 	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_ACOS:	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_ATAN: 	return KEST_EXPR_FORM_UNARY_FN;
+		case KEST_EXPR_LOG10: 	return KEST_EXPR_FORM_UNARY_FN;
 	}
 	
 	return KEST_EXPR_FORM_ATOMIC;
@@ -673,6 +675,10 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 		case KEST_EXPR_ATAN:
 			ret_val = atan(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
+			
+		case KEST_EXPR_LOG10:
+			ret_val = log10(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
+			break;
 	}
 	
 expr_compute_return:
@@ -1009,6 +1015,10 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr
 			
 		case KEST_EXPR_ATAN:
 			ret = kest_interval_ab(atan(x_int.a), atan(x_int.b));
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LOG10:
+			ret = kest_interval_ab(log10(x_int.a), log10(x_int.b));
 			goto expr_int_ret;
 			
 		case KEST_EXPR_TANH:
@@ -1375,6 +1385,7 @@ const char *kest_expression_function_string(kest_expression *expr)
 		case KEST_EXPR_ASIN: 	return "asin";
 		case KEST_EXPR_ACOS: 	return "acos";
 		case KEST_EXPR_ATAN: 	return "atan";
+		case KEST_EXPR_LOG10: 	return "log10";
 		default: return "";
 	}
 	
@@ -1456,7 +1467,7 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 			// Currently, there is only one unary operator with standard form. Cbf writing anything fancy
 			buf[buf_pos++] = '-'; if (buf_len < buf_pos + 1) goto kest_expr_print_end;
 			
-			if (expr->sub_exprs && expr->sub_exprs[0] && expr->sub_exprs[0]->type == KEST_EXPR_CONST && expr->sub_exprs[0]->val.val_float < 0)
+			if (expr->sub_exprs[0] && expr->sub_exprs[0]->type == KEST_EXPR_CONST && expr->sub_exprs[0]->val.val_float < 0)
 			{
 				goto bracketed_unary_sub_expr;
 			}

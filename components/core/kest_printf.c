@@ -46,9 +46,13 @@ void kest_puts(kest_string str)
 	if (!prints_initd || xSemaphoreTake(print_mutex, portMAX_DELAY) != pdPASS) return;
 	#endif
 	
-	kest_string_append(&str, 0);
+	int fza = str.count < str.capacity ? str.count : str.capacity - 1;
+	char swpchar = str.entries[fza];
+	str.entries[fza] = 0;
 	
 	fputs(str.entries, stdout);
+	
+	str.entries[fza] = swpchar;
 	
 	#ifdef KEST_USE_FREERTOS
 	xSemaphoreGive(print_mutex);

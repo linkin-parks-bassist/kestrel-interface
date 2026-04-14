@@ -1,8 +1,10 @@
 #ifndef KEST_FPGA_COMMS_H_
 #define KEST_FPGA_COMMS_H_
 
-#define PRINT_TRANSFER_BATCHES
-//#define PRINT_STATUS_CODES
+//#define PRINT_TRANSFER_BATCHES
+#define PRINT_SCAN
+//#define PRINT_PROGRAM_BATCHES
+//#define PRINT_FLAGS
 //#define PRINT_COMMANDS
 
 void kest_fpga_comms_task(void *param);

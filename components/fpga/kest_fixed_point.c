@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_fixed_point.c";
 

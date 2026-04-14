@@ -41,6 +41,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 				ui/kest_ui.c				\
 				fpga/kest_fpga_encoding.c	\
 				fpga/kest_fpga_comms.c		\
+				fpga/kest_fpga_instr.c		\
 				fpga/kest_fpga_io.c			\
 				fpga/kest_reg_format.c		\
 				fpga/kest_fixed_point.c		\
@@ -81,6 +82,7 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_reg_format.c		\
 				fpga/kest_fixed_point.c		\
 				fpga/kest_fpga_position.c	\
+				fpga/kest_fpga_instr.c		\
 				fpga/kest_fpga_io.c
 
 

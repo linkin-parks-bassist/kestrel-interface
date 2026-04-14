@@ -61,8 +61,26 @@ int kest_init_block(kest_block *block)
 	block->shift = 0;
 	block->shift_set = 0;
 	block->saturate_disable = 0;
+	block->shift_policy = SHIFT_POLICY_0;
 	
 	block->res = NULL;
+	
+	return NO_ERROR;
+}
+
+
+int kest_init_block_from_instr_desc(kest_block *block, kest_asm_instr_desc *desc)
+{
+	if (!desc)
+		return ERR_NULL_PTR;
+	
+	kest_init_block(block);
+	
+	if (!desc)
+		return ERR_BAD_ARGS;
+	
+	block->instr = desc->opcode;
+	block->shift_policy = desc->shift_policy;
 	
 	return NO_ERROR;
 }

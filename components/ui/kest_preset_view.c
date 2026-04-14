@@ -101,13 +101,15 @@ int preset_view_effect_delete_cb(kest_active_button *button)
 	if (!effect)
 		return ERR_BAD_ARGS;
 	
-	int ret_val = kest_preset_remove_effect(effect->preset, effect->id);
+	kest_preset *preset = effect->preset;
+	
+	int ret_val = kest_preset_remove_effect(preset, effect->id);
 	
 	if (ret_val != NO_ERROR)
 		return ret_val;
 	
 	#ifdef USE_FPGA
-	ret_val = kest_preset_if_active_update_fpga(effect->preset);
+	ret_val = kest_preset_if_active_update_fpga(preset);
 	#endif
 	KEST_PRINTF("preset_view_effect_delete_cb done\n");
 	return ret_val;

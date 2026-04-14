@@ -26,22 +26,25 @@
 #define COMMAND_GET_N_BLOCKS 		21
 #define COMMAND_GET_BLOCK_INSTR		22
 #define COMMAND_GET_BLOCK_REG		23
+#define COMMAND_GET_N_DELAY_BUF		24
+#define COMMAND_GET_DELAY_BUF_SIZE  25
+#define COMMAND_GET_DELAY_BUF_DELAY 26
+#define COMMAND_GET_DELAY_BUF_ADDR 	27
+#define COMMAND_GET_DELAY_BUF_POS 	28
+#define COMMAND_GET_DELAY_BUF_GAIN 	29
+#define COMMAND_GET_DELAY_BUF_LRWA 	30
+#define COMMAND_GET_SDRAM_READ_CNT	31
+#define COMMAND_GET_SDRAM_WRITE_CNT	32
+#define COMMAND_READ_COMMAND_LOG	33
+#define COMMAND_GET_SAMPLE_COUNT	34
+#define COMMAND_CLEAR_TIMEOUT_FLAG	35
+#define COMMAND_CLEAR_BAD_FLAG		36
+#define COMMAND_CLEAR_CMD_ERR_FLAG	37
+#define COMMAND_READ				38
 
-#define SPI_RESPONSE_OK 			0
-#define SPI_RESPONSE_INITIALISING	1
-#define SPI_RESPONSE_PROGRAMMING 	2
-#define SPI_RESPONSE_REJECTED		3
-#define SPI_RESPONSE_TIMEOUT		4
+#define SPI_RESPONSE_OK 1
 
 #define KEST_FPGA_N_BLOCKS 256
-
-#if KEST_FPGA_N_BLOCKS > 256
-  #define KEST_FPGA_BLOCK_ADDR_BYTES 2
-  typedef uint16_t kest_fpga_block_addr_t;
-#else
-  #define KEST_FPGA_BLOCK_ADDR_BYTES 1
-  typedef uint8_t kest_fpga_block_addr_t;
-#endif
 
 #define KEST_FPGA_DATA_WIDTH 16
 #define KEST_FPGA_FILTER_WIDTH 18
@@ -68,6 +71,7 @@ int kest_send_byte_to_fpga(uint8_t byte);
 
 int kest_fpga_send_byte(uint8_t byte);
 uint8_t kest_fpga_read_byte();
+uint8_t kest_fpga_readout();
 
 void kest_fpga_set_input_gain (float gain_db);
 void kest_fpga_set_output_gain(float gain_db);
@@ -93,9 +97,52 @@ typedef struct
 	int bad;
 	int data_ready;
 	int cmd_err;
+	int swapping;
 } kest_fpga_status_flags;
 
+int kest_fpga_decode_status_flags(kest_fpga_status_flags *flags, uint8_t byte);
+int kest_fpga_send_byte_get_flags(uint8_t tx, kest_fpga_status_flags *flags);
 int kest_fpga_get_status_flags(kest_fpga_status_flags *flags);
 int kest_fpga_status_flags_print(kest_fpga_status_flags *flags);
+int kest_fpga_status_flags_sprint(kest_string *str, kest_fpga_status_flags *flags);
+
+int kest_fpga_get_n_blocks(kest_fpga_status_flags *flags);
+uint32_t kest_fpga_get_block_instr(int block, kest_fpga_status_flags *flags);
+uint16_t kest_fpga_get_block_reg(int block, int reg, kest_fpga_status_flags *flags);
+
+int kest_fpga_get_n_delay_buffers(kest_fpga_status_flags *flags);
+int kest_fpga_get_delay_buffer_size(int handle, kest_fpga_status_flags *flags);
+int kest_fpga_get_delay_buffer_delay(int handle, kest_fpga_status_flags *flags);
+
+int kest_fpga_get_delay_buffer_addr(int handle, kest_fpga_status_flags *flags);
+int kest_fpga_get_delay_buffer_pos(int handle, kest_fpga_status_flags *flags);
+uint16_t kest_fpga_get_delay_buffer_gain(int handle, kest_fpga_status_flags *flags);
+int kest_fpga_get_delay_buffer_last_rw_addr(int handle, uint16_t *read_addr, uint16_t *write_addr, kest_fpga_status_flags *flags);
+
+uint64_t kest_fpga_get_sample_count(kest_fpga_status_flags *flags);
+
+uint64_t kest_fpga_get_sdram_read_count(kest_fpga_status_flags *flags);
+uint64_t kest_fpga_get_sdram_write_count(kest_fpga_status_flags *flags);
+
+uint32_t kest_fpga_get_stuck_flags(kest_fpga_status_flags *flags);
+
+int kest_fpga_read_command_log(uint8_t *buf);
+
+#define DATA_REQ_N_BLOCKS 		14
+#define DATA_REQ_BLOCK_INSTR 	1
+#define DATA_REQ_BLOCK_REG	 	2
+
+#define DATA_REQ_N_DELAY_BUF	 3
+#define DATA_REQ_DELAY_BUF_SIZE	 4
+#define DATA_REQ_DELAY_BUF_DELAY 5
+#define DATA_REQ_DELAY_BUF_ADDR  6
+#define DATA_REQ_DELAY_BUF_POS   7
+#define DATA_REQ_DELAY_BUF_GAIN  8
+#define DATA_REQ_DELAY_BUF_LRWA  9
+#define DATA_REQ_SAMPLE_COUNT	 10
+#define DATA_REQ_SDRAM_READ_CNT	 11
+#define DATA_REQ_SDRAM_WRITE_CNT 12
+#define DATA_REQ_STUCK_FLAGS	 13
+
 
 #endif
