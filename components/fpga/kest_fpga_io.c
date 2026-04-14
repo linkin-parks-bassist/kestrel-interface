@@ -612,13 +612,10 @@ int kest_fpga_get_delay_buffer_last_rw_addr(int handle, uint16_t *read_addr, uin
 {
 	uint8_t p = handle & 0xFF;
 	
-	uint32_t w = kest_fpga_req_data_p(DATA_REQ_DELAY_BUF_ADDR, &p, 1, 4, flags);
+	uint32_t w = kest_fpga_req_data_p(DATA_REQ_DELAY_BUF_LRWA, &p, 1, 4, flags);
 	
-	if (read_addr)
-		*read_addr = (w & 0xFFFF0000) >> 16;
-	
-	if (write_addr)
-		*write_addr = (w & 0x0000FFFF) >> 0;
+	if (read_addr) *read_addr = (w & 0x0000FFFF) >> 0;
+	if (write_addr) *write_addr = (w & 0xFFFF0000) >> 16;
 	
 	return NO_ERROR;
 }

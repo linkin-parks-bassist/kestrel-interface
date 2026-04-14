@@ -382,13 +382,13 @@ void kest_fpga_comms_print_full_scan()
 	{
 		kest_string_appendf(&str, "\tDelay buffer %d\n", i);
 		size 	= kest_fpga_get_delay_buffer_size(i, &flags);
-		kest_string_appendf(&str, "\t\tSize:  %d samples (%d ms),\n", size, (int)(((float)size)/441.0));
+		kest_string_appendf(&str, "\t\tSize:  %d samples (%d ms),\n", size, (int)(((float)size)/44.1));
 		delay 	= kest_fpga_get_delay_buffer_delay(i, &flags);
-		kest_string_appendf(&str, "\t\tDelay: %d samples (%d ms),\n", delay, (int)(((float)delay)/441.0));
+		kest_string_appendf(&str, "\t\tDelay: %d samples (%d ms),\n", delay, (int)(((float)delay)/44.1));
 		addr 	= kest_fpga_get_delay_buffer_addr(i, &flags);
 		kest_string_appendf(&str, "\t\tAddr:  0x%06x,\n", addr);
 		pos 	= kest_fpga_get_delay_buffer_pos(i, &flags);
-		kest_string_appendf(&str, "\t\tPos:   %d = 0x%06x,\n", pos);
+		kest_string_appendf(&str, "\t\tPos:   %d = 0x%06x,\n", pos, pos);
 		gain 	= kest_fpga_get_delay_buffer_gain(i, &flags);
 		kest_string_appendf(&str, "\t\tGain:  %u = %.05f\n", gain, (float)gain * powf(2, -14));
 		
