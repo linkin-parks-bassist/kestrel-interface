@@ -43,7 +43,7 @@ typedef struct kest_effect
 	#endif
 	
 	kest_effect_desc *eff;
-	kest_expr_scope *scope;
+	kest_scope *scope;
 	
 	#ifdef KEST_USE_FREERTOS
 	SemaphoreHandle_t mutex;
@@ -97,7 +97,7 @@ int kest_fpga_transfer_batch_append_effect(
 
 int kest_effect_update_fpga(kest_effect *effect);
 
-kest_expr_scope *kest_effect_create_scope(kest_effect *effect);
+kest_scope *kest_effect_create_scope(kest_effect *effect);
 
 int kest_effect_set_parameter(kest_effect *effect, const char *name, float value);
 int kest_effect_set_setting(kest_effect *effect, const char *name, int value);

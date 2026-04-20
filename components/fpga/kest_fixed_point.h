@@ -7,8 +7,8 @@ int16_t float_to_q15(float x);
 
 int32_t float_to_q_nminus1_18bit(float x, int shift);
 
-int kest_expression_compute_format(kest_expression *expr, kest_expr_scope *scope, int fmax, int width);
+int kest_expression_compute_format(kest_expression *expr, kest_scope *scope, int fmax, int width);
 
-int kest_filter_compute_format(kest_filter *filter, kest_expr_scope *scope);
+int kest_filter_compute_format(kest_filter *filter, kest_scope *scope);
 
 #endif

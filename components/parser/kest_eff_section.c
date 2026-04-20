@@ -134,7 +134,7 @@ int kest_resources_section_extract(kest_eff_parsing_state *ps, kest_dsp_resource
 	return NO_ERROR;
 }
 
-int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_expr_scope *scope, struct kest_ast_node *sect)
+int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_scope *scope, struct kest_ast_node *sect)
 {
 	KEST_PRINTF("kest_defs_section_extract(ps = %p, scope = %p, sect = %p)\n", ps, scope, sect);
 	if (!scope || !sect || !ps)
@@ -175,7 +175,7 @@ int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_expr_scope *scope
 				return ret_val;
 			}
 			
-			ret_val = kest_expr_scope_add_expr(ps->scope, dict->entries[i].name, dict->entries[i].value.val_expr);
+			ret_val = kest_scope_add_expr(ps->scope, dict->entries[i].name, dict->entries[i].value.val_expr);
 		}
 		else
 		{

@@ -83,6 +83,9 @@ int kest_fpga_batch_append_24(kest_fpga_transfer_batch *seq, uint32_t x);
 int kest_fpga_batch_append_32(kest_fpga_transfer_batch *seq, uint32_t x);
 
 int kest_fpga_transfer_batch_send(kest_fpga_transfer_batch batch);
+int kest_fpga_transfer_batch_send_careful(kest_fpga_transfer_batch batch);
+int kest_fpga_program_batch_send_careful(kest_fpga_transfer_batch batch);
+int kest_fpga_program_batch_send(kest_fpga_transfer_batch batch);
 
 int kest_fpga_spi_init();
 
@@ -91,7 +94,7 @@ char *kest_fpga_command_to_string(int command);
 typedef struct
 {
 	int initialised;
-	int busy;
+	int listening;
 	int timeout;
 	int programming;
 	int bad;

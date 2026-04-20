@@ -28,6 +28,7 @@
 #define BLOCK_INSTR_SVF_LOW			24
 #define BLOCK_INSTR_SVF_HIGH		25
 #define BLOCK_INSTR_SVF_BAND		26
+#define BLOCK_INSTR_POLY			27
 
 struct kest_dsp_resource;
 

@@ -25,7 +25,8 @@ static const char *instrs [] = {
 	"macz", "umacz", "mac", "umac",
 	"delay_read", "delay_write", "delay_mwrite",
 	"mem_read", "mem_write", "filter", "fcasc",
-	"tanh4", "sin2pi", "svf", "svf_low", "svf_high", "svf_band"
+	"tanh4", "sin2pi", "svf", "svf_low", "svf_high",
+	"svf_band", "poly"
 };
 
 static const int n_instrs = sizeof(instrs) / sizeof(instrs[0]);
@@ -765,7 +766,7 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	
 	if (!desc)
 	{
-		kest_parser_error_at_line(ps, line_number, "Instruction \"%s\" does not exist\n", line->instr ? line->instr : "(NULL)");
+		kest_parser_error_at_line(ps, line_number, "Instruction \"%s\" does not exist", line->instr ? line->instr : "(NULL)");
 		return ERR_BAD_ARGS;
 	}
 	

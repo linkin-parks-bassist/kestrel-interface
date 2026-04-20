@@ -17,6 +17,8 @@ typedef struct {
 		struct kest_parameter *param;
 		struct kest_setting *setting;
 	} val;
+	
+	int updated;
 } kest_expr_scope_entry;
 
 kest_expr_scope_entry *kest_new_expr_scope_entry_expr(const char *name, struct kest_expression *expr);
@@ -32,11 +34,14 @@ typedef struct {
 	kest_expr_scope_entry_pll *entries;
 } kest_expr_scope;
 
+
 kest_expr_scope *kest_new_expr_scope();
 int kest_expr_scope_init(kest_expr_scope *scope);
 int kest_expr_scope_add_expr(kest_expr_scope *scope, const char *name, struct kest_expression *expr);
 int kest_expr_scope_add_param(kest_expr_scope *scope, struct kest_parameter *param);
 int kest_expr_scope_add_setting(kest_expr_scope *scope,struct kest_setting *setting);
+
+int kest_expr_scope_propagate_updates(kest_expr_scope *scope);
 
 struct kest_parameter_pll;
 struct kest_setting_pll;
@@ -47,5 +52,40 @@ int kest_expr_scope_add_settings(kest_expr_scope *scope, struct kest_setting_pll
 kest_expr_scope_entry *kest_expr_scope_fetch(kest_expr_scope *scope, const char *name);
 
 kest_expr_scope *kest_expr_scope_copy(kest_expr_scope *scope);
+
+typedef struct {
+	int type;
+	union {
+		struct kest_expression *expr;
+		struct kest_parameter *param;
+		struct kest_setting *setting;
+	} val;
+	
+	int updated;
+} kest_scope_entry;
+
+DECLARE_DICT(kest_scope_entry);
+
+typedef struct {
+	kest_scope_entry_dict dict;
+} kest_scope;
+
+kest_scope *kest_scope_new();
+int kest_scope_init(kest_scope *scope);
+int kest_scope_add_expr(kest_scope *scope, const char *name, struct kest_expression *expr);
+int kest_scope_add_param(kest_scope *scope, struct kest_parameter *param);
+int kest_scope_add_setting(kest_scope *scope,struct kest_setting *setting);
+
+int kest_scope_propagate_updates(kest_scope *scope);
+int kest_scope_clear_updates(kest_scope *scope);
+
+int kest_scope_add_params(kest_scope *scope, struct kest_parameter_pll *params);
+int kest_scope_add_settings(kest_scope *scope, struct kest_setting_pll *settings);
+
+kest_scope_entry *kest_scope_lookup(kest_scope *scope, const char *name);
+kest_scope_entry *kest_scope_fetch(kest_scope *scope, const char *name);
+
+size_t kest_scope_count(kest_scope *scope);
+kest_scope_entry *kest_scope_index(kest_scope *scope, size_t n);
 
 #endif

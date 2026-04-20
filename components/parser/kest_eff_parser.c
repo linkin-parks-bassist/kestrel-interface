@@ -317,8 +317,8 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		return ERR_BAD_ARGS;
 	}
 	
-	ps->scope = kest_parser_alloc(sizeof(kest_expr_scope));
-	kest_expr_scope_init(ps->scope);
+	ps->scope = kest_parser_alloc(sizeof(kest_scope));
+	kest_scope_init(ps->scope);
 	
 	if (!ps->scope)
 		return ERR_ALLOC_FAIL;
@@ -341,7 +341,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		}
 		
 		kest_parameters_assign_ids(ps->parameters);
-		kest_expr_scope_add_params(ps->scope, ps->parameters);
+		kest_scope_add_params(ps->scope, ps->parameters);
 	}
 	
 	if (settings_section)
@@ -353,7 +353,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		
 		kest_settings_assign_ids(ps->settings);
 		KEST_PRINTF("Adding settings to scope...\n");
-		kest_expr_scope_add_settings(ps->scope, ps->settings);
+		kest_scope_add_settings(ps->scope, ps->settings);
 	}
 	
 	if (defs_section)

@@ -32,6 +32,8 @@ typedef struct kest_filter {
 	int feed_back;
 	int format;
 	
+	int updated;
+	
 	struct kest_expression_ptr_list coefs;
 } kest_filter;
 

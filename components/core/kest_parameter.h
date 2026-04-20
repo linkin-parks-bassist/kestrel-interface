@@ -30,6 +30,7 @@ typedef struct kest_parameter
 	int scale;
 	
 	int updated;
+	
 	float old_value;
 	float new_value;
 	

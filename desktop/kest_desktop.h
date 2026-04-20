@@ -61,6 +61,7 @@
 #include "kest_bump_arena.h"
 
 #include "kest_list.h"
+#include "kest_dict.h"
 #include "kest_string.h"
 #include "kest_linked_list.h"
 #include "kest_global.h"

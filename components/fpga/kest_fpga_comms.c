@@ -108,13 +108,7 @@ void kest_fpga_comms_task(void *param)
 					kest_fpga_status_flags_print(&status);
 					#endif
 					KEST_PRINTF("Starting...\n");
-					kest_fpga_send_byte(COMMAND_BEGIN_PROGRAM);
-					kest_fpga_get_status_flags(&status);
-					#ifdef PRINT_FLAGS
-					kest_fpga_status_flags_print(&status);
-					#endif
-					kest_fpga_transfer_batch_send(msg.data.batch);
-					kest_fpga_send_byte(COMMAND_END_PROGRAM);
+					kest_fpga_program_batch_send(msg.data.batch);
 					vTaskDelay(status_check_delay);
 					kest_fpga_get_status_flags(&status);
 					
@@ -125,23 +119,6 @@ void kest_fpga_comms_task(void *param)
 						break;
 					}
 					
-					/*
-					busy_tries = 5;
-					while (status.swapping && busy_tries --> 0)
-					{
-						kest_fpga_get_status_flags(&status);
-						if (status.swapping)
-							vTaskDelay(pdMS_TO_TICKS(100));
-					}
-					
-					busy_tries = 5;
-					while (status.busy && busy_tries --> 0)
-					{
-						kest_fpga_get_status_flags(&status);
-						if (status.busy)
-							vTaskDelay(pdMS_TO_TICKS(100));
-					}
-					*/
 					kest_fpga_status_flags_print(&status);
 					
 					if (status.bad)
@@ -299,7 +276,7 @@ void sprint_flags_compact(kest_string *str, kest_fpga_status_flags *flags)
 	if (!str || !flags) return;
 	
 	uint8_t fb = ((!!flags->initialised) << 0)
-			 | ((!!flags->busy) 		 << 1)
+			 | ((!!flags->listening)	 << 1)
 			 | ((!!flags->timeout) 		 << 2)
 			 | ((!!flags->programming) 	 << 3)
 			 | ((!!flags->bad) 			 << 4)

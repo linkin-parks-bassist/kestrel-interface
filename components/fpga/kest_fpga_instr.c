@@ -411,6 +411,13 @@ static const kest_asm_instr_desc kest_instr_desc_sin2pi = {
 	.shift_policy = SHIFT_POLICY_0
 };
 
+static const kest_asm_instr_desc kest_instr_desc_poly = {
+	.name = "poly",
+	.opcode = BLOCK_INSTR_POLY,
+	.arg_fmt = arg_format_res_rw,
+	.shift_policy = SHIFT_POLICY_0
+};
+
 const kest_asm_instr_desc *kest_instr_name_to_desc(char *name)
 {
 	if (!name)
@@ -448,6 +455,7 @@ const kest_asm_instr_desc *kest_instr_name_to_desc(char *name)
 	if (strcmp(name, "svf_band"    ) == 0) return &kest_instr_desc_svf_band;
 	if (strcmp(name, "tanh4"       ) == 0) return &kest_instr_desc_tanh4;
 	if (strcmp(name, "sin2pi"      ) == 0) return &kest_instr_desc_sin2pi;
+	if (strcmp(name, "poly"        ) == 0) return &kest_instr_desc_poly;
 	
 	return NULL;
 }
@@ -483,6 +491,7 @@ const kest_asm_instr_desc *kest_instr_opcode_to_desc(int opcode)
 		case BLOCK_INSTR_SVF_LOW: 		return &kest_instr_desc_svf_low;
 		case BLOCK_INSTR_SVF_HIGH: 		return &kest_instr_desc_svf_high;
 		case BLOCK_INSTR_SVF_BAND: 		return &kest_instr_desc_svf_band;
+		case BLOCK_INSTR_POLY: 			return &kest_instr_desc_poly;
 	}
 	
 	return NULL;

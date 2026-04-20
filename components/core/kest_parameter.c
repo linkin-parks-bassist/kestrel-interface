@@ -31,6 +31,7 @@ int init_parameter_str(kest_parameter *param)
 	param->widget_type = PARAM_WIDGET_VIRTUAL_POT;
 	param->scale = PARAMETER_SCALE_LINEAR;
 	param->group = -1;
+	param->updated = 0;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
@@ -59,6 +60,7 @@ int init_parameter(kest_parameter *param, const char *name, float level, float m
 	param->factor = 1.0;
 	param->group = -1;
 	param->widget_type = PARAM_WIDGET_VIRTUAL_POT;
+	param->updated = 0;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	param->reps = NULL;
@@ -109,6 +111,8 @@ int init_setting_str(kest_setting *setting)
 	setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 	setting->group = -1;
 	
+	setting->updated = 0;
+	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	setting->reps = NULL;
 	setting->effect_rep.representer = NULL;
@@ -133,6 +137,7 @@ int init_setting(kest_setting *setting, const char *name, uint16_t level)
 	
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
 	
+	setting->updated = 0;
 	setting->group = -1;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
@@ -206,6 +211,8 @@ void clone_parameter(kest_parameter *dest, kest_parameter *src)
 	dest->group = src->group;
 	
 	dest->id.parameter_id = src->id.parameter_id;
+	
+	dest->updated = 1;
 	
 	return;
 }
@@ -290,6 +297,8 @@ int clone_setting(kest_setting *dest, kest_setting *src)
 	
 	dest->units = src->units;
 	dest->page = src->page;
+	
+	dest->updated = 1;
 	
 	return NO_ERROR;
 }

@@ -110,7 +110,7 @@ kest_parameter *kest_extract_parameter_from_dict(kest_eff_parsing_state *ps, kes
 		param->max_velocity = fabsf(kest_expression_evaluate(expr, NULL));
 	}
 	
-	if ((ret_val = kest_dictionary_lookup_str(dict, "widget_type", (void*)&str)) == NO_ERROR)
+	if ((ret_val = kest_dictionary_lookup_str(dict, "widget", (void*)&str)) == NO_ERROR)
 	{
 		if (strcmp(str, "dial") == 0 || strcmp(str, "potentiometer") == 0)
 		{
@@ -136,6 +136,10 @@ kest_parameter *kest_extract_parameter_from_dict(kest_eff_parsing_state *ps, kes
 			kest_parser_warn_at_node(ps, dict_node, "Unknown widget type \"%s\" given to parameter \"%s\". Defaulting to dial.", str, param->name_internal);
 		}
 	}
+	/*else
+	{
+		kest_parser_warn_at_node(ps, dict_node, "Widget type not given. Defaulting to dial.", str, param->name_internal);
+	}*/
 	
 	if ((ret_val = kest_dictionary_lookup_expr(dict, "group", &expr)) == NO_ERROR)
 	{
@@ -451,7 +455,7 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 	
 	kest_expression *expr;
 	
-	KEST_PRINTF("Extracting filter \"%s\"...\n", res->name);
+	KEST_PRINTF("Extracting \"%s\"...\n", res->name);
 	
 	ret_val = kest_dictionary_lookup_expr(dict, "size", &expr);
 	
@@ -812,6 +816,42 @@ int kest_extract_biquad_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dic
 	return NO_ERROR;
 }
 
+int kest_extract_polynomial_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
+{
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	kest_filter *filter = kest_filter_create(NULL);
+	
+	if (!filter)
+		return ERR_ALLOC_FAIL;
+	
+	res->data = (void*)filter;
+	
+	int ret_val = kest_extract_filter_coefs_from_dict(ps, dict_node, dict, res);
+	
+	if (ret_val != NO_ERROR)
+		return ret_val;
+	
+	kest_expression *expr;
+	
+	ret_val = kest_dictionary_lookup_expr(dict, "feed_back", &expr);
+	
+	filter->feed_back = 0;
+	filter->feed_forward = filter->coefs.count;
+	
+	KEST_PRINTF("Extracted %d-degree polynomial \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	kest_expression_ptr_list *coefs = &filter->coefs;
+	
+	for (int i = 0; i < coefs->count; i++)
+	{
+		KEST_PRINTF("\t%s\n", kest_expression_to_string(coefs->entries[i]));
+	}
+	
+	return NO_ERROR;
+}
+
 int kest_extract_filter_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
 {
 	if (!dict || !res)
@@ -922,6 +962,8 @@ kest_dsp_resource *kest_extract_resource_from_dict(kest_eff_parsing_state *ps, k
 			kest_extract_hpf_from_dict(ps, dict_node, dict, res);
 		else if (strcmp(type_str, "bpf") == 0)
 			kest_extract_bpf_from_dict(ps, dict_node, dict, res);
+		else if (strcmp(type_str, "polynomial") == 0)
+			kest_extract_polynomial_from_dict(ps, dict_node, dict, res);
 		else
 			kest_extract_filter_from_dict(ps, dict_node, dict, res);
 	}

@@ -24,7 +24,7 @@ int shift_policy_determine_shift(int shift_policy, int format_a, int format_b, i
 	return 0;
 }
 
-int kest_compute_register_formats(kest_block_pll *blocks, kest_expr_scope *scope)
+int kest_compute_register_formats(kest_block_pll *blocks, kest_scope *scope)
 {
 	KEST_PRINTF("kest_compute_register_formats\n");
 	if (!blocks)

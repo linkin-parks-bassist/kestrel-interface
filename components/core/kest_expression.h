@@ -62,7 +62,7 @@ kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, k
 
 int kest_expression_references_param(kest_expression *expr, kest_parameter *param);
 
-float kest_expression_evaluate(kest_expression *expr, kest_expr_scope *scope);
+float kest_expression_evaluate(kest_expression *expr, kest_scope *scope);
 
 int kest_expression_is_constant(kest_expression *expr);
 
@@ -83,11 +83,14 @@ kest_interval kest_interval_a_(float a);
 kest_interval kest_interval__b(float b);
 kest_interval kest_interval_singleton(float v);
 
-kest_interval kest_expression_compute_range(kest_expression *expr, kest_expr_scope *scope);
+kest_interval kest_expression_compute_range(kest_expression *expr, kest_scope *scope);
 
 char *kest_expression_type_to_str(int type);
 int kest_expression_print(kest_expression *expr);
 const char *kest_expression_to_string(kest_expression *expr);
+
+int kest_expression_get_references(kest_expression *expr, string_list *names);
+int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope);
 
 extern kest_expression kest_expression_standard_gain_min;
 extern kest_expression kest_expression_standard_gain_max;

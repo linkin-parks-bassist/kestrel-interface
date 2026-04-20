@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+//#ifndef PRINTLINES_ALLOWED
+#define PRINTLINES_ALLOWED 1
+//#endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
 #define PARAMETER_ARRAY_CHUNK_SIZE	 	8
@@ -275,38 +275,7 @@ int kest_effect_init_view_page(kest_effect *effect, kest_ui_page *parent)
 	
 	return NO_ERROR;
 }
-/*
-int kest_effect_init_view_page(kest_effect *effect)
-{
-	KEST_PRINTF("kest_effect_init_view_page(effect = %p)\n", effect);
-	
-	if (!effect)
-		return ERR_NULL_PTR;
-	
-	effect->view_page = kest_alloc(sizeof(kest_ui_page));
-	
-	if (!effect->view_page)
-		return ERR_ALLOC_FAIL;
-	
-	int ret_val = NO_ERROR;
-	
-	if ((ret_val = init_ui_page(effect->view_page)) != NO_ERROR) return ret_val;
-	if ((ret_val = init_effect_view(effect->view_page)) != NO_ERROR) return ret_val;
-	if ((ret_val = configure_effect_view(effect->view_page, effect)) != NO_ERROR) return ret_val;
-	
-	kest_preset *preset = effect->preset;
-	
-	KEST_PRINTF("effect->preset = %p\n", effect->preset);
-	
-	if (preset)
-	{
-		KEST_PRINTF("effect->preset->view_page = %p\n", effect->preset->view_page);
-		effect->view_page->parent = preset->view_page;
-	}
-	
-	KEST_PRINTF("kest_effect_init_view_page done\n");
-	return NO_ERROR;
-}*/
+
 #endif
 
 int clone_effect(kest_effect *dest, kest_effect *src)
@@ -391,8 +360,8 @@ void gut_effect(kest_effect *effect)
 	effect->view_page = NULL;
 	#endif
 	
-	effect->id 		= 0;
-	effect->type 	= 0;
+	effect->id 		 = 0;
+	effect->type 	 = 0;
 	effect->position = 0;
 }
 
@@ -449,8 +418,7 @@ kest_setting *effect_get_setting(kest_effect *effect, int n)
 
 int kest_effect_update_fpga(kest_effect *effect)
 {
-	KEST_PRINTF("kest_effect_update_fpga(effect = %p)\n", effect);
-	#ifdef KEST_ENABLE_FPGA
+	KEST_PRINTF("kest_effect_update_fpga(effect = %p, effect->eff = %p)\n", effect, effect ? effect->eff : NULL);
 	
 	if (!effect)
 		return ERR_NULL_PTR;
@@ -463,9 +431,14 @@ int kest_effect_update_fpga(kest_effect *effect)
 	if (!batch.buf)
 		return ERR_ALLOC_FAIL;
 	
+	kest_scope_propagate_updates(effect->scope);
+	
 	kest_fpga_transfer_batch_append_effect_register_updates(&batch, effect->eff, effect->scope, effect->block_position);
 	kest_fpga_transfer_batch_append_effect_resource_updates(&batch, effect->eff, effect->scope, &effect->position_);
 	
+	kest_scope_clear_updates(effect->scope);
+	
+	#ifdef KEST_ENABLE_FPGA
 	int ret_val = kest_fpga_queue_transfer_batch(batch);
 	
 	return ret_val;
@@ -475,12 +448,12 @@ int kest_effect_update_fpga(kest_effect *effect)
 }
 
 
-kest_expr_scope *kest_effect_create_scope(kest_effect *effect)
+kest_scope *kest_effect_create_scope(kest_effect *effect)
 {
 	if (!effect)
 		return NULL;
 	
-	kest_expr_scope *scope = kest_new_expr_scope();
+	kest_scope *scope = kest_scope_new();
 	
 	if (!scope)
 		return NULL;
@@ -492,7 +465,7 @@ kest_expr_scope *kest_effect_create_scope(kest_effect *effect)
 	while (current_param)
 	{
 		if (current_param->data)
-			kest_expr_scope_add_param(scope, current_param->data);
+			kest_scope_add_param(scope, current_param->data);
 		
 		current_param = current_param->next;
 	}
@@ -500,7 +473,7 @@ kest_expr_scope *kest_effect_create_scope(kest_effect *effect)
 	while (current_setting)
 	{
 		if (current_setting->data)
-			kest_expr_scope_add_setting(scope, current_setting->data);
+			kest_scope_add_setting(scope, current_setting->data);
 		
 		current_setting = current_setting->next;
 	}
@@ -509,7 +482,7 @@ kest_expr_scope *kest_effect_create_scope(kest_effect *effect)
 	while (current_def_expr)
 	{
 		if (current_def_expr->data)
-			kest_expr_scope_add_expr(scope, current_def_expr->data->name, current_def_expr->data->expr);
+			kest_scope_add_expr(scope, current_def_expr->data->name, current_def_expr->data->expr);
 		
 		current_def_expr = current_def_expr->next;
 	}

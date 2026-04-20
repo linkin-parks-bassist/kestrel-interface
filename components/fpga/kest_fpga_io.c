@@ -36,7 +36,7 @@ int kest_fpga_spi_init()
         return ERR_SPI_FAIL;
 
     spi_device_interface_config_t devcfg = {
-        .clock_speed_hz = 1 * 1000 * 1000,
+        .clock_speed_hz = 10 * 1000 * 1000,
         .mode = 0,
         .spics_io_num = PIN_NUM_CS,
         .queue_size = 4,
@@ -100,6 +100,49 @@ int kest_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len)
 	
 	return (err == ESP_OK) ? NO_ERROR : ERR_SPI_FAIL;
 	#endif
+}
+
+char *kest_fpga_command_to_string(int command)
+{
+	switch (command)
+	{
+		case COMMAND_BEGIN_PROGRAM: return "COMMAND_BEGIN_PROGRAM";
+		case COMMAND_WRITE_BLOCK_INSTR: return "COMMAND_WRITE_BLOCK_INSTR";
+		case COMMAND_WRITE_BLOCK_REG_0: return "COMMAND_WRITE_BLOCK_REG_0";
+		case COMMAND_WRITE_BLOCK_REG_1: return "COMMAND_WRITE_BLOCK_REG_1";
+		case COMMAND_ALLOC_DELAY: return "COMMAND_ALLOC_DELAY";
+		case COMMAND_END_PROGRAM: return "COMMAND_END_PROGRAM";
+		case COMMAND_SET_INPUT_GAIN: return "COMMAND_SET_INPUT_GAIN";
+		case COMMAND_SET_OUTPUT_GAIN: return "COMMAND_SET_OUTPUT_GAIN";
+		case COMMAND_UPDATE_BLOCK_REG_0: return "COMMAND_UPDATE_BLOCK_REG_0";
+		case COMMAND_UPDATE_BLOCK_REG_1: return "COMMAND_UPDATE_BLOCK_REG_1";
+		case COMMAND_COMMIT_REG_UPDATES: return "COMMAND_COMMIT_REG_UPDATES";
+		case COMMAND_ALLOC_FILTER: return "COMMAND_ALLOC_FILTER";
+		case COMMAND_WRITE_FILTER_COEF: return "COMMAND_WRITE_FILTER_COEF";
+		case COMMAND_UPDATE_FILTER_COEF: return "COMMAND_UPDATE_FILTER_COEF";
+		case COMMAND_COMMIT_FILTER_COEF: return "COMMAND_COMMIT_FILTER_COEF";
+		case COMMAND_READOUT: return "COMMAND_READOUT";
+		case COMMAND_GET_N_BLOCKS: return "COMMAND_GET_N_BLOCKS";
+		case COMMAND_GET_BLOCK_INSTR: return "COMMAND_GET_BLOCK_INSTR";
+		case COMMAND_GET_BLOCK_REG: return "COMMAND_GET_BLOCK_REG";
+		case COMMAND_GET_N_DELAY_BUF: return "COMMAND_GET_N_DELAY_BUF";
+		case COMMAND_GET_DELAY_BUF_SIZE: return "COMMAND_GET_DELAY_BUF_SIZE";
+		case COMMAND_GET_DELAY_BUF_DELAY: return "COMMAND_GET_DELAY_BUF_DELAY";
+		case COMMAND_GET_DELAY_BUF_ADDR: return "COMMAND_GET_DELAY_BUF_ADDR";
+		case COMMAND_GET_DELAY_BUF_POS: return "COMMAND_GET_DELAY_BUF_POS";
+		case COMMAND_GET_DELAY_BUF_GAIN: return "COMMAND_GET_DELAY_BUF_GAIN";
+		case COMMAND_GET_DELAY_BUF_LRWA: return "COMMAND_GET_DELAY_BUF_LRWA";
+		case COMMAND_GET_SDRAM_READ_CNT: return "COMMAND_GET_SDRAM_READ_CNT";
+		case COMMAND_GET_SDRAM_WRITE_CNT: return "COMMAND_GET_SDRAM_WRITE_CNT";
+		case COMMAND_READ_COMMAND_LOG: return "COMMAND_READ_COMMAND_LOG";
+		case COMMAND_GET_SAMPLE_COUNT: return "COMMAND_GET_SAMPLE_COUNT";
+		case COMMAND_CLEAR_TIMEOUT_FLAG: return "COMMAND_CLEAR_TIMEOUT_FLAG";
+		case COMMAND_CLEAR_BAD_FLAG: return "COMMAND_CLEAR_BAD_FLAG";
+		case COMMAND_CLEAR_CMD_ERR_FLAG: return "COMMAND_CLEAR_CMD_ERR_FLAG";
+		case COMMAND_READ: return "COMMAND_READ";
+	}
+	
+	return "UNKNOWN";
 }
 
 int kest_fpga_send_byte(uint8_t byte)
@@ -288,10 +331,103 @@ int kest_fpga_batch_concat(kest_fpga_transfer_batch *seq, kest_fpga_transfer_bat
 	return 0;
 }
 
+int kest_fpga_transfer_batch_send_careful(kest_fpga_transfer_batch batch)
+{
+	KEST_PRINTF_FORCE("Sending program batch...\n");
+	
+	uint8_t flags;
+	kest_string str;
+	kest_string_init_reserved(&str, 512);
+	
+	for (int i = 0; i < batch.len; i++)
+	{
+		kest_fpga_txrx(&batch.buf[i], &flags, 1);
+		if (!(flags & 0b10))
+		{
+			kest_string_appendf(&str, "Sent 0x%02x, received %s (COMMAND %s)\n", batch.buf[i], binary_print_8(flags), kest_fpga_command_to_string(batch.buf[i]));
+		}
+		else
+		{
+			kest_string_appendf(&str, "Sent 0x%02x, received %s\n", batch.buf[i], binary_print_8(flags));
+		}
+		if (i && (i % 128) == 0)
+		{
+			kest_puts(str);
+			kest_string_drain(&str);
+		}
+	}
+	
+	kest_puts(str);
+	
+	kest_string_destroy(&str);
+	
+	KEST_PRINTF_FORCE("Done!\n");
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_program_batch_send(kest_fpga_transfer_batch batch)
+{
+	uint8_t flags;
+	
+	kest_fpga_send_byte(COMMAND_BEGIN_PROGRAM);
+	
+	kest_fpga_txrx(batch.buf, NULL, batch.len);
+	
+	kest_fpga_send_byte(COMMAND_END_PROGRAM);
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_program_batch_send_careful(kest_fpga_transfer_batch batch)
+{
+	KEST_PRINTF_FORCE("Sending program batch...\n");
+	
+	uint8_t flags;
+	kest_string str;
+	kest_string_init_reserved(&str, 512);
+	
+	kest_fpga_send_byte(COMMAND_BEGIN_PROGRAM);
+	
+	for (int i = 0; i < batch.len; i++)
+	{
+		kest_fpga_txrx(&batch.buf[i], &flags, 1);
+		if (!(flags & 0b10))
+		{
+			kest_string_appendf(&str, "Sent 0x%02x, received %s (COMMAND %s)\n", batch.buf[i], binary_print_8(flags), kest_fpga_command_to_string(batch.buf[i]));
+		}
+		else
+		{
+			kest_string_appendf(&str, "Sent 0x%02x, received %s\n", batch.buf[i], binary_print_8(flags));
+		}
+		if (i && (i % 128) == 0)
+		{
+			kest_puts(str);
+			kest_string_drain(&str);
+		}
+	}
+	
+	kest_puts(str);
+	kest_fpga_send_byte(COMMAND_END_PROGRAM);
+	
+	kest_string_destroy(&str);
+	
+	KEST_PRINTF_FORCE("Done!\n");
+	
+	return NO_ERROR;
+}
+
+//#define TF_BATCH_CAREFUL
+
 int kest_fpga_transfer_batch_send(kest_fpga_transfer_batch batch)
 {	
+	#ifdef TF_BATCH_CAREFUL
+	return kest_fpga_transfer_batch_send_careful(batch);
+	#else
 	return kest_fpga_txrx(batch.buf, NULL, batch.len);
+	#endif
 }
+
 
 void kest_fpga_set_input_gain(float gain_db)
 {
@@ -351,38 +487,13 @@ void kest_fpga_commit_reg_updates()
 	kest_fpga_send_byte(COMMAND_COMMIT_REG_UPDATES);
 }
 
-char *kest_fpga_command_to_string(int command)
-{
-	switch (command)
-	{
-		case COMMAND_BEGIN_PROGRAM: 	 return "COMMAND_BEGIN_PROGRAM";
-		case COMMAND_WRITE_BLOCK_INSTR:  return "COMMAND_WRITE_BLOCK_INSTR";
-		case COMMAND_WRITE_BLOCK_REG_0:  return "COMMAND_WRITE_BLOCK_REG_0";
-		case COMMAND_WRITE_BLOCK_REG_1:  return "COMMAND_WRITE_BLOCK_REG_1";
-		case COMMAND_ALLOC_DELAY: 		 return "COMMAND_ALLOC_DELAY";
-		case COMMAND_END_PROGRAM: 		 return "COMMAND_END_PROGRAM";
-		case COMMAND_SET_INPUT_GAIN: 	 return "COMMAND_SET_INPUT_GAIN";
-		case COMMAND_SET_OUTPUT_GAIN: 	 return "COMMAND_SET_OUTPUT_GAIN";
-		case COMMAND_UPDATE_BLOCK_REG_0: return "COMMAND_UPDATE_BLOCK_REG_0";
-		case COMMAND_UPDATE_BLOCK_REG_1: return "COMMAND_UPDATE_BLOCK_REG_1";
-		case COMMAND_COMMIT_REG_UPDATES: return "COMMAND_COMMIT_REG_UPDATES";
-		case COMMAND_ALLOC_FILTER: 		 return "COMMAND_ALLOC_FILTER";
-		case COMMAND_WRITE_FILTER_COEF:  return "COMMAND_WRITE_FILTER_COEF";
-		case COMMAND_UPDATE_FILTER_COEF: return "COMMAND_UPDATE_FILTER_COEF";
-		case COMMAND_COMMIT_FILTER_COEF: return "COMMAND_COMMIT_FILTER_COEF";
-		case COMMAND_READ: 				 return "COMMAND_READ";
-	}
-	
-	return "UNKNOWN";
-}
-
 int kest_fpga_decode_status_flags(kest_fpga_status_flags *flags, uint8_t byte)
 {
 	if (!flags)
 		return ERR_NULL_PTR;
 	
 	flags->initialised 	= !!(byte & (1 << 0));
-	flags->busy 		= !!(byte & (1 << 1));
+	flags->listening	= !!(byte & (1 << 1));
 	flags->timeout 		= !!(byte & (1 << 2));
 	flags->programming 	= !!(byte & (1 << 3));
 	flags->bad 			= !!(byte & (1 << 4));
@@ -412,7 +523,7 @@ int kest_fpga_status_flags_sprint(kest_string *str, kest_fpga_status_flags *flag
 	
 	kest_string_appendf(str, "\nFPGA Status Flags:\n");
 	kest_string_appendf(str, "     Initialised: %d\n", flags->initialised);
-	kest_string_appendf(str, "     Busy:        %d\n", flags->busy);
+	kest_string_appendf(str, "     Listening:   %d\n", flags->listening);
 	kest_string_appendf(str, "     Timeout:     %d\n", flags->timeout);
 	kest_string_appendf(str, "     Programming: %d\n", flags->programming);
 	kest_string_appendf(str, "     Bad:         %d\n", flags->bad);
@@ -433,7 +544,7 @@ int kest_fpga_status_flags_print(kest_fpga_status_flags *flags)
 	
 	kest_string_appendf(&str, "\nFPGA Status Flags:\n");
 	kest_string_appendf(&str, "     Initialised: %d\n", flags->initialised);
-	kest_string_appendf(&str, "     Busy:        %d\n", flags->busy);
+	kest_string_appendf(&str, "     Listening:   %d\n", flags->listening);
 	kest_string_appendf(&str, "     Timeout:     %d\n", flags->timeout);
 	kest_string_appendf(&str, "     Programming: %d\n", flags->programming);
 	kest_string_appendf(&str, "     Bad:         %d\n", flags->bad);
@@ -461,8 +572,10 @@ int64_t kest_fpga_req_data(int req, int n_bytes, kest_fpga_status_flags *flags)
 	do {
 		kest_fpga_get_status_flags(flags);
 		if (flags->cmd_err) return -4;
+		#ifdef ENABLE_FREERTOS
 		if (!flags->data_ready)
 			vTaskDelay(1);
+		#endif
 	} while (!flags->data_ready && tries --> 0);
 	
 	int64_t data = 0;
@@ -511,8 +624,10 @@ int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_st
 	do {
 		kest_fpga_get_status_flags(flags);
 		if (flags->cmd_err) return -4;
+		#ifdef ENABLE_FREERTOS
 		if (!flags->data_ready)
 			vTaskDelay(1);
+		#endif
 	} while (!flags->data_ready && tries --> 0);
 	
 	int64_t data = 0;

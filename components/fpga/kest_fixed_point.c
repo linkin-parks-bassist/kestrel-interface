@@ -49,7 +49,7 @@ int16_t float_to_q15(float x)
     return (int16_t)lrintf(x * 32768.0f);
 }
 
-int kest_expression_compute_format(kest_expression *expr, kest_expr_scope *scope, int fmax, int width)
+int kest_expression_compute_format(kest_expression *expr, kest_scope *scope, int fmax, int width)
 {
 	if (!expr) return 0;
 	
@@ -87,7 +87,7 @@ int kest_expression_compute_format(kest_expression *expr, kest_expr_scope *scope
 }
 
 
-int kest_filter_compute_format(kest_filter *filter, kest_expr_scope *scope)
+int kest_filter_compute_format(kest_filter *filter, kest_scope *scope)
 {
 	KEST_PRINTF("Compute format for filter %p\n", filter);
 	if (!filter)

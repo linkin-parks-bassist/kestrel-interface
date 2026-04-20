@@ -81,7 +81,8 @@ int string_to_resource_type(const char *type_str)
 		 || (strcmp(type_str, "biquad"			) == 0)
 		 || (strcmp(type_str, "lpf"				) == 0)
 		 || (strcmp(type_str, "hpf"				) == 0)
-		 || (strcmp(type_str, "bpf"				) == 0))
+		 || (strcmp(type_str, "bpf"				) == 0)
+		 || (strcmp(type_str, "polynomial"		) == 0))
 	{
 		return KEST_DSP_RESOURCE_FILTER;
 	}
@@ -161,6 +162,7 @@ kest_filter *kest_filter_create(kest_allocator *alloc)
 	filter->feed_forward = 0;
 	filter->feed_back = 0;
 	filter->format = 0;
+	filter->updated = 0;
 	
 	kest_expression_ptr_list_init_with_allocator(&filter->coefs, alloc);
 	

@@ -196,6 +196,7 @@ void kest_param_update_task(void *arg)
 			//	diff, param->value, param->value + diff, update_array[i].target);
 			
 			param->value = param->value + diff;
+			param->updated = 1;
 			
 			if (update_array[i].id.preset_id == CONTEXT_PRESET_ID)
 			{

@@ -12,7 +12,7 @@ int get_section_start_score(char *str, int current_score);
 int kest_settings_section_extract  (kest_eff_parsing_state *ps, kest_setting_pll      **list, struct kest_ast_node *sect);
 int kest_parameters_section_extract(kest_eff_parsing_state *ps, kest_parameter_pll    **list, struct kest_ast_node *sect);
 int kest_resources_section_extract (kest_eff_parsing_state *ps, kest_dsp_resource_pll **list, struct kest_ast_node *sect);
-int kest_defs_section_extract 		(kest_eff_parsing_state *ps, kest_expr_scope *scope, 		 struct kest_ast_node *sect);
+int kest_defs_section_extract 		(kest_eff_parsing_state *ps, kest_scope *scope, 		 struct kest_ast_node *sect);
 
 int kest_dictionary_section_lookup_str  (kest_ast_node *section, const char *name, const char **result);
 int kest_dictionary_section_lookup_float(kest_ast_node *section, const char *name, float *result);

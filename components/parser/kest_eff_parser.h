@@ -44,7 +44,7 @@ typedef struct kest_eff_parsing_state {
 	kest_dsp_resource_pll 		*resources;
 	kest_named_expression_pll 	*def_exprs;
 	
-	kest_expr_scope *scope;
+	kest_scope *scope;
 	
 	kest_ast_node *ast;
 	

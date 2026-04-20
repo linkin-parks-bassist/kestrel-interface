@@ -454,10 +454,10 @@ int kest_expression_detect_constants(kest_expression *expr)
 	return kest_expression_detect_constants_rec(expr, 0);
 }
 
-static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope *scope, int depth)
+static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth)
 {
 	kest_parameter_pll *current;
-	kest_expr_scope_entry *ref;
+	kest_scope_entry *ref;
 	kest_parameter *param;
 	int cmplen;
 	
@@ -532,7 +532,7 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 			goto expr_compute_return;
 		}
 		
-		ref = kest_expr_scope_fetch(scope, expr->val.ref_name);
+		ref = kest_scope_fetch(scope, expr->val.ref_name);
 		
 		if (!ref)
 		{
@@ -576,7 +576,7 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_expr_scope
 				
 			default:
 				KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
-					kest_expression_to_string(expr), ref->name, ref->type);
+					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
 				ret_val = 0.0;
 				break;
 		}
@@ -693,7 +693,7 @@ expr_compute_return:
 	return ret_val;
 }
 
-float kest_expression_evaluate(kest_expression *expr, kest_expr_scope *scope)
+float kest_expression_evaluate(kest_expression *expr, kest_scope *scope)
 {
 	float ret_val = kest_expression_evaluate_rec(expr, scope, 0);
 	//KEST_PRINTF("Evaluating expression; %s = %.04f\n", kest_expression_to_string(expr), ret_val);
@@ -778,10 +778,10 @@ kest_interval kest_interval_singleton(float v)
 	return result;
 }
 
-kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr_scope *scope, int depth)
+kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scope *scope, int depth)
 {
 	kest_parameter_pll *current;
-	kest_expr_scope_entry *ref;
+	kest_scope_entry *ref;
 	int found;
 	
 	#ifdef KEST_BOUNDS_CHECK_VERBOSE
@@ -857,7 +857,7 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr
 			goto expr_int_ret;
 		}
 		
-		ref = kest_expr_scope_fetch(scope, expr->val.ref_name);
+		ref = kest_scope_fetch(scope, expr->val.ref_name);
 		
 		if (!ref)
 		{
@@ -936,7 +936,7 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_expr
 			
 			default:
 				KEST_PRINTF("Error estimating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
-					kest_expression_to_string(expr), ref->name, ref->type);
+					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
 				ret = kest_interval_real_line();
 				break;
 		}
@@ -1361,7 +1361,7 @@ expr_int_ret:
 }
 
 // Just a wrapper function to call the recursive function starting from depth 0
-kest_interval kest_expression_compute_range(kest_expression *expr, kest_expr_scope *scope)
+kest_interval kest_expression_compute_range(kest_expression *expr, kest_scope *scope)
 {
 	return kest_expression_compute_range_rec(expr, scope, 0);
 }
@@ -1662,4 +1662,69 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	array[4] = a2;
 	
 	return NO_ERROR;
+}
+
+int kest_expression_get_references_rec(kest_expression *expr, string_list *names, int depth)
+{
+	if (!expr || !names)
+		return ERR_NULL_PTR;
+	
+	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+		return ERR_RECURSION_DEPTH;
+	
+	int arity = kest_expression_arity(expr);
+	
+	if (arity == 0)
+	{
+		if (expr->type == KEST_EXPR_REF)
+			char_ptr_list_append(names, expr->val.ref_name);
+		
+		return NO_ERROR;
+	}
+	
+	for (int i = 0; i < arity && i < KEST_EXPR_MAX_ARITY; i++)
+		kest_expression_get_references_rec(expr->sub_exprs[i], names, depth + 1);
+	
+	return NO_ERROR;
+}
+
+int kest_expression_get_references(kest_expression *expr, string_list *names)
+{
+	kest_expression_get_references_rec(expr, names, 0);
+}
+
+int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
+{
+	if (!expr || !scope)
+		return 0;
+	
+	size_t n = kest_scope_count(scope);
+	
+	if (!n) return 0;
+	
+	kest_scope_entry *ref_entry = NULL;
+	string_list names;
+	char_ptr_list_init(&names);
+	
+	int updated = 0;
+	
+	int ret_val = kest_expression_get_references(expr, &names);
+			
+	if (ret_val != NO_ERROR)
+	{
+		char_ptr_list_destroy(&names);
+		return 0;
+	}
+	
+	for (int j = 0; !updated && j < names.count; j++)
+	{
+		ref_entry = kest_scope_lookup(scope, names.entries[j]);
+		
+		if (ref_entry)
+			updated = updated | ref_entry->updated;
+	}
+
+kest_expr_updated_in_scope_return:
+	char_ptr_list_destroy(&names);
+	return updated;
 }
