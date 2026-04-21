@@ -93,7 +93,7 @@ $(function(){initNavTree('globals_defs_k.html','',''); });
 <h3 class="doxsection"><a id="index_k" name="index_k"></a>- k -</h3><ul>
 <li>KEST_ACTIVE_BUTTON_ARRAY_FLAG_DELETEABLE&#160;:&#160;<a class="el" href="kest__button_8h.html#a91a49bbd584d69af0680c49ef6266738">kest_button.h</a></li>
 <li>KEST_ACTIVE_BUTTON_ARRAY_FLAG_MOVEABLE&#160;:&#160;<a class="el" href="kest__button_8h.html#adb6c0ccbb5a39a13574edc5f75e19c63">kest_button.h</a></li>
-<li>KEST_ARG_POS_NONE&#160;:&#160;<a class="el" href="kest__asm__parser_8h.html#ade36461fe2ba2e225b4834e294885e26">kest_asm_parser.h</a></li>
+<li>KEST_ARG_POS_NONE&#160;:&#160;<a class="el" href="kest__fpga__instr_8h.html#ade36461fe2ba2e225b4834e294885e26">kest_fpga_instr.h</a>, <a class="el" href="kest__asm__parser_8h.html#ade36461fe2ba2e225b4834e294885e26">kest_asm_parser.h</a></li>
 <li>KEST_ASM_ARG_CHANNEL&#160;:&#160;<a class="el" href="kest__asm__parser_8h.html#ad82c0d61287ecbefbc8d3c34c26dbfd4">kest_asm_parser.h</a></li>
 <li>KEST_ASM_ARG_EXPR&#160;:&#160;<a class="el" href="kest__asm__parser_8h.html#a7ba50c1f23cd3f612e8946d71ec6f4dd">kest_asm_parser.h</a></li>
 <li>KEST_ASM_ARG_INT&#160;:&#160;<a class="el" href="kest__asm__parser_8h.html#a47c1c352fa6634262c7e86fe7da7814a">kest_asm_parser.h</a></li>
@@ -156,6 +156,8 @@ $(function(){initNavTree('globals_defs_k.html','',''); });
 <li>KEST_EXPR_FORM_UNARY_FN&#160;:&#160;<a class="el" href="kest__expression_8h.html#a8682f69a810852693f62ff2f09f83102">kest_expression.h</a></li>
 <li>KEST_EXPR_FORM_UNARY_OP&#160;:&#160;<a class="el" href="kest__expression_8h.html#a07a17591dc1b788ae8f1437bf4865710">kest_expression.h</a></li>
 <li>KEST_EXPR_LN&#160;:&#160;<a class="el" href="kest__expression_8h.html#ab57a9db570fa23cdcb53b32dffa2fa34">kest_expression.h</a></li>
+<li>KEST_EXPR_LOG10&#160;:&#160;<a class="el" href="kest__expression_8h.html#a0e1f0cd4877095151f8af6cb33a48dd2">kest_expression.h</a></li>
+<li>KEST_EXPR_MAX_ARITY&#160;:&#160;<a class="el" href="kest__expression_8h.html#a1419656a1c15faba3f1f6dcdde3cbf7e">kest_expression.h</a></li>
 <li>KEST_EXPR_MUL&#160;:&#160;<a class="el" href="kest__expression_8h.html#a1e4de064d1d7e24a22f41bc2d191715f">kest_expression.h</a></li>
 <li>KEST_EXPR_NEG&#160;:&#160;<a class="el" href="kest__expression_8h.html#aa09b803e2b8fa648b8d0c0609b7d53ca">kest_expression.h</a></li>
 <li>KEST_EXPR_POW&#160;:&#160;<a class="el" href="kest__expression_8h.html#a6ff9c771d3b0e5e7944b7a9964a4e175">kest_expression.h</a></li>
@@ -171,7 +173,6 @@ $(function(){initNavTree('globals_defs_k.html','',''); });
 <li>KEST_EXPR_TYPE_MAX_VAL&#160;:&#160;<a class="el" href="kest__expression_8h.html#ac33fb5c6102efbde78879fcaa2d8ff4d">kest_expression.h</a></li>
 <li>KEST_EXPRESSION_CONST&#160;:&#160;<a class="el" href="kest__expression_8c.html#a861d2e0442687cc665b2d765ae7dc442">kest_expression.c</a></li>
 <li>KEST_FILENAME_LEN&#160;:&#160;<a class="el" href="kest__int_8h.html#a7578050634241907d18dfc11d670d2bd">kest_int.h</a>, <a class="el" href="kest__lib_8h.html#a7578050634241907d18dfc11d670d2bd">kest_lib.h</a>, <a class="el" href="kest__desktop_8h.html#a7578050634241907d18dfc11d670d2bd">kest_desktop.h</a></li>
-<li>KEST_FPGA_BLOCK_ADDR_BYTES&#160;:&#160;<a class="el" href="kest__fpga__io_8h.html#ac727adacee8d41e5a34ad747f78c6087">kest_fpga_io.h</a></li>
 <li>KEST_FPGA_DATA_BYTES&#160;:&#160;<a class="el" href="kest__fpga__io_8h.html#ad1637a0eaa3ebd5d11c124cc08de4615">kest_fpga_io.h</a></li>
 <li>KEST_FPGA_DATA_WIDTH&#160;:&#160;<a class="el" href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">kest_fpga_io.h</a></li>
 <li>KEST_FPGA_FILTER_WIDTH&#160;:&#160;<a class="el" href="kest__fpga__io_8h.html#ac83d7311168e22ec0c2178202cb1f617">kest_fpga_io.h</a></li>
@@ -186,13 +187,17 @@ $(function(){initNavTree('globals_defs_k.html','',''); });
 <li>KEST_INT_LV_LOG_BUF_LEN&#160;:&#160;<a class="el" href="kest__lv__log_8h.html#a071617ec569c0bdcb95d869a24cb1256">kest_lv_log.h</a></li>
 <li>KEST_PARSER_PRINT_BUFLEN&#160;:&#160;<a class="el" href="kest__eff__parser_8c.html#a571bb3a2c89222ce61b220ccb44e5a9d">kest_eff_parser.c</a></li>
 <li>KEST_PARSER_PRINT_LOC_BUFLEN&#160;:&#160;<a class="el" href="kest__eff__parser_8c.html#aac704477970c04282d54e811ef75736c">kest_eff_parser.c</a></li>
+<li>KEST_PRESET_BROKEN_EFFECT&#160;:&#160;<a class="el" href="kest__files_8h.html#a8800cc570d4b2994b75fabdf6be23c5f">kest_files.h</a></li>
+<li>KEST_PRESET_MAGIC_BYTE&#160;:&#160;<a class="el" href="kest__files_8h.html#aeafd761b23389bd0d26b3048327731aa">kest_files.h</a></li>
+<li>KEST_PRESET_MUTEX_TIMEOUT_MS&#160;:&#160;<a class="el" href="kest__preset_8h.html#af5cfc11a0cbf7b37a6727ea94f84da07">kest_preset.h</a></li>
+<li>KEST_PRESET_PIPELINE_LINEAR&#160;:&#160;<a class="el" href="kest__files_8h.html#adf10ea29f7a03cf04aad52956a5f815f">kest_files.h</a></li>
+<li>KEST_PRESETS_DIR&#160;:&#160;<a class="el" href="kest__files_8h.html#ad34ce678b03411a48c57bb30c102abbc">kest_files.h</a></li>
 <li>KEST_PRINTF&#160;:&#160;<a class="el" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">kest_printf.h</a></li>
 <li>KEST_PRINTF_&#160;:&#160;<a class="el" href="kest__printf_8h.html#a2081d2116d3ee0f319f5bf5ade5f8af6">kest_printf.h</a></li>
-<li>KEST_PROFILE_BROKEN_TRANSFORMER&#160;:&#160;<a class="el" href="kest__files_8h.html#a9f10c1178e45ca97235b08448c9285d9">kest_files.h</a></li>
-<li>KEST_PROFILE_MAGIC_BYTE&#160;:&#160;<a class="el" href="kest__files_8h.html#a6dd6b9ebc98499cde38f30d84562dc78">kest_files.h</a></li>
-<li>KEST_PROFILE_MUTEX_TIMEOUT_MS&#160;:&#160;<a class="el" href="kest__profile_8h.html#a1f01e17165766e13fdaa83f5fd5a60d5">kest_profile.h</a></li>
-<li>KEST_PROFILE_PIPELINE_LINEAR&#160;:&#160;<a class="el" href="kest__files_8h.html#ad32801cb7f5c55e6cce802e89a409253">kest_files.h</a></li>
-<li>KEST_PROFILES_DIR&#160;:&#160;<a class="el" href="kest__files_8h.html#a4adcddcc1ff1acf0a92bd3c4f55c991e">kest_files.h</a></li>
+<li>KEST_PRINTF_FORCE&#160;:&#160;<a class="el" href="kest__printf_8h.html#acbf4ecec2b4c52f4ea588f2ec9de3024">kest_printf.h</a></li>
+<li>KEST_PUTS&#160;:&#160;<a class="el" href="kest__printf_8h.html#ac4d0c0361ae25e4370de722590c3a5c5">kest_printf.h</a></li>
+<li>KEST_PUTS_&#160;:&#160;<a class="el" href="kest__printf_8h.html#ac632a2234968143b41078d9105be6230">kest_printf.h</a></li>
+<li>KEST_PUTS_FORCE&#160;:&#160;<a class="el" href="kest__printf_8h.html#aba0fc6af6bd2dd996b8e9305d359df3e">kest_printf.h</a></li>
 <li>KEST_SCOPE_ENTRY_TYPE_EXPR&#160;:&#160;<a class="el" href="kest__expr__scope_8h.html#a6101c36fb282d02b7f9729676d23974f">kest_expr_scope.h</a></li>
 <li>KEST_SCOPE_ENTRY_TYPE_PARAM&#160;:&#160;<a class="el" href="kest__expr__scope_8h.html#a04446a3b2d959c7c94216c461797021c">kest_expr_scope.h</a></li>
 <li>KEST_SCOPE_ENTRY_TYPE_SETTING&#160;:&#160;<a class="el" href="kest__expr__scope_8h.html#a6c47f00dcc876034b21e852df5748ff3">kest_expr_scope.h</a></li>

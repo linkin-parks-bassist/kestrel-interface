@@ -98,302 +98,302 @@ $(function(){initNavTree('kest__sgtl5000_8c_source.html','',''); });
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;esp_check.h&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;esp_log.h&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="kest__error__codes_8h.html">kest_error_codes.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="kest__printf_8h.html">kest_printf.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;driver/spi_master.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;driver/i2c_master.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;driver/pulse_cnt.h&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;driver/gpio.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="kest__int_8h.html">kest_int.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;driver/spi_master.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;driver/i2c_master.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;driver/pulse_cnt.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;driver/gpio.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="kest__sgtl5000_8h.html">kest_sgtl5000.h</a>&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">   18</a></span><span class="preprocessor">#define SGTL5000_SDA 15</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">   19</a></span><span class="preprocessor">#define SGTL5000_SCL 16</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *TAG = <span class="stringliteral">&quot;sgtl5000&quot;</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">   23</a></span><span class="keywordtype">int</span> <a class="code hl_variable" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a> = 0;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">static</span> uint16_t ana_ctrl;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">static</span> uint8_t  i2c_addr = 0x0A;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">static</span> <span class="keywordtype">bool</span> muted;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">static</span> <span class="keywordtype">bool</span> semi_automated;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">static</span> i2c_master_bus_handle_t bus;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">static</span> i2c_master_dev_handle_t dev;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html">   34</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">   35</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">i2c_port</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">   36</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sda_gpio</a>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">   37</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">scl_gpio</a>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">   38</a></span>    uint32_t <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">i2c_hz</a>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *FNAME = <span class="stringliteral">&quot;kest_sgtl5000.c&quot;</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a925207a2b3de0a6f636d1425fcdb1a56">   17</a></span><span class="preprocessor">#define PRINTLINES_ALLOWED 0</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">   19</a></span><span class="preprocessor">#define SGTL5000_SDA 15</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">   20</a></span><span class="preprocessor">#define SGTL5000_SCL 16</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *TAG = <span class="stringliteral">&quot;sgtl5000&quot;</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">   24</a></span><span class="keywordtype">int</span> <a class="code hl_variable" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a> = 0;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">static</span> uint16_t ana_ctrl;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">static</span> uint8_t  i2c_addr = 0x0A;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">static</span> <span class="keywordtype">bool</span> muted;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">static</span> <span class="keywordtype">bool</span> semi_automated;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">static</span> i2c_master_bus_handle_t bus;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">static</span> i2c_master_dev_handle_t dev;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html">   35</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">   36</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">i2c_port</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">   37</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sda_gpio</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">   38</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">scl_gpio</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">   39</a></span>    uint32_t <a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">i2c_hz</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a>;</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">   41</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">sgtl5000_i2c_init</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a> *cfg)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> (!cfg) <span class="keywordflow">return</span> ESP_ERR_INVALID_ARG;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    i2c_master_bus_config_t bus_cfg = {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        .i2c_port = -1,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        .sda_io_num = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sda_gpio</a>,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        .scl_io_num = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">scl_gpio</a>,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        .clk_source = I2C_CLK_SRC_DEFAULT,</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        .glitch_ignore_cnt = 7,</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        .intr_priority = 0,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        .trans_queue_depth = 0,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        .flags.enable_internal_pullup = <span class="keyword">false</span>,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    };</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    esp_err_t err = i2c_new_master_bus(&amp;bus_cfg, &amp;bus);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">if</span> (err != ESP_OK) <span class="keywordflow">return</span> err;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    i2c_device_config_t dev_cfg = {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        .dev_addr_length = I2C_ADDR_BIT_LEN_7,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        .device_address  = i2c_addr,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        .scl_speed_hz    = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">i2c_hz</a>,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    };</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    err = i2c_master_bus_add_device(bus, &amp;dev_cfg, &amp;dev);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> (err == ESP_OK) ? <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a> : <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">   42</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">sgtl5000_i2c_init</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a> *cfg)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (!cfg) <span class="keywordflow">return</span> ESP_ERR_INVALID_ARG;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    i2c_master_bus_config_t bus_cfg = {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        .i2c_port = -1,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        .sda_io_num = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sda_gpio</a>,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        .scl_io_num = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">scl_gpio</a>,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        .clk_source = I2C_CLK_SRC_DEFAULT,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        .glitch_ignore_cnt = 7,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        .intr_priority = 0,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        .trans_queue_depth = 0,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        .flags.enable_internal_pullup = <span class="keyword">false</span>,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    };</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    esp_err_t err = i2c_new_master_bus(&amp;bus_cfg, &amp;bus);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> (err != ESP_OK) <span class="keywordflow">return</span> err;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    i2c_device_config_t dev_cfg = {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        .dev_addr_length = I2C_ADDR_BIT_LEN_7,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        .device_address  = i2c_addr,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        .scl_speed_hz    = cfg-&gt;<a class="code hl_variable" href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">i2c_hz</a>,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    };</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    err = i2c_master_bus_add_device(bus, &amp;dev_cfg, &amp;dev);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> (err == ESP_OK) ? <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a> : <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">   70</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">sgtl5000_set_address_level</a>(<span class="keywordtype">int</span> cs_level_high)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    uint8_t new_addr = cs_level_high ? <a class="code hl_define" href="kest__sgtl5000_8h.html#ae53fd1ecfd6323b471d8a87a9ad2975d">SGTL5000_I2C_ADDR_CS_HIGH</a> : <a class="code hl_define" href="kest__sgtl5000_8h.html#a0c6ab3d4ff1a2c7fd9285db532229053">SGTL5000_I2C_ADDR_CS_LOW</a>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    i2c_addr = new_addr;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (!bus) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> (dev) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        i2c_master_bus_rm_device(dev);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        dev = NULL;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    i2c_device_config_t dev_cfg = {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        .dev_addr_length = I2C_ADDR_BIT_LEN_7,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        .device_address  = i2c_addr,</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        .scl_speed_hz    = 400000,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    };</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    esp_err_t err = i2c_master_bus_add_device(bus, &amp;dev_cfg, &amp;dev);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">return</span> (err == ESP_OK) ? <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a> : <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">   71</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">sgtl5000_set_address_level</a>(<span class="keywordtype">int</span> cs_level_high)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    uint8_t new_addr = cs_level_high ? <a class="code hl_define" href="kest__sgtl5000_8h.html#ae53fd1ecfd6323b471d8a87a9ad2975d">SGTL5000_I2C_ADDR_CS_HIGH</a> : <a class="code hl_define" href="kest__sgtl5000_8h.html#a0c6ab3d4ff1a2c7fd9285db532229053">SGTL5000_I2C_ADDR_CS_LOW</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    i2c_addr = new_addr;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">if</span> (!bus) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> (dev) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        i2c_master_bus_rm_device(dev);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        dev = NULL;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    i2c_device_config_t dev_cfg = {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        .dev_addr_length = I2C_ADDR_BIT_LEN_7,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        .device_address  = i2c_addr,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        .scl_speed_hz    = 400000,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    };</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    esp_err_t err = i2c_master_bus_add_device(bus, &amp;dev_cfg, &amp;dev);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">return</span> (err == ESP_OK) ? <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a> : <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
 </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">   93</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(uint16_t reg, uint16_t *out_val)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>{</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">if</span> (!dev || !out_val) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    uint8_t addr_be[2] = { (uint8_t)(reg &gt;&gt; 8), (uint8_t)(reg &amp; 0xFF) };</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    uint8_t data[2]    = {0, 0};</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    esp_err_t err = i2c_master_transmit_receive(dev, addr_be, <span class="keyword">sizeof</span>(addr_be), data, <span class="keyword">sizeof</span>(data), -1);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> (err != ESP_OK) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    vTaskDelay(pdMS_TO_TICKS(2));</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    *out_val = ((uint16_t)data[0] &lt;&lt; 8) | (uint16_t)data[1];</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">   94</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(uint16_t reg, uint16_t *out_val)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>{</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">if</span> (!dev || !out_val) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    uint8_t addr_be[2] = { (uint8_t)(reg &gt;&gt; 8), (uint8_t)(reg &amp; 0xFF) };</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    uint8_t data[2]    = {0, 0};</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    esp_err_t err = i2c_master_transmit_receive(dev, addr_be, <span class="keyword">sizeof</span>(addr_be), data, <span class="keyword">sizeof</span>(data), -1);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">if</span> (err != ESP_OK) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    vTaskDelay(pdMS_TO_TICKS(2));</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    *out_val = ((uint16_t)data[0] &lt;&lt; 8) | (uint16_t)data[1];</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
 </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">  109</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(uint16_t reg, uint16_t val)</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>{</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">if</span> (!dev) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> (reg == <a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>) ana_ctrl = val;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    uint8_t pkt[4] = {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        (uint8_t)(reg &gt;&gt; 8), (uint8_t)(reg &amp; 0xFF),</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        (uint8_t)(val &gt;&gt; 8), (uint8_t)(val &amp; 0xFF)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    };</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    esp_err_t err = i2c_master_transmit(dev, pkt, <span class="keyword">sizeof</span>(pkt), -1);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">if</span> (err != ESP_OK)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>}</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">  110</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(uint16_t reg, uint16_t val)</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>{</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">if</span> (!dev) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">if</span> (reg == <a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>) ana_ctrl = val;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    uint8_t pkt[4] = {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        (uint8_t)(reg &gt;&gt; 8), (uint8_t)(reg &amp; 0xFF),</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        (uint8_t)(val &gt;&gt; 8), (uint8_t)(val &amp; 0xFF)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    };</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    esp_err_t err = i2c_master_transmit(dev, pkt, <span class="keyword">sizeof</span>(pkt), -1);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (err != ESP_OK)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
 </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="foldopen" id="foldopen00128" data-start="{" data-end="}">
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">  128</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(uint16_t reg, uint16_t val, uint16_t mask, uint16_t *out_newval)</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    uint16_t cur;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordtype">int</span> ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(reg, &amp;cur);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    uint16_t newv = (cur &amp; ~mask) | (val &amp; mask);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(reg, newv);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">if</span> (out_newval) *out_newval = newv;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>}</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">  129</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(uint16_t reg, uint16_t val, uint16_t mask, uint16_t *out_newval)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>{</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    uint16_t cur;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordtype">int</span> ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(reg, &amp;cur);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    uint16_t newv = (cur &amp; ~mask) | (val &amp; mask);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(reg, newv);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> (out_newval) *out_newval = newv;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
 </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">  142</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">sgtl5000_enable</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>{</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">if</span> (!dev) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    muted = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Send power sequence...\n&quot;</span>);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">int</span> ret_val;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#af9a73fdc24f53ed350f4484e21841cdd">CHIP_LINREG_CTRL</a>,   0x006C)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#aff79c42b4ebbc8bb839ec2d7954b7d33">CHIP_REF_CTRL</a>,         0x01F2)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8103a8c957b936cd63cf2108dd3a96c8">CHIP_LINE_OUT_CTRL</a>,   0x0F22)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a6216aef60192bf50e8de57c5ae9dcfc2">CHIP_SHORT_CTRL</a>,         0x4446)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,         0x0137)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,       0x40FF)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ac68f0ef51e520d37caedc1cb52732107">CHIP_DIG_POWER</a>,       0x0073)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// delay(400);</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    vTaskDelay(pdMS_TO_TICKS(400));</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,     0x1D1D)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">  143</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">sgtl5000_enable</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">if</span> (!dev) <span class="keywordflow">return</span> ESP_ERR_INVALID_STATE;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    muted = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Send power sequence...\n&quot;</span>);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordtype">int</span> ret_val;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#af9a73fdc24f53ed350f4484e21841cdd">CHIP_LINREG_CTRL</a>,   0x006C)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#aff79c42b4ebbc8bb839ec2d7954b7d33">CHIP_REF_CTRL</a>,         0x01F2)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8103a8c957b936cd63cf2108dd3a96c8">CHIP_LINE_OUT_CTRL</a>,   0x0F22)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a6216aef60192bf50e8de57c5ae9dcfc2">CHIP_SHORT_CTRL</a>,         0x4446)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,         0x0137)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,       0x40FF)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ac68f0ef51e520d37caedc1cb52732107">CHIP_DIG_POWER</a>,       0x0073)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="comment">// delay(400);</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    vTaskDelay(pdMS_TO_TICKS(400));</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#abc2048069723a90216097a7b2b492294">CHIP_CLK_CTRL</a>,         0x0004)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a31b04ad1a12eea935516a8359082281c">CHIP_I2S_CTRL</a>,         0x0030)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#abc5032055177f1de5ed6db5ef39ce99d">CHIP_SSS_CTRL</a>,         0x0010)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>,   0x0000)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ae2c76ec1e400acfe187fb4404191da23">CHIP_DAC_VOL</a>,       0x3C3C)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ae66a2366745157649661001d8bef407d">CHIP_ANA_HP_CTRL</a>,   0x7F7F)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,         0x0036)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    semi_automated = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,     0x1D1D)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#abc2048069723a90216097a7b2b492294">CHIP_CLK_CTRL</a>,         0x0004)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a31b04ad1a12eea935516a8359082281c">CHIP_I2S_CTRL</a>,         0x0030)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#abc5032055177f1de5ed6db5ef39ce99d">CHIP_SSS_CTRL</a>,         0x0010)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>,   0x0000)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ae2c76ec1e400acfe187fb4404191da23">CHIP_DAC_VOL</a>,       0x3C3C)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ae66a2366745157649661001d8bef407d">CHIP_ANA_HP_CTRL</a>,   0x7F7F)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;    </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,         0x0036)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// Set input as line in</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(0x0020, 0x0055)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(0x0024, ana_ctrl | (1u&lt;&lt;2))) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>, 0, 0x0300, NULL)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">return</span> ret_val;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Done.\n&quot;</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>}</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    semi_automated = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="comment">// Set input as line in</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(0x0020, 0x0055)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(0x0024, ana_ctrl | (1u&lt;&lt;2))) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>) <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>, 0, 0x0300, NULL)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordflow">return</span> ret_val;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Done.\n&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>}</div>
 </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">  189</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">sgtl5000_line_in_level</a>(uint8_t n)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>{</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">if</span> (n &gt; 15) n = 15;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a44552f2674fb64fda5c8dd2325aa9183">CHIP_ANA_ADC_CTRL</a>, (n &lt;&lt; 4) | n);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>}</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">  191</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">sgtl5000_line_in_level</a>(uint8_t n)</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">if</span> (n &gt; 15) n = 15;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#a44552f2674fb64fda5c8dd2325aa9183">CHIP_ANA_ADC_CTRL</a>, (n &lt;&lt; 4) | n);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>}</div>
 </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">  195</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">sgtl5000_line_out_level</a>(uint8_t n)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>{</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keywordflow">if</span> (n &gt; 31) n = 31;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (n &lt; 13) n = 13;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,(n&lt;&lt;8)|n, (31&lt;&lt;8)|31, NULL);</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>}</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="foldopen" id="foldopen00197" data-start="{" data-end="}">
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">  197</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">sgtl5000_line_out_level</a>(uint8_t n)</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>{</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">if</span> (n &gt; 31) n = 31;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (n &lt; 13) n = 13;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a>(<a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,(n&lt;&lt;8)|n, (31&lt;&lt;8)|31, NULL);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>}</div>
 </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="foldopen" id="foldopen00202" data-start="{" data-end="}">
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">  202</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>{</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    gpio_config_t cfg = {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        .pin_bit_mask = 1ULL &lt;&lt; 2,</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        .mode = GPIO_MODE_INPUT,</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        .pull_up_en = GPIO_PULLUP_DISABLE,</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        .pull_down_en = GPIO_PULLDOWN_DISABLE,</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        .intr_type = GPIO_INTR_DISABLE,</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    };</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    gpio_config(&amp;cfg);</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>}</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="foldopen" id="foldopen00204" data-start="{" data-end="}">
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">  204</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>{</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    gpio_config_t cfg = {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        .pin_bit_mask = 1ULL &lt;&lt; 2,</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        .mode = GPIO_MODE_INPUT,</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        .pull_up_en = GPIO_PULLUP_DISABLE,</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        .pull_down_en = GPIO_PULLDOWN_DISABLE,</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        .intr_type = GPIO_INTR_DISABLE,</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    };</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    gpio_config(&amp;cfg);</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>}</div>
 </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keyword">static</span> <span class="keywordtype">void</span> read_and_print(uint16_t reg, <span class="keyword">const</span> <span class="keywordtype">char</span> *name)</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>{</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    uint16_t v = 0xFFFF;</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keywordtype">int</span> ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(reg, &amp;v);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    {</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;RD  %-18s (0x%04X): ERROR\n&quot;</span>, name, reg);</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;RD  %-18s (0x%04X): 0x%04X\n&quot;</span>, name, reg, v);</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="foldopen" id="foldopen00227" data-start="{" data-end="};">
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html">  227</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">  228</a></span>    uint16_t <a class="code hl_variable" href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">reg</a>;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">  229</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">name</a>;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>} <a class="code hl_struct" href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a>;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="keyword">static</span> <span class="keywordtype">void</span> read_and_print(uint16_t reg, <span class="keyword">const</span> <span class="keywordtype">char</span> *name)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>{</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    uint16_t v = 0xFFFF;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordtype">int</span> ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a>(reg, &amp;v);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordflow">if</span> (ret_val != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;RD  %-18s (0x%04X): ERROR\n&quot;</span>, name, reg);</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    }</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;RD  %-18s (0x%04X): 0x%04X\n&quot;</span>, name, reg, v);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>}</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="foldopen" id="foldopen00229" data-start="{" data-end="};">
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html">  229</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">  230</a></span>    uint16_t <a class="code hl_variable" href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">reg</a>;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">  231</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">name</a>;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>} <a class="code hl_struct" href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a>;</div>
 </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="foldopen" id="foldopen00232" data-start="{" data-end="}">
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">  232</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">sgtl5000_readout_registers</a>()</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>{</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_struct" href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a> reads[] = {</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ab0aa3e54cd2934b67b9882957456c391">CHIP_ID</a>,        <span class="stringliteral">&quot;CHIP_ID&quot;</span>        },</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ac68f0ef51e520d37caedc1cb52732107">CHIP_DIG_POWER</a>,   <span class="stringliteral">&quot;CHIP_DIG_POWER&quot;</span>   },</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,   <span class="stringliteral">&quot;CHIP_ANA_POWER&quot;</span>   },</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#abc2048069723a90216097a7b2b492294">CHIP_CLK_CTRL</a>,    <span class="stringliteral">&quot;CHIP_CLK_CTRL&quot;</span>    },</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a31b04ad1a12eea935516a8359082281c">CHIP_I2S_CTRL</a>,    <span class="stringliteral">&quot;CHIP_I2S_CTRL&quot;</span>    },</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>, <span class="stringliteral">&quot;CHIP_ADCDAC_CTRL&quot;</span> },</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae2c76ec1e400acfe187fb4404191da23">CHIP_DAC_VOL</a>,      <span class="stringliteral">&quot;CHIP_DAC_VOL&quot;</span>     },</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a34bbd76594d1d86bcb75b2060501f39e">CHIP_PAD_STRENGTH</a>,    <span class="stringliteral">&quot;CHIP_PAD_STRENGTH&quot;</span>        },</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a44552f2674fb64fda5c8dd2325aa9183">CHIP_ANA_ADC_CTRL</a>,    <span class="stringliteral">&quot;CHIP_ANA_ADC_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae66a2366745157649661001d8bef407d">CHIP_ANA_HP_CTRL</a>,      <span class="stringliteral">&quot;CHIP_ANA_HP_CTRL&quot;</span>     },</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,    <span class="stringliteral">&quot;CHIP_ANA_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#af9a73fdc24f53ed350f4484e21841cdd">CHIP_LINREG_CTRL</a>,      <span class="stringliteral">&quot;CHIP_LINREG_CTRL&quot;</span>     },</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#aff79c42b4ebbc8bb839ec2d7954b7d33">CHIP_REF_CTRL</a>,    <span class="stringliteral">&quot;CHIP_REF_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a21288b322c5c89b246892865ee7c1f98">CHIP_MIC_CTRL</a>,    <span class="stringliteral">&quot;CHIP_MIC_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a8103a8c957b936cd63cf2108dd3a96c8">CHIP_LINE_OUT_CTRL</a>,      <span class="stringliteral">&quot;CHIP_LINE_OUT_CTRL&quot;</span>       },</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,    <span class="stringliteral">&quot;CHIP_LINE_OUT_VOL&quot;</span>        },</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,      <span class="stringliteral">&quot;CHIP_ANA_POWER&quot;</span>       },</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a943120aceeb682fcf2092dc696b6ab85">CHIP_PLL_CTRL</a>,    <span class="stringliteral">&quot;CHIP_PLL_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a6a7f16c5b3523331c1ce8a59088eb1b3">CHIP_CLK_TOP_CTRL</a>,    <span class="stringliteral">&quot;CHIP_CLK_TOP_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a57007cb2c2315a290f368dd6ac808020">CHIP_ANA_STATUS</a>,    <span class="stringliteral">&quot;CHIP_ANA_STATUS&quot;</span>      },</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a97c791e20868e557e9bed6b6a1cbae35">CHIP_ANA_TEST1</a>,      <span class="stringliteral">&quot;CHIP_ANA_TEST1&quot;</span>       },</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae31f87398989871d6d1fd17068c37a2a">CHIP_ANA_TEST2</a>,      <span class="stringliteral">&quot;CHIP_ANA_TEST2&quot;</span>       },</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a6216aef60192bf50e8de57c5ae9dcfc2">CHIP_SHORT_CTRL</a>,    <span class="stringliteral">&quot;CHIP_SHORT_CTRL&quot;</span>      },</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#abc5032055177f1de5ed6db5ef39ce99d">CHIP_SSS_CTRL</a>,    <span class="stringliteral">&quot;CHIP_SSS_CTRL&quot;</span>        },</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    };</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;\n=== SGTL5000 READ DUMP ===\n&quot;</span>);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <span class="keyword">sizeof</span>(reads)/<span class="keyword">sizeof</span>(reads[0]); i++) {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        (void)read_and_print(reads[i].reg, reads[i].name);</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    }</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="foldopen" id="foldopen00234" data-start="{" data-end="}">
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">  234</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">sgtl5000_readout_registers</a>()</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>{</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_struct" href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a> reads[] = {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ab0aa3e54cd2934b67b9882957456c391">CHIP_ID</a>,        <span class="stringliteral">&quot;CHIP_ID&quot;</span>        },</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ac68f0ef51e520d37caedc1cb52732107">CHIP_DIG_POWER</a>,   <span class="stringliteral">&quot;CHIP_DIG_POWER&quot;</span>   },</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,   <span class="stringliteral">&quot;CHIP_ANA_POWER&quot;</span>   },</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#abc2048069723a90216097a7b2b492294">CHIP_CLK_CTRL</a>,    <span class="stringliteral">&quot;CHIP_CLK_CTRL&quot;</span>    },</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a31b04ad1a12eea935516a8359082281c">CHIP_I2S_CTRL</a>,    <span class="stringliteral">&quot;CHIP_I2S_CTRL&quot;</span>    },</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a8783d9bcec76ed0a39fdddd0b81d8c8b">CHIP_ADCDAC_CTRL</a>, <span class="stringliteral">&quot;CHIP_ADCDAC_CTRL&quot;</span> },</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae2c76ec1e400acfe187fb4404191da23">CHIP_DAC_VOL</a>,      <span class="stringliteral">&quot;CHIP_DAC_VOL&quot;</span>     },</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a34bbd76594d1d86bcb75b2060501f39e">CHIP_PAD_STRENGTH</a>,    <span class="stringliteral">&quot;CHIP_PAD_STRENGTH&quot;</span>        },</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a44552f2674fb64fda5c8dd2325aa9183">CHIP_ANA_ADC_CTRL</a>,    <span class="stringliteral">&quot;CHIP_ANA_ADC_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae66a2366745157649661001d8bef407d">CHIP_ANA_HP_CTRL</a>,      <span class="stringliteral">&quot;CHIP_ANA_HP_CTRL&quot;</span>     },</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a>,    <span class="stringliteral">&quot;CHIP_ANA_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#af9a73fdc24f53ed350f4484e21841cdd">CHIP_LINREG_CTRL</a>,      <span class="stringliteral">&quot;CHIP_LINREG_CTRL&quot;</span>     },</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#aff79c42b4ebbc8bb839ec2d7954b7d33">CHIP_REF_CTRL</a>,    <span class="stringliteral">&quot;CHIP_REF_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a21288b322c5c89b246892865ee7c1f98">CHIP_MIC_CTRL</a>,    <span class="stringliteral">&quot;CHIP_MIC_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a8103a8c957b936cd63cf2108dd3a96c8">CHIP_LINE_OUT_CTRL</a>,      <span class="stringliteral">&quot;CHIP_LINE_OUT_CTRL&quot;</span>       },</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ab28b1a154cc02fc9b8b866614d4beb8a">CHIP_LINE_OUT_VOL</a>,    <span class="stringliteral">&quot;CHIP_LINE_OUT_VOL&quot;</span>        },</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a22ecadafd402ed1c0dcdedbfb23c8e80">CHIP_ANA_POWER</a>,      <span class="stringliteral">&quot;CHIP_ANA_POWER&quot;</span>       },</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a943120aceeb682fcf2092dc696b6ab85">CHIP_PLL_CTRL</a>,    <span class="stringliteral">&quot;CHIP_PLL_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a6a7f16c5b3523331c1ce8a59088eb1b3">CHIP_CLK_TOP_CTRL</a>,    <span class="stringliteral">&quot;CHIP_CLK_TOP_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a57007cb2c2315a290f368dd6ac808020">CHIP_ANA_STATUS</a>,    <span class="stringliteral">&quot;CHIP_ANA_STATUS&quot;</span>      },</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a97c791e20868e557e9bed6b6a1cbae35">CHIP_ANA_TEST1</a>,      <span class="stringliteral">&quot;CHIP_ANA_TEST1&quot;</span>       },</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#ae31f87398989871d6d1fd17068c37a2a">CHIP_ANA_TEST2</a>,      <span class="stringliteral">&quot;CHIP_ANA_TEST2&quot;</span>       },</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#a6216aef60192bf50e8de57c5ae9dcfc2">CHIP_SHORT_CTRL</a>,    <span class="stringliteral">&quot;CHIP_SHORT_CTRL&quot;</span>      },</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        { <a class="code hl_define" href="kest__sgtl5000_8h.html#abc5032055177f1de5ed6db5ef39ce99d">CHIP_SSS_CTRL</a>,    <span class="stringliteral">&quot;CHIP_SSS_CTRL&quot;</span>        },</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    };</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;\n=== SGTL5000 READ DUMP ===\n&quot;</span>);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <span class="keyword">sizeof</span>(reads)/<span class="keyword">sizeof</span>(reads[0]); i++) {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        (void)read_and_print(reads[i].reg, reads[i].name);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    }</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>}</div>
 </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="foldopen" id="foldopen00267" data-start="{" data-end="}">
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">  267</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">kest_sgtl5000_init</a>(<span class="keywordtype">void</span> *param)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>{</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <a class="code hl_function" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a>();</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a> sgtl_i2c_cfg = {</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        .i2c_port = -1,</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        .sda_gpio = <a class="code hl_define" href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">SGTL5000_SDA</a>,</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        .scl_gpio = <a class="code hl_define" href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">SGTL5000_SCL</a>,</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        .i2c_hz   = 400000,</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    };</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="foldopen" id="foldopen00269" data-start="{" data-end="}">
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">  269</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">kest_sgtl5000_init</a>(<span class="keywordtype">void</span> *param)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>{</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    <a class="code hl_function" href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a>();</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <a class="code hl_struct" href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a> sgtl_i2c_cfg = {</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        .i2c_port = -1,</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        .sda_gpio = <a class="code hl_define" href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">SGTL5000_SDA</a>,</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        .scl_gpio = <a class="code hl_define" href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">SGTL5000_SCL</a>,</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        .i2c_hz   = 400000,</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    };</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    </div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    vTaskDelay(pdMS_TO_TICKS(3000));</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
@@ -412,43 +412,45 @@ $(function(){initNavTree('kest__sgtl5000_8c_source.html','',''); });
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Initialising SGTL5000...\n&quot;</span>);</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">if</span> ((ret_val = <a class="code hl_function" href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">sgtl5000_enable</a>()) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    {</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Error initialising SGTL5000...\n&quot;</span>);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;Error initialising SGTL5000L %s\n&quot;</span>, <a class="code hl_function" href="kest__error__codes_8c.html#a0f4c77127bc0b77264a21104979c576a">kest_error_code_to_string</a>(ret_val));</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    }</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    </div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <a class="code hl_function" href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">sgtl5000_line_in_level</a>(7);</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <a class="code hl_function" href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">sgtl5000_line_out_level</a>(31);</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <a class="code hl_variable" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a> = 1;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <a class="code hl_function" href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">sgtl5000_readout_registers</a>();</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;SGTL5000 Initialised\n&quot;</span>);</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <a class="code hl_variable" href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a> = 1;</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="comment">//sgtl5000_readout_registers();</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <a class="code hl_function" href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a>(<span class="stringliteral">&quot;SGTL5000 Initialised\n&quot;</span>);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    vTaskDelete(NULL);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>}</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="comment">//sgtl5000_readout_registers();</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    vTaskDelete(NULL);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>}</div>
 </div>
-<div class="ttc" id="akest__error__codes_8h_html"><div class="ttname"><a href="kest__error__codes_8h.html">kest_error_codes.h</a></div></div>
+<div class="ttc" id="akest__error__codes_8c_html_a0f4c77127bc0b77264a21104979c576a"><div class="ttname"><a href="kest__error__codes_8c.html#a0f4c77127bc0b77264a21104979c576a">kest_error_code_to_string</a></div><div class="ttdeci">const char * kest_error_code_to_string(int error_code)</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8c_source.html#l00013">kest_error_codes.c:13</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a06d8bb2050d8b55d2fc4344fc4be0b44"><div class="ttname"><a href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a></div><div class="ttdeci">#define ERR_BAD_ARGS</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00006">kest_error_codes.h:6</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a258bb72419ef143530a2f8f55e7d57af"><div class="ttname"><a href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a></div><div class="ttdeci">#define NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00004">kest_error_codes.h:4</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a49ebf648474abe8287540e6fb20220fb"><div class="ttname"><a href="kest__error__codes_8h.html#a49ebf648474abe8287540e6fb20220fb">ERR_I2C_FAIL</a></div><div class="ttdeci">#define ERR_I2C_FAIL</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00053">kest_error_codes.h:53</a></div></div>
+<div class="ttc" id="akest__int_8h_html"><div class="ttname"><a href="kest__int_8h.html">kest_int.h</a></div></div>
 <div class="ttc" id="akest__printf_8c_html_a302714171dfa950e18d9a951bdab4105"><div class="ttname"><a href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a></div><div class="ttdeci">void kest_printf(const char *fmt,...)</div><div class="ttdef"><b>Definition</b> <a href="kest__printf_8c_source.html#l00021">kest_printf.c:21</a></div></div>
-<div class="ttc" id="akest__printf_8h_html"><div class="ttname"><a href="kest__printf_8h.html">kest_printf.h</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_a1d51fa7ae716c3d8260d8c6768170a32"><div class="ttname"><a href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">sgtl5000_set_address_level</a></div><div class="ttdeci">int sgtl5000_set_address_level(int cs_level_high)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">kest_sgtl5000.c:70</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_a4131ee2d0facbb38d8459e471647f68d"><div class="ttname"><a href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a></div><div class="ttdeci">int sgtl5000_read_reg(uint16_t reg, uint16_t *out_val)</div><div class="ttdef"><b>Definition</b> <a href="#l00093">kest_sgtl5000.c:93</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_a44cc8b14c0cea58216bdb173cd6e947b"><div class="ttname"><a href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a></div><div class="ttdeci">void sgtl_power_gpio_init(void)</div><div class="ttdef"><b>Definition</b> <a href="#l00202">kest_sgtl5000.c:202</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_a48d420ab93dd8b1ad67a8b5ae21a2470"><div class="ttname"><a href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a></div><div class="ttdeci">int sgtl5000_status</div><div class="ttdef"><b>Definition</b> <a href="#l00023">kest_sgtl5000.c:23</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_a5d3609040614e6236b7058d3073311c5"><div class="ttname"><a href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a></div><div class="ttdeci">int sgtl5000_write_reg(uint16_t reg, uint16_t val)</div><div class="ttdef"><b>Definition</b> <a href="#l00109">kest_sgtl5000.c:109</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_aa771518d0b95bc0d126b2cd83d474e2e"><div class="ttname"><a href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">sgtl5000_line_in_level</a></div><div class="ttdeci">int sgtl5000_line_in_level(uint8_t n)</div><div class="ttdef"><b>Definition</b> <a href="#l00189">kest_sgtl5000.c:189</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_ab1fee6b32d3be05247ada395bd60915b"><div class="ttname"><a href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">kest_sgtl5000_init</a></div><div class="ttdeci">void kest_sgtl5000_init(void *param)</div><div class="ttdef"><b>Definition</b> <a href="#l00267">kest_sgtl5000.c:267</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_ac7edd80eb3f420ce979ca8b26f4690e6"><div class="ttname"><a href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">sgtl5000_line_out_level</a></div><div class="ttdeci">int sgtl5000_line_out_level(uint8_t n)</div><div class="ttdef"><b>Definition</b> <a href="#l00195">kest_sgtl5000.c:195</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_ad26bd279a501b987f4a6cf8ec3e32138"><div class="ttname"><a href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">SGTL5000_SCL</a></div><div class="ttdeci">#define SGTL5000_SCL</div><div class="ttdef"><b>Definition</b> <a href="#l00019">kest_sgtl5000.c:19</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_ae33adaa2f8eb7f59d99c8b3f1b809827"><div class="ttname"><a href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">sgtl5000_readout_registers</a></div><div class="ttdeci">void sgtl5000_readout_registers()</div><div class="ttdef"><b>Definition</b> <a href="#l00232">kest_sgtl5000.c:232</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_aea0b88353e34544fac687da2c0803e75"><div class="ttname"><a href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">sgtl5000_enable</a></div><div class="ttdeci">int sgtl5000_enable(void)</div><div class="ttdef"><b>Definition</b> <a href="#l00142">kest_sgtl5000.c:142</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_af8513a213b7a1a6f63230567bee5a9c2"><div class="ttname"><a href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">sgtl5000_i2c_init</a></div><div class="ttdeci">int sgtl5000_i2c_init(const sgtl5000_i2c_cfg_t *cfg)</div><div class="ttdef"><b>Definition</b> <a href="#l00041">kest_sgtl5000.c:41</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_afc53ca119a3ae8195e63ef7307a2254b"><div class="ttname"><a href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">SGTL5000_SDA</a></div><div class="ttdeci">#define SGTL5000_SDA</div><div class="ttdef"><b>Definition</b> <a href="#l00018">kest_sgtl5000.c:18</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8c_html_afea270852e954eff7f457aa81e56c8ea"><div class="ttname"><a href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a></div><div class="ttdeci">int sgtl5000_modify_reg(uint16_t reg, uint16_t val, uint16_t mask, uint16_t *out_newval)</div><div class="ttdef"><b>Definition</b> <a href="#l00128">kest_sgtl5000.c:128</a></div></div>
-<div class="ttc" id="akest__sgtl5000_8h_html"><div class="ttname"><a href="kest__sgtl5000_8h.html">kest_sgtl5000.h</a></div></div>
+<div class="ttc" id="akest__printf_8h_html_aae8a3ac4bdf8dfa4a639c21aadbbb977"><div class="ttname"><a href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a></div><div class="ttdeci">#define KEST_PRINTF(...)</div><div class="ttdef"><b>Definition</b> <a href="kest__printf_8h_source.html#l00012">kest_printf.h:12</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_a1d51fa7ae716c3d8260d8c6768170a32"><div class="ttname"><a href="kest__sgtl5000_8c.html#a1d51fa7ae716c3d8260d8c6768170a32">sgtl5000_set_address_level</a></div><div class="ttdeci">int sgtl5000_set_address_level(int cs_level_high)</div><div class="ttdef"><b>Definition</b> <a href="#l00071">kest_sgtl5000.c:71</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_a4131ee2d0facbb38d8459e471647f68d"><div class="ttname"><a href="kest__sgtl5000_8c.html#a4131ee2d0facbb38d8459e471647f68d">sgtl5000_read_reg</a></div><div class="ttdeci">int sgtl5000_read_reg(uint16_t reg, uint16_t *out_val)</div><div class="ttdef"><b>Definition</b> <a href="#l00094">kest_sgtl5000.c:94</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_a44cc8b14c0cea58216bdb173cd6e947b"><div class="ttname"><a href="kest__sgtl5000_8c.html#a44cc8b14c0cea58216bdb173cd6e947b">sgtl_power_gpio_init</a></div><div class="ttdeci">void sgtl_power_gpio_init(void)</div><div class="ttdef"><b>Definition</b> <a href="#l00204">kest_sgtl5000.c:204</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_a48d420ab93dd8b1ad67a8b5ae21a2470"><div class="ttname"><a href="kest__sgtl5000_8c.html#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a></div><div class="ttdeci">int sgtl5000_status</div><div class="ttdef"><b>Definition</b> <a href="#l00024">kest_sgtl5000.c:24</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_a5d3609040614e6236b7058d3073311c5"><div class="ttname"><a href="kest__sgtl5000_8c.html#a5d3609040614e6236b7058d3073311c5">sgtl5000_write_reg</a></div><div class="ttdeci">int sgtl5000_write_reg(uint16_t reg, uint16_t val)</div><div class="ttdef"><b>Definition</b> <a href="#l00110">kest_sgtl5000.c:110</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_aa771518d0b95bc0d126b2cd83d474e2e"><div class="ttname"><a href="kest__sgtl5000_8c.html#aa771518d0b95bc0d126b2cd83d474e2e">sgtl5000_line_in_level</a></div><div class="ttdeci">int sgtl5000_line_in_level(uint8_t n)</div><div class="ttdef"><b>Definition</b> <a href="#l00191">kest_sgtl5000.c:191</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_ab1fee6b32d3be05247ada395bd60915b"><div class="ttname"><a href="kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b">kest_sgtl5000_init</a></div><div class="ttdeci">void kest_sgtl5000_init(void *param)</div><div class="ttdef"><b>Definition</b> <a href="#l00269">kest_sgtl5000.c:269</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_ac7edd80eb3f420ce979ca8b26f4690e6"><div class="ttname"><a href="kest__sgtl5000_8c.html#ac7edd80eb3f420ce979ca8b26f4690e6">sgtl5000_line_out_level</a></div><div class="ttdeci">int sgtl5000_line_out_level(uint8_t n)</div><div class="ttdef"><b>Definition</b> <a href="#l00197">kest_sgtl5000.c:197</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_ad26bd279a501b987f4a6cf8ec3e32138"><div class="ttname"><a href="kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138">SGTL5000_SCL</a></div><div class="ttdeci">#define SGTL5000_SCL</div><div class="ttdef"><b>Definition</b> <a href="#l00020">kest_sgtl5000.c:20</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_ae33adaa2f8eb7f59d99c8b3f1b809827"><div class="ttname"><a href="kest__sgtl5000_8c.html#ae33adaa2f8eb7f59d99c8b3f1b809827">sgtl5000_readout_registers</a></div><div class="ttdeci">void sgtl5000_readout_registers()</div><div class="ttdef"><b>Definition</b> <a href="#l00234">kest_sgtl5000.c:234</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_aea0b88353e34544fac687da2c0803e75"><div class="ttname"><a href="kest__sgtl5000_8c.html#aea0b88353e34544fac687da2c0803e75">sgtl5000_enable</a></div><div class="ttdeci">int sgtl5000_enable(void)</div><div class="ttdef"><b>Definition</b> <a href="#l00143">kest_sgtl5000.c:143</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_af8513a213b7a1a6f63230567bee5a9c2"><div class="ttname"><a href="kest__sgtl5000_8c.html#af8513a213b7a1a6f63230567bee5a9c2">sgtl5000_i2c_init</a></div><div class="ttdeci">int sgtl5000_i2c_init(const sgtl5000_i2c_cfg_t *cfg)</div><div class="ttdef"><b>Definition</b> <a href="#l00042">kest_sgtl5000.c:42</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_afc53ca119a3ae8195e63ef7307a2254b"><div class="ttname"><a href="kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b">SGTL5000_SDA</a></div><div class="ttdeci">#define SGTL5000_SDA</div><div class="ttdef"><b>Definition</b> <a href="#l00019">kest_sgtl5000.c:19</a></div></div>
+<div class="ttc" id="akest__sgtl5000_8c_html_afea270852e954eff7f457aa81e56c8ea"><div class="ttname"><a href="kest__sgtl5000_8c.html#afea270852e954eff7f457aa81e56c8ea">sgtl5000_modify_reg</a></div><div class="ttdeci">int sgtl5000_modify_reg(uint16_t reg, uint16_t val, uint16_t mask, uint16_t *out_newval)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">kest_sgtl5000.c:129</a></div></div>
 <div class="ttc" id="akest__sgtl5000_8h_html_a0490e3f09d8fc61ea7e7717ac7229e76"><div class="ttname"><a href="kest__sgtl5000_8h.html#a0490e3f09d8fc61ea7e7717ac7229e76">CHIP_ANA_CTRL</a></div><div class="ttdeci">#define CHIP_ANA_CTRL</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00014">kest_sgtl5000.h:14</a></div></div>
 <div class="ttc" id="akest__sgtl5000_8h_html_a0c6ab3d4ff1a2c7fd9285db532229053"><div class="ttname"><a href="kest__sgtl5000_8h.html#a0c6ab3d4ff1a2c7fd9285db532229053">SGTL5000_I2C_ADDR_CS_LOW</a></div><div class="ttdeci">#define SGTL5000_I2C_ADDR_CS_LOW</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00057">kest_sgtl5000.h:57</a></div></div>
 <div class="ttc" id="akest__sgtl5000_8h_html_a21288b322c5c89b246892865ee7c1f98"><div class="ttname"><a href="kest__sgtl5000_8h.html#a21288b322c5c89b246892865ee7c1f98">CHIP_MIC_CTRL</a></div><div class="ttdeci">#define CHIP_MIC_CTRL</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00017">kest_sgtl5000.h:17</a></div></div>
@@ -474,14 +476,14 @@ $(function(){initNavTree('kest__sgtl5000_8c_source.html','',''); });
 <div class="ttc" id="akest__sgtl5000_8h_html_ae66a2366745157649661001d8bef407d"><div class="ttname"><a href="kest__sgtl5000_8h.html#ae66a2366745157649661001d8bef407d">CHIP_ANA_HP_CTRL</a></div><div class="ttdeci">#define CHIP_ANA_HP_CTRL</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00013">kest_sgtl5000.h:13</a></div></div>
 <div class="ttc" id="akest__sgtl5000_8h_html_af9a73fdc24f53ed350f4484e21841cdd"><div class="ttname"><a href="kest__sgtl5000_8h.html#af9a73fdc24f53ed350f4484e21841cdd">CHIP_LINREG_CTRL</a></div><div class="ttdeci">#define CHIP_LINREG_CTRL</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00015">kest_sgtl5000.h:15</a></div></div>
 <div class="ttc" id="akest__sgtl5000_8h_html_aff79c42b4ebbc8bb839ec2d7954b7d33"><div class="ttname"><a href="kest__sgtl5000_8h.html#aff79c42b4ebbc8bb839ec2d7954b7d33">CHIP_REF_CTRL</a></div><div class="ttdeci">#define CHIP_REF_CTRL</div><div class="ttdef"><b>Definition</b> <a href="kest__sgtl5000_8h_source.html#l00016">kest_sgtl5000.h:16</a></div></div>
-<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00034">kest_sgtl5000.c:34</a></div></div>
-<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a01087ca3acdaa89cb714b5db2dd701f1"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">sgtl5000_i2c_cfg_t::scl_gpio</a></div><div class="ttdeci">int scl_gpio</div><div class="ttdef"><b>Definition</b> <a href="#l00037">kest_sgtl5000.c:37</a></div></div>
-<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a1ea48786382bb445c2822fea495cd127"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sgtl5000_i2c_cfg_t::sda_gpio</a></div><div class="ttdeci">int sda_gpio</div><div class="ttdef"><b>Definition</b> <a href="#l00036">kest_sgtl5000.c:36</a></div></div>
-<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a40f703067f2cf19f0466de1d2ab5fe5a"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">sgtl5000_i2c_cfg_t::i2c_hz</a></div><div class="ttdeci">uint32_t i2c_hz</div><div class="ttdef"><b>Definition</b> <a href="#l00038">kest_sgtl5000.c:38</a></div></div>
-<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_aacdff39a3fca07cd97df47613c5d300d"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">sgtl5000_i2c_cfg_t::i2c_port</a></div><div class="ttdeci">int i2c_port</div><div class="ttdef"><b>Definition</b> <a href="#l00035">kest_sgtl5000.c:35</a></div></div>
-<div class="ttc" id="astructsgtl__reg__desc__t_html"><div class="ttname"><a href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00227">kest_sgtl5000.c:227</a></div></div>
-<div class="ttc" id="astructsgtl__reg__desc__t_html_a0f6188169ce1a1cfd85eb6ff82381b07"><div class="ttname"><a href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">sgtl_reg_desc_t::reg</a></div><div class="ttdeci">uint16_t reg</div><div class="ttdef"><b>Definition</b> <a href="#l00228">kest_sgtl5000.c:228</a></div></div>
-<div class="ttc" id="astructsgtl__reg__desc__t_html_a6b04ea564d3649be66f892eec93cdeab"><div class="ttname"><a href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">sgtl_reg_desc_t::name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition</b> <a href="#l00229">kest_sgtl5000.c:229</a></div></div>
+<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html">sgtl5000_i2c_cfg_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00035">kest_sgtl5000.c:35</a></div></div>
+<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a01087ca3acdaa89cb714b5db2dd701f1"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a01087ca3acdaa89cb714b5db2dd701f1">sgtl5000_i2c_cfg_t::scl_gpio</a></div><div class="ttdeci">int scl_gpio</div><div class="ttdef"><b>Definition</b> <a href="#l00038">kest_sgtl5000.c:38</a></div></div>
+<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a1ea48786382bb445c2822fea495cd127"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a1ea48786382bb445c2822fea495cd127">sgtl5000_i2c_cfg_t::sda_gpio</a></div><div class="ttdeci">int sda_gpio</div><div class="ttdef"><b>Definition</b> <a href="#l00037">kest_sgtl5000.c:37</a></div></div>
+<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_a40f703067f2cf19f0466de1d2ab5fe5a"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#a40f703067f2cf19f0466de1d2ab5fe5a">sgtl5000_i2c_cfg_t::i2c_hz</a></div><div class="ttdeci">uint32_t i2c_hz</div><div class="ttdef"><b>Definition</b> <a href="#l00039">kest_sgtl5000.c:39</a></div></div>
+<div class="ttc" id="astructsgtl5000__i2c__cfg__t_html_aacdff39a3fca07cd97df47613c5d300d"><div class="ttname"><a href="structsgtl5000__i2c__cfg__t.html#aacdff39a3fca07cd97df47613c5d300d">sgtl5000_i2c_cfg_t::i2c_port</a></div><div class="ttdeci">int i2c_port</div><div class="ttdef"><b>Definition</b> <a href="#l00036">kest_sgtl5000.c:36</a></div></div>
+<div class="ttc" id="astructsgtl__reg__desc__t_html"><div class="ttname"><a href="structsgtl__reg__desc__t.html">sgtl_reg_desc_t</a></div><div class="ttdef"><b>Definition</b> <a href="#l00229">kest_sgtl5000.c:229</a></div></div>
+<div class="ttc" id="astructsgtl__reg__desc__t_html_a0f6188169ce1a1cfd85eb6ff82381b07"><div class="ttname"><a href="structsgtl__reg__desc__t.html#a0f6188169ce1a1cfd85eb6ff82381b07">sgtl_reg_desc_t::reg</a></div><div class="ttdeci">uint16_t reg</div><div class="ttdef"><b>Definition</b> <a href="#l00230">kest_sgtl5000.c:230</a></div></div>
+<div class="ttc" id="astructsgtl__reg__desc__t_html_a6b04ea564d3649be66f892eec93cdeab"><div class="ttname"><a href="structsgtl__reg__desc__t.html#a6b04ea564d3649be66f892eec93cdeab">sgtl_reg_desc_t::name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition</b> <a href="#l00231">kest_sgtl5000.c:231</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_param_update.c";
 
@@ -17,7 +17,7 @@ static int update_queue_tail = 0;
 static kest_parameter_update update_array[MAX_CONCURRENT_PARAM_UPDATES];
 static int n_updates = 0;
 
-#define UPDATE_RATE_HZ 500
+#define UPDATE_RATE_HZ 100
 #define UPDATE_PERIOD_MS (1000.0f / (float)UPDATE_RATE_HZ)
 
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
@@ -238,6 +238,8 @@ void kest_param_update_task(void *arg)
 					kest_effect_update_fpga(update_array[i].t);
 				}
 				xSemaphoreGive(update_array[i].t->mutex);
+				
+				kest_representation_queue_update(&update_array[i].t->page_rep);
 			}
 		}
 		
@@ -250,6 +252,9 @@ void kest_param_update_task(void *arg)
 				i--;
 				continue;
 			}
+			
+			KEST_PRINTF("\n");
+			queue_representation_list_update(update_array[i].p->reps);
 			
 			if (update_array[i].p->value == update_array[i].target)
 			{
@@ -274,8 +279,6 @@ void kest_param_update_task(void *arg)
 					
 					cr = cr->next;
 				}
-				
-				queue_representation_list_update(update_array[i].p->reps);
 				
 				remove_param_update(i);
 				i--;

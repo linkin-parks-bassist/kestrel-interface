@@ -16,6 +16,5 @@ var kest__desktop_8h =
     [ "USE_FPGA", "kest__desktop_8h.html#af641ed08c6fcb81119a059d515a33ac1", null ],
     [ "USE_SDCARD", "kest__desktop_8h.html#ad1b880b20b32f399da65d86c5dd50cee", null ],
     [ "USE_SGTL5000", "kest__desktop_8h.html#a0252cce42746c0b1ca0c5dfbe262c4f5", null ],
-    [ "xTaskCreatePinnedToCore", "kest__desktop_8h.html#a705bd5c3a74739614fbedb235d5d54e5", null ],
-    [ "DECLARE_LINKED_PTR_LIST", "kest__desktop_8h.html#aa85b7c15d8e64d842af71fd77ce8dae2", null ]
+    [ "xTaskCreatePinnedToCore", "kest__desktop_8h.html#a705bd5c3a74739614fbedb235d5d54e5", null ]
 ];

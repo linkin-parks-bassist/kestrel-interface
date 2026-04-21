@@ -1,8 +1,8 @@
 var kest__parameter__widget_8c =
 [
     [ "PRINTLINES_ALLOWED", "kest__parameter__widget_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
-    [ "configure_parameter_widget", "kest__parameter__widget_8c.html#a3af686d17ed62653e1dd680cd85a2d6f", null ],
-    [ "configure_setting_widget", "kest__parameter__widget_8c.html#a176b521d377c720364a74ae1b1a7ea53", null ],
+    [ "configure_parameter_widget", "kest__parameter__widget_8c.html#a18645c953c82858daf73b274b6fd99f2", null ],
+    [ "configure_setting_widget", "kest__parameter__widget_8c.html#aeb9dc42f4fc18d27d4d3bd8c3495f004", null ],
     [ "edit_sw_field_cb", "kest__parameter__widget_8c.html#a5a6ebded10138ba55624e195ae4f4309", null ],
     [ "format_parameter_widget_value_label", "kest__parameter__widget_8c.html#a9a7e5431ab9599259aa5e2cfa47e6308", null ],
     [ "format_parameter_widget_value_label_v", "kest__parameter__widget_8c.html#a5ed85df98ceada227f8fcd5499d75be8", null ],
@@ -30,6 +30,8 @@ var kest__parameter__widget_8c =
     [ "setting_widget_rep_update", "kest__parameter__widget_8c.html#a13ad52ebda248fd084b9f5bd4c571d42", null ],
     [ "setting_widget_update_value", "kest__parameter__widget_8c.html#a97d6d97190503c60d5a816f44054c173", null ],
     [ "sw_field_cancel_cb", "kest__parameter__widget_8c.html#a04db5fc0ed01be6d1f7b2233ea9094bb", null ],
+    [ "sw_field_display_bare_value", "kest__parameter__widget_8c.html#ac083968c71f022b8dc31af44da3db67d", null ],
+    [ "sw_field_display_value_with_units", "kest__parameter__widget_8c.html#a6d02165df4e3aabdb25a2ecd30eb6003", null ],
     [ "sw_field_reject", "kest__parameter__widget_8c.html#a24b55362ed912007f19d66a3e9784e3a", null ],
     [ "sw_field_save_cb", "kest__parameter__widget_8c.html#a22b7fa4ae5f9628f2da2155f58c2635c", null ]
 ];

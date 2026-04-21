@@ -7,7 +7,6 @@ var kest__tokenizer_8c =
     [ "char_is_letter", "kest__tokenizer_8c.html#ae3e094675b7f6c398787acd25603e724", null ],
     [ "char_is_number", "kest__tokenizer_8c.html#a69053f707d3b257c2a4fbbab04855ce4", null ],
     [ "digit_to_float", "kest__tokenizer_8c.html#a626ca31bbb3f56b9863d6fa45f44d1ac", null ],
-    [ "IMPLEMENT_LINKED_PTR_LIST", "kest__tokenizer_8c.html#a49d08dd10acd0d69132f06d1f6e5665e", null ],
     [ "kest_token_ll_advance", "kest__tokenizer_8c.html#a80f42a6d7dc2f3a8c6d90aa277211d1d", null ],
     [ "kest_token_ll_safe_aappend", "kest__tokenizer_8c.html#a142be5695a3b349820b5aaf3718583dc", null ],
     [ "kest_token_ll_safe_append", "kest__tokenizer_8c.html#a2a2e06cbe7dc9c971834ed0335bd1edf", null ],

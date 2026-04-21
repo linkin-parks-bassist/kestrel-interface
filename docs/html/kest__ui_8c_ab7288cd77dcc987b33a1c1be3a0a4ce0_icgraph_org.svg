@@ -56,39 +56,39 @@
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="311.75,-85.5 169.75,-85.5 169.75,-52 311.75,-52 311.75,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="177.75" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="240.75" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button_and_page_button</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node8 -->
-<g id="edge4_Node000002_Node000008" class="edge">
-<title>Node2&#45;&gt;Node8</title>
-<g id="a_edge4_Node000002_Node000008"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node17 -->
+<g id="edge4_Node000002_Node000017" class="edge">
+<title>Node2&#45;&gt;Node17</title>
+<g id="a_edge4_Node000002_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M336.35,-68.75C328.27,-68.75 320.09,-68.75 312.1,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="336.15,-72.25 346.15,-68.75 336.15,-65.25 336.15,-72.25"/>
 </a>
 </g>
 </g>
-<!-- Node10 -->
-<g id="Node000010" class="node">
-<title>Node10</title>
-<g id="a_Node000010"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
+<!-- Node19 -->
+<g id="Node000019" class="node">
+<title>Node19</title>
+<g id="a_Node000019"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="307.25,-33.5 174.25,-33.5 174.25,0 307.25,0 307.25,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="182.25" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_right</text>
 <text xml:space="preserve" text-anchor="middle" x="240.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node10 -->
-<g id="edge6_Node000002_Node000010" class="edge">
-<title>Node2&#45;&gt;Node10</title>
-<g id="a_edge6_Node000002_Node000010"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node19 -->
+<g id="edge6_Node000002_Node000019" class="edge">
+<title>Node2&#45;&gt;Node19</title>
+<g id="a_edge6_Node000002_Node000019"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M346.17,-48.34C330.48,-43.6 313.93,-38.59 298.74,-33.99"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="344.84,-51.59 355.42,-51.14 346.86,-44.89 344.84,-51.59"/>
 </a>
@@ -112,20 +112,20 @@
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
+<!-- Node18 -->
+<g id="Node000018" class="node">
+<title>Node18</title>
+<g id="a_Node000018"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="133.75,-85.5 0,-85.5 0,-52 133.75,-52 133.75,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="66.88" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_and_settings_buttons</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node9 -->
-<g id="edge5_Node000008_Node000009" class="edge">
-<title>Node8&#45;&gt;Node9</title>
-<g id="a_edge5_Node000008_Node000009"><a xlink:title=" ">
+<!-- Node17&#45;&gt;Node18 -->
+<g id="edge5_Node000017_Node000018" class="edge">
+<title>Node17&#45;&gt;Node18</title>
+<g id="a_edge5_Node000017_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M158.03,-68.75C149.98,-68.75 141.88,-68.75 134.02,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="157.83,-72.25 167.83,-68.75 157.83,-65.25 157.83,-72.25"/>
 </a>

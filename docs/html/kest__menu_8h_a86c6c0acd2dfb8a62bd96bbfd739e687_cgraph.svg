@@ -85,7 +85,7 @@ var sectionId = 'dynsection-1';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="kest__parameter__widget_8c.html#a3af686d17ed62653e1dd680cd85a2d6f" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="kest__parameter__widget_8c.html#a18645c953c82858daf73b274b6fd99f2" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="294.5,-602.5 176.5,-602.5 176.5,-569 294.5,-569 294.5,-602.5"/>
 <text xml:space="preserve" text-anchor="start" x="184.5" y="-589" font-family="Helvetica,sans-Serif" font-size="10.00">configure_parameter</text>
 <text xml:space="preserve" text-anchor="middle" x="235.5" y="-576.25" font-family="Helvetica,sans-Serif" font-size="10.00">_widget</text>
@@ -285,7 +285,7 @@ var sectionId = 'dynsection-1';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="kest__hfunc_8c.html#a840904866becc1161859f30852e94595" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="kest__helper__fn_8c.html#a840904866becc1161859f30852e94595" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="457.5,-596.12 380.75,-596.12 380.75,-575.38 457.5,-575.38 457.5,-596.12"/>
 <text xml:space="preserve" text-anchor="middle" x="419.12" y="-582.62" font-family="Helvetica,sans-Serif" font-size="10.00">format_float</text>
 </a>

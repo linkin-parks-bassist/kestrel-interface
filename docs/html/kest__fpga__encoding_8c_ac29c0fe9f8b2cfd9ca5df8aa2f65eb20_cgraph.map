@@ -1,0 +1,19 @@
+<map id="kest_fpga_batch_append_resources" name="kest_fpga_batch_append_resources">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,116,188,161"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#aa82f7b9cb7a332e38a8a810376eea489" title=" " alt="" coords="236,116,418,161"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,136,220,136,220,141,188,141"/>
+<area shape="rect" id="Node000003" href="$kest__fixed__point_8c.html#aba6f5ab612c05ab177a5a18954c9722c" title=" " alt="" coords="494,5,643,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,113,411,86,465,60,480,53,482,58,467,65,414,91,367,118"/>
+<area shape="rect" id="Node000004" href="$kest__expression_8c.html#a8df028c238f29a5c5e59bcff98e28157" title=" " alt="" coords="474,74,664,102"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="418,117,484,103,485,108,419,122"/>
+<area shape="rect" id="Node000005" href="$kest__fpga__io_8c.html#a6900c9b759f1dccf1b3535cc76ad83e3" title=" " alt="" coords="719,175,902,203"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="419,140,539,148,672,161,724,169,723,174,671,166,539,153,418,145"/>
+<area shape="rect" id="Node000009" href="$kest__fpga__io_8c.html#a1d6d30e20ceac79973b36fd12e790aa5" title=" " alt="" coords="466,175,671,203"/>
+<area shape="poly" id="edge6_Node000002_Node000009" title=" " alt="" coords="419,155,485,169,484,174,418,160"/>
+<area shape="rect" id="Node000010" href="$kest__fpga__io_8c.html#aa00adf9f96658a5c00b3d93dfa8c00de" title=" " alt="" coords="466,227,671,255"/>
+<area shape="poly" id="edge8_Node000002_Node000010" title=" " alt="" coords="365,159,413,186,467,212,489,220,487,225,465,217,410,191,362,164"/>
+<area shape="rect" id="Node000006" href="$kest__alloc_8c.html#ac3afebacd5118241e9f677df59a469b0" title=" " alt="" coords="950,175,1049,203"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="902,186,934,186,934,192,902,192"/>
+<area shape="poly" id="edge7_Node000009_Node000005" title=" " alt="" coords="672,186,704,186,704,192,672,192"/>
+<area shape="poly" id="edge9_Node000010_Node000005" title=" " alt="" coords="636,224,727,204,728,209,637,229"/>
+</map>

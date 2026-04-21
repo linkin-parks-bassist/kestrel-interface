@@ -2,7 +2,7 @@ var kest__eff__section_8c =
 [
     [ "PRINTLINES_ALLOWED", "kest__eff__section_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
     [ "get_section_start_score", "kest__eff__section_8c.html#afb268a3dbcedc0c867e0e57a01e9a01d", null ],
-    [ "kest_defs_section_extract", "kest__eff__section_8c.html#ae8e0f8831e8737c2ec64cb62d900942f", null ],
+    [ "kest_defs_section_extract", "kest__eff__section_8c.html#ac80cd23aae3ae32a7ea8002211c6c259", null ],
     [ "kest_dictionary_section_lookup_dict", "kest__eff__section_8c.html#ae929a5203cedc7919206b28aec8e79b1", null ],
     [ "kest_dictionary_section_lookup_expr", "kest__eff__section_8c.html#ae26b07a97afe15681a9357b7e017b0b9", null ],
     [ "kest_dictionary_section_lookup_float", "kest__eff__section_8c.html#ae3909b1310f9bfcff622ae5da27d0f9f", null ],

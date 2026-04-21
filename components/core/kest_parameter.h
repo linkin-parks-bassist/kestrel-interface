@@ -49,6 +49,7 @@ typedef struct kest_parameter
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_representation_pll *reps;
+	kest_representation widget_rep;
 	kest_representation effect_rep;
 	#endif
 } kest_parameter;
@@ -116,6 +117,8 @@ int init_parameter_wni(kest_parameter *param, const char *name, const char *name
 
 int kest_parameters_assign_ids(kest_parameter_pll *list);
 int kest_settings_assign_ids(kest_setting_pll *list);
+
+void kest_parameter_widget_rep_update(void *representer, void *representee);
 
 kest_parameter *new_m_parameter_wni(const char *name, const char *name_internal, float level, float min, float max);
 

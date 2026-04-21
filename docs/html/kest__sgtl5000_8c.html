@@ -97,13 +97,11 @@ $(function(){initNavTree('kest__sgtl5000_8c.html','',''); });
 <code>#include &quot;esp_err.h&quot;</code><br />
 <code>#include &quot;esp_check.h&quot;</code><br />
 <code>#include &quot;esp_log.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="kest__error__codes_8h_source.html">kest_error_codes.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="kest__printf_8h_source.html">kest_printf.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="kest__int_8h_source.html">kest_int.h</a>&quot;</code><br />
 <code>#include &quot;driver/spi_master.h&quot;</code><br />
 <code>#include &quot;driver/i2c_master.h&quot;</code><br />
 <code>#include &quot;driver/pulse_cnt.h&quot;</code><br />
 <code>#include &quot;driver/gpio.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="kest__sgtl5000_8h_source.html">kest_sgtl5000.h</a>&quot;</code><br />
 </div>
 <p><a href="kest__sgtl5000_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -114,6 +112,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a925207a2b3de0a6f636d1425fcdb1a56" id="r_a925207a2b3de0a6f636d1425fcdb1a56"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a925207a2b3de0a6f636d1425fcdb1a56">PRINTLINES_ALLOWED</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memitem:afc53ca119a3ae8195e63ef7307a2254b" id="r_afc53ca119a3ae8195e63ef7307a2254b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc53ca119a3ae8195e63ef7307a2254b">SGTL5000_SDA</a>&#160;&#160;&#160;15</td></tr>
 <tr class="memitem:ad26bd279a501b987f4a6cf8ec3e32138" id="r_ad26bd279a501b987f4a6cf8ec3e32138"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad26bd279a501b987f4a6cf8ec3e32138">SGTL5000_SCL</a>&#160;&#160;&#160;16</td></tr>
 </table><table class="memberdecls">
@@ -136,6 +135,22 @@ Variables</h2></td></tr>
 <tr class="memitem:a48d420ab93dd8b1ad67a8b5ae21a2470" id="r_a48d420ab93dd8b1ad67a8b5ae21a2470"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48d420ab93dd8b1ad67a8b5ae21a2470">sgtl5000_status</a> = 0</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a925207a2b3de0a6f636d1425fcdb1a56" name="a925207a2b3de0a6f636d1425fcdb1a56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a925207a2b3de0a6f636d1425fcdb1a56">&#9670;&#160;</a></span>PRINTLINES_ALLOWED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRINTLINES_ALLOWED&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00017">17</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+
+</div>
+</div>
 <a id="ad26bd279a501b987f4a6cf8ec3e32138" name="ad26bd279a501b987f4a6cf8ec3e32138"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad26bd279a501b987f4a6cf8ec3e32138">&#9670;&#160;</a></span>SGTL5000_SCL</h2>
 
@@ -148,9 +163,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00019">19</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00020">20</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 
 </div>
 </div>
@@ -166,9 +181,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00018">18</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00019">19</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 
 </div>
 </div>
@@ -188,14 +203,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00267">267</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00269">269</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>.</p>
 <div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_ab1fee6b32d3be05247ada395bd60915b_cgraph.svg" width="100%" height="572"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_ab1fee6b32d3be05247ada395bd60915b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -221,9 +236,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00142">142</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00143">143</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 <div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
@@ -254,9 +269,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00041">41</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00042">42</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 <div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
@@ -281,9 +296,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00189">189</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00191">191</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
@@ -314,9 +329,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00195">195</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00197">197</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 <div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
@@ -361,9 +376,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00128">128</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00129">129</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00142">sgtl5000_enable()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00195">sgtl5000_line_out_level()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00143">sgtl5000_enable()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00197">sgtl5000_line_out_level()</a>.</p>
 <div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
@@ -398,9 +413,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00093">93</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00094">94</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00128">sgtl5000_modify_reg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00129">sgtl5000_modify_reg()</a>.</p>
 <div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
@@ -425,12 +440,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00232">232</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00234">234</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 <div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-12-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_ae33adaa2f8eb7f59d99c8b3f1b809827_cgraph.svg" width="348" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_ae33adaa2f8eb7f59d99c8b3f1b809827_icgraph.svg" width="530" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -450,13 +473,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00070">70</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00071">71</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
-<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
+<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_a1d51fa7ae716c3d8260d8c6768170a32_icgraph.svg" width="494" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -481,13 +504,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00109">109</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00110">110</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00142">sgtl5000_enable()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00189">sgtl5000_line_in_level()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00128">sgtl5000_modify_reg()</a>.</p>
-<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00143">sgtl5000_enable()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00191">sgtl5000_line_in_level()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00129">sgtl5000_modify_reg()</a>.</p>
+<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_a5d3609040614e6236b7058d3073311c5_icgraph.svg" width="100%" height="406"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -508,13 +531,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00202">202</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00204">204</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
-<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
+<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__sgtl5000_8c_a44cc8b14c0cea58216bdb173cd6e947b_icgraph.svg" width="487" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -533,9 +556,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00023">23</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__sgtl5000_8c_source.html#l00024">24</a> of file <a class="el" href="kest__sgtl5000_8c_source.html">kest_sgtl5000.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>.</p>
 
 </div>
 </div>

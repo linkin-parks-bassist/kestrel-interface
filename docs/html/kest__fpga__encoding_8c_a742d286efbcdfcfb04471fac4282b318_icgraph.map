@@ -1,9 +1,5 @@
 <map id="print_instruction_format_b" name="print_instruction_format_b">
-<area shape="rect" id="Node000001" title=" " alt="" coords="615,5,809,33"/>
-<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#a9f3d76916b565e27599aebdb6c624499" title=" " alt="" coords="440,5,567,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="600,22,567,22,567,16,600,16"/>
-<area shape="rect" id="Node000003" href="$kest__fpga__encoding_8c.html#a846915834c09759d6445b5dffc45b723" title=" " alt="" coords="228,5,392,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="424,22,392,22,392,16,424,16"/>
-<area shape="rect" id="Node000004" href="$kest__fpga__comms_8c.html#a8f850777494bb4c4d61df3efbf31ca7c" title=" " alt="" coords="5,5,180,33"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="212,22,180,22,180,16,212,16"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="181,5,374,33"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#a9f3d76916b565e27599aebdb6c624499" title=" " alt="" coords="5,5,133,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,22,133,22,133,16,165,16"/>
 </map>

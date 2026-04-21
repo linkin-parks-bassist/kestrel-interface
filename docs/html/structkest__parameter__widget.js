@@ -6,7 +6,7 @@ var structkest__parameter__widget =
     [ "obj", "structkest__parameter__widget.html#a4e0fbb8141c47ee2461750d8260ee637", null ],
     [ "param", "structkest__parameter__widget.html#adf8fe6f6484a3e9231c4910c1c499245", null ],
     [ "parent", "structkest__parameter__widget.html#acb348ea675273259d937bb9a042fa92e", null ],
-    [ "profile", "structkest__parameter__widget.html#ad9bb7feb602615fc0cfeacb3c605d19e", null ],
+    [ "preset", "structkest__parameter__widget.html#aafd615427ce8cd0b2dabf8c4c0155232", null ],
     [ "rep", "structkest__parameter__widget.html#ae25c55edbdfa8a04510ec8d9ecb935ad", null ],
     [ "type", "structkest__parameter__widget.html#aab983fc6c598ce09b434e38696cd7b85", null ],
     [ "val_label", "structkest__parameter__widget.html#a8a83ee89468b1e677c073422e04a6cf1", null ],

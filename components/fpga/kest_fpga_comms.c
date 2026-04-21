@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 #endif
 
 static const char *FNAME = "kest_fpga_comms.c";
@@ -112,21 +112,15 @@ void kest_fpga_comms_task(void *param)
 					vTaskDelay(status_check_delay);
 					kest_fpga_get_status_flags(&status);
 					
+					#ifdef PRINT_FLAGS
+					kest_fpga_status_flags_print(&status);
+					#endif
+					
 					if (status.programming)
 					{
 						KEST_PRINTF("Alignment mismatch or incomplete command in programming batch!\n");
 						kest_fpga_handle_misalignment();
 						break;
-					}
-					
-					kest_fpga_status_flags_print(&status);
-					
-					if (status.bad)
-					{
-						KEST_PRINTF("Pipeline failed health check. Retrying\n");
-						kest_fpga_send_byte(COMMAND_CLEAR_BAD_FLAG);
-						KEST_PRINTF("Retrying...\n");
-						continue;
 					}
 					
 					if (status.timeout)
@@ -136,6 +130,20 @@ void kest_fpga_comms_task(void *param)
 						KEST_PRINTF("Clear flag...\n");
 						kest_fpga_get_status_flags(&status);
 						kest_fpga_status_flags_print(&status);
+						KEST_PRINTF("Retrying...\n");
+						continue;
+					}
+					
+					while (status.swapping)
+					{
+						vTaskDelay(status_check_delay);
+						kest_fpga_get_status_flags(&status);
+					}
+					
+					if (status.bad)
+					{
+						KEST_PRINTF("Pipeline failed health check. Retrying\n");
+						kest_fpga_send_byte(COMMAND_CLEAR_BAD_FLAG);
 						KEST_PRINTF("Retrying...\n");
 						continue;
 					}
@@ -302,8 +310,8 @@ void kest_fpga_comms_print_full_scan()
 	uint64_t sample_count = kest_fpga_get_sample_count(&flags);
 	kest_string_appendf(&str, "\nSample count:  %llu\n", sample_count);
 	
-	uint32_t stuck_flags = kest_fpga_get_stuck_flags(&flags);
-	kest_string_appendf(&str, "\nStuck flags:  %s\n", binary_print_32(stuck_flags));
+	//uint32_t stuck_flags = kest_fpga_get_stuck_flags(&flags);
+	//kest_string_appendf(&str, "\nStuck flags:  %s\n", binary_print_32(stuck_flags));
 	
 	kest_puts(str);
 	kest_string_drain(&str);

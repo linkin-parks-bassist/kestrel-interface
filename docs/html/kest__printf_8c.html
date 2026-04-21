@@ -100,6 +100,7 @@ $(function(){initNavTree('kest__printf_8c.html','',''); });
 Functions</h2></td></tr>
 <tr class="memitem:a745e9edc5a495f2fbd52a34a86d71c1b" id="r_a745e9edc5a495f2fbd52a34a86d71c1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a745e9edc5a495f2fbd52a34a86d71c1b">kest_printf_init</a> ()</td></tr>
 <tr class="memitem:a302714171dfa950e18d9a951bdab4105" id="r_a302714171dfa950e18d9a951bdab4105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a302714171dfa950e18d9a951bdab4105">kest_printf</a> (const char *fmt,...)</td></tr>
+<tr class="memitem:a258f845ff2725772e9a7b5b0a5efd522" id="r_a258f845ff2725772e9a7b5b0a5efd522"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a258f845ff2725772e9a7b5b0a5efd522">kest_puts</a> (<a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> str)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -127,7 +128,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__printf_8c_source.html#l00021">21</a> of file <a class="el" href="kest__printf_8c_source.html">kest_printf.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>, <a class="el" href="kest__footswitch_8c_source.html#l00031">footswitch_task()</a>, <a class="el" href="kest__sd_8c_source.html#l00179">kest_sd_mode_local()</a>, <a class="el" href="kest__sd_8c_source.html#l00162">kest_sd_mode_msc()</a>, <a class="el" href="kest__sd_8c_source.html#l00195">kest_sd_toggle_msc()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00267">kest_sgtl5000_init()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00142">sgtl5000_enable()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00232">sgtl5000_readout_registers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>, <a class="el" href="kest__footswitch_8c_source.html#l00031">footswitch_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00428">kest_command_log_test()</a>, <a class="el" href="kest__sd_8c_source.html#l00179">kest_sd_mode_local()</a>, <a class="el" href="kest__sd_8c_source.html#l00162">kest_sd_mode_msc()</a>, <a class="el" href="kest__sd_8c_source.html#l00195">kest_sd_toggle_msc()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00269">kest_sgtl5000_init()</a>, <a class="el" href="kest__sgtl5000_8c_source.html#l00143">sgtl5000_enable()</a>, and <a class="el" href="kest__sgtl5000_8c_source.html#l00234">sgtl5000_readout_registers()</a>.</p>
 <div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
@@ -159,7 +160,34 @@ Variables</h2></td></tr>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__printf_8c_a745e9edc5a495f2fbd52a34a86d71c1b_icgraph.svg" width="370" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__printf_8c_a745e9edc5a495f2fbd52a34a86d71c1b_icgraph.svg" width="578" height="134"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a258f845ff2725772e9a7b5b0a5efd522" name="a258f845ff2725772e9a7b5b0a5efd522"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a258f845ff2725772e9a7b5b0a5efd522">&#9670;&#160;</a></span>kest_puts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void kest_puts </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a></td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__printf_8c_source.html#l00042">42</a> of file <a class="el" href="kest__printf_8c_source.html">kest_printf.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00262">get_and_sprint_flags()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00392">kest_fpga_print_command_log()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00382">kest_fpga_program_batch_send_careful()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00537">kest_fpga_status_flags_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00334">kest_fpga_transfer_batch_send_careful()</a>.</p>
+<div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__printf_8c_a258f845ff2725772e9a7b5b0a5efd522_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -179,7 +207,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__printf_8c_source.html#l00006">6</a> of file <a class="el" href="kest__printf_8c_source.html">kest_printf.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__printf_8c_source.html#l00021">kest_printf()</a>, and <a class="el" href="kest__printf_8c_source.html#l00011">kest_printf_init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__printf_8c_source.html#l00021">kest_printf()</a>, <a class="el" href="kest__printf_8c_source.html#l00011">kest_printf_init()</a>, and <a class="el" href="kest__printf_8c_source.html#l00042">kest_puts()</a>.</p>
 
 </div>
 </div>

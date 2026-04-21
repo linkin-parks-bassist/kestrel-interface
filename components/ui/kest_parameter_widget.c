@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 #include "kest_param_update.h"
 
 static const char *FNAME = "kest_parameter_widget.c";
@@ -14,6 +14,7 @@ int parameter_widget_update_value(kest_parameter_widget *pw);
 
 void param_widget_rep_update(void *representer, void *representee)
 {
+	KEST_PRINTF("param_widget_rep_update\n");
 	kest_parameter_widget *pw = representer;
 	kest_parameter *param = representee;
 	
@@ -23,6 +24,7 @@ void param_widget_rep_update(void *representer, void *representee)
 	parameter_widget_update_value(pw);
 	parameter_widget_update_value_label(pw);
 	
+	KEST_PRINTF("param_widget_rep_update done\n");
 	return;
 }
 
@@ -96,6 +98,16 @@ int parameter_widget_update_value(kest_parameter_widget *pw)
 	
 	float min = range.a;
 	float max = range.b;
+	
+	if (pw->param->value > max)
+	{
+		kest_parameter_trigger_update(pw->param, max);
+	}
+	
+	if (pw->param->value < min)
+	{
+		kest_parameter_trigger_update(pw->param, min);
+	}
 	
 	KEST_PRINTF("min/max for PW: %.03f, %.03f\n", min, max);
 	
@@ -180,11 +192,27 @@ int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param,
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_representation_pll_safe_append(&param->reps, &pw->rep);
 	pw->rep.representee = param;
+	param->widget_rep.representer = pw;
 	#endif
 	
 	format_float(pw->val_label_text, pw->param->value, PARAM_WIDGET_LABEL_BUFSIZE);
 	
 	return NO_ERROR;
+}
+
+void parameter_widget_refresh(kest_parameter_widget *pw)
+{
+	KEST_PRINTF("\n");
+	if (!pw)
+	{
+		return;
+	}
+	
+	KEST_PRINTF("\n");
+	parameter_widget_update_value(pw);
+	KEST_PRINTF("\n");
+	parameter_widget_update_value_label(pw);
+	KEST_PRINTF("\n");
 }
 
 void parameter_widget_refresh_cb(lv_event_t *event)
@@ -475,14 +503,23 @@ void sw_field_display_bare_value(kest_setting_widget *sw)
 
 void sw_field_display_value_with_units(kest_setting_widget *sw)
 {
+	KEST_PRINTF("\n");
 	if (!sw) return;
+	KEST_PRINTF("\n");
 	if (!sw->setting || !sw->obj) return;
+	KEST_PRINTF("\n");
 	
 	char buf[32];
+	KEST_PRINTF("\n");
 	
 	int l = snprintf(buf, 32, "%d", sw->setting->value);
+	KEST_PRINTF("\n");
 	if (l < 32 && sw->setting->units)
+	{
+		KEST_PRINTF("\n");
 		snprintf(&buf[l], 32 - l, "%s", sw->setting->units);
+		KEST_PRINTF("\n");
+	}
 	
 	KEST_PRINTF("setting field value to \"%s\"\n", buf);
 	lv_textarea_set_text(sw->obj, buf);
@@ -810,7 +847,7 @@ void setting_widget_change_cb(lv_event_t *event)
 
 int setting_widget_create_ui(kest_setting_widget *sw, lv_obj_t *parent)
 {
-	KEST_PRINTF("setting_widget_create_ui(sw = %p, parent = %p)", sw, parent);
+	KEST_PRINTF("setting_widget_create_ui(sw = %p, parent = %p)\n", sw, parent);
 	if (!sw)
 		return ERR_NULL_PTR;
 	

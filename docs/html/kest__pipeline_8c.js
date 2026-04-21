@@ -9,5 +9,6 @@ var kest__pipeline_8c =
     [ "kest_pipeline_get_effect_by_id", "kest__pipeline_8c.html#a19fe1c3c33a4a564d9c722b7cd94037d", null ],
     [ "kest_pipeline_get_n_effects", "kest__pipeline_8c.html#a49922c0052123e7942688b2388625d1b", null ],
     [ "kest_pipeline_move_effect", "kest__pipeline_8c.html#a09211c4b8e4f028689abc9c8a753f6e5", null ],
+    [ "kest_pipeline_rectify_ids", "kest__pipeline_8c.html#a565571872d9745fa48ef16c6b00d13fb", null ],
     [ "kest_pipeline_remove_effect", "kest__pipeline_8c.html#a73cdb3a338dc34668b63859d87ba81b9", null ]
 ];

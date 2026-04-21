@@ -1664,20 +1664,29 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	return NO_ERROR;
 }
 
+#define PRINTLINES_ALLOWED 0
+
 int kest_expression_get_references_rec(kest_expression *expr, string_list *names, int depth)
 {
 	if (!expr || !names)
 		return ERR_NULL_PTR;
+	
+	KEST_PRINTF("Get references for expression \"%s\"...\n", kest_expression_to_string(expr));
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 		return ERR_RECURSION_DEPTH;
 	
 	int arity = kest_expression_arity(expr);
 	
+	KEST_PRINTF("It has arity %d...\n", arity);
+	
 	if (arity == 0)
 	{
 		if (expr->type == KEST_EXPR_REF)
+		{
+			KEST_PRINTF("It is precisely a reference to \"%s\"...\n", expr->val.ref_name);
 			char_ptr_list_append(names, expr->val.ref_name);
+		}
 		
 		return NO_ERROR;
 	}
@@ -1685,22 +1694,31 @@ int kest_expression_get_references_rec(kest_expression *expr, string_list *names
 	for (int i = 0; i < arity && i < KEST_EXPR_MAX_ARITY; i++)
 		kest_expression_get_references_rec(expr->sub_exprs[i], names, depth + 1);
 	
+	KEST_PRINTF("Done.\n");
+	
 	return NO_ERROR;
 }
 
 int kest_expression_get_references(kest_expression *expr, string_list *names)
 {
-	kest_expression_get_references_rec(expr, names, 0);
+	return kest_expression_get_references_rec(expr, names, 0);
 }
+
 
 int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 {
 	if (!expr || !scope)
 		return 0;
 	
+	KEST_PRINTF("Is expression \"%s\" updated in scope %p? Let's see...\n", kest_expression_to_string(expr), scope);
+	
 	size_t n = kest_scope_count(scope);
 	
-	if (!n) return 0;
+	if (!n)
+	{
+		KEST_PRINTF("Well, the scope has no entries, so, no.\n");
+		return 0;
+	}
 	
 	kest_scope_entry *ref_entry = NULL;
 	string_list names;
@@ -1716,15 +1734,23 @@ int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 		return 0;
 	}
 	
+	KEST_PRINTF("The expression contains %s references.\n", names.count ? "the following" : "no");
+	
+	for (int j = 0; j < names.count; j++)
+	{
+		KEST_PRINTF("\t\"%s\"\n", names.entries[j]);
+	}
+	
 	for (int j = 0; !updated && j < names.count; j++)
 	{
 		ref_entry = kest_scope_lookup(scope, names.entries[j]);
 		
+		KEST_PRINTF("Reference \"%s\" results in pointer %p, and it is %supdated.\n", 
+			names.entries[j], ref_entry, ref_entry ? (ref_entry->updated ? "" : "not ") : "not ");
 		if (ref_entry)
 			updated = updated | ref_entry->updated;
 	}
 
-kest_expr_updated_in_scope_return:
 	char_ptr_list_destroy(&names);
 	return updated;
 }

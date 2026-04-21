@@ -115,9 +115,9 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="structkest__profile.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="483.38,-197.75 410.38,-197.75 410.38,-177 483.38,-177 483.38,-197.75"/>
-<text xml:space="preserve" text-anchor="middle" x="446.88" y="-184.25" font-family="Helvetica,sans-Serif" font-size="10.00">kest_profile</text>
+<g id="a_Node000006"><a xlink:href="structkest__preset.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="483,-197.75 410.75,-197.75 410.75,-177 483,-177 483,-197.75"/>
+<text xml:space="preserve" text-anchor="middle" x="446.88" y="-184.25" font-family="Helvetica,sans-Serif" font-size="10.00">kest_preset</text>
 </a>
 </g>
 </g>
@@ -125,11 +125,11 @@
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node6&#45;&gt;Node1</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M494.85,-177.51C515.23,-173.1 539.35,-167.7 561,-162.38 572.47,-159.56 584.87,-156.28 596.18,-153.2"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="494.16,-174.08 485.12,-179.61 495.63,-180.93 494.16,-174.08"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M494.62,-177.56C515.05,-173.14 539.27,-167.72 561,-162.38 572.47,-159.56 584.87,-156.28 596.18,-153.2"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="493.91,-174.14 484.87,-179.66 495.38,-180.98 493.91,-174.14"/>
 </a>
 </g>
-<text xml:space="preserve" text-anchor="start" x="525.38" y="-177.37" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">profile</text>
+<text xml:space="preserve" text-anchor="start" x="525.75" y="-177.37" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">preset</text>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
@@ -144,7 +144,7 @@
 <g id="edge6_Node000006_Node000007" class="edge">
 <title>Node7&#45;&gt;Node6</title>
 <g id="a_edge6_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M305.42,-187.38C338.44,-187.38 380.66,-187.38 410.15,-187.38"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M305.45,-187.38C338.59,-187.38 380.97,-187.38 410.46,-187.38"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="305.67,-183.88 295.67,-187.38 305.67,-190.88 305.67,-183.88"/>
 </a>
 </g>
@@ -154,7 +154,7 @@
 <g id="edge7_Node000006_Node000008" class="edge">
 <title>Node8&#45;&gt;Node6</title>
 <g id="a_edge7_Node000006_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M311.23,-219.77C330.72,-216.21 352.63,-211.93 372.5,-207.38 384.86,-204.54 398.26,-201.02 410.2,-197.73"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M311.23,-219.77C330.72,-216.21 352.63,-211.93 372.5,-207.38 384.98,-204.51 398.54,-200.95 410.57,-197.63"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="310.78,-216.29 301.56,-221.51 312.02,-223.18 310.78,-216.29"/>
 </a>
 </g>

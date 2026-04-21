@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_representation.c";
 
@@ -20,6 +20,7 @@ void kest_representation_pll_update_all(kest_representation_pll *reps)
 	
 	while (current)
 	{
+		KEST_PRINTF("\n");
 		if (current->data)
 		{
 			KEST_PRINTF("Representation: {.representer = %p, representee = %p, update = %p}\n",
@@ -30,6 +31,7 @@ void kest_representation_pll_update_all(kest_representation_pll *reps)
 			current->data->update(current->data->representer, current->data->representee);
 		}
 		
+		KEST_PRINTF("\n");
 		current = current->next;
 	}
 	
@@ -44,6 +46,7 @@ void update_queued_representations_cb(lv_timer_t *timer)
 	
 	while (xQueueReceive(kest_rep_update_queue, &list, 0) == pdTRUE)
 	{
+		KEST_PRINTF("\n");
 		if (list) kest_representation_pll_update_all(list);
 	}
 }
@@ -57,8 +60,38 @@ int init_representation_updater()
 }
 #endif
 
+int kest_representation_queue_update(kest_representation *rep)
+{
+	KEST_PRINTF("kest_representation_queue_update\n");
+	
+	#ifdef KEST_ENABLE_REPRESENTATIONS
+	#ifdef KEST_USE_FREERTOS
+	if (!rep_updated_initd)
+		return ERR_CURRENTLY_EXHAUSTED;
+	if (!rep)
+		return ERR_NULL_PTR;
+	
+	kest_representation_pll *node = kest_alloc(sizeof(kest_representation_pll));
+	
+	if (!node)
+		return ERR_ALLOC_FAIL;
+	
+	node->next = NULL;
+	node->data = rep;
+	
+	KEST_PRINTF("kest_representation_queue_update done\n");
+	return queue_representation_list_update(node);
+	#endif
+	KEST_PRINTF("kest_representation_queue_update done\n");
+	return NO_ERROR;
+	#endif
+	KEST_PRINTF("kest_representation_queue_update done\n");
+	return ERR_FEATURE_DISABLED;
+}
+
 int queue_representation_list_update(kest_representation_pll *reps)
 {
+	KEST_PRINTF("queue_representation_list_update\n");
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	#ifdef KEST_USE_FREERTOS
 	if (!rep_updated_initd)
@@ -66,11 +99,14 @@ int queue_representation_list_update(kest_representation_pll *reps)
 	
 	if (xQueueSend(kest_rep_update_queue, (void*)&reps, (TickType_t)10) != pdPASS)
 	{
+		KEST_PRINTF("queue_representation_list_update failed\n");
 		return ERR_QUEUE_SEND_FAILED;
 	}
 	#endif
+	KEST_PRINTF("queue_representation_list_update done\n");
 	return NO_ERROR;
 	#endif
+	KEST_PRINTF("queue_representation_list_update done\n");
 	return ERR_FEATURE_DISABLED;
 }
 

@@ -103,10 +103,12 @@ $(function(){initNavTree('kest__fpga__io_8h.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:kest_5Ffpga_5Ftransfer_5Fbatch" id="r_kest_5Ffpga_5Ftransfer_5Fbatch"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a></td></tr>
+<tr class="memitem:kest_5Ffpga_5Fstatus_5Fflags" id="r_kest_5Ffpga_5Fstatus_5Fflags"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a6095b7a0601a7e927a3f42dced5e942c" id="r_a6095b7a0601a7e927a3f42dced5e942c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6095b7a0601a7e927a3f42dced5e942c">KEST_FPGA_SAMPLE_RATE</a>&#160;&#160;&#160;44100</td></tr>
+<tr class="memitem:adcd47903a08db8da8c54bccc79defef5" id="r_adcd47903a08db8da8c54bccc79defef5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcd47903a08db8da8c54bccc79defef5">FPGA_BOOT_MS</a>&#160;&#160;&#160;2500</td></tr>
 <tr class="memitem:a7f808f266eb5257db071e879bbbfed58" id="r_a7f808f266eb5257db071e879bbbfed58"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f808f266eb5257db071e879bbbfed58">COMMAND_BEGIN_PROGRAM</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memitem:acec2a5aa854f9a5f4bf2aa39b7456a16" id="r_acec2a5aa854f9a5f4bf2aa39b7456a16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acec2a5aa854f9a5f4bf2aa39b7456a16">COMMAND_WRITE_BLOCK_INSTR</a>&#160;&#160;&#160;2</td></tr>
 <tr class="memitem:a53ddb964e336eeb81de12de761b3dc85" id="r_a53ddb964e336eeb81de12de761b3dc85"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53ddb964e336eeb81de12de761b3dc85">COMMAND_WRITE_BLOCK_REG_0</a>&#160;&#160;&#160;3</td></tr>
@@ -122,20 +124,47 @@ Macros</h2></td></tr>
 <tr class="memitem:aa6ba6187ff2f743f92cad129af2062ae" id="r_aa6ba6187ff2f743f92cad129af2062ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6ba6187ff2f743f92cad129af2062ae">COMMAND_WRITE_FILTER_COEF</a>&#160;&#160;&#160;17</td></tr>
 <tr class="memitem:a7ce6a965622538eb73e9d3d97495908f" id="r_a7ce6a965622538eb73e9d3d97495908f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ce6a965622538eb73e9d3d97495908f">COMMAND_UPDATE_FILTER_COEF</a>&#160;&#160;&#160;18</td></tr>
 <tr class="memitem:ace82c35279356bb680fa7f2fb6aa6d84" id="r_ace82c35279356bb680fa7f2fb6aa6d84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace82c35279356bb680fa7f2fb6aa6d84">COMMAND_COMMIT_FILTER_COEF</a>&#160;&#160;&#160;19</td></tr>
-<tr class="memitem:a6594cda87ab48ee3802619297f40ba2d" id="r_a6594cda87ab48ee3802619297f40ba2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6594cda87ab48ee3802619297f40ba2d">SPI_RESPONSE_OK</a>&#160;&#160;&#160;0</td></tr>
-<tr class="memitem:a5a6b75392d534020ac7135fc272d2878" id="r_a5a6b75392d534020ac7135fc272d2878"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a6b75392d534020ac7135fc272d2878">SPI_RESPONSE_INITIALISING</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memitem:a3ee53009d1a7e29d96317ae23617a3a3" id="r_a3ee53009d1a7e29d96317ae23617a3a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ee53009d1a7e29d96317ae23617a3a3">SPI_RESPONSE_PROGRAMMING</a>&#160;&#160;&#160;2</td></tr>
-<tr class="memitem:a8fb6247cde6ca564fff577294720f99c" id="r_a8fb6247cde6ca564fff577294720f99c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fb6247cde6ca564fff577294720f99c">SPI_RESPONSE_REJECTED</a>&#160;&#160;&#160;3</td></tr>
-<tr class="memitem:a16ea7881c83ca0cc119404eaab755422" id="r_a16ea7881c83ca0cc119404eaab755422"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16ea7881c83ca0cc119404eaab755422">SPI_RESPONSE_TIMEOUT</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memitem:a4f48dac1c8c64e30cd29abe87fe94b2b" id="r_a4f48dac1c8c64e30cd29abe87fe94b2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f48dac1c8c64e30cd29abe87fe94b2b">COMMAND_READOUT</a>&#160;&#160;&#160;20</td></tr>
+<tr class="memitem:a8c754343acc9b3896016405bc8bb1b6f" id="r_a8c754343acc9b3896016405bc8bb1b6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c754343acc9b3896016405bc8bb1b6f">COMMAND_GET_N_BLOCKS</a>&#160;&#160;&#160;21</td></tr>
+<tr class="memitem:ae18f0e6bf1a34a7807a77edd7f64b152" id="r_ae18f0e6bf1a34a7807a77edd7f64b152"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae18f0e6bf1a34a7807a77edd7f64b152">COMMAND_GET_BLOCK_INSTR</a>&#160;&#160;&#160;22</td></tr>
+<tr class="memitem:a77e95e4ea596a96ef23c78acd71fd351" id="r_a77e95e4ea596a96ef23c78acd71fd351"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77e95e4ea596a96ef23c78acd71fd351">COMMAND_GET_BLOCK_REG</a>&#160;&#160;&#160;23</td></tr>
+<tr class="memitem:a11bc8aa9d2636007f49b20b8e7eae535" id="r_a11bc8aa9d2636007f49b20b8e7eae535"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11bc8aa9d2636007f49b20b8e7eae535">COMMAND_GET_N_DELAY_BUF</a>&#160;&#160;&#160;24</td></tr>
+<tr class="memitem:aef69026d905a5eb9e270bcac9dc391b7" id="r_aef69026d905a5eb9e270bcac9dc391b7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef69026d905a5eb9e270bcac9dc391b7">COMMAND_GET_DELAY_BUF_SIZE</a>&#160;&#160;&#160;25</td></tr>
+<tr class="memitem:a08ae9367a2a0748e565664992a0c860a" id="r_a08ae9367a2a0748e565664992a0c860a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08ae9367a2a0748e565664992a0c860a">COMMAND_GET_DELAY_BUF_DELAY</a>&#160;&#160;&#160;26</td></tr>
+<tr class="memitem:a9f763d470fc3e8d41c32d3c73d5351de" id="r_a9f763d470fc3e8d41c32d3c73d5351de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f763d470fc3e8d41c32d3c73d5351de">COMMAND_GET_DELAY_BUF_ADDR</a>&#160;&#160;&#160;27</td></tr>
+<tr class="memitem:a862a63ede2edd7aa68b291f6136bae00" id="r_a862a63ede2edd7aa68b291f6136bae00"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a862a63ede2edd7aa68b291f6136bae00">COMMAND_GET_DELAY_BUF_POS</a>&#160;&#160;&#160;28</td></tr>
+<tr class="memitem:a44c51875cfa15517093ed374e2285462" id="r_a44c51875cfa15517093ed374e2285462"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44c51875cfa15517093ed374e2285462">COMMAND_GET_DELAY_BUF_GAIN</a>&#160;&#160;&#160;29</td></tr>
+<tr class="memitem:a686a605016f9f2aa084c929e5a3fc210" id="r_a686a605016f9f2aa084c929e5a3fc210"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a686a605016f9f2aa084c929e5a3fc210">COMMAND_GET_DELAY_BUF_LRWA</a>&#160;&#160;&#160;30</td></tr>
+<tr class="memitem:a2d103642d4917fd528c4fddbe94f0a12" id="r_a2d103642d4917fd528c4fddbe94f0a12"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d103642d4917fd528c4fddbe94f0a12">COMMAND_GET_SDRAM_READ_CNT</a>&#160;&#160;&#160;31</td></tr>
+<tr class="memitem:af2c0a2b73233881347772b1bf5dedacc" id="r_af2c0a2b73233881347772b1bf5dedacc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2c0a2b73233881347772b1bf5dedacc">COMMAND_GET_SDRAM_WRITE_CNT</a>&#160;&#160;&#160;32</td></tr>
+<tr class="memitem:a392519f04179cda5a9de5d4e6b21b969" id="r_a392519f04179cda5a9de5d4e6b21b969"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392519f04179cda5a9de5d4e6b21b969">COMMAND_READ_COMMAND_LOG</a>&#160;&#160;&#160;33</td></tr>
+<tr class="memitem:a2593a14c3fe7e3f30b3860a640951544" id="r_a2593a14c3fe7e3f30b3860a640951544"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2593a14c3fe7e3f30b3860a640951544">COMMAND_GET_SAMPLE_COUNT</a>&#160;&#160;&#160;34</td></tr>
+<tr class="memitem:ac6b9a7ebf29f1df35c3b411657132004" id="r_ac6b9a7ebf29f1df35c3b411657132004"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6b9a7ebf29f1df35c3b411657132004">COMMAND_CLEAR_TIMEOUT_FLAG</a>&#160;&#160;&#160;35</td></tr>
+<tr class="memitem:ac64adb075937ab2ec54b2f080a071b32" id="r_ac64adb075937ab2ec54b2f080a071b32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac64adb075937ab2ec54b2f080a071b32">COMMAND_CLEAR_BAD_FLAG</a>&#160;&#160;&#160;36</td></tr>
+<tr class="memitem:a8242b45de6002f4c70820b0145880abd" id="r_a8242b45de6002f4c70820b0145880abd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8242b45de6002f4c70820b0145880abd">COMMAND_CLEAR_CMD_ERR_FLAG</a>&#160;&#160;&#160;37</td></tr>
+<tr class="memitem:acd932c054586f833bc575a4e1770cdcc" id="r_acd932c054586f833bc575a4e1770cdcc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd932c054586f833bc575a4e1770cdcc">COMMAND_READ</a>&#160;&#160;&#160;38</td></tr>
+<tr class="memitem:a6594cda87ab48ee3802619297f40ba2d" id="r_a6594cda87ab48ee3802619297f40ba2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6594cda87ab48ee3802619297f40ba2d">SPI_RESPONSE_OK</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memitem:a9994265e3a603e347d8fdb273a73c66e" id="r_a9994265e3a603e347d8fdb273a73c66e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9994265e3a603e347d8fdb273a73c66e">KEST_FPGA_N_BLOCKS</a>&#160;&#160;&#160;256</td></tr>
-<tr class="memitem:ac727adacee8d41e5a34ad747f78c6087" id="r_ac727adacee8d41e5a34ad747f78c6087"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac727adacee8d41e5a34ad747f78c6087">KEST_FPGA_BLOCK_ADDR_BYTES</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memitem:ab048c63dba496376f600034fc7f80b93" id="r_ab048c63dba496376f600034fc7f80b93"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a>&#160;&#160;&#160;16</td></tr>
 <tr class="memitem:ac83d7311168e22ec0c2178202cb1f617" id="r_ac83d7311168e22ec0c2178202cb1f617"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac83d7311168e22ec0c2178202cb1f617">KEST_FPGA_FILTER_WIDTH</a>&#160;&#160;&#160;18</td></tr>
 <tr class="memitem:ad1637a0eaa3ebd5d11c124cc08de4615" id="r_ad1637a0eaa3ebd5d11c124cc08de4615"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1637a0eaa3ebd5d11c124cc08de4615">KEST_FPGA_DATA_BYTES</a>&#160;&#160;&#160;(<a class="el" href="#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a> / 8)</td></tr>
+<tr class="memitem:a05195116f1d07e467dfdcba70120b980" id="r_a05195116f1d07e467dfdcba70120b980"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05195116f1d07e467dfdcba70120b980">DATA_REQ_N_BLOCKS</a>&#160;&#160;&#160;14</td></tr>
+<tr class="memitem:a02a9e6dccabae2e88164580a5e53ef0b" id="r_a02a9e6dccabae2e88164580a5e53ef0b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02a9e6dccabae2e88164580a5e53ef0b">DATA_REQ_BLOCK_INSTR</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:a499432aa1da16f49def226300bac80d0" id="r_a499432aa1da16f49def226300bac80d0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a499432aa1da16f49def226300bac80d0">DATA_REQ_BLOCK_REG</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:a3b972846b41c54ae97f6e9734998525c" id="r_a3b972846b41c54ae97f6e9734998525c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b972846b41c54ae97f6e9734998525c">DATA_REQ_N_DELAY_BUF</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:afb9b5111a68232e65a36051163c3bbf2" id="r_afb9b5111a68232e65a36051163c3bbf2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb9b5111a68232e65a36051163c3bbf2">DATA_REQ_DELAY_BUF_SIZE</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memitem:a4c5e3e7a26be7a1b7a6c66c94ddbe591" id="r_a4c5e3e7a26be7a1b7a6c66c94ddbe591"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c5e3e7a26be7a1b7a6c66c94ddbe591">DATA_REQ_DELAY_BUF_DELAY</a>&#160;&#160;&#160;5</td></tr>
+<tr class="memitem:a51bd06bcccfcea1ede2a89b7d12d8029" id="r_a51bd06bcccfcea1ede2a89b7d12d8029"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51bd06bcccfcea1ede2a89b7d12d8029">DATA_REQ_DELAY_BUF_ADDR</a>&#160;&#160;&#160;6</td></tr>
+<tr class="memitem:a72909d4253a8aa1f40bd8ebeabdf2ddd" id="r_a72909d4253a8aa1f40bd8ebeabdf2ddd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72909d4253a8aa1f40bd8ebeabdf2ddd">DATA_REQ_DELAY_BUF_POS</a>&#160;&#160;&#160;7</td></tr>
+<tr class="memitem:a749c85c4da15b0ebd3a4cfdb5ac5d4ad" id="r_a749c85c4da15b0ebd3a4cfdb5ac5d4ad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a749c85c4da15b0ebd3a4cfdb5ac5d4ad">DATA_REQ_DELAY_BUF_GAIN</a>&#160;&#160;&#160;8</td></tr>
+<tr class="memitem:aabf7f73218dbe81269ebca45e1bc37e2" id="r_aabf7f73218dbe81269ebca45e1bc37e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabf7f73218dbe81269ebca45e1bc37e2">DATA_REQ_DELAY_BUF_LRWA</a>&#160;&#160;&#160;9</td></tr>
+<tr class="memitem:a3d8377d07dbecde48d80a8b311aa9e61" id="r_a3d8377d07dbecde48d80a8b311aa9e61"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d8377d07dbecde48d80a8b311aa9e61">DATA_REQ_SAMPLE_COUNT</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memitem:aa70cce3057c7b2f9a80c200c5ae60e4d" id="r_aa70cce3057c7b2f9a80c200c5ae60e4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa70cce3057c7b2f9a80c200c5ae60e4d">DATA_REQ_SDRAM_READ_CNT</a>&#160;&#160;&#160;11</td></tr>
+<tr class="memitem:a6ffd7c8b19f5a9583a6e0f939e2eac7d" id="r_a6ffd7c8b19f5a9583a6e0f939e2eac7d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ffd7c8b19f5a9583a6e0f939e2eac7d">DATA_REQ_SDRAM_WRITE_CNT</a>&#160;&#160;&#160;12</td></tr>
+<tr class="memitem:afaf7b4f00b691d7edce42429b52648f8" id="r_afaf7b4f00b691d7edce42429b52648f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afaf7b4f00b691d7edce42429b52648f8">DATA_REQ_STUCK_FLAGS</a>&#160;&#160;&#160;13</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a5ce503127508844eddd97a027fdd0d14" id="r_a5ce503127508844eddd97a027fdd0d14"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ce503127508844eddd97a027fdd0d14">kest_fpga_block_addr_t</a></td></tr>
 <tr class="memitem:adecc508335953fe62a6e18687a3a0b46" id="r_adecc508335953fe62a6e18687a3a0b46"><td class="memItemLeft" align="right" valign="top">typedef int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adecc508335953fe62a6e18687a3a0b46">kest_fpga_sample_t</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
@@ -146,6 +175,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a69d090281fdf602acce7e4dd2f0f81ec" id="r_a69d090281fdf602acce7e4dd2f0f81ec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69d090281fdf602acce7e4dd2f0f81ec">kest_send_byte_to_fpga</a> (uint8_t byte)</td></tr>
 <tr class="memitem:a5151b31faf4c75059d9d8bd1d27fa5f9" id="r_a5151b31faf4c75059d9d8bd1d27fa5f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5151b31faf4c75059d9d8bd1d27fa5f9">kest_fpga_send_byte</a> (uint8_t byte)</td></tr>
 <tr class="memitem:ab908dedc52b0ca9107f52f74ab7860c6" id="r_ab908dedc52b0ca9107f52f74ab7860c6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab908dedc52b0ca9107f52f74ab7860c6">kest_fpga_read_byte</a> ()</td></tr>
+<tr class="memitem:ab14e474da760b9f53277d51557a0a9d3" id="r_ab14e474da760b9f53277d51557a0a9d3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab14e474da760b9f53277d51557a0a9d3">kest_fpga_readout</a> ()</td></tr>
 <tr class="memitem:a0e6e4e058cfd8f3ec79208acb0f71aa6" id="r_a0e6e4e058cfd8f3ec79208acb0f71aa6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e6e4e058cfd8f3ec79208acb0f71aa6">kest_fpga_set_input_gain</a> (float gain_db)</td></tr>
 <tr class="memitem:a6569f6bf656d72080dd355179ac2c4e9" id="r_a6569f6bf656d72080dd355179ac2c4e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6569f6bf656d72080dd355179ac2c4e9">kest_fpga_set_output_gain</a> (float gain_db)</td></tr>
 <tr class="memitem:ac4389d5b4fc4dc3806d9e9cc2195b6b4" id="r_ac4389d5b4fc4dc3806d9e9cc2195b6b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4389d5b4fc4dc3806d9e9cc2195b6b4">kest_fpga_commit_reg_updates</a> ()</td></tr>
@@ -154,8 +184,31 @@ Functions</h2></td></tr>
 <tr class="memitem:aa00adf9f96658a5c00b3d93dfa8c00de" id="r_aa00adf9f96658a5c00b3d93dfa8c00de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa00adf9f96658a5c00b3d93dfa8c00de">kest_fpga_batch_append_24</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> *seq, uint32_t x)</td></tr>
 <tr class="memitem:ac7679b9a1a77f12aa23affb51346e3d4" id="r_ac7679b9a1a77f12aa23affb51346e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7679b9a1a77f12aa23affb51346e3d4">kest_fpga_batch_append_32</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> *seq, uint32_t x)</td></tr>
 <tr class="memitem:ae911bef59743e59043a283dac1be0761" id="r_ae911bef59743e59043a283dac1be0761"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae911bef59743e59043a283dac1be0761">kest_fpga_transfer_batch_send</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> batch)</td></tr>
+<tr class="memitem:a705da035774b1be5ed1365126486649f" id="r_a705da035774b1be5ed1365126486649f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a705da035774b1be5ed1365126486649f">kest_fpga_transfer_batch_send_careful</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> batch)</td></tr>
+<tr class="memitem:a38a89d268857557d083c5e4696d54669" id="r_a38a89d268857557d083c5e4696d54669"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38a89d268857557d083c5e4696d54669">kest_fpga_program_batch_send_careful</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> batch)</td></tr>
+<tr class="memitem:a76e50c684869ebdac1a1af4cd0d52cdd" id="r_a76e50c684869ebdac1a1af4cd0d52cdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76e50c684869ebdac1a1af4cd0d52cdd">kest_fpga_program_batch_send</a> (<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> batch)</td></tr>
 <tr class="memitem:a8b41ed8feb0e991733a9af1a8f8acc20" id="r_a8b41ed8feb0e991733a9af1a8f8acc20"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b41ed8feb0e991733a9af1a8f8acc20">kest_fpga_spi_init</a> ()</td></tr>
 <tr class="memitem:a1a1501e2223a5cddbecfb2b92c9d9705" id="r_a1a1501e2223a5cddbecfb2b92c9d9705"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a1501e2223a5cddbecfb2b92c9d9705">kest_fpga_command_to_string</a> (int command)</td></tr>
+<tr class="memitem:a688987fc53c1295119933650d3a19776" id="r_a688987fc53c1295119933650d3a19776"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a688987fc53c1295119933650d3a19776">kest_fpga_decode_status_flags</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags, uint8_t byte)</td></tr>
+<tr class="memitem:a00a4bbec92692e8a9a447b375616efa1" id="r_a00a4bbec92692e8a9a447b375616efa1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00a4bbec92692e8a9a447b375616efa1">kest_fpga_send_byte_get_flags</a> (uint8_t tx, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:abe57698adf89b8e9d87f4beca9077c9a" id="r_abe57698adf89b8e9d87f4beca9077c9a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe57698adf89b8e9d87f4beca9077c9a">kest_fpga_get_status_flags</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:afff0ef19687a88fbb1505151ad4b041d" id="r_afff0ef19687a88fbb1505151ad4b041d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afff0ef19687a88fbb1505151ad4b041d">kest_fpga_status_flags_print</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a3d92c05c5bb464da9e6f27d0a4924a7e" id="r_a3d92c05c5bb464da9e6f27d0a4924a7e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d92c05c5bb464da9e6f27d0a4924a7e">kest_fpga_status_flags_sprint</a> (<a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> *str, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a8c6d370bdb122da708c13afb62b98ce5" id="r_a8c6d370bdb122da708c13afb62b98ce5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c6d370bdb122da708c13afb62b98ce5">kest_fpga_get_n_blocks</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a571a86c4b7150cb02163c7f121280727" id="r_a571a86c4b7150cb02163c7f121280727"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a571a86c4b7150cb02163c7f121280727">kest_fpga_get_block_instr</a> (int block, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a2babe06c62b033671938c204a4d9b596" id="r_a2babe06c62b033671938c204a4d9b596"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2babe06c62b033671938c204a4d9b596">kest_fpga_get_block_reg</a> (int block, int reg, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:abafaa63950c4a86e9b1e1e71cc88b1eb" id="r_abafaa63950c4a86e9b1e1e71cc88b1eb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abafaa63950c4a86e9b1e1e71cc88b1eb">kest_fpga_get_n_delay_buffers</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:ae4692d070ab3911252b8af3527b73bd4" id="r_ae4692d070ab3911252b8af3527b73bd4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4692d070ab3911252b8af3527b73bd4">kest_fpga_get_delay_buffer_size</a> (int handle, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:aec9b97cfd6352d1e0f3002d6ed4d4d3c" id="r_aec9b97cfd6352d1e0f3002d6ed4d4d3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec9b97cfd6352d1e0f3002d6ed4d4d3c">kest_fpga_get_delay_buffer_delay</a> (int handle, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a61cbd714b51619a08e508a5970def9af" id="r_a61cbd714b51619a08e508a5970def9af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61cbd714b51619a08e508a5970def9af">kest_fpga_get_delay_buffer_addr</a> (int handle, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:ab03b27fbb623cc160e3cbaab1593f61c" id="r_ab03b27fbb623cc160e3cbaab1593f61c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab03b27fbb623cc160e3cbaab1593f61c">kest_fpga_get_delay_buffer_pos</a> (int handle, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:aeb66769bc41bdc3d66f4f5a196bed529" id="r_aeb66769bc41bdc3d66f4f5a196bed529"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb66769bc41bdc3d66f4f5a196bed529">kest_fpga_get_delay_buffer_gain</a> (int handle, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a2a8804e3f9b37c1933b7e5c871544e69" id="r_a2a8804e3f9b37c1933b7e5c871544e69"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a8804e3f9b37c1933b7e5c871544e69">kest_fpga_get_delay_buffer_last_rw_addr</a> (int handle, uint16_t *read_addr, uint16_t *write_addr, <a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:a91cd511ba05451b24c4dd357011d8119" id="r_a91cd511ba05451b24c4dd357011d8119"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91cd511ba05451b24c4dd357011d8119">kest_fpga_get_sample_count</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:abfb6117132f7f136c55f8869b95b79d6" id="r_abfb6117132f7f136c55f8869b95b79d6"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfb6117132f7f136c55f8869b95b79d6">kest_fpga_get_sdram_read_count</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:af06aacf356a45c64705a79fea40fd07e" id="r_af06aacf356a45c64705a79fea40fd07e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af06aacf356a45c64705a79fea40fd07e">kest_fpga_get_sdram_write_count</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:abf50b97e03268742ffed54243f18f396" id="r_abf50b97e03268742ffed54243f18f396"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf50b97e03268742ffed54243f18f396">kest_fpga_get_stuck_flags</a> (<a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *flags)</td></tr>
+<tr class="memitem:aebc8e5fe9202bb484d2dade4696306a3" id="r_aebc8e5fe9202bb484d2dade4696306a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebc8e5fe9202bb484d2dade4696306a3">kest_fpga_read_command_log</a> (uint8_t *buf)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="a83350618813cc649f987f4bcd4c18e15" name="a83350618813cc649f987f4bcd4c18e15"></a>
@@ -170,9 +223,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00012">12</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00014">14</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -188,9 +241,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00019">19</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00021">21</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00428">kest_command_log_test()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -206,9 +259,63 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00008">8</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00010">10</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00223">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00369">kest_fpga_program_batch_send()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00382">kest_fpga_program_batch_send_careful()</a>.</p>
+
+</div>
+</div>
+<a id="ac64adb075937ab2ec54b2f080a071b32" name="ac64adb075937ab2ec54b2f080a071b32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac64adb075937ab2ec54b2f080a071b32">&#9670;&#160;</a></span>COMMAND_CLEAR_BAD_FLAG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_CLEAR_BAD_FLAG&#160;&#160;&#160;36</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00041">41</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+
+</div>
+</div>
+<a id="a8242b45de6002f4c70820b0145880abd" name="a8242b45de6002f4c70820b0145880abd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8242b45de6002f4c70820b0145880abd">&#9670;&#160;</a></span>COMMAND_CLEAR_CMD_ERR_FLAG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_CLEAR_CMD_ERR_FLAG&#160;&#160;&#160;37</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00042">42</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
+
+</div>
+</div>
+<a id="ac6b9a7ebf29f1df35c3b411657132004" name="ac6b9a7ebf29f1df35c3b411657132004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6b9a7ebf29f1df35c3b411657132004">&#9670;&#160;</a></span>COMMAND_CLEAR_TIMEOUT_FLAG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_CLEAR_TIMEOUT_FLAG&#160;&#160;&#160;35</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00040">40</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
 
 </div>
 </div>
@@ -224,7 +331,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00022">22</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00024">24</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -240,9 +349,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00018">18</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00020">20</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00266">kest_fpga_commit_reg_updates()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00172">kest_fpga_queue_register_commit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00485">kest_fpga_commit_reg_updates()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00252">kest_fpga_queue_register_commit()</a>.</p>
 
 </div>
 </div>
@@ -258,9 +367,297 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00013">13</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00015">15</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00223">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00369">kest_fpga_program_batch_send()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00382">kest_fpga_program_batch_send_careful()</a>.</p>
+
+</div>
+</div>
+<a id="ae18f0e6bf1a34a7807a77edd7f64b152" name="ae18f0e6bf1a34a7807a77edd7f64b152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae18f0e6bf1a34a7807a77edd7f64b152">&#9670;&#160;</a></span>COMMAND_GET_BLOCK_INSTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_BLOCK_INSTR&#160;&#160;&#160;22</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00027">27</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a77e95e4ea596a96ef23c78acd71fd351" name="a77e95e4ea596a96ef23c78acd71fd351"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77e95e4ea596a96ef23c78acd71fd351">&#9670;&#160;</a></span>COMMAND_GET_BLOCK_REG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_BLOCK_REG&#160;&#160;&#160;23</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00028">28</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a9f763d470fc3e8d41c32d3c73d5351de" name="a9f763d470fc3e8d41c32d3c73d5351de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f763d470fc3e8d41c32d3c73d5351de">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_ADDR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_ADDR&#160;&#160;&#160;27</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00032">32</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a08ae9367a2a0748e565664992a0c860a" name="a08ae9367a2a0748e565664992a0c860a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08ae9367a2a0748e565664992a0c860a">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_DELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_DELAY&#160;&#160;&#160;26</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00031">31</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a44c51875cfa15517093ed374e2285462" name="a44c51875cfa15517093ed374e2285462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c51875cfa15517093ed374e2285462">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_GAIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_GAIN&#160;&#160;&#160;29</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00034">34</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a686a605016f9f2aa084c929e5a3fc210" name="a686a605016f9f2aa084c929e5a3fc210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a686a605016f9f2aa084c929e5a3fc210">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_LRWA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_LRWA&#160;&#160;&#160;30</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00035">35</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a862a63ede2edd7aa68b291f6136bae00" name="a862a63ede2edd7aa68b291f6136bae00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a862a63ede2edd7aa68b291f6136bae00">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_POS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_POS&#160;&#160;&#160;28</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00033">33</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="aef69026d905a5eb9e270bcac9dc391b7" name="aef69026d905a5eb9e270bcac9dc391b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef69026d905a5eb9e270bcac9dc391b7">&#9670;&#160;</a></span>COMMAND_GET_DELAY_BUF_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_DELAY_BUF_SIZE&#160;&#160;&#160;25</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00030">30</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a8c754343acc9b3896016405bc8bb1b6f" name="a8c754343acc9b3896016405bc8bb1b6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c754343acc9b3896016405bc8bb1b6f">&#9670;&#160;</a></span>COMMAND_GET_N_BLOCKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_N_BLOCKS&#160;&#160;&#160;21</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00026">26</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a11bc8aa9d2636007f49b20b8e7eae535" name="a11bc8aa9d2636007f49b20b8e7eae535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11bc8aa9d2636007f49b20b8e7eae535">&#9670;&#160;</a></span>COMMAND_GET_N_DELAY_BUF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_N_DELAY_BUF&#160;&#160;&#160;24</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00029">29</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a2593a14c3fe7e3f30b3860a640951544" name="a2593a14c3fe7e3f30b3860a640951544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2593a14c3fe7e3f30b3860a640951544">&#9670;&#160;</a></span>COMMAND_GET_SAMPLE_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_SAMPLE_COUNT&#160;&#160;&#160;34</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00039">39</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a2d103642d4917fd528c4fddbe94f0a12" name="a2d103642d4917fd528c4fddbe94f0a12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d103642d4917fd528c4fddbe94f0a12">&#9670;&#160;</a></span>COMMAND_GET_SDRAM_READ_CNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_SDRAM_READ_CNT&#160;&#160;&#160;31</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00036">36</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="af2c0a2b73233881347772b1bf5dedacc" name="af2c0a2b73233881347772b1bf5dedacc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2c0a2b73233881347772b1bf5dedacc">&#9670;&#160;</a></span>COMMAND_GET_SDRAM_WRITE_CNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_GET_SDRAM_WRITE_CNT&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00037">37</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="acd932c054586f833bc575a4e1770cdcc" name="acd932c054586f833bc575a4e1770cdcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd932c054586f833bc575a4e1770cdcc">&#9670;&#160;</a></span>COMMAND_READ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_READ&#160;&#160;&#160;38</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00043">43</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
+
+</div>
+</div>
+<a id="a392519f04179cda5a9de5d4e6b21b969" name="a392519f04179cda5a9de5d4e6b21b969"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a392519f04179cda5a9de5d4e6b21b969">&#9670;&#160;</a></span>COMMAND_READ_COMMAND_LOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_READ_COMMAND_LOG&#160;&#160;&#160;33</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00038">38</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
+
+</div>
+</div>
+<a id="a4f48dac1c8c64e30cd29abe87fe94b2b" name="a4f48dac1c8c64e30cd29abe87fe94b2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f48dac1c8c64e30cd29abe87fe94b2b">&#9670;&#160;</a></span>COMMAND_READOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_READOUT&#160;&#160;&#160;20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00025">25</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00177">kest_fpga_readout()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00185">kest_fpga_readout_byte()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00193">kest_fpga_readout_bytes()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
 
 </div>
 </div>
@@ -276,9 +673,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00014">14</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00016">16</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00245">kest_fpga_set_input_gain()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00428">kest_command_log_test()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00432">kest_fpga_set_input_gain()</a>.</p>
 
 </div>
 </div>
@@ -294,9 +691,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00015">15</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00017">17</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00255">kest_fpga_set_output_gain()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00428">kest_command_log_test()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00458">kest_fpga_set_output_gain()</a>.</p>
 
 </div>
 </div>
@@ -312,9 +709,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00016">16</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00018">18</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00157">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00167">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -330,9 +727,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00017">17</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00019">19</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00157">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00167">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -348,7 +745,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00021">21</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00023">23</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -364,9 +763,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00009">9</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00011">11</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00111">kest_fpga_batch_append_block_instr()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00114">kest_fpga_batch_append_block_instr()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -382,9 +781,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00010">10</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00012">12</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00125">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00128">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -400,9 +799,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00011">11</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00013">13</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00125">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00271">kest_fpga_command_to_string()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00128">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
@@ -418,27 +817,279 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00020">20</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00022">22</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00105">kest_fpga_command_to_string()</a>.</p>
 
 </div>
 </div>
-<a id="ac727adacee8d41e5a34ad747f78c6087" name="ac727adacee8d41e5a34ad747f78c6087"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac727adacee8d41e5a34ad747f78c6087">&#9670;&#160;</a></span>KEST_FPGA_BLOCK_ADDR_BYTES</h2>
+<a id="a02a9e6dccabae2e88164580a5e53ef0b" name="a02a9e6dccabae2e88164580a5e53ef0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02a9e6dccabae2e88164580a5e53ef0b">&#9670;&#160;</a></span>DATA_REQ_BLOCK_INSTR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define KEST_FPGA_BLOCK_ADDR_BYTES&#160;&#160;&#160;1</td>
+          <td class="memname">#define DATA_REQ_BLOCK_INSTR&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00036">36</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00135">135</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00656">kest_fpga_get_block_instr()</a>.</p>
+
+</div>
+</div>
+<a id="a499432aa1da16f49def226300bac80d0" name="a499432aa1da16f49def226300bac80d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a499432aa1da16f49def226300bac80d0">&#9670;&#160;</a></span>DATA_REQ_BLOCK_REG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_BLOCK_REG&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00136">136</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00676">kest_fpga_get_block_reg()</a>.</p>
+
+</div>
+</div>
+<a id="a51bd06bcccfcea1ede2a89b7d12d8029" name="a51bd06bcccfcea1ede2a89b7d12d8029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51bd06bcccfcea1ede2a89b7d12d8029">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_ADDR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_ADDR&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00141">141</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00705">kest_fpga_get_delay_buffer_addr()</a>.</p>
+
+</div>
+</div>
+<a id="a4c5e3e7a26be7a1b7a6c66c94ddbe591" name="a4c5e3e7a26be7a1b7a6c66c94ddbe591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5e3e7a26be7a1b7a6c66c94ddbe591">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_DELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_DELAY&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00140">140</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00698">kest_fpga_get_delay_buffer_delay()</a>.</p>
+
+</div>
+</div>
+<a id="a749c85c4da15b0ebd3a4cfdb5ac5d4ad" name="a749c85c4da15b0ebd3a4cfdb5ac5d4ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a749c85c4da15b0ebd3a4cfdb5ac5d4ad">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_GAIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_GAIN&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00143">143</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00719">kest_fpga_get_delay_buffer_gain()</a>.</p>
+
+</div>
+</div>
+<a id="aabf7f73218dbe81269ebca45e1bc37e2" name="aabf7f73218dbe81269ebca45e1bc37e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf7f73218dbe81269ebca45e1bc37e2">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_LRWA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_LRWA&#160;&#160;&#160;9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00144">144</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00726">kest_fpga_get_delay_buffer_last_rw_addr()</a>.</p>
+
+</div>
+</div>
+<a id="a72909d4253a8aa1f40bd8ebeabdf2ddd" name="a72909d4253a8aa1f40bd8ebeabdf2ddd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72909d4253a8aa1f40bd8ebeabdf2ddd">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_POS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_POS&#160;&#160;&#160;7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00142">142</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00712">kest_fpga_get_delay_buffer_pos()</a>.</p>
+
+</div>
+</div>
+<a id="afb9b5111a68232e65a36051163c3bbf2" name="afb9b5111a68232e65a36051163c3bbf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb9b5111a68232e65a36051163c3bbf2">&#9670;&#160;</a></span>DATA_REQ_DELAY_BUF_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_DELAY_BUF_SIZE&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00139">139</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00691">kest_fpga_get_delay_buffer_size()</a>.</p>
+
+</div>
+</div>
+<a id="a05195116f1d07e467dfdcba70120b980" name="a05195116f1d07e467dfdcba70120b980"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05195116f1d07e467dfdcba70120b980">&#9670;&#160;</a></span>DATA_REQ_N_BLOCKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_N_BLOCKS&#160;&#160;&#160;14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00134">134</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00666">kest_fpga_get_n_blocks()</a>.</p>
+
+</div>
+</div>
+<a id="a3b972846b41c54ae97f6e9734998525c" name="a3b972846b41c54ae97f6e9734998525c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b972846b41c54ae97f6e9734998525c">&#9670;&#160;</a></span>DATA_REQ_N_DELAY_BUF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_N_DELAY_BUF&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00138">138</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00686">kest_fpga_get_n_delay_buffers()</a>.</p>
+
+</div>
+</div>
+<a id="a3d8377d07dbecde48d80a8b311aa9e61" name="a3d8377d07dbecde48d80a8b311aa9e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d8377d07dbecde48d80a8b311aa9e61">&#9670;&#160;</a></span>DATA_REQ_SAMPLE_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_SAMPLE_COUNT&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00145">145</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00739">kest_fpga_get_sample_count()</a>.</p>
+
+</div>
+</div>
+<a id="aa70cce3057c7b2f9a80c200c5ae60e4d" name="aa70cce3057c7b2f9a80c200c5ae60e4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa70cce3057c7b2f9a80c200c5ae60e4d">&#9670;&#160;</a></span>DATA_REQ_SDRAM_READ_CNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_SDRAM_READ_CNT&#160;&#160;&#160;11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00146">146</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00744">kest_fpga_get_sdram_read_count()</a>.</p>
+
+</div>
+</div>
+<a id="a6ffd7c8b19f5a9583a6e0f939e2eac7d" name="a6ffd7c8b19f5a9583a6e0f939e2eac7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ffd7c8b19f5a9583a6e0f939e2eac7d">&#9670;&#160;</a></span>DATA_REQ_SDRAM_WRITE_CNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_SDRAM_WRITE_CNT&#160;&#160;&#160;12</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00147">147</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00749">kest_fpga_get_sdram_write_count()</a>.</p>
+
+</div>
+</div>
+<a id="afaf7b4f00b691d7edce42429b52648f8" name="afaf7b4f00b691d7edce42429b52648f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaf7b4f00b691d7edce42429b52648f8">&#9670;&#160;</a></span>DATA_REQ_STUCK_FLAGS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATA_REQ_STUCK_FLAGS&#160;&#160;&#160;13</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00148">148</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00671">kest_fpga_get_stuck_flags()</a>.</p>
+
+</div>
+</div>
+<a id="adcd47903a08db8da8c54bccc79defef5" name="adcd47903a08db8da8c54bccc79defef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcd47903a08db8da8c54bccc79defef5">&#9670;&#160;</a></span>FPGA_BOOT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FPGA_BOOT_MS&#160;&#160;&#160;2500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00006">6</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
 
 </div>
 </div>
@@ -454,9 +1105,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00042">42</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00051">51</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_fpga_batch_print()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00687">kest_fpga_batch_print()</a>.</p>
 
 </div>
 </div>
@@ -472,9 +1123,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00040">40</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00049">49</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fixed__point_8c_source.html#l00026">float_to_q_nminus1()</a>, and <a class="el" href="kest__reg__format_8c_source.html#l00011">kest_compute_register_formats()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fixed__point_8c_source.html#l00026">float_to_q_nminus1()</a>, and <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>.</p>
 
 </div>
 </div>
@@ -490,9 +1141,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00041">41</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00050">50</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fixed__point_8c_source.html#l00090">kest_filter_compute_format()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fixed__point_8c_source.html#l00090">kest_filter_compute_format()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 
 </div>
 </div>
@@ -508,9 +1159,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00030">30</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00047">47</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00100">kest_fpga_batch_append_block_number()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00109">kest_new_fpga_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00203">kest_new_fpga_transfer_batch()</a>.</p>
 
 </div>
 </div>
@@ -528,23 +1179,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00004">4</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>.</p>
-
-</div>
-</div>
-<a id="a5a6b75392d534020ac7135fc272d2878" name="a5a6b75392d534020ac7135fc272d2878"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a6b75392d534020ac7135fc272d2878">&#9670;&#160;</a></span>SPI_RESPONSE_INITIALISING</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPI_RESPONSE_INITIALISING&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00025">25</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 
 </div>
 </div>
@@ -555,82 +1190,16 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SPI_RESPONSE_OK&#160;&#160;&#160;0</td>
+          <td class="memname">#define SPI_RESPONSE_OK&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00024">24</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-
-</div>
-</div>
-<a id="a3ee53009d1a7e29d96317ae23617a3a3" name="a3ee53009d1a7e29d96317ae23617a3a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ee53009d1a7e29d96317ae23617a3a3">&#9670;&#160;</a></span>SPI_RESPONSE_PROGRAMMING</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPI_RESPONSE_PROGRAMMING&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00026">26</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
-
-</div>
-</div>
-<a id="a8fb6247cde6ca564fff577294720f99c" name="a8fb6247cde6ca564fff577294720f99c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb6247cde6ca564fff577294720f99c">&#9670;&#160;</a></span>SPI_RESPONSE_REJECTED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPI_RESPONSE_REJECTED&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00027">27</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
-
-</div>
-</div>
-<a id="a16ea7881c83ca0cc119404eaab755422" name="a16ea7881c83ca0cc119404eaab755422"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16ea7881c83ca0cc119404eaab755422">&#9670;&#160;</a></span>SPI_RESPONSE_TIMEOUT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SPI_RESPONSE_TIMEOUT&#160;&#160;&#160;4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00028">28</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00045">45</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="a5ce503127508844eddd97a027fdd0d14" name="a5ce503127508844eddd97a027fdd0d14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ce503127508844eddd97a027fdd0d14">&#9670;&#160;</a></span>kest_fpga_block_addr_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef uint8_t <a class="el" href="#a5ce503127508844eddd97a027fdd0d14">kest_fpga_block_addr_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00037">37</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
-
-</div>
-</div>
 <a id="adecc508335953fe62a6e18687a3a0b46" name="adecc508335953fe62a6e18687a3a0b46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adecc508335953fe62a6e18687a3a0b46">&#9670;&#160;</a></span>kest_fpga_sample_t</h2>
 
@@ -643,7 +1212,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00045">45</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8h_source.html#l00054">54</a> of file <a class="el" href="kest__fpga__io_8h_source.html">kest_fpga_io.h</a>.</p>
 
 </div>
 </div>
@@ -667,9 +1236,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00126">126</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00220">220</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00148">kest_fpga_batch_append_16()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00164">kest_fpga_batch_append_24()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00181">kest_fpga_batch_append_32()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00111">kest_fpga_batch_append_block_instr()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00100">kest_fpga_batch_append_block_number()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00157">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00125">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00223">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00242">kest_fpga_batch_append_16()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00258">kest_fpga_batch_append_24()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00275">kest_fpga_batch_append_32()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00114">kest_fpga_batch_append_block_instr()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00167">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00128">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
@@ -704,9 +1273,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00148">148</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00242">242</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00100">kest_fpga_batch_append_block_number()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00157">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00125">kest_fpga_batch_append_block_regs()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00106">kest_fpga_batch_append_block_number()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00167">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00128">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 <div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
@@ -717,7 +1286,7 @@ Functions</h2></td></tr>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a1d6d30e20ceac79973b36fd12e790aa5_icgraph.svg" width="100%" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a1d6d30e20ceac79973b36fd12e790aa5_icgraph.svg" width="100%" height="556"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -741,9 +1310,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00164">164</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00258">258</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
@@ -754,7 +1323,7 @@ Functions</h2></td></tr>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aa00adf9f96658a5c00b3d93dfa8c00de_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aa00adf9f96658a5c00b3d93dfa8c00de_icgraph.svg" width="100%" height="406"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -778,9 +1347,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00181">181</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00275">275</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00111">kest_fpga_batch_append_block_instr()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00114">kest_fpga_batch_append_block_instr()</a>.</p>
 <div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
@@ -811,14 +1380,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00271">271</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00105">105</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00392">kest_fpga_print_command_log()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00382">kest_fpga_program_batch_send_careful()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00334">kest_fpga_transfer_batch_send_careful()</a>.</p>
 <div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a1a1501e2223a5cddbecfb2b92c9d9705_icgraph.svg" width="650" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a1a1501e2223a5cddbecfb2b92c9d9705_icgraph.svg" width="100%" height="509"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -838,12 +1407,635 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00266">266</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00485">485</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 <div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ac4389d5b4fc4dc3806d9e9cc2195b6b4_cgraph.svg" width="552" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a688987fc53c1295119933650d3a19776" name="a688987fc53c1295119933650d3a19776"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a688987fc53c1295119933650d3a19776">&#9670;&#160;</a></span>kest_fpga_decode_status_flags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_decode_status_flags </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>byte</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00490">490</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00272">get_and_sprint_flags_compact()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00507">kest_fpga_get_status_flags()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00153">kest_fpga_send_byte_get_flags()</a>.</p>
+<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a688987fc53c1295119933650d3a19776_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a571a86c4b7150cb02163c7f121280727" name="a571a86c4b7150cb02163c7f121280727"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a571a86c4b7150cb02163c7f121280727">&#9670;&#160;</a></span>kest_fpga_get_block_instr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t kest_fpga_get_block_instr </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>block</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00656">656</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a571a86c4b7150cb02163c7f121280727_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a571a86c4b7150cb02163c7f121280727_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2babe06c62b033671938c204a4d9b596" name="a2babe06c62b033671938c204a4d9b596"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2babe06c62b033671938c204a4d9b596">&#9670;&#160;</a></span>kest_fpga_get_block_reg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t kest_fpga_get_block_reg </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>block</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>reg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00676">676</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a2babe06c62b033671938c204a4d9b596_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a2babe06c62b033671938c204a4d9b596_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a61cbd714b51619a08e508a5970def9af" name="a61cbd714b51619a08e508a5970def9af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61cbd714b51619a08e508a5970def9af">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_addr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_delay_buffer_addr </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00705">705</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a61cbd714b51619a08e508a5970def9af_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-17" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a61cbd714b51619a08e508a5970def9af_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aec9b97cfd6352d1e0f3002d6ed4d4d3c" name="aec9b97cfd6352d1e0f3002d6ed4d4d3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec9b97cfd6352d1e0f3002d6ed4d4d3c">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_delay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_delay_buffer_delay </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00698">698</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aec9b97cfd6352d1e0f3002d6ed4d4d3c_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aec9b97cfd6352d1e0f3002d6ed4d4d3c_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aeb66769bc41bdc3d66f4f5a196bed529" name="aeb66769bc41bdc3d66f4f5a196bed529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb66769bc41bdc3d66f4f5a196bed529">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_gain()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t kest_fpga_get_delay_buffer_gain </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00719">719</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aeb66769bc41bdc3d66f4f5a196bed529_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aeb66769bc41bdc3d66f4f5a196bed529_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2a8804e3f9b37c1933b7e5c871544e69" name="a2a8804e3f9b37c1933b7e5c871544e69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a8804e3f9b37c1933b7e5c871544e69">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_last_rw_addr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_delay_buffer_last_rw_addr </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *</td>          <td class="paramname"><span class="paramname"><em>read_addr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t *</td>          <td class="paramname"><span class="paramname"><em>write_addr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00726">726</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a2a8804e3f9b37c1933b7e5c871544e69_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a2a8804e3f9b37c1933b7e5c871544e69_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab03b27fbb623cc160e3cbaab1593f61c" name="ab03b27fbb623cc160e3cbaab1593f61c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab03b27fbb623cc160e3cbaab1593f61c">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_pos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_delay_buffer_pos </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00712">712</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab03b27fbb623cc160e3cbaab1593f61c_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab03b27fbb623cc160e3cbaab1593f61c_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ae4692d070ab3911252b8af3527b73bd4" name="ae4692d070ab3911252b8af3527b73bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4692d070ab3911252b8af3527b73bd4">&#9670;&#160;</a></span>kest_fpga_get_delay_buffer_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_delay_buffer_size </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00691">691</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae4692d070ab3911252b8af3527b73bd4_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae4692d070ab3911252b8af3527b73bd4_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a8c6d370bdb122da708c13afb62b98ce5" name="a8c6d370bdb122da708c13afb62b98ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6d370bdb122da708c13afb62b98ce5">&#9670;&#160;</a></span>kest_fpga_get_n_blocks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_n_blocks </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00666">666</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-28" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a8c6d370bdb122da708c13afb62b98ce5_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a8c6d370bdb122da708c13afb62b98ce5_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abafaa63950c4a86e9b1e1e71cc88b1eb" name="abafaa63950c4a86e9b1e1e71cc88b1eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abafaa63950c4a86e9b1e1e71cc88b1eb">&#9670;&#160;</a></span>kest_fpga_get_n_delay_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_n_delay_buffers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00686">686</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abafaa63950c4a86e9b1e1e71cc88b1eb_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abafaa63950c4a86e9b1e1e71cc88b1eb_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a91cd511ba05451b24c4dd357011d8119" name="a91cd511ba05451b24c4dd357011d8119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91cd511ba05451b24c4dd357011d8119">&#9670;&#160;</a></span>kest_fpga_get_sample_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t kest_fpga_get_sample_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00739">739</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a91cd511ba05451b24c4dd357011d8119_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a91cd511ba05451b24c4dd357011d8119_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abfb6117132f7f136c55f8869b95b79d6" name="abfb6117132f7f136c55f8869b95b79d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfb6117132f7f136c55f8869b95b79d6">&#9670;&#160;</a></span>kest_fpga_get_sdram_read_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t kest_fpga_get_sdram_read_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00744">744</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abfb6117132f7f136c55f8869b95b79d6_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abfb6117132f7f136c55f8869b95b79d6_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af06aacf356a45c64705a79fea40fd07e" name="af06aacf356a45c64705a79fea40fd07e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af06aacf356a45c64705a79fea40fd07e">&#9670;&#160;</a></span>kest_fpga_get_sdram_write_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t kest_fpga_get_sdram_write_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00749">749</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>.</p>
+<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_af06aacf356a45c64705a79fea40fd07e_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-37" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_af06aacf356a45c64705a79fea40fd07e_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abe57698adf89b8e9d87f4beca9077c9a" name="abe57698adf89b8e9d87f4beca9077c9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe57698adf89b8e9d87f4beca9077c9a">&#9670;&#160;</a></span>kest_fpga_get_status_flags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_get_status_flags </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00507">507</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00262">get_and_sprint_flags()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
+<div id="dynsection-38" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-38-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abe57698adf89b8e9d87f4beca9077c9a_cgraph.svg" width="570" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-39" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-39-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abe57698adf89b8e9d87f4beca9077c9a_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abf50b97e03268742ffed54243f18f396" name="abf50b97e03268742ffed54243f18f396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf50b97e03268742ffed54243f18f396">&#9670;&#160;</a></span>kest_fpga_get_stuck_flags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t kest_fpga_get_stuck_flags </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00671">671</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<div id="dynsection-40" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-40-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_abf50b97e03268742ffed54243f18f396_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a76e50c684869ebdac1a1af4cd0d52cdd" name="a76e50c684869ebdac1a1af4cd0d52cdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76e50c684869ebdac1a1af4cd0d52cdd">&#9670;&#160;</a></span>kest_fpga_program_batch_send()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_program_batch_send </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a></td>          <td class="paramname"><span class="paramname"><em>batch</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00369">369</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+<div id="dynsection-41" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a76e50c684869ebdac1a1af4cd0d52cdd_cgraph.svg" width="610" height="64"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-42" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-42-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a76e50c684869ebdac1a1af4cd0d52cdd_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a38a89d268857557d083c5e4696d54669" name="a38a89d268857557d083c5e4696d54669"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38a89d268857557d083c5e4696d54669">&#9670;&#160;</a></span>kest_fpga_program_batch_send_careful()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_program_batch_send_careful </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a></td>          <td class="paramname"><span class="paramname"><em>batch</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00382">382</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<div id="dynsection-43" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a38a89d268857557d083c5e4696d54669_cgraph.svg" width="652" height="468"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -863,20 +2055,70 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00101">101</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00169">169</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00272">get_and_sprint_flags_compact()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00507">kest_fpga_get_status_flags()</a>.</p>
+<div id="dynsection-44" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div id="dynsection-44-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab908dedc52b0ca9107f52f74ab7860c6_cgraph.svg" width="332" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-45" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab908dedc52b0ca9107f52f74ab7860c6_icgraph.svg" width="630" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-45-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab908dedc52b0ca9107f52f74ab7860c6_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aebc8e5fe9202bb484d2dade4696306a3" name="aebc8e5fe9202bb484d2dade4696306a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebc8e5fe9202bb484d2dade4696306a3">&#9670;&#160;</a></span>kest_fpga_read_command_log()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_read_command_log </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>buf</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab14e474da760b9f53277d51557a0a9d3" name="ab14e474da760b9f53277d51557a0a9d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab14e474da760b9f53277d51557a0a9d3">&#9670;&#160;</a></span>kest_fpga_readout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t kest_fpga_readout </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00177">177</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
+<div id="dynsection-46" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-46-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab14e474da760b9f53277d51557a0a9d3_cgraph.svg" width="318" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-47" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-47-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-47-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ab14e474da760b9f53277d51557a0a9d3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -896,20 +2138,57 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00096">96</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00148">148</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00266">kest_fpga_commit_reg_updates()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00245">kest_fpga_set_input_gain()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00255">kest_fpga_set_output_gain()</a>.</p>
-<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00428">kest_command_log_test()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00485">kest_fpga_commit_reg_updates()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_comms_print_full_scan()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00416">kest_fpga_handle_misalignment()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00369">kest_fpga_program_batch_send()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00382">kest_fpga_program_batch_send_careful()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00193">kest_fpga_readout_bytes()</a>.</p>
+<div id="dynsection-48" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a5151b31faf4c75059d9d8bd1d27fa5f9_cgraph.svg" width="335" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-49" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-49-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a5151b31faf4c75059d9d8bd1d27fa5f9_icgraph.svg" width="100%" height="457"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-49-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a5151b31faf4c75059d9d8bd1d27fa5f9_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a00a4bbec92692e8a9a447b375616efa1" name="a00a4bbec92692e8a9a447b375616efa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00a4bbec92692e8a9a447b375616efa1">&#9670;&#160;</a></span>kest_fpga_send_byte_get_flags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_send_byte_get_flags </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00153">153</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00560">kest_fpga_req_data()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00603">kest_fpga_req_data_p()</a>.</p>
+<div id="dynsection-50" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-50-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-50-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a00a4bbec92692e8a9a447b375616efa1_cgraph.svg" width="403" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-51" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-51-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-51-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a00a4bbec92692e8a9a447b375616efa1_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -929,19 +2208,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00245">245</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00432">432</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+<div id="dynsection-52" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-52-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a0e6e4e058cfd8f3ec79208acb0f71aa6_cgraph.svg" width="570" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-52-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a0e6e4e058cfd8f3ec79208acb0f71aa6_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-53" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-53-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div id="dynsection-53-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a0e6e4e058cfd8f3ec79208acb0f71aa6_icgraph.svg" width="659" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -962,19 +2241,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00255">255</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00458">458</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-<div id="dynsection-17" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+<div id="dynsection-54" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-54-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a6569f6bf656d72080dd355179ac2c4e9_cgraph.svg" width="578" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-54-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a6569f6bf656d72080dd355179ac2c4e9_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-55" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-55-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div id="dynsection-55-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a6569f6bf656d72080dd355179ac2c4e9_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -997,12 +2276,82 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00020">20</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+<div id="dynsection-56" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-56-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div id="dynsection-56-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a8b41ed8feb0e991733a9af1a8f8acc20_icgraph.svg" width="611" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afff0ef19687a88fbb1505151ad4b041d" name="afff0ef19687a88fbb1505151ad4b041d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afff0ef19687a88fbb1505151ad4b041d">&#9670;&#160;</a></span>kest_fpga_status_flags_print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_status_flags_print </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00537">537</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>.</p>
+<div id="dynsection-57" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-57-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-57-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_afff0ef19687a88fbb1505151ad4b041d_cgraph.svg" width="602" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-58" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-58-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-58-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_afff0ef19687a88fbb1505151ad4b041d_icgraph.svg" width="643" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a3d92c05c5bb464da9e6f27d0a4924a7e" name="a3d92c05c5bb464da9e6f27d0a4924a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d92c05c5bb464da9e6f27d0a4924a7e">&#9670;&#160;</a></span>kest_fpga_status_flags_sprint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_status_flags_sprint </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> *</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__status__flags.html">kest_fpga_status_flags</a> *</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00519">519</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00262">get_and_sprint_flags()</a>.</p>
+<div id="dynsection-59" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-59-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-59-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a3d92c05c5bb464da9e6f27d0a4924a7e_cgraph.svg" width="602" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-60" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-60-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-60-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a3d92c05c5bb464da9e6f27d0a4924a7e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1022,20 +2371,53 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00240">240</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00422">422</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>.</p>
-<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00432">kest_fpga_set_input_gain()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00458">kest_fpga_set_output_gain()</a>.</p>
+<div id="dynsection-61" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-61-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae911bef59743e59043a283dac1be0761_cgraph.svg" width="319" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-61-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae911bef59743e59043a283dac1be0761_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-62" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-62-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-21-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae911bef59743e59043a283dac1be0761_icgraph.svg" width="615" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-62-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_ae911bef59743e59043a283dac1be0761_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a705da035774b1be5ed1365126486649f" name="a705da035774b1be5ed1365126486649f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a705da035774b1be5ed1365126486649f">&#9670;&#160;</a></span>kest_fpga_transfer_batch_send_careful()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_fpga_transfer_batch_send_careful </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a></td>          <td class="paramname"><span class="paramname"><em>batch</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00334">334</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__io_8c_source.html#l00422">kest_fpga_transfer_batch_send()</a>.</p>
+<div id="dynsection-63" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-63-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-63-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a705da035774b1be5ed1365126486649f_cgraph.svg" width="618" height="419"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-64" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-64-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-64-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_a705da035774b1be5ed1365126486649f_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1055,19 +2437,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00121">121</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00215">215</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00032">kest_fpga_comms_task()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00223">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
-<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00225">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
+<div id="dynsection-65" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-65-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div id="dynsection-65-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aa1e89a33f9427932bc0d8e62bbfed3cb_cgraph.svg" width="316" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-66" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-66-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div id="dynsection-66-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_aa1e89a33f9427932bc0d8e62bbfed3cb_icgraph.svg" width="100%" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -1088,20 +2470,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00109">109</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__io_8c_source.html#l00203">203</a> of file <a class="el" href="kest__fpga__io_8c_source.html">kest_fpga_io.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00483">kest_effect_update_fpga_registers()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00223">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
-<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00419">kest_effect_update_fpga()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00225">kest_pipeline_create_fpga_transfer_batch()</a>.</p>
+<div id="dynsection-67" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-67-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div id="dynsection-67-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_adb086d525d9f47a4c077d7377110500b_cgraph.svg" width="322" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-68" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-68-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_adb086d525d9f47a4c077d7377110500b_icgraph.svg" width="100%" height="431"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-68-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fpga__io_8h_adb086d525d9f47a4c077d7377110500b_icgraph.svg" width="100%" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

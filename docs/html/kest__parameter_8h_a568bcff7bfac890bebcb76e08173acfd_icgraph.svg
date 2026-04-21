@@ -59,9 +59,9 @@ var sectionId = 'dynsection-24';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="624.25,-33.5 499.5,-33.5 499.5,0 624.25,0 624.25,-33.5"/>
-<text xml:space="preserve" text-anchor="start" x="507.5" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_parameter_make</text>
-<text xml:space="preserve" text-anchor="middle" x="561.88" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_clone_for_effect</text>
+<polygon fill="#999999" stroke="#666666" points="623.5,-33.5 498.75,-33.5 498.75,0 623.5,0 623.5,-33.5"/>
+<text xml:space="preserve" text-anchor="start" x="506.75" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_parameter_make</text>
+<text xml:space="preserve" text-anchor="middle" x="561.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_clone_for_effect</text>
 </a>
 </g>
 </g>
@@ -69,8 +69,8 @@ var sectionId = 'dynsection-24';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="kest__effect_8c.html#a85b25e44e2629962673634f965ffe304" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="463.5,-27.12 308,-27.12 308,-6.38 463.5,-6.38 463.5,-27.12"/>
-<text xml:space="preserve" text-anchor="middle" x="385.75" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">init_effect_from_effect_desc</text>
+<polygon fill="white" stroke="#666666" points="462.75,-27.12 307.25,-27.12 307.25,-6.38 462.75,-6.38 462.75,-27.12"/>
+<text xml:space="preserve" text-anchor="middle" x="385" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">init_effect_from_effect_desc</text>
 </a>
 </g>
 </g>
@@ -78,8 +78,8 @@ var sectionId = 'dynsection-24';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M488.21,-16.75C480.13,-16.75 471.88,-16.75 463.76,-16.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="487.97,-20.25 497.97,-16.75 487.97,-13.25 487.97,-20.25"/>
+<path fill="none" stroke="#63b8ff" d="M487.46,-16.75C479.38,-16.75 471.13,-16.75 463.01,-16.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="487.22,-20.25 497.22,-16.75 487.22,-13.25 487.22,-20.25"/>
 </a>
 </g>
 </g>
@@ -87,9 +87,9 @@ var sectionId = 'dynsection-24';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="kest__pipeline_8c.html#a0eff55a4103a090993bbac228a981af6" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="272,-33.5 150.25,-33.5 150.25,0 272,0 272,-33.5"/>
-<text xml:space="preserve" text-anchor="start" x="158.25" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_pipeline_append</text>
-<text xml:space="preserve" text-anchor="middle" x="211.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_effect_eff</text>
+<polygon fill="white" stroke="#666666" points="271.25,-33.5 149.5,-33.5 149.5,0 271.25,0 271.25,-33.5"/>
+<text xml:space="preserve" text-anchor="start" x="157.5" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_pipeline_append</text>
+<text xml:space="preserve" text-anchor="middle" x="210.38" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_effect_eff</text>
 </a>
 </g>
 </g>
@@ -97,18 +97,18 @@ var sectionId = 'dynsection-24';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M296.18,-16.75C288.15,-16.75 280.15,-16.75 272.45,-16.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="296.01,-20.25 306.01,-16.75 296.01,-13.25 296.01,-20.25"/>
+<path fill="none" stroke="#63b8ff" d="M295.43,-16.75C287.4,-16.75 279.4,-16.75 271.7,-16.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="295.26,-20.25 305.26,-16.75 295.26,-13.25 295.26,-20.25"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="kest__profile_8c.html#ab6d55ea9738ce37aae141901562268d6" target="_top" xlink:title=" ">
-<polygon fill="#fff0f0" stroke="red" points="114.25,-33.5 0,-33.5 0,0 114.25,0 114.25,-33.5"/>
-<text xml:space="preserve" text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_profile_append</text>
-<text xml:space="preserve" text-anchor="middle" x="57.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_effect_eff</text>
+<g id="a_Node000004"><a xlink:href="kest__preset_8c.html#a9a85dd1d443d85fb9a7b91bd439ba450" target="_top" xlink:title=" ">
+<polygon fill="#fff0f0" stroke="red" points="113.5,-33.5 0,-33.5 0,0 113.5,0 113.5,-33.5"/>
+<text xml:space="preserve" text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_preset_append</text>
+<text xml:space="preserve" text-anchor="middle" x="56.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_effect_eff</text>
 </a>
 </g>
 </g>
@@ -116,8 +116,8 @@ var sectionId = 'dynsection-24';
 <g id="edge3_Node000003_Node000004" class="edge">
 <title>Node3&#45;&gt;Node4</title>
 <g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M138.6,-16.75C130.44,-16.75 122.22,-16.75 114.3,-16.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="138.54,-20.25 148.54,-16.75 138.54,-13.25 138.54,-20.25"/>
+<path fill="none" stroke="#63b8ff" d="M137.51,-16.75C129.6,-16.75 121.64,-16.75 113.96,-16.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="137.5,-20.25 147.5,-16.75 137.5,-13.25 137.5,-20.25"/>
 </a>
 </g>
 </g>

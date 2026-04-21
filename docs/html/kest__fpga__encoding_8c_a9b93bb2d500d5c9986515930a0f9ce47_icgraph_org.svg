@@ -37,39 +37,39 @@
 </a>
 </g>
 </g>
-<!-- Node63 -->
-<g id="Node000063" class="node">
-<title>Node63</title>
-<g id="a_Node000063"><a xlink:href="kest__fpga__encoding_8c.html#a1eb834a3d6799cabab146f2f942de3a5" target="_top" xlink:title=" ">
+<!-- Node72 -->
+<g id="Node000072" class="node">
+<title>Node72</title>
+<g id="a_Node000072"><a xlink:href="kest__fpga__encoding_8c.html#a671c5c9aca5f0e8197dbccbc0dd8291c" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="482.25,-39.88 345.5,-39.88 345.5,-6.38 482.25,-6.38 482.25,-39.88"/>
 <text xml:space="preserve" text-anchor="start" x="353.5" y="-26.38" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
 <text xml:space="preserve" text-anchor="middle" x="413.88" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">_block_register_updates</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node63 -->
-<g id="edge4_Node000001_Node000063" class="edge">
-<title>Node1&#45;&gt;Node63</title>
-<g id="a_edge4_Node000001_Node000063"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node72 -->
+<g id="edge4_Node000001_Node000072" class="edge">
+<title>Node1&#45;&gt;Node72</title>
+<g id="a_edge4_Node000001_Node000072"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M518.61,-54.72C503.03,-49.97 486.58,-44.96 471.49,-40.37"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="517.21,-57.95 527.79,-57.51 519.25,-51.25 517.21,-57.95"/>
 </a>
 </g>
 </g>
-<!-- Node66 -->
-<g id="Node000066" class="node">
-<title>Node66</title>
-<g id="a_Node000066"><a xlink:href="kest__fpga__encoding_8c.html#a0c272bb9440b58f3546ad0f628d0daec" target="_top" xlink:title=" ">
+<!-- Node75 -->
+<g id="Node000075" class="node">
+<title>Node75</title>
+<g id="a_Node000075"><a xlink:href="kest__fpga__encoding_8c.html#a48ab2470c45981ea279dd588b37c36df" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="482.25,-91.88 345.5,-91.88 345.5,-58.38 482.25,-58.38 482.25,-91.88"/>
 <text xml:space="preserve" text-anchor="start" x="353.5" y="-78.38" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
 <text xml:space="preserve" text-anchor="middle" x="413.88" y="-65.62" font-family="Helvetica,sans-Serif" font-size="10.00">_block_regs</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node66 -->
-<g id="edge7_Node000001_Node000066" class="edge">
-<title>Node1&#45;&gt;Node66</title>
-<g id="a_edge7_Node000001_Node000066"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node75 -->
+<g id="edge7_Node000001_Node000075" class="edge">
+<title>Node1&#45;&gt;Node75</title>
+<g id="a_edge7_Node000001_Node000075"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M506.83,-75.12C498.77,-75.12 490.63,-75.12 482.71,-75.12"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="506.63,-78.63 516.63,-75.13 506.63,-71.63 506.63,-78.63"/>
 </a>
@@ -78,7 +78,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="kest__fpga__encoding_8c.html#a793b1841a47fcdbddc9d0aa5b6eec343" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="kest__fpga__encoding_8c.html#a24f2c777ab7078a8261d0fcee4aaf738" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="309.5,-120.88 172.75,-120.88 172.75,-87.38 309.5,-87.38 309.5,-120.88"/>
 <text xml:space="preserve" text-anchor="start" x="180.75" y="-107.38" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
 <text xml:space="preserve" text-anchor="middle" x="241.12" y="-94.62" font-family="Helvetica,sans-Serif" font-size="10.00">_block</text>
@@ -97,7 +97,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="kest__fpga__encoding_8c.html#a1d6980972e5f88bc39838473e70f8281" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="kest__fpga__encoding_8c.html#aaa459b3fe0bc706c415180f6ac35d7c3" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="136.75,-120.88 0,-120.88 0,-87.38 136.75,-87.38 136.75,-120.88"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-107.38" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
 <text xml:space="preserve" text-anchor="middle" x="68.38" y="-94.62" font-family="Helvetica,sans-Serif" font-size="10.00">_blocks</text>
@@ -113,10 +113,10 @@
 </a>
 </g>
 </g>
-<!-- Node64 -->
-<g id="Node000064" class="node">
-<title>Node64</title>
-<g id="a_Node000064"><a xlink:href="kest__fpga__encoding_8c.html#a2f3bae873de3ea2dafd0d6d1424e929f" target="_top" xlink:title=" ">
+<!-- Node73 -->
+<g id="Node000073" class="node">
+<title>Node73</title>
+<g id="a_Node000073"><a xlink:href="kest__fpga__encoding_8c.html#a2f82b2c396c41026c378670b04592a6b" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="302.75,-46.25 179.5,-46.25 179.5,0 302.75,0 302.75,-46.25"/>
 <text xml:space="preserve" text-anchor="start" x="187.5" y="-32.75" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_transfer</text>
 <text xml:space="preserve" text-anchor="start" x="187.5" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">_batch_append_effect</text>
@@ -124,38 +124,37 @@
 </a>
 </g>
 </g>
-<!-- Node63&#45;&gt;Node64 -->
-<g id="edge5_Node000063_Node000064" class="edge">
-<title>Node63&#45;&gt;Node64</title>
-<g id="a_edge5_Node000063_Node000064"><a xlink:title=" ">
+<!-- Node72&#45;&gt;Node73 -->
+<g id="edge5_Node000072_Node000073" class="edge">
+<title>Node72&#45;&gt;Node73</title>
+<g id="a_edge5_Node000072_Node000073"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M334.14,-23.12C323.69,-23.12 313.11,-23.12 303.02,-23.12"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="333.88,-26.63 343.88,-23.13 333.88,-19.63 333.88,-26.63"/>
 </a>
 </g>
 </g>
-<!-- Node65 -->
-<g id="Node000065" class="node">
-<title>Node65</title>
-<g id="a_Node000065"><a xlink:href="kest__effect_8c.html#abce80b3222c75d4f721e59f856083682" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="122.88,-39.88 13.88,-39.88 13.88,-6.38 122.88,-6.38 122.88,-39.88"/>
-<text xml:space="preserve" text-anchor="start" x="21.88" y="-26.38" font-family="Helvetica,sans-Serif" font-size="10.00">kest_effect_update</text>
-<text xml:space="preserve" text-anchor="middle" x="68.38" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">_fpga_registers</text>
+<!-- Node74 -->
+<g id="Node000074" class="node">
+<title>Node74</title>
+<g id="a_Node000074"><a xlink:href="kest__effect_8c.html#a490655823471fa9f081e6252b13da30e" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="136.38,-33.5 0.38,-33.5 0.38,-12.75 136.38,-12.75 136.38,-33.5"/>
+<text xml:space="preserve" text-anchor="middle" x="68.38" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_effect_update_fpga</text>
 </a>
 </g>
 </g>
-<!-- Node64&#45;&gt;Node65 -->
-<g id="edge6_Node000064_Node000065" class="edge">
-<title>Node64&#45;&gt;Node65</title>
-<g id="a_edge6_Node000064_Node000065"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M168.11,-23.12C153.11,-23.12 137.55,-23.12 123.33,-23.12"/>
+<!-- Node73&#45;&gt;Node74 -->
+<g id="edge6_Node000073_Node000074" class="edge">
+<title>Node73&#45;&gt;Node74</title>
+<g id="a_edge6_Node000073_Node000074"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M167.94,-23.12C157.63,-23.12 147.05,-23.12 136.83,-23.12"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="167.93,-26.63 177.93,-23.13 167.93,-19.63 167.93,-26.63"/>
 </a>
 </g>
 </g>
-<!-- Node66&#45;&gt;Node3 -->
-<g id="edge8_Node000066_Node000003" class="edge">
-<title>Node66&#45;&gt;Node3</title>
-<g id="a_edge8_Node000066_Node000003"><a xlink:title=" ">
+<!-- Node75&#45;&gt;Node3 -->
+<g id="edge8_Node000075_Node000003" class="edge">
+<title>Node75&#45;&gt;Node3</title>
+<g id="a_edge8_Node000075_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M334.08,-88.51C326.02,-89.88 317.88,-91.26 309.96,-92.6"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="334.63,-91.97 343.9,-86.84 333.45,-85.06 334.63,-91.97"/>
 </a>

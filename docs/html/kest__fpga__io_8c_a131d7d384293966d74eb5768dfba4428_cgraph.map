@@ -1,0 +1,18 @@
+<map id="kest_fpga_req_data" name="kest_fpga_req_data">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,97,154,124"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__io_8c.html#abe57698adf89b8e9d87f4beca9077c9a" title=" " alt="" coords="202,88,361,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,108,186,108,186,113,154,113"/>
+<area shape="rect" id="Node000006" href="$kest__fpga__io_8c.html#ab14e474da760b9f53277d51557a0a9d3" title=" " alt="" coords="431,157,572,184"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="124,122,202,143,313,158,415,165,415,170,312,163,201,148,123,128"/>
+<area shape="rect" id="Node000007" href="$kest__fpga__io_8c.html#a00a4bbec92692e8a9a447b375616efa1" title=" " alt="" coords="202,19,360,64"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="121,94,199,67,201,72,123,99"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__io_8c.html#a688987fc53c1295119933650d3a19776" title=" " alt="" coords="409,36,594,81"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="361,89,393,82,394,87,362,94"/>
+<area shape="rect" id="Node000004" href="$kest__fpga__io_8c.html#ab908dedc52b0ca9107f52f74ab7860c6" title=" " alt="" coords="424,105,580,132"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="361,111,408,113,408,118,361,116"/>
+<area shape="rect" id="Node000005" href="$kest__fpga__io_8c.html#a2fe46577ece371a5fc9834bc59390913" title=" " alt="" coords="642,105,760,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="580,116,627,116,627,121,580,121"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="557,154,629,134,631,140,558,159"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="361,45,394,47,393,53,360,50"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="361,17,414,8,474,3,536,6,595,21,622,35,645,53,682,91,678,94,642,57,619,39,593,26,535,12,474,8,414,13,361,22"/>
+</map>

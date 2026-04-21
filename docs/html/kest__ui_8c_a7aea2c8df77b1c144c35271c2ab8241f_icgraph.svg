@@ -84,39 +84,39 @@ var sectionId = 'dynsection-9';
 </a>
 </g>
 </g>
-<!-- Node7 -->
-<g id="Node000007" class="node">
-<title>Node7</title>
-<g id="a_Node000007"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
+<!-- Node16 -->
+<g id="Node000016" class="node">
+<title>Node16</title>
+<g id="a_Node000016"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="414.75,-85.5 272.75,-85.5 272.75,-52 414.75,-52 414.75,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="280.75" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="343.75" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button_and_page_button</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node7 -->
-<g id="edge5_Node000001_Node000007" class="edge">
-<title>Node1&#45;&gt;Node7</title>
-<g id="a_edge5_Node000001_Node000007"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node16 -->
+<g id="edge5_Node000001_Node000016" class="edge">
+<title>Node1&#45;&gt;Node16</title>
+<g id="a_edge5_Node000001_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M439.35,-68.75C431.27,-68.75 423.09,-68.75 415.1,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="439.15,-72.25 449.15,-68.75 439.15,-65.25 439.15,-72.25"/>
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
+<!-- Node18 -->
+<g id="Node000018" class="node">
+<title>Node18</title>
+<g id="a_Node000018"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="410.25,-33.5 277.25,-33.5 277.25,0 410.25,0 410.25,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="285.25" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_right</text>
 <text xml:space="preserve" text-anchor="middle" x="343.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node9 -->
-<g id="edge7_Node000001_Node000009" class="edge">
-<title>Node1&#45;&gt;Node9</title>
-<g id="a_edge7_Node000001_Node000009"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node18 -->
+<g id="edge7_Node000001_Node000018" class="edge">
+<title>Node1&#45;&gt;Node18</title>
+<g id="a_edge7_Node000001_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M449.17,-48.34C433.48,-43.6 416.93,-38.59 401.74,-33.99"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="447.84,-51.59 458.42,-51.14 449.86,-44.89 447.84,-51.59"/>
 </a>
@@ -176,20 +176,20 @@ var sectionId = 'dynsection-9';
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="236.75,-85.5 103,-85.5 103,-52 236.75,-52 236.75,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="111" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="169.88" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_and_settings_buttons</text>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node8 -->
-<g id="edge6_Node000007_Node000008" class="edge">
-<title>Node7&#45;&gt;Node8</title>
-<g id="a_edge6_Node000007_Node000008"><a xlink:title=" ">
+<!-- Node16&#45;&gt;Node17 -->
+<g id="edge6_Node000016_Node000017" class="edge">
+<title>Node16&#45;&gt;Node17</title>
+<g id="a_edge6_Node000016_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M261.03,-68.75C252.98,-68.75 244.88,-68.75 237.02,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="260.83,-72.25 270.83,-68.75 260.83,-65.25 260.83,-72.25"/>
 </a>

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['v_5fpad_0',['V_PAD',['../kest__ui_8h.html#aace366e89389f7d05784b4eb7e52144d',1,'kest_ui.h']]],
-  ['val_1',['val',['../structkest__expr__scope__entry.html#abafbb972b1b62746c6bdbb587c70a9d2',1,'kest_expr_scope_entry::val'],['../structkest__expression.html#a00506d168bea3c8ed52c34fbbf491f33',1,'kest_expression::val'],['../structkest__asm__operand.html#ab50d5bc91738a27b0f626b3fb00e3bd7',1,'kest_asm_operand::val']]],
+  ['val_1',['val',['../structkest__expr__scope__entry.html#abafbb972b1b62746c6bdbb587c70a9d2',1,'kest_expr_scope_entry::val'],['../structkest__scope__entry.html#ab1026ffd3e777e6eaa19a7b55001a67e',1,'kest_scope_entry::val'],['../structkest__expression.html#a00506d168bea3c8ed52c34fbbf491f33',1,'kest_expression::val'],['../structkest__asm__operand.html#ab50d5bc91738a27b0f626b3fb00e3bd7',1,'kest_asm_operand::val']]],
   ['val_5fdict_2',['val_dict',['../structkest__dictionary__entry.html#a42b9dfe2ad5f84414b3789505a876833',1,'kest_dictionary_entry']]],
   ['val_5fexpr_3',['val_expr',['../structkest__dictionary__entry.html#ac332896746fe09265864f29b86271f2f',1,'kest_dictionary_entry']]],
   ['val_5ffloat_4',['val_float',['../structkest__expression.html#a610faacc6c198ec4963796b306a24a08',1,'kest_expression::val_float'],['../structkest__dictionary__entry.html#aa4df5b1398eef283a1c9a5b5b6ba59b0',1,'kest_dictionary_entry::val_float']]],
@@ -18,8 +18,8 @@ var searchData=
   ['version_5fstring_15',['version_string',['../structkest__eff__parsing__state.html#a1526a72b4854689c1c273859a12a03d5',1,'kest_eff_parsing_state']]],
   ['virtual_5fpot_5fsize_5fh_16',['VIRTUAL_POT_SIZE_H',['../kest__parameter__widget_8h.html#a2f71090861d070e80a2632ff5d7cc62a',1,'kest_parameter_widget.h']]],
   ['virtual_5fpot_5fsize_5fw_17',['VIRTUAL_POT_SIZE_W',['../kest__parameter__widget_8h.html#a21cb1df13803107ef3039347947bd315',1,'kest_parameter_widget.h']]],
-  ['volume_18',['volume',['../structkest__profile.html#a9bcf05a69a8f1ef3bf52170583613279',1,'kest_profile']]],
-  ['volume_5fwidget_19',['volume_widget',['../structkest__profile__settings__str.html#a9323ff55ce3d69ba73ef39b5ad2a8819',1,'kest_profile_settings_str']]],
+  ['volume_18',['volume',['../structkest__preset.html#a09b7902a1516cf47259bdb34a2f4e05e',1,'kest_preset']]],
+  ['volume_5fwidget_19',['volume_widget',['../structkest__preset__settings__str.html#ac1cfd2ceb42035c0057ec84ae7c5382c',1,'kest_preset_settings_str']]],
   ['vpot_5fpad_5fh_20',['VPOT_PAD_H',['../kest__parameter__widget_8h.html#a39f8b22c656232ac7f3dbcb1a6b9f493',1,'kest_parameter_widget.h']]],
   ['vpot_5fpad_5fw_21',['VPOT_PAD_W',['../kest__parameter__widget_8h.html#a9d14bd0e7ca4c2d0f514c774dcf34f63',1,'kest_parameter_widget.h']]],
   ['vslider_5fpad_5fh_22',['VSLIDER_PAD_H',['../kest__parameter__widget_8h.html#a9124d514f28824ccd00eadca783286dc',1,'kest_parameter_widget.h']]],

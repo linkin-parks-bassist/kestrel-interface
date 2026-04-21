@@ -104,8 +104,8 @@ Functions</h2></td></tr>
 <tr class="memitem:aba6f5ab612c05ab177a5a18954c9722c" id="r_aba6f5ab612c05ab177a5a18954c9722c"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba6f5ab612c05ab177a5a18954c9722c">float_to_q_nminus1_18bit</a> (float x, int shift)</td></tr>
 <tr class="memitem:a1580bc2204b9b5083cfb04e1e883ea35" id="r_a1580bc2204b9b5083cfb04e1e883ea35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="kest__fpga__io_8h.html#adecc508335953fe62a6e18687a3a0b46">kest_fpga_sample_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1580bc2204b9b5083cfb04e1e883ea35">float_to_q_nminus1</a> (float x, int shift)</td></tr>
 <tr class="memitem:a55906c0421c836a078f0aa6099bd3df9" id="r_a55906c0421c836a078f0aa6099bd3df9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55906c0421c836a078f0aa6099bd3df9">float_to_q15</a> (float x)</td></tr>
-<tr class="memitem:ac5145d24cb0e25a237f9c8d30b8fc0d2" id="r_ac5145d24cb0e25a237f9c8d30b8fc0d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5145d24cb0e25a237f9c8d30b8fc0d2">kest_expression_compute_format</a> (<a class="el" href="structkest__expression.html">kest_expression</a> *expr, <a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, int fmax, int width)</td></tr>
-<tr class="memitem:af6f5122d04445665987167d50319ac6f" id="r_af6f5122d04445665987167d50319ac6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6f5122d04445665987167d50319ac6f">kest_filter_compute_format</a> (<a class="el" href="structkest__filter.html">kest_filter</a> *filter, <a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope)</td></tr>
+<tr class="memitem:aadbad80611ec55e1e488a3740c578c8b" id="r_aadbad80611ec55e1e488a3740c578c8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadbad80611ec55e1e488a3740c578c8b">kest_expression_compute_format</a> (<a class="el" href="structkest__expression.html">kest_expression</a> *expr, <a class="el" href="structkest__scope.html">kest_scope</a> *scope, int fmax, int width)</td></tr>
+<tr class="memitem:a152783a4a8b5bc4b35e20d1c53acdae4" id="r_a152783a4a8b5bc4b35e20d1c53acdae4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a152783a4a8b5bc4b35e20d1c53acdae4">kest_filter_compute_format</a> (<a class="el" href="structkest__filter.html">kest_filter</a> *filter, <a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="a925207a2b3de0a6f636d1425fcdb1a56" name="a925207a2b3de0a6f636d1425fcdb1a56"></a>
@@ -165,7 +165,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fixed__point_8c_source.html#l00026">26</a> of file <a class="el" href="kest__fixed__point_8c_source.html">kest_fixed_point.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00157">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00125">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00245">kest_fpga_set_input_gain()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00255">kest_fpga_set_output_gain()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00167">kest_fpga_batch_append_block_register_updates()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00128">kest_fpga_batch_append_block_regs()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00432">kest_fpga_set_input_gain()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00458">kest_fpga_set_output_gain()</a>.</p>
 <div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
@@ -196,18 +196,18 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fixed__point_8c_source.html#l00009">9</a> of file <a class="el" href="kest__fixed__point_8c_source.html">kest_fixed_point.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00248">kest_fpga_batch_append_resource()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00211">kest_fpga_batch_append_filter_updates()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00358">kest_fpga_batch_append_resource()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_aba6f5ab612c05ab177a5a18954c9722c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_aba6f5ab612c05ab177a5a18954c9722c_icgraph.svg" width="100%" height="406"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="ac5145d24cb0e25a237f9c8d30b8fc0d2" name="ac5145d24cb0e25a237f9c8d30b8fc0d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5145d24cb0e25a237f9c8d30b8fc0d2">&#9670;&#160;</a></span>kest_expression_compute_format()</h2>
+<a id="aadbad80611ec55e1e488a3740c578c8b" name="aadbad80611ec55e1e488a3740c578c8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadbad80611ec55e1e488a3740c578c8b">&#9670;&#160;</a></span>kest_expression_compute_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,7 +220,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -237,24 +237,24 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fixed__point_8c_source.html#l00052">52</a> of file <a class="el" href="kest__fixed__point_8c_source.html">kest_fixed_point.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__reg__format_8c_source.html#l00011">kest_compute_register_formats()</a>, and <a class="el" href="kest__fixed__point_8c_source.html#l00090">kest_filter_compute_format()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>, and <a class="el" href="kest__fixed__point_8c_source.html#l00090">kest_filter_compute_format()</a>.</p>
 <div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_ac5145d24cb0e25a237f9c8d30b8fc0d2_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_aadbad80611ec55e1e488a3740c578c8b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_ac5145d24cb0e25a237f9c8d30b8fc0d2_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_aadbad80611ec55e1e488a3740c578c8b_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="af6f5122d04445665987167d50319ac6f" name="af6f5122d04445665987167d50319ac6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6f5122d04445665987167d50319ac6f">&#9670;&#160;</a></span>kest_filter_compute_format()</h2>
+<a id="a152783a4a8b5bc4b35e20d1c53acdae4" name="a152783a4a8b5bc4b35e20d1c53acdae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a152783a4a8b5bc4b35e20d1c53acdae4">&#9670;&#160;</a></span>kest_filter_compute_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,25 +267,25 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="kest__fixed__point_8c_source.html#l00090">90</a> of file <a class="el" href="kest__fixed__point_8c_source.html">kest_fixed_point.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00428">kest_parser_compute_formats()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00453">kest_parser_compute_formats()</a>.</p>
 <div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_af6f5122d04445665987167d50319ac6f_cgraph.svg" width="100%" height="592"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_a152783a4a8b5bc4b35e20d1c53acdae4_cgraph.svg" width="100%" height="592"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_af6f5122d04445665987167d50319ac6f_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__fixed__point_8c_a152783a4a8b5bc4b35e20d1c53acdae4_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

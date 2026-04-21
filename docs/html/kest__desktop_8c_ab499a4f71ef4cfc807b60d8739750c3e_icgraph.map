@@ -1,5 +1,13 @@
 <map id="main_task" name="main_task">
-<area shape="rect" id="Node000001" title=" " alt="" coords="108,5,197,33"/>
-<area shape="rect" id="Node000002" href="$kest__desktop_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,22,60,22,60,16,92,16"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="562,48,652,76"/>
+<area shape="rect" id="Node000002" href="$kest__desktop_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="460,48,514,76"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="547,65,515,65,515,60,547,60"/>
+<area shape="rect" id="Node000003" href="$kest__expression_8c.html#a91f074f7596d8adca0d0aa258e8af07b" title=" " alt="" coords="252,5,412,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="444,56,412,48,413,43,445,50"/>
+<area shape="rect" id="Node000011" href="$kest__expression_8c.html#aea416c62dca448928915608d29bd2583" title=" " alt="" coords="254,75,410,119"/>
+<area shape="poly" id="edge4_Node000002_Node000011" title=" " alt="" coords="445,74,411,82,410,77,444,69"/>
+<area shape="rect" id="Node000004" href="$kest__dict__extract_8c.html#acbfde8ff56b8c5bed262375de5a2fc76" title=" " alt="" coords="5,14,204,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="236,30,204,30,204,25,236,25"/>
+<area shape="rect" id="Node000012" href="$kest__dict__extract_8c.html#ab3a10359fda7bd744b54f0c72f1f497d" title=" " alt="" coords="7,83,202,111"/>
+<area shape="poly" id="edge5_Node000011_Node000012" title=" " alt="" coords="238,100,202,100,202,94,238,94"/>
 </map>

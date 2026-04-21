@@ -1,6 +1,5 @@
 var kest__fpga__comms_8h =
 [
-    [ "PRINT_TRANSFER_BATCHES", "kest__fpga__comms_8h.html#afbd3b90f3b8f41a7740adce9d2037e87", null ],
     [ "kest_fpga_comms_task", "kest__fpga__comms_8h.html#a8f850777494bb4c4d61df3efbf31ca7c", null ],
     [ "kest_fpga_queue_input_gain_set", "kest__fpga__comms_8h.html#a0a6f457a7880729f10adf8b545495a4a", null ],
     [ "kest_fpga_queue_output_gain_set", "kest__fpga__comms_8h.html#ac68ae02dcc598cfb0d7aaa722029520f", null ],

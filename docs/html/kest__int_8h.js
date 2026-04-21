@@ -15,7 +15,5 @@ var kest__int_8h =
     [ "USE_DISPLAY", "kest__int_8h.html#a654c02206a58165042e10bce786362d8", null ],
     [ "USE_FPGA", "kest__int_8h.html#af641ed08c6fcb81119a059d515a33ac1", null ],
     [ "USE_SDCARD", "kest__int_8h.html#ad1b880b20b32f399da65d86c5dd50cee", null ],
-    [ "USE_SGTL5000", "kest__int_8h.html#a0252cce42746c0b1ca0c5dfbe262c4f5", null ],
-    [ "string_ll", "kest__int_8h.html#afb5a1587d0e9a14b9befaa57b257fa72", null ],
-    [ "DECLARE_LINKED_PTR_LIST", "kest__int_8h.html#aa85b7c15d8e64d842af71fd77ce8dae2", null ]
+    [ "USE_SGTL5000", "kest__int_8h.html#a0252cce42746c0b1ca0c5dfbe262c4f5", null ]
 ];

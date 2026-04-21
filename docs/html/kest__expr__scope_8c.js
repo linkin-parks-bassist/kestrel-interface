@@ -1,6 +1,7 @@
 var kest__expr__scope_8c =
 [
     [ "PRINTLINES_ALLOWED", "kest__expr__scope_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "IMPLEMENT_DICT", "kest__expr__scope_8c.html#ae3c84727e26ee3aae4164e4987c4c32b", null ],
     [ "IMPLEMENT_LINKED_PTR_LIST", "kest__expr__scope_8c.html#a6bff8c3f33b2534f27267d8ddc94931e", null ],
     [ "kest_expr_scope_add_expr", "kest__expr__scope_8c.html#ae63f9dde8aedf61f742ee600c18f4f6a", null ],
     [ "kest_expr_scope_add_param", "kest__expr__scope_8c.html#a4c5624229dada0831cefd45eebbbc2fd", null ],
@@ -9,8 +10,25 @@ var kest__expr__scope_8c =
     [ "kest_expr_scope_add_settings", "kest__expr__scope_8c.html#a261adc6f9e28cca4ce9ceeb7d91a4334", null ],
     [ "kest_expr_scope_fetch", "kest__expr__scope_8c.html#a8077a19bd328bbd93fcbf80d8591cb5c", null ],
     [ "kest_expr_scope_init", "kest__expr__scope_8c.html#a307f46ad638b2b391055d74a4e8c8c3c", null ],
+    [ "kest_expr_scope_propagate_updates", "kest__expr__scope_8c.html#a2d4ee3482f979f430ffc1d9bacd17950", null ],
     [ "kest_new_expr_scope", "kest__expr__scope_8c.html#a648ec3dcb81dc6fcc6e8cd53addcd2e5", null ],
     [ "kest_new_expr_scope_entry_expr", "kest__expr__scope_8c.html#a1e38199b09f72739edc8026dee1dc888", null ],
     [ "kest_new_expr_scope_entry_param", "kest__expr__scope_8c.html#a7ea1bb1a07c9a6a8b4595a522561ea67", null ],
-    [ "kest_new_expr_scope_entry_setting", "kest__expr__scope_8c.html#a69e4f1f3c645e4b8e721d2262c9c6ed9", null ]
+    [ "kest_new_expr_scope_entry_setting", "kest__expr__scope_8c.html#a69e4f1f3c645e4b8e721d2262c9c6ed9", null ],
+    [ "kest_scope_add_expr", "kest__expr__scope_8c.html#a0587a5203aa19a14ee56456e508f884c", null ],
+    [ "kest_scope_add_param", "kest__expr__scope_8c.html#abbe27486202578567e33a7511133716b", null ],
+    [ "kest_scope_add_params", "kest__expr__scope_8c.html#ab4149748890c6f1ad7b0021ad97d5589", null ],
+    [ "kest_scope_add_setting", "kest__expr__scope_8c.html#ab072597a0c30b0752134fc79fe94adce", null ],
+    [ "kest_scope_add_settings", "kest__expr__scope_8c.html#aafcbd1f8e613712ce1345fbc41aa76fb", null ],
+    [ "kest_scope_clear_updates", "kest__expr__scope_8c.html#a6329eee07be244ac7c7dd045f6aaa0ac", null ],
+    [ "kest_scope_count", "kest__expr__scope_8c.html#a4b961bc6e7b1010aacc02440ff92a605", null ],
+    [ "kest_scope_entry_init_expr", "kest__expr__scope_8c.html#a9fd428577752ce3323954bb75bbb3cf8", null ],
+    [ "kest_scope_entry_init_param", "kest__expr__scope_8c.html#a6417f1dec9dba7a4a8a5b42288524ccf", null ],
+    [ "kest_scope_entry_init_setting", "kest__expr__scope_8c.html#a6b52f25decd27b53085d074e3c78e2e3", null ],
+    [ "kest_scope_fetch", "kest__expr__scope_8c.html#a8a0fbd22e0deccdaee632b2a95d4aee5", null ],
+    [ "kest_scope_index", "kest__expr__scope_8c.html#a003d0a831a549dab0e93c2ad5c82d14e", null ],
+    [ "kest_scope_init", "kest__expr__scope_8c.html#a43b6bb1cf362758abfd82e8b4c305938", null ],
+    [ "kest_scope_lookup", "kest__expr__scope_8c.html#a536647952c07049da59284b9f928bd67", null ],
+    [ "kest_scope_new", "kest__expr__scope_8c.html#ad5a50e098f07b8e6c9bfd941a9682f98", null ],
+    [ "kest_scope_propagate_updates", "kest__expr__scope_8c.html#a38b63c16b3979ad26c30a0dc0b73e96a", null ]
 ];

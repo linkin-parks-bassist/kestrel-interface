@@ -13,6 +13,7 @@ typedef struct
 
 DECLARE_LINKED_PTR_LIST(kest_representation);
 
+int kest_representation_queue_update(kest_representation *rep);
 void kest_representation_pll_update_all(kest_representation_pll *reps);
 
 #ifdef KEST_ENABLE_REPRESENTATIONS

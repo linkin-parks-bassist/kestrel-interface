@@ -11,18 +11,17 @@ var kest__effect_8c =
     [ "effect_get_parameter", "kest__effect_8c.html#af8ad810acfc1010c0c3956922dbe5f16", null ],
     [ "effect_get_setting", "kest__effect_8c.html#aceece5194f228b68bb824012fcf7c1ff", null ],
     [ "effect_rectify_param_ids", "kest__effect_8c.html#a45969080cfeedba828e766c3fe6670ab", null ],
-    [ "effect_set_id", "kest__effect_8c.html#ae0de540b63455fd304909ee2d47ce678", null ],
+    [ "effect_set_id", "kest__effect_8c.html#ab02fb484e2c851b5088b8ec5e342e2d7", null ],
     [ "free_effect", "kest__effect_8c.html#a09f04708e6ffd20ecaba2c10460cb1eb", null ],
     [ "gut_effect", "kest__effect_8c.html#a85452ce9d186abbc8864a17f582cc09c", null ],
     [ "IMPLEMENT_LINKED_PTR_LIST", "kest__effect_8c.html#a2c077424f2216ffc065d726fdc3b6817", null ],
     [ "init_effect", "kest__effect_8c.html#a6d9927f6d82c964bd07bef5c77879010", null ],
     [ "init_effect_from_effect_desc", "kest__effect_8c.html#a85b25e44e2629962673634f965ffe304", null ],
-    [ "kest_effect_create_scope", "kest__effect_8c.html#ad36244b2279575200cc5265d2e25dfdd", null ],
+    [ "kest_effect_create_scope", "kest__effect_8c.html#ae445771b304eac294929053417d2d93e", null ],
     [ "kest_effect_name", "kest__effect_8c.html#a8f53e22436efdc0e494b297ea09db5eb", null ],
-    [ "kest_effect_profile_rep_update", "kest__effect_8c.html#abd8eb2f7c5fa3c26690cddd429257881", null ],
+    [ "kest_effect_preset_rep_update", "kest__effect_8c.html#a2109a1d86293251c21166f2d243d1f84", null ],
     [ "kest_effect_set_parameter", "kest__effect_8c.html#a4893b1b89f7d8d88f69c893385c14757", null ],
     [ "kest_effect_set_setting", "kest__effect_8c.html#aa3ec480fa794db333cc393bcc880edda", null ],
-    [ "kest_effect_update_fpga_registers", "kest__effect_8c.html#abce80b3222c75d4f721e59f856083682", null ],
-    [ "kest_effect_update_reps", "kest__effect_8c.html#afdbf79f9f27eac4959dfcf7bbcb324d4", null ],
-    [ "request_append_effect", "kest__effect_8c.html#aab0b3993102f405c4671ee1434a83a1e", null ]
+    [ "kest_effect_update_fpga", "kest__effect_8c.html#a490655823471fa9f081e6252b13da30e", null ],
+    [ "kest_effect_update_reps", "kest__effect_8c.html#afdbf79f9f27eac4959dfcf7bbcb324d4", null ]
 ];

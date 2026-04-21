@@ -84,96 +84,96 @@ var sectionId = 'dynsection-24';
 </a>
 </g>
 </g>
-<!-- Node14 -->
-<g id="Node000014" class="node">
-<title>Node14</title>
-<g id="a_Node000014"><a xlink:href="kest__dictionary_8c.html#a85cee4d8833bf8638209bd8266415afa" target="_top" xlink:title=" ">
+<!-- Node20 -->
+<g id="Node000020" class="node">
+<title>Node20</title>
+<g id="a_Node000020"><a xlink:href="kest__dictionary_8c.html#a85cee4d8833bf8638209bd8266415afa" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="435.75,-241.5 308,-241.5 308,-208 435.75,-208 435.75,-241.5"/>
 <text xml:space="preserve" text-anchor="start" x="316" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
 <text xml:space="preserve" text-anchor="middle" x="371.88" y="-215.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_dict</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node14 -->
-<g id="edge5_Node000001_Node000014" class="edge">
-<title>Node1&#45;&gt;Node14</title>
-<g id="a_edge5_Node000001_Node000014"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node20 -->
+<g id="edge5_Node000001_Node000020" class="edge">
+<title>Node1&#45;&gt;Node20</title>
+<g id="a_edge5_Node000001_Node000020"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M493.84,-169.28C476.17,-178.76 455.13,-189.67 435.75,-198.75 429.44,-201.71 422.7,-204.68 416.06,-207.51"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="495.36,-172.44 502.49,-164.61 492.03,-166.28 495.36,-172.44"/>
-</a>
-</g>
-</g>
-<!-- Node16 -->
-<g id="Node000016" class="node">
-<title>Node16</title>
-<g id="a_Node000016"><a xlink:href="kest__dictionary_8c.html#ad72136b7d725caf736b0c94caea9fb06" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="435.75,-189.5 308,-189.5 308,-156 435.75,-156 435.75,-189.5"/>
-<text xml:space="preserve" text-anchor="start" x="316" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
-<text xml:space="preserve" text-anchor="middle" x="371.88" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_expr</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node16 -->
-<g id="edge7_Node000001_Node000016" class="edge">
-<title>Node1&#45;&gt;Node16</title>
-<g id="a_edge7_Node000001_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M460.33,-158.69C452.28,-159.99 444.14,-161.29 436.24,-162.57"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="460.81,-162.16 470.13,-157.12 459.7,-155.25 460.81,-162.16"/>
-</a>
-</g>
-</g>
-<!-- Node18 -->
-<g id="Node000018" class="node">
-<title>Node18</title>
-<g id="a_Node000018"><a xlink:href="kest__dictionary_8c.html#a2f387c15a12220e5b1a670dba0f3b511" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="435.75,-137.5 308,-137.5 308,-104 435.75,-104 435.75,-137.5"/>
-<text xml:space="preserve" text-anchor="start" x="316" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
-<text xml:space="preserve" text-anchor="middle" x="371.88" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_float</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node18 -->
-<g id="edge9_Node000001_Node000018" class="edge">
-<title>Node1&#45;&gt;Node18</title>
-<g id="a_edge9_Node000001_Node000018"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M460.33,-134.81C452.28,-133.51 444.14,-132.21 436.24,-130.93"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="459.7,-138.25 470.13,-136.38 460.81,-131.34 459.7,-138.25"/>
-</a>
-</g>
-</g>
-<!-- Node20 -->
-<g id="Node000020" class="node">
-<title>Node20</title>
-<g id="a_Node000020"><a xlink:href="kest__dictionary_8c.html#a23ddb4ebb9a94e0cf954530b444a4963" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="435.75,-85.5 308,-85.5 308,-52 435.75,-52 435.75,-85.5"/>
-<text xml:space="preserve" text-anchor="start" x="316" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
-<text xml:space="preserve" text-anchor="middle" x="371.88" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_int</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node20 -->
-<g id="edge11_Node000001_Node000020" class="edge">
-<title>Node1&#45;&gt;Node20</title>
-<g id="a_edge11_Node000001_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M493.84,-124.22C476.17,-114.74 455.13,-103.83 435.75,-94.75 429.44,-91.79 422.7,-88.82 416.06,-85.99"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="492.03,-127.22 502.49,-128.89 495.36,-121.06 492.03,-127.22"/>
 </a>
 </g>
 </g>
 <!-- Node22 -->
 <g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_Node000022"><a xlink:href="kest__dictionary_8c.html#a3aaeba83bcb3cce911e04218ac103f51" target="_top" xlink:title=" ">
+<g id="a_Node000022"><a xlink:href="kest__dictionary_8c.html#ad72136b7d725caf736b0c94caea9fb06" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="435.75,-189.5 308,-189.5 308,-156 435.75,-156 435.75,-189.5"/>
+<text xml:space="preserve" text-anchor="start" x="316" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
+<text xml:space="preserve" text-anchor="middle" x="371.88" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_expr</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node22 -->
+<g id="edge7_Node000001_Node000022" class="edge">
+<title>Node1&#45;&gt;Node22</title>
+<g id="a_edge7_Node000001_Node000022"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M460.33,-158.69C452.28,-159.99 444.14,-161.29 436.24,-162.57"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="460.81,-162.16 470.13,-157.12 459.7,-155.25 460.81,-162.16"/>
+</a>
+</g>
+</g>
+<!-- Node24 -->
+<g id="Node000024" class="node">
+<title>Node24</title>
+<g id="a_Node000024"><a xlink:href="kest__dictionary_8c.html#a2f387c15a12220e5b1a670dba0f3b511" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="435.75,-137.5 308,-137.5 308,-104 435.75,-104 435.75,-137.5"/>
+<text xml:space="preserve" text-anchor="start" x="316" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
+<text xml:space="preserve" text-anchor="middle" x="371.88" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_float</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node24 -->
+<g id="edge9_Node000001_Node000024" class="edge">
+<title>Node1&#45;&gt;Node24</title>
+<g id="a_edge9_Node000001_Node000024"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M460.33,-134.81C452.28,-133.51 444.14,-132.21 436.24,-130.93"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="459.7,-138.25 470.13,-136.38 460.81,-131.34 459.7,-138.25"/>
+</a>
+</g>
+</g>
+<!-- Node26 -->
+<g id="Node000026" class="node">
+<title>Node26</title>
+<g id="a_Node000026"><a xlink:href="kest__dictionary_8c.html#a23ddb4ebb9a94e0cf954530b444a4963" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="435.75,-85.5 308,-85.5 308,-52 435.75,-52 435.75,-85.5"/>
+<text xml:space="preserve" text-anchor="start" x="316" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
+<text xml:space="preserve" text-anchor="middle" x="371.88" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_int</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node26 -->
+<g id="edge11_Node000001_Node000026" class="edge">
+<title>Node1&#45;&gt;Node26</title>
+<g id="a_edge11_Node000001_Node000026"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M493.84,-124.22C476.17,-114.74 455.13,-103.83 435.75,-94.75 429.44,-91.79 422.7,-88.82 416.06,-85.99"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="492.03,-127.22 502.49,-128.89 495.36,-121.06 492.03,-127.22"/>
+</a>
+</g>
+</g>
+<!-- Node28 -->
+<g id="Node000028" class="node">
+<title>Node28</title>
+<g id="a_Node000028"><a xlink:href="kest__dictionary_8c.html#a3aaeba83bcb3cce911e04218ac103f51" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="435.75,-33.5 308,-33.5 308,0 435.75,0 435.75,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="316" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_bucket</text>
 <text xml:space="preserve" text-anchor="middle" x="371.88" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_add_entry_str</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node22 -->
-<g id="edge13_Node000001_Node000022" class="edge">
-<title>Node1&#45;&gt;Node22</title>
-<g id="a_edge13_Node000001_Node000022"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node28 -->
+<g id="edge13_Node000001_Node000028" class="edge">
+<title>Node1&#45;&gt;Node28</title>
+<g id="a_edge13_Node000001_Node000028"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M515.04,-120.63C496.67,-97.6 467.35,-64.43 435.75,-42.75 431.07,-39.54 425.94,-36.62 420.69,-34"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="512.14,-122.6 521.06,-128.32 517.65,-118.29 512.14,-122.6"/>
 </a>
@@ -234,96 +234,96 @@ var sectionId = 'dynsection-24';
 </a>
 </g>
 </g>
-<!-- Node15 -->
-<g id="Node000015" class="node">
-<title>Node15</title>
-<g id="a_Node000015"><a xlink:href="kest__dictionary_8c.html#ac422a4715e6e2b8919cec34b25074488" target="_top" xlink:title=" ">
+<!-- Node21 -->
+<g id="Node000021" class="node">
+<title>Node21</title>
+<g id="a_Node000021"><a xlink:href="kest__dictionary_8c.html#ac422a4715e6e2b8919cec34b25074488" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="272,-241.5 158.5,-241.5 158.5,-208 272,-208 272,-241.5"/>
 <text xml:space="preserve" text-anchor="start" x="166.5" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
 <text xml:space="preserve" text-anchor="middle" x="215.25" y="-215.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_dict</text>
 </a>
 </g>
 </g>
-<!-- Node14&#45;&gt;Node15 -->
-<g id="edge6_Node000014_Node000015" class="edge">
-<title>Node14&#45;&gt;Node15</title>
-<g id="a_edge6_Node000014_Node000015"><a xlink:title=" ">
+<!-- Node20&#45;&gt;Node21 -->
+<g id="edge6_Node000020_Node000021" class="edge">
+<title>Node20&#45;&gt;Node21</title>
+<g id="a_edge6_Node000020_Node000021"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M296.22,-224.75C288.17,-224.75 280.08,-224.75 272.3,-224.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-228.25 306.02,-224.75 296.02,-221.25 296.02,-228.25"/>
-</a>
-</g>
-</g>
-<!-- Node17 -->
-<g id="Node000017" class="node">
-<title>Node17</title>
-<g id="a_Node000017"><a xlink:href="kest__dictionary_8c.html#af3a2314e489cbe9344dbabff75d8981c" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="272,-189.5 158.5,-189.5 158.5,-156 272,-156 272,-189.5"/>
-<text xml:space="preserve" text-anchor="start" x="166.5" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
-<text xml:space="preserve" text-anchor="middle" x="215.25" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_expr</text>
-</a>
-</g>
-</g>
-<!-- Node16&#45;&gt;Node17 -->
-<g id="edge8_Node000016_Node000017" class="edge">
-<title>Node16&#45;&gt;Node17</title>
-<g id="a_edge8_Node000016_Node000017"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M296.22,-172.75C288.17,-172.75 280.08,-172.75 272.3,-172.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-176.25 306.02,-172.75 296.02,-169.25 296.02,-176.25"/>
-</a>
-</g>
-</g>
-<!-- Node19 -->
-<g id="Node000019" class="node">
-<title>Node19</title>
-<g id="a_Node000019"><a xlink:href="kest__dictionary_8c.html#a6ed116ee21579913604cb74f565ef5e2" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="272,-137.5 158.5,-137.5 158.5,-104 272,-104 272,-137.5"/>
-<text xml:space="preserve" text-anchor="start" x="166.5" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
-<text xml:space="preserve" text-anchor="middle" x="215.25" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_float</text>
-</a>
-</g>
-</g>
-<!-- Node18&#45;&gt;Node19 -->
-<g id="edge10_Node000018_Node000019" class="edge">
-<title>Node18&#45;&gt;Node19</title>
-<g id="a_edge10_Node000018_Node000019"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M296.22,-120.75C288.17,-120.75 280.08,-120.75 272.3,-120.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-124.25 306.02,-120.75 296.02,-117.25 296.02,-124.25"/>
-</a>
-</g>
-</g>
-<!-- Node21 -->
-<g id="Node000021" class="node">
-<title>Node21</title>
-<g id="a_Node000021"><a xlink:href="kest__dictionary_8c.html#af8a494be3d85c680f409f92d95b467ba" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="272,-85.5 158.5,-85.5 158.5,-52 272,-52 272,-85.5"/>
-<text xml:space="preserve" text-anchor="start" x="166.5" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
-<text xml:space="preserve" text-anchor="middle" x="215.25" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_int</text>
-</a>
-</g>
-</g>
-<!-- Node20&#45;&gt;Node21 -->
-<g id="edge12_Node000020_Node000021" class="edge">
-<title>Node20&#45;&gt;Node21</title>
-<g id="a_edge12_Node000020_Node000021"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M296.22,-68.75C288.17,-68.75 280.08,-68.75 272.3,-68.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-72.25 306.02,-68.75 296.02,-65.25 296.02,-72.25"/>
 </a>
 </g>
 </g>
 <!-- Node23 -->
 <g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_Node000023"><a xlink:href="kest__dictionary_8c.html#af733edc9e1f9f10bb82f76a7d6ff3fbd" target="_top" xlink:title=" ">
+<g id="a_Node000023"><a xlink:href="kest__dictionary_8c.html#af3a2314e489cbe9344dbabff75d8981c" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="272,-189.5 158.5,-189.5 158.5,-156 272,-156 272,-189.5"/>
+<text xml:space="preserve" text-anchor="start" x="166.5" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
+<text xml:space="preserve" text-anchor="middle" x="215.25" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_expr</text>
+</a>
+</g>
+</g>
+<!-- Node22&#45;&gt;Node23 -->
+<g id="edge8_Node000022_Node000023" class="edge">
+<title>Node22&#45;&gt;Node23</title>
+<g id="a_edge8_Node000022_Node000023"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M296.22,-172.75C288.17,-172.75 280.08,-172.75 272.3,-172.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-176.25 306.02,-172.75 296.02,-169.25 296.02,-176.25"/>
+</a>
+</g>
+</g>
+<!-- Node25 -->
+<g id="Node000025" class="node">
+<title>Node25</title>
+<g id="a_Node000025"><a xlink:href="kest__dictionary_8c.html#a6ed116ee21579913604cb74f565ef5e2" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="272,-137.5 158.5,-137.5 158.5,-104 272,-104 272,-137.5"/>
+<text xml:space="preserve" text-anchor="start" x="166.5" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
+<text xml:space="preserve" text-anchor="middle" x="215.25" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_float</text>
+</a>
+</g>
+</g>
+<!-- Node24&#45;&gt;Node25 -->
+<g id="edge10_Node000024_Node000025" class="edge">
+<title>Node24&#45;&gt;Node25</title>
+<g id="a_edge10_Node000024_Node000025"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M296.22,-120.75C288.17,-120.75 280.08,-120.75 272.3,-120.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-124.25 306.02,-120.75 296.02,-117.25 296.02,-124.25"/>
+</a>
+</g>
+</g>
+<!-- Node27 -->
+<g id="Node000027" class="node">
+<title>Node27</title>
+<g id="a_Node000027"><a xlink:href="kest__dictionary_8c.html#af8a494be3d85c680f409f92d95b467ba" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="272,-85.5 158.5,-85.5 158.5,-52 272,-52 272,-85.5"/>
+<text xml:space="preserve" text-anchor="start" x="166.5" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
+<text xml:space="preserve" text-anchor="middle" x="215.25" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_int</text>
+</a>
+</g>
+</g>
+<!-- Node26&#45;&gt;Node27 -->
+<g id="edge12_Node000026_Node000027" class="edge">
+<title>Node26&#45;&gt;Node27</title>
+<g id="a_edge12_Node000026_Node000027"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M296.22,-68.75C288.17,-68.75 280.08,-68.75 272.3,-68.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-72.25 306.02,-68.75 296.02,-65.25 296.02,-72.25"/>
+</a>
+</g>
+</g>
+<!-- Node29 -->
+<g id="Node000029" class="node">
+<title>Node29</title>
+<g id="a_Node000029"><a xlink:href="kest__dictionary_8c.html#af733edc9e1f9f10bb82f76a7d6ff3fbd" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="272,-33.5 158.5,-33.5 158.5,0 272,0 272,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="166.5" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_dictionary_add</text>
 <text xml:space="preserve" text-anchor="middle" x="215.25" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_entry_str</text>
 </a>
 </g>
 </g>
-<!-- Node22&#45;&gt;Node23 -->
-<g id="edge14_Node000022_Node000023" class="edge">
-<title>Node22&#45;&gt;Node23</title>
-<g id="a_edge14_Node000022_Node000023"><a xlink:title=" ">
+<!-- Node28&#45;&gt;Node29 -->
+<g id="edge14_Node000028_Node000029" class="edge">
+<title>Node28&#45;&gt;Node29</title>
+<g id="a_edge14_Node000028_Node000029"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M296.22,-16.75C288.17,-16.75 280.08,-16.75 272.3,-16.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="296.02,-20.25 306.02,-16.75 296.02,-13.25 296.02,-20.25"/>
 </a>

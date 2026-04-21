@@ -18,7 +18,7 @@ var structkest__eff__parsing__state =
     [ "parameters", "structkest__eff__parsing__state.html#aa2fc922870a9f814daf2464e5fac9ef9", null ],
     [ "resources", "structkest__eff__parsing__state.html#a8f1b174ad6ed023ec868bb0e3e205549", null ],
     [ "result", "structkest__eff__parsing__state.html#a19f4a400a7789cd6abadd9473f37fd02", null ],
-    [ "scope", "structkest__eff__parsing__state.html#a1ba3eea95374052dc65e8242d23378f1", null ],
+    [ "scope", "structkest__eff__parsing__state.html#a9d9901f0816d998b81e35a365153a59b", null ],
     [ "settings", "structkest__eff__parsing__state.html#aaf90cbca9de45649123200ac5991c3fe", null ],
     [ "tokens", "structkest__eff__parsing__state.html#a04943d69402314590811450a978c1f90", null ],
     [ "version_string", "structkest__eff__parsing__state.html#a1526a72b4854689c1c273859a12a03d5", null ]

@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_preset.c";
 
@@ -190,7 +190,6 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	
 	KEST_PRINTF("kest_preset_append_effect_eff(preset = %p, eff = %p)\n", eff);
 	kest_effect *effect = kest_pipeline_append_effect_eff(&preset->pipeline, eff);
-	KEST_PRINTF("effect = %p\n", effect);
 	
 	if (!effect)
 		return NULL;
@@ -201,6 +200,7 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	#endif
 	effect_rectify_param_ids(effect);
 	
+	KEST_PRINTF("kest_preset_append_effect_eff done\n");
 	return effect;
 }
 
@@ -411,6 +411,7 @@ int kest_preset_create_fpga_transfer_batch(kest_preset *preset, kest_fpga_transf
 
 int kest_preset_program_fpga(kest_preset *preset)
 {
+	KEST_PRINTF("kest_preset_program_fpga(preset = %p)\n", preset);
 	if (!preset)
 		return ERR_NULL_PTR;
 	
@@ -442,10 +443,14 @@ int kest_preset_if_active_update_fpga(kest_preset *preset)
 		return ERR_NULL_PTR;
 	
 	if (!preset->active)
+	{
+		KEST_PRINTF("preset is not active. return NO_ERROR\n");
 		return NO_ERROR;
+	}
 	
 	int ret_val = kest_preset_program_fpga(preset);
 	
+	KEST_PRINTF("kest_preset_if_active_update_fpga done\n");
 	return ret_val;
 }
 

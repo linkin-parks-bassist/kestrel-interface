@@ -66,6 +66,7 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 int param_widget_request_value(kest_parameter_widget *pw);
 
 void parameter_widget_update_value_label(kest_parameter_widget *pot);
+void parameter_widget_refresh(kest_parameter_widget *pw);
 
 void parameter_widget_change_cb_inner(kest_parameter_widget *pw);
 void parameter_widget_refresh_cb(lv_event_t *event);

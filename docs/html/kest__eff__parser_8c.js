@@ -5,6 +5,7 @@ var kest__eff__parser_8c =
     [ "PR_LINE_INDENT", "kest__eff__parser_8c.html#aa14257b0f0a516ab295299d6f451e02c", null ],
     [ "PRINTLINES_ALLOWED", "kest__eff__parser_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
     [ "init_parsing_state", "kest__eff__parser_8c.html#a465960e33e6abe5d250a73f30efbd420", null ],
+    [ "kest_cname_from_name", "kest__eff__parser_8c.html#a71133103b11438de3e2c438b280a9163", null ],
     [ "kest_eff_parser_deinit_mempool", "kest__eff__parser_8c.html#ae47117fea783da5ed3185ed8e914519d", null ],
     [ "kest_eff_parser_init_mempool", "kest__eff__parser_8c.html#a89d18f81ee99fc0fc2791a2a004c88a9", null ],
     [ "kest_eff_parser_reset_mempool", "kest__eff__parser_8c.html#a6af4988fb5810d81082a902abf20b222", null ],

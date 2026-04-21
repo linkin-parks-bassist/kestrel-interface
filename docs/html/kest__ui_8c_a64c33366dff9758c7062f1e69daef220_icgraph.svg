@@ -178,39 +178,39 @@ var sectionId = 'dynsection-3';
 </a>
 </g>
 </g>
-<!-- Node12 -->
-<g id="Node000012" class="node">
-<title>Node12</title>
-<g id="a_Node000012"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
+<!-- Node21 -->
+<g id="Node000021" class="node">
+<title>Node21</title>
+<g id="a_Node000021"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="142,-85.5 0,-85.5 0,-52 142,-52 142,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="71" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button_and_page_button</text>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node12 -->
-<g id="edge7_Node000006_Node000012" class="edge">
-<title>Node6&#45;&gt;Node12</title>
-<g id="a_edge7_Node000006_Node000012"><a xlink:title=" ">
+<!-- Node6&#45;&gt;Node21 -->
+<g id="edge7_Node000006_Node000021" class="edge">
+<title>Node6&#45;&gt;Node21</title>
+<g id="a_edge7_Node000006_Node000021"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M169.64,-68.75C160.58,-68.75 151.39,-68.75 142.44,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="169.48,-72.25 179.48,-68.75 169.48,-65.25 169.48,-72.25"/>
 </a>
 </g>
 </g>
-<!-- Node14 -->
-<g id="Node000014" class="node">
-<title>Node14</title>
-<g id="a_Node000014"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
+<!-- Node23 -->
+<g id="Node000023" class="node">
+<title>Node23</title>
+<g id="a_Node000023"><a xlink:href="kest__ui_8c.html#a62156348a1dfc799541fc93d3dd20b6e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="137.5,-33.5 4.5,-33.5 4.5,0 137.5,0 137.5,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="12.5" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_right</text>
 <text xml:space="preserve" text-anchor="middle" x="71" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button</text>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node14 -->
-<g id="edge8_Node000006_Node000014" class="edge">
-<title>Node6&#45;&gt;Node14</title>
-<g id="a_edge8_Node000006_Node000014"><a xlink:title=" ">
+<!-- Node6&#45;&gt;Node23 -->
+<g id="edge8_Node000006_Node000023" class="edge">
+<title>Node6&#45;&gt;Node23</title>
+<g id="a_edge8_Node000006_Node000023"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M178.47,-48.34C162.47,-43.6 145.59,-38.59 130.11,-33.99"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="177.35,-51.66 187.93,-51.15 179.34,-44.95 177.35,-51.66"/>
 </a>

@@ -35,20 +35,20 @@
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="kest__ui_8c.html#a91cbeba99527e75576d1690162018ef5" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="474.75,-33.5 332.75,-33.5 332.75,0 474.75,0 474.75,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="340.75" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="403.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_button_and_page_button</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node8 -->
-<g id="edge4_Node000001_Node000008" class="edge">
-<title>Node1&#45;&gt;Node8</title>
-<g id="a_edge4_Node000001_Node000008"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node17 -->
+<g id="edge4_Node000001_Node000017" class="edge">
+<title>Node1&#45;&gt;Node17</title>
+<g id="a_edge4_Node000001_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M499.02,-28.29C490.97,-27.3 482.86,-26.31 474.97,-25.34"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="498.5,-31.75 508.85,-29.49 499.35,-24.8 498.5,-31.75"/>
 </a>
@@ -90,20 +90,20 @@
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
+<!-- Node18 -->
+<g id="Node000018" class="node">
+<title>Node18</title>
+<g id="a_Node000018"><a xlink:href="kest__ui_8c.html#a56d00dcd05509dc9999a3c25122f4851" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="296.75,-33.5 163,-33.5 163,0 296.75,0 296.75,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="171" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">create_panel_with_back</text>
 <text xml:space="preserve" text-anchor="middle" x="229.88" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_and_settings_buttons</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node9 -->
-<g id="edge5_Node000008_Node000009" class="edge">
-<title>Node8&#45;&gt;Node9</title>
-<g id="a_edge5_Node000008_Node000009"><a xlink:title=" ">
+<!-- Node17&#45;&gt;Node18 -->
+<g id="edge5_Node000017_Node000018" class="edge">
+<title>Node17&#45;&gt;Node18</title>
+<g id="a_edge5_Node000017_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M321.03,-16.75C312.98,-16.75 304.88,-16.75 297.02,-16.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="320.83,-20.25 330.83,-16.75 320.83,-13.25 320.83,-20.25"/>
 </a>

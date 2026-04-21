@@ -15,7 +15,7 @@ var kest__sequence__view_8c =
     [ "seq_view_free_cb", "kest__sequence__view_8c.html#a9fef8c88fcec1f84ad7c585ed5cbb2c8", null ],
     [ "seq_view_moved_cb", "kest__sequence__view_8c.html#a781781f2f55b9caaa4c9a9db94b566f5", null ],
     [ "sequence_view_free_all", "kest__sequence__view_8c.html#a3326e6c96b3471208aa2e89ff693eaba", null ],
-    [ "sequence_view_profile_button_rep_update", "kest__sequence__view_8c.html#aa97e3f2de03cf8443b11f65520f6b387", null ],
+    [ "sequence_view_preset_button_rep_update", "kest__sequence__view_8c.html#a08de2e10fc1c406742820cb4edd78cc3", null ],
     [ "sequence_view_rep_update", "kest__sequence__view_8c.html#a18341f03445e1f2f63bf07b4a97715aa", null ],
     [ "sequence_view_revert_name", "kest__sequence__view_8c.html#a5da73a414e449a9425efa9c9d008323d", null ],
     [ "sequence_view_set_name", "kest__sequence__view_8c.html#a9a770d265f15421aca3cec3f9d758e30", null ]

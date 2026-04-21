@@ -1,0 +1,20 @@
+<map id="kest_fpga_get_n_blocks" name="kest_fpga_get_n_blocks">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,97,182,124"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__io_8c.html#a131d7d384293966d74eb5768dfba4428" title=" " alt="" coords="230,97,378,124"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,108,214,108,214,113,182,113"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__io_8c.html#abe57698adf89b8e9d87f4beca9077c9a" title=" " alt="" coords="426,88,585,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,108,410,108,410,113,378,113"/>
+<area shape="rect" id="Node000007" href="$kest__fpga__io_8c.html#ab14e474da760b9f53277d51557a0a9d3" title=" " alt="" coords="655,157,797,184"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="348,122,427,143,537,158,640,165,639,170,537,163,425,148,347,128"/>
+<area shape="rect" id="Node000008" href="$kest__fpga__io_8c.html#a00a4bbec92692e8a9a447b375616efa1" title=" " alt="" coords="426,19,585,64"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="346,94,423,67,425,72,347,99"/>
+<area shape="rect" id="Node000004" href="$kest__fpga__io_8c.html#a688987fc53c1295119933650d3a19776" title=" " alt="" coords="633,36,819,81"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="585,89,617,82,619,87,586,94"/>
+<area shape="rect" id="Node000005" href="$kest__fpga__io_8c.html#ab908dedc52b0ca9107f52f74ab7860c6" title=" " alt="" coords="648,105,804,132"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="586,111,632,113,632,118,585,116"/>
+<area shape="rect" id="Node000006" href="$kest__fpga__io_8c.html#a2fe46577ece371a5fc9834bc59390913" title=" " alt="" coords="867,105,984,132"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="804,116,852,116,852,121,804,121"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="781,154,854,134,855,140,783,159"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="585,45,618,47,618,53,585,50"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="585,17,638,8,698,3,760,6,820,21,846,35,870,53,906,91,903,94,866,57,843,39,818,26,759,12,698,8,639,13,586,22"/>
+</map>

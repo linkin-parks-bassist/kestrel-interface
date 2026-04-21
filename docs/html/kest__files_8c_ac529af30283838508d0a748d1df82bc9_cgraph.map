@@ -1,0 +1,17 @@
+<map id="read_preset_from_file" name="read_preset_from_file">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,65,170,93"/>
+<area shape="rect" id="Node000002" href="$kest__files_8c.html#ab79d861306c25eab9284239e73d0cc07" title=" " alt="" coords="219,5,368,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,62,228,35,229,40,138,67"/>
+<area shape="rect" id="Node000003" href="$kest__context_8c.html#a6e14c685fa54daae3472e4fdb9603e4e" title=" " alt="" coords="219,57,368,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,76,204,76,204,82,170,82"/>
+<area shape="rect" id="Node000004" href="$kest__preset_8c.html#a9a85dd1d443d85fb9a7b91bd439ba450" title=" " alt="" coords="218,126,369,171"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="132,91,211,118,209,123,130,96"/>
+<area shape="rect" id="Node000005" href="$kest__effect_8c.html#a45969080cfeedba828e766c3fe6670ab" title=" " alt="" coords="417,104,600,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="369,135,401,130,402,136,370,140"/>
+<area shape="rect" id="Node000006" href="$kest__pipeline_8c.html#a0eff55a4103a090993bbac228a981af6" title=" " alt="" coords="428,156,590,200"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="370,156,412,162,411,167,369,161"/>
+<area shape="rect" id="Node000007" href="$kest__effect_8c.html#a85b25e44e2629962673634f965ffe304" title=" " alt="" coords="648,137,856,165"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="590,166,633,162,633,167,591,172"/>
+<area shape="rect" id="Node000015" href="$kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4" title=" " alt="" coords="709,189,795,217"/>
+<area shape="poly" id="edge7_Node000006_Node000015" title=" " alt="" coords="591,184,694,195,693,200,590,189"/>
+</map>

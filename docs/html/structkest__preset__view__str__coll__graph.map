@@ -1,0 +1,34 @@
+<map id="kest_preset_view_str" name="kest_preset_view_str">
+<area shape="rect" id="Node000001" title=" " alt="" coords="415,512,573,539"/>
+<area shape="rect" id="Node000002" href="$structkest__preset.html" title=" " alt="" coords="275,402,371,430"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="336,443,348,466,367,486,389,499,415,509,413,514,387,504,363,490,344,469,331,446"/>
+<area shape="rect" id="Node000003" href="$structkest__pipeline.html" title=" " alt="" coords="130,272,237,300"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="205,311,260,368,303,400,300,404,256,372,201,314"/>
+<area shape="rect" id="Node000004" href="$structkest__parameter.html" title=" " alt="" coords="262,272,385,300"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="326,316,326,402,320,402,320,316"/>
+<area shape="rect" id="Node000005" href="$structkest__expression.html" title=" " alt="" coords="5,128,132,156"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="106,161,301,269,298,274,104,166"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="149,132,158,142,150,152,133,156,131,151,148,147,153,142,145,136"/>
+<area shape="rect" id="Node000006" href="$structkest__parameter__id.html" title=" " alt="" coords="253,128,396,156"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="327,172,326,272,321,272,322,172"/>
+<area shape="rect" id="Node000007" href="$structkest__button.html" title=" " alt="" coords="612,5,709,33"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="597,30,543,41,490,62,468,77,451,95,439,116,435,141,435,417,440,445,452,470,482,509,478,513,447,473,435,446,430,418,430,141,434,114,446,92,465,73,488,58,542,36,596,24"/>
+<area shape="poly" id="edge8_Node000007_Node000007" title=" " alt="" coords="726,8,733,12,736,20,728,30,710,33,709,28,725,25,731,19,729,16,723,13"/>
+<area shape="rect" id="Node000008" href="$structkest__ui__page.html" title=" " alt="" coords="697,272,803,300"/>
+<area shape="poly" id="edge13_Node000008_Node000007" title=" " alt="" coords="642,47,626,70,613,98,607,127,612,155,635,193,666,225,699,251,728,270,725,274,696,255,663,229,631,196,607,157,602,127,608,96,621,68,637,44"/>
+<area shape="rect" id="Node000009" href="$structkest__ui__page__panel.html" title=" " alt="" coords="732,128,882,156"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="690,41,793,126,789,130,686,45"/>
+<area shape="rect" id="Node000011" href="$structkest__active__button.html" title=" " alt="" coords="796,512,941,539"/>
+<area shape="poly" id="edge16_Node000011_Node000007" title=" " alt="" coords="725,29,803,46,885,70,921,85,950,102,970,120,978,140,978,418,976,434,970,450,950,477,924,498,898,514,895,509,921,494,946,473,965,447,970,433,973,417,973,141,966,123,947,106,919,90,883,75,802,51,724,34"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="682,301,637,313,590,332,545,359,509,396,495,425,490,457,494,511,489,511,485,456,490,423,505,392,542,355,587,327,635,308,681,296"/>
+<area shape="poly" id="edge12_Node000008_Node000008" title=" " alt="" coords="820,274,827,279,830,287,822,298,804,302,803,297,819,293,824,286,823,282,817,278"/>
+<area shape="rect" id="Node000010" href="$structkest__active__button__array.html" title=" " alt="" coords="792,394,937,439"/>
+<area shape="poly" id="edge19_Node000010_Node000008" title=" " alt="" coords="774,310,847,392,843,395,770,314"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="799,172,758,273,753,271,794,170"/>
+<area shape="poly" id="edge14_Node000001_Node000010" title=" " alt="" coords="810,448,723,490,647,509,574,520,573,515,646,504,721,485,807,444"/>
+<area shape="poly" id="edge18_Node000011_Node000010" title=" " alt="" coords="883,453,886,462,886,488,878,512,873,510,881,487,881,463,878,454"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="833,503,824,489,821,475,824,461,839,438,843,441,829,463,826,475,829,487,838,500"/>
+<area shape="rect" id="Node000012" href="$structkest__representation.html" title=" " alt="" coords="617,402,768,430"/>
+<area shape="poly" id="edge20_Node000001_Node000012" title=" " alt="" coords="656,440,520,513,517,509,654,435"/>
+<area shape="poly" id="edge17_Node000011_Node000012" title=" " alt="" coords="688,446,687,467,695,486,710,496,734,504,796,516,795,521,733,510,707,501,691,489,682,468,682,446"/>
+</map>

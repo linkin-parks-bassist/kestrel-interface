@@ -119,8 +119,6 @@ Macros</h2></td></tr>
 <tr class="memitem:ae82cf381d50d724d92d1b6847cce76db" id="r_ae82cf381d50d724d92d1b6847cce76db"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae82cf381d50d724d92d1b6847cce76db">KEST_DICTIONARY_N_BUCKETS</a>&#160;&#160;&#160;8</td></tr>
 <tr class="memitem:a47744541258a26adfce215564d8d05f4" id="r_a47744541258a26adfce215564d8d05f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47744541258a26adfce215564d8d05f4">ERR_NOT_FOUND</a>&#160;&#160;&#160;10</td></tr>
 <tr class="memitem:a699fcc5561d75c476b535d52a51566f4" id="r_a699fcc5561d75c476b535d52a51566f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a699fcc5561d75c476b535d52a51566f4">ERR_WRONG_TYPE</a>&#160;&#160;&#160;11</td></tr>
-<tr class="memitem:ab168a4eaf28d3040a1991e1cd3ca304e" id="r_ab168a4eaf28d3040a1991e1cd3ca304e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab168a4eaf28d3040a1991e1cd3ca304e">DECLARE_PTR_DICT</a>(X)</td></tr>
-<tr class="memitem:af0565185036e90ce4bc9a80c902d1965" id="r_af0565185036e90ce4bc9a80c902d1965"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0565185036e90ce4bc9a80c902d1965">IMPLEMENT_PTR_DICT</a>(X)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -134,6 +132,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ab5598e5b7eaa5e282c1ce3311fa82fe1" id="r_ab5598e5b7eaa5e282c1ce3311fa82fe1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5598e5b7eaa5e282c1ce3311fa82fe1">kest_dictionary_bucket_add_entry_float</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, float value)</td></tr>
 <tr class="memitem:ab6cb92287d05fedf3800de404ec2886f" id="r_ab6cb92287d05fedf3800de404ec2886f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6cb92287d05fedf3800de404ec2886f">kest_dictionary_bucket_add_entry_expr</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, <a class="el" href="structkest__expression.html">kest_expression</a> *value)</td></tr>
 <tr class="memitem:ac44a75c478bb5870ec440276bb1610d7" id="r_ac44a75c478bb5870ec440276bb1610d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac44a75c478bb5870ec440276bb1610d7">kest_dictionary_bucket_add_entry_dict</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, struct <a class="el" href="structkest__dictionary.html">kest_dictionary</a> *value)</td></tr>
+<tr class="memitem:ae2449eee80ac6af59b5a60829420de07" id="r_ae2449eee80ac6af59b5a60829420de07"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2449eee80ac6af59b5a60829420de07">kest_dictionary_bucket_lookup_entry</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, <a class="el" href="structkest__dictionary__entry.html">kest_dictionary_entry</a> *result)</td></tr>
 <tr class="memitem:a6b7554b28dc86f1a9e9323088403c2af" id="r_a6b7554b28dc86f1a9e9323088403c2af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b7554b28dc86f1a9e9323088403c2af">kest_dictionary_bucket_lookup_str</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, const char **result)</td></tr>
 <tr class="memitem:a25662461d7cb40faa764d77a6ffb0b78" id="r_a25662461d7cb40faa764d77a6ffb0b78"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25662461d7cb40faa764d77a6ffb0b78">kest_dictionary_bucket_lookup_float</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, float *result)</td></tr>
 <tr class="memitem:a1d9c68c1c8bd95cd134e1516dd34bbfa" id="r_a1d9c68c1c8bd95cd134e1516dd34bbfa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d9c68c1c8bd95cd134e1516dd34bbfa">kest_dictionary_bucket_lookup_int</a> (<a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *dict, const char *name, int *result)</td></tr>
@@ -146,6 +145,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a6ed116ee21579913604cb74f565ef5e2" id="r_a6ed116ee21579913604cb74f565ef5e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ed116ee21579913604cb74f565ef5e2">kest_dictionary_add_entry_float</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, float value)</td></tr>
 <tr class="memitem:af3a2314e489cbe9344dbabff75d8981c" id="r_af3a2314e489cbe9344dbabff75d8981c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3a2314e489cbe9344dbabff75d8981c">kest_dictionary_add_entry_expr</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, <a class="el" href="structkest__expression.html">kest_expression</a> *value)</td></tr>
 <tr class="memitem:ac422a4715e6e2b8919cec34b25074488" id="r_ac422a4715e6e2b8919cec34b25074488"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac422a4715e6e2b8919cec34b25074488">kest_dictionary_add_entry_dict</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, <a class="el" href="structkest__dictionary.html">kest_dictionary</a> *value)</td></tr>
+<tr class="memitem:a2f56ef592103d8646e8f1787338bc2c6" id="r_a2f56ef592103d8646e8f1787338bc2c6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f56ef592103d8646e8f1787338bc2c6">kest_dictionary_lookup_entry</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, <a class="el" href="structkest__dictionary__entry.html">kest_dictionary_entry</a> *result)</td></tr>
 <tr class="memitem:a76d1d160cee6b666deb63f52a8f04d94" id="r_a76d1d160cee6b666deb63f52a8f04d94"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76d1d160cee6b666deb63f52a8f04d94">kest_dictionary_lookup_str</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, const char **result)</td></tr>
 <tr class="memitem:ac0d717121bfefc909ebb35791957e2e7" id="r_ac0d717121bfefc909ebb35791957e2e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0d717121bfefc909ebb35791957e2e7">kest_dictionary_lookup_float</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, float *result)</td></tr>
 <tr class="memitem:a1ded333d233d7d29ca2bdfccdb651b68" id="r_a1ded333d233d7d29ca2bdfccdb651b68"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ded333d233d7d29ca2bdfccdb651b68">kest_dictionary_lookup_int</a> (<a class="el" href="structkest__dictionary.html">kest_dictionary</a> *dict, const char *name, int *result)</td></tr>
@@ -157,47 +157,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a6c357296bc95a0594b1e5168402b6964" id="r_a6c357296bc95a0594b1e5168402b6964"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c357296bc95a0594b1e5168402b6964">kest_parse_dictionary</a> (struct <a class="el" href="structkest__eff__parsing__state.html">kest_eff_parsing_state</a> *ps, <a class="el" href="structkest__dictionary.html">kest_dictionary</a> **result, const char *name)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="ab168a4eaf28d3040a1991e1cd3ca304e" name="ab168a4eaf28d3040a1991e1cd3ca304e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab168a4eaf28d3040a1991e1cd3ca304e">&#9670;&#160;</a></span>DECLARE_PTR_DICT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DECLARE_PTR_DICT</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>X</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{\</div>
-<div class="line">    <span class="keyword">const</span> <span class="keywordtype">char</span> *key; \</div>
-<div class="line">    X *data; \</div>
-<div class="line">} X##_ptr_dict_entry; \</div>
-<div class="line">\</div>
-<div class="line">DECLARE_LIST(X##_ptr_dict_entry);\</div>
-<div class="line"><span class="keyword">typedef</span> X##_ptr_dict_entry_list X##_ptr_dict_bucket;\</div>
-<div class="line">\</div>
-<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{\</div>
-<div class="line">    X##_ptr_dict_bucket *buckets;\</div>
-<div class="line">    <span class="keywordtype">size_t</span> n_buckets;\</div>
-<div class="line">    <a class="code hl_struct" href="structkest__allocator.html">kest_allocator</a> alloc;\</div>
-<div class="line">} X##_ptr_dict;\</div>
-<div class="line">\</div>
-<div class="line"><span class="keywordtype">int</span> X##_ptr_dict_init(X##_ptr_dict *dict, <span class="keywordtype">size_t</span> n_buckets);\</div>
-<div class="line"><span class="keywordtype">int</span> X##_ptr_dict_init_with_allocator(X##_ptr_dict *dict, <span class="keywordtype">size_t</span> n_buckets, kest_allocator *alloc);\</div>
-<div class="line"><span class="keywordtype">int</span> X##_ptr_dict_insert(X##_ptr_dict *dict, <span class="keywordtype">char</span> *key, X *x);\</div>
-<div class="line">X *X##_ptr_dict_lookup(X##_ptr_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key);\</div>
-<div class="line"><span class="keywordtype">size_t</span> X##_ptr_dict_count(X##_ptr_dict *dict);\</div>
-<div class="line">X *X##_ptr_dict_index(X##_ptr_dict *dict, <span class="keywordtype">size_t</span> n);\</div>
-<div class="line"><span class="keywordtype">void</span> X##_ptr_dict_destroy(X##_ptr_dict *dict, <span class="keywordtype">void</span> (*destructor)(X *x));</div>
-<div class="ttc" id="astructkest__allocator_html"><div class="ttname"><a href="structkest__allocator.html">kest_allocator</a></div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8h_source.html#l00006">kest_alloc.h:6</a></div></div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00097">97</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
-
-</div>
-</div>
 <a id="afc99038ed3fcc03712f9d06dae10f2b2" name="afc99038ed3fcc03712f9d06dae10f2b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc99038ed3fcc03712f9d06dae10f2b2">&#9670;&#160;</a></span>DICT_ENTRY_TYPE_EXPR</h2>
 
@@ -212,7 +171,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00009">9</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00529">kest_dictionary_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00260">kest_dictionary_bucket_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00372">kest_dictionary_bucket_lookup_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00602">kest_dictionary_lookup_expr()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00475">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00617">print_dict_entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00546">kest_dictionary_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00260">kest_dictionary_bucket_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00389">kest_dictionary_bucket_lookup_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00629">kest_dictionary_lookup_expr()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00479">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00658">kest_extract_hpf_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00540">kest_extract_lpf_from_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00644">print_dict_entry()</a>.</p>
 
 </div>
 </div>
@@ -230,7 +189,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00007">7</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00505">kest_dictionary_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00238">kest_dictionary_bucket_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00362">kest_dictionary_bucket_lookup_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00592">kest_dictionary_lookup_float()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00617">print_dict_entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00522">kest_dictionary_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00238">kest_dictionary_bucket_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00379">kest_dictionary_bucket_lookup_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00619">kest_dictionary_lookup_float()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00658">kest_extract_hpf_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00540">kest_extract_lpf_from_dict()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00644">print_dict_entry()</a>.</p>
 
 </div>
 </div>
@@ -248,7 +207,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00006">6</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00481">kest_dictionary_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00216">kest_dictionary_bucket_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00367">kest_dictionary_bucket_lookup_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00597">kest_dictionary_lookup_int()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00617">print_dict_entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00498">kest_dictionary_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00216">kest_dictionary_bucket_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00384">kest_dictionary_bucket_lookup_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00624">kest_dictionary_lookup_int()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00658">kest_extract_hpf_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00540">kest_extract_lpf_from_dict()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00644">print_dict_entry()</a>.</p>
 
 </div>
 </div>
@@ -266,7 +225,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00011">11</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00382">kest_dictionary_bucket_lookup_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00612">kest_dictionary_lookup_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00399">kest_dictionary_bucket_lookup_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00639">kest_dictionary_lookup_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>.</p>
 
 </div>
 </div>
@@ -300,7 +259,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00005">5</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>.</p>
 
 </div>
 </div>
@@ -318,7 +277,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00008">8</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00457">kest_dictionary_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00194">kest_dictionary_bucket_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00357">kest_dictionary_bucket_lookup_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00587">kest_dictionary_lookup_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00617">print_dict_entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00474">kest_dictionary_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00194">kest_dictionary_bucket_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00374">kest_dictionary_bucket_lookup_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00614">kest_dictionary_lookup_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00644">print_dict_entry()</a>.</p>
 
 </div>
 </div>
@@ -336,7 +295,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00010">10</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00553">kest_dictionary_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00282">kest_dictionary_bucket_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00377">kest_dictionary_bucket_lookup_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00607">kest_dictionary_lookup_dict()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00041">kest_parameters_section_extract()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00102">kest_resources_section_extract()</a>, and <a class="el" href="kest__eff__section_8c_source.html#l00070">kest_settings_section_extract()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00016">kest_dict_entry_type_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00030">kest_dict_entry_type_to_string_nice()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00570">kest_dictionary_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00282">kest_dictionary_bucket_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00394">kest_dictionary_bucket_lookup_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00634">kest_dictionary_lookup_dict()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00041">kest_parameters_section_extract()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00102">kest_resources_section_extract()</a>, and <a class="el" href="kest__eff__section_8c_source.html#l00070">kest_settings_section_extract()</a>.</p>
 
 </div>
 </div>
@@ -352,9 +311,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00087">87</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00089">89</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup_entry()</a>.</p>
 
 </div>
 </div>
@@ -370,28 +329,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00088">88</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00090">90</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00304">kest_dictionary_bucket_lookup()</a>.</p>
-
-</div>
-</div>
-<a id="af0565185036e90ce4bc9a80c902d1965" name="af0565185036e90ce4bc9a80c902d1965"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0565185036e90ce4bc9a80c902d1965">&#9670;&#160;</a></span>IMPLEMENT_PTR_DICT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define IMPLEMENT_PTR_DICT</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>X</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00120">120</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00321">kest_dictionary_bucket_lookup()</a>.</p>
 
 </div>
 </div>
@@ -407,9 +347,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00058">58</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8h_source.html#l00059">59</a> of file <a class="el" href="kest__dictionary_8h_source.html">kest_dictionary.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00436">kest_dictionary_add_entry()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00553">kest_dictionary_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00529">kest_dictionary_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00505">kest_dictionary_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00481">kest_dictionary_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00457">kest_dictionary_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00577">kest_dictionary_lookup()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00388">kest_new_dictionary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00453">kest_dictionary_add_entry()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00570">kest_dictionary_add_entry_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00546">kest_dictionary_add_entry_expr()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00522">kest_dictionary_add_entry_float()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00498">kest_dictionary_add_entry_int()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00474">kest_dictionary_add_entry_str()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00604">kest_dictionary_lookup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00594">kest_dictionary_lookup_entry()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00405">kest_new_dictionary()</a>.</p>
 
 </div>
 </div>
@@ -448,7 +388,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00044">44</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00475">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00684">kest_parse_dict_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00799">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00650">print_dict()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00479">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00711">kest_parse_dict_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00677">print_dict()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
@@ -459,7 +399,7 @@ Functions</h2></td></tr>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a298bc3ea15bffee0e485de36aea099c2_icgraph.svg" width="100%" height="485"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a298bc3ea15bffee0e485de36aea099c2_icgraph.svg" width="100%" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -508,12 +448,12 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00030">30</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00475">kest_extract_filter_coefs_from_dict()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00479">kest_extract_filter_coefs_from_dict()</a>.</p>
 <div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_abaef2273aade2095c1ba537a60e71450_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_abaef2273aade2095c1ba537a60e71450_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -537,9 +477,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00436">436</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00453">453</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00684">kest_parse_dict_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00938">kest_parse_dictionary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00711">kest_parse_dict_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00969">kest_parse_dictionary()</a>.</p>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
@@ -579,7 +519,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00553">553</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00570">570</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
@@ -613,7 +553,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00529">529</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00546">546</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
@@ -647,7 +587,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00505">505</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00522">522</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
@@ -681,7 +621,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00481">481</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00498">498</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
@@ -715,7 +655,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00457">457</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00474">474</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
@@ -746,7 +686,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00175">175</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00436">kest_dictionary_add_entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00453">kest_dictionary_add_entry()</a>.</p>
 <div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
@@ -788,7 +728,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00282">282</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00553">kest_dictionary_add_entry_dict()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00570">kest_dictionary_add_entry_dict()</a>.</p>
 <div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
@@ -830,7 +770,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00260">260</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00529">kest_dictionary_add_entry_expr()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00546">kest_dictionary_add_entry_expr()</a>.</p>
 <div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-16-summary" class="dynsummary" style="display:block;">
 </div>
@@ -872,7 +812,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00238">238</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00505">kest_dictionary_add_entry_float()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00522">kest_dictionary_add_entry_float()</a>.</p>
 <div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
@@ -914,7 +854,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00216">216</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00481">kest_dictionary_add_entry_int()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00498">kest_dictionary_add_entry_int()</a>.</p>
 <div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
@@ -956,7 +896,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00194">194</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00457">kest_dictionary_add_entry_str()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00474">kest_dictionary_add_entry_str()</a>.</p>
 <div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-22-summary" class="dynsummary" style="display:block;">
 </div>
@@ -996,12 +936,48 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00377">377</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00394">394</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 <div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-24-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-24-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a7a7f22a20bb1223fd0e335bc1068a639_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae2449eee80ac6af59b5a60829420de07" name="ae2449eee80ac6af59b5a60829420de07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2449eee80ac6af59b5a60829420de07">&#9670;&#160;</a></span>kest_dictionary_bucket_lookup_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_dictionary_bucket_lookup_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__dictionary__bucket.html">kest_dictionary_bucket</a> *</td>          <td class="paramname"><span class="paramname"><em>dict</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__dictionary__entry.html">kest_dictionary_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>result</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00304">304</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00594">kest_dictionary_lookup_entry()</a>.</p>
+<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_ae2449eee80ac6af59b5a60829420de07_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1030,11 +1006,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00372">372</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
-<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00389">389</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a787c27b0521db0f35f0d80d8e61f4b54_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1064,11 +1040,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00362">362</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
-<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00379">379</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a25662461d7cb40faa764d77a6ffb0b78_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1098,11 +1074,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00367">367</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
-<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00384">384</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<div id="dynsection-28" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a1d9c68c1c8bd95cd134e1516dd34bbfa_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1132,11 +1108,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00357">357</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
-<div id="dynsection-28" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00374">374</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a6b7554b28dc86f1a9e9323088403c2af_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1166,20 +1142,62 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00607">607</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00634">634</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00237">kest_dictionary_section_lookup_dict()</a>.</p>
-<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-29-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a16d4c6761feb472f57a86030145ea45f_cgraph.svg" width="651" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-30-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a16d4c6761feb472f57a86030145ea45f_cgraph.svg" width="651" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a16d4c6761feb472f57a86030145ea45f_icgraph.svg" width="436" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2f56ef592103d8646e8f1787338bc2c6" name="a2f56ef592103d8646e8f1787338bc2c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f56ef592103d8646e8f1787338bc2c6">&#9670;&#160;</a></span>kest_dictionary_lookup_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_dictionary_lookup_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__dictionary.html">kest_dictionary</a> *</td>          <td class="paramname"><span class="paramname"><em>dict</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__dictionary__entry.html">kest_dictionary_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>result</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00594">594</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00658">kest_extract_hpf_from_dict()</a>, and <a class="el" href="kest__dict__extract_8c_source.html#l00540">kest_extract_lpf_from_dict()</a>.</p>
+<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a2f56ef592103d8646e8f1787338bc2c6_cgraph.svg" width="400" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a2f56ef592103d8646e8f1787338bc2c6_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1208,19 +1226,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00602">602</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00629">629</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00225">kest_dictionary_section_lookup_expr()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00406">kest_extract_delay_buffer_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00574">kest_extract_filter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00215">kest_extract_int_setting_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00443">kest_extract_mem_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, and <a class="el" href="kest__dict__extract_8c_source.html#l00276">kest_extract_setting_from_dict()</a>.</p>
-<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00225">kest_dictionary_section_lookup_expr()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00410">kest_extract_delay_buffer_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00855">kest_extract_filter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00219">kest_extract_int_setting_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00447">kest_extract_mem_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00819">kest_extract_polynomial_from_dict()</a>, and <a class="el" href="kest__dict__extract_8c_source.html#l00280">kest_extract_setting_from_dict()</a>.</p>
+<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_aa5e01745c3975da2999b57cc7f51fba7_cgraph.svg" width="656" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_aa5e01745c3975da2999b57cc7f51fba7_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -1250,19 +1268,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00592">592</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00619">619</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00201">kest_dictionary_section_lookup_float()</a>.</p>
-<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_ac0d717121bfefc909ebb35791957e2e7_cgraph.svg" width="620" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-37" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_ac0d717121bfefc909ebb35791957e2e7_icgraph.svg" width="404" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1292,19 +1310,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00597">597</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00624">624</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00213">kest_dictionary_section_lookup_int()</a>.</p>
-<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-38" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-35-content" class="dyncontent" style="display:none;">
+<div id="dynsection-38-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a1ded333d233d7d29ca2bdfccdb651b68_cgraph.svg" width="644" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-39" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div id="dynsection-39-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a1ded333d233d7d29ca2bdfccdb651b68_icgraph.svg" width="428" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -1334,20 +1352,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00612">612</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00639">639</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00475">kest_extract_filter_coefs_from_dict()</a>.</p>
-<div id="dynsection-37" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00479">kest_extract_filter_coefs_from_dict()</a>.</p>
+<div id="dynsection-40" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div id="dynsection-40-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a21526e898fbbfcc30e54dc674406d435_cgraph.svg" width="647" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-38" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-41" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-38-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a21526e898fbbfcc30e54dc674406d435_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a21526e898fbbfcc30e54dc674406d435_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1376,20 +1394,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00587">587</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00614">614</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00189">kest_dictionary_section_lookup_str()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00185">kest_extract_bool_setting_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00632">kest_extract_resource_from_dict()</a>, and <a class="el" href="kest__dict__extract_8c_source.html#l00276">kest_extract_setting_from_dict()</a>.</p>
-<div id="dynsection-39" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00189">kest_dictionary_section_lookup_str()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00189">kest_extract_bool_setting_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00913">kest_extract_resource_from_dict()</a>, and <a class="el" href="kest__dict__extract_8c_source.html#l00280">kest_extract_setting_from_dict()</a>.</p>
+<div id="dynsection-42" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-39-content" class="dyncontent" style="display:none;">
+<div id="dynsection-42-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a76d1d160cee6b666deb63f52a8f04d94_cgraph.svg" width="644" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-40" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-43" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-40-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a76d1d160cee6b666deb63f52a8f04d94_icgraph.svg" width="100%" height="518"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a76d1d160cee6b666deb63f52a8f04d94_icgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1409,19 +1427,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00388">388</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00405">405</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00938">kest_parse_dictionary()</a>.</p>
-<div id="dynsection-41" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00969">kest_parse_dictionary()</a>.</p>
+<div id="dynsection-44" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div id="dynsection-44-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_aa3d79179f434138316e0d3a4c7315ace_cgraph.svg" width="634" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-42" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-45" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-42-content" class="dyncontent" style="display:none;">
+<div id="dynsection-45-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_aa3d79179f434138316e0d3a4c7315ace_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -1451,19 +1469,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00799">799</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00826">826</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00684">kest_parse_dict_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00938">kest_parse_dictionary()</a>.</p>
-<div id="dynsection-43" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__dictionary_8c_source.html#l00711">kest_parse_dict_list()</a>, and <a class="el" href="kest__dictionary_8c_source.html#l00969">kest_parse_dictionary()</a>.</p>
+<div id="dynsection-46" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div id="dynsection-46-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a382125c9526a3974a5188287cec2fb69_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-44" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-47" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-47-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-44-content" class="dyncontent" style="display:none;">
+<div id="dynsection-47-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a382125c9526a3974a5188287cec2fb69_icgraph.svg" width="100%" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -1493,7 +1511,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00938">938</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00969">969</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
 </div>
 </div>
@@ -1512,19 +1530,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00650">650</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dictionary_8c_source.html#l00677">677</a> of file <a class="el" href="kest__dictionary_8c_source.html">kest_dictionary.c</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00249">kest_parse_dictionary_section()</a>.</p>
-<div id="dynsection-45" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-48" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-45-content" class="dyncontent" style="display:none;">
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a2a60847422026db5eab8103cd8ea1dc5_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-46" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-49" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-49-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-46-content" class="dyncontent" style="display:none;">
+<div id="dynsection-49-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__dictionary_8h_a2a60847422026db5eab8103cd8ea1dc5_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 

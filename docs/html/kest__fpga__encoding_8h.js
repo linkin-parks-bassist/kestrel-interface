@@ -12,5 +12,7 @@ var kest__fpga__encoding_8h =
     [ "kest_fpga_batch_append_effect", "kest__fpga__encoding_8h.html#a1d36760e33c68c0a5b22c8920f3a5a2b", null ],
     [ "kest_fpga_batch_append_effects", "kest__fpga__encoding_8h.html#ad4ae765e4a682cbd9a71e3acceabf81d", null ],
     [ "kest_fpga_batch_print", "kest__fpga__encoding_8h.html#a846915834c09759d6445b5dffc45b723", null ],
-    [ "kest_fpga_transfer_batch_append_effect_register_updates", "kest__fpga__encoding_8h.html#a2f3bae873de3ea2dafd0d6d1424e929f", null ]
+    [ "kest_fpga_transfer_batch_append_effect_register_updates", "kest__fpga__encoding_8h.html#a2f82b2c396c41026c378670b04592a6b", null ],
+    [ "kest_fpga_transfer_batch_append_effect_resource_updates", "kest__fpga__encoding_8h.html#a815f4fb2e5a9d1e468df416e3385a638", null ],
+    [ "print_instruction", "kest__fpga__encoding_8h.html#a9f3d76916b565e27599aebdb6c624499", null ]
 ];

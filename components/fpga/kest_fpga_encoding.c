@@ -7,7 +7,7 @@ static const char *FNAME = "kest_fpga_encoding.c";
 #include "kest_int.h"
 
 //#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 //#endif
 /*
 #ifdef PRINT_TRANSFER_BATCHES
@@ -169,6 +169,9 @@ int kest_fpga_batch_append_block_register_updates(kest_fpga_transfer_batch *batc
 	if (!batch || !block)
 		return ERR_NULL_PTR;
 	
+	KEST_PRINTF("kest_fpga_batch_append_block_register_updates(batch = %p, block = %p, scope = %p, pos = %d)\n",
+		batch, block, scope, pos);
+	
 	float v;
 	kest_fpga_sample_t s;
 	
@@ -207,8 +210,8 @@ int kest_fpga_batch_append_block_register_updates(kest_fpga_transfer_batch *batc
 
 int kest_fpga_batch_append_filter_updates(kest_fpga_transfer_batch *batch, int handle, kest_filter *filter, kest_scope *scope)
 {
-	KEST_PRINTF("kest_fpga_batch_append_filter_updates(batch = %p, handle = %d, filter = &p, scope = &p)\n",
-		batch, handle, filter, scope);
+	//KEST_PRINTF("kest_fpga_batch_append_filter_updates(batch = %p, handle = %d, filter = &p, scope = &p)\n",
+	//	batch, handle, filter, scope);
 	
 	if (!batch || !filter || !scope)
 		return ERR_NULL_PTR;
@@ -255,7 +258,7 @@ int kest_fpga_batch_append_filter_updates(kest_fpga_transfer_batch *batch, int h
 
 int kest_fpga_batch_append_resource_updates(kest_fpga_transfer_batch *batch, kest_dsp_resource *resource, kest_scope *scope, kest_effect_fpga_position *pos)
 {
-	KEST_PRINTF("kest_fpga_batch_append_resource_updates(batch = &p, resource = %p, scope = %p, pos = %p)\n",
+	KEST_PRINTF("kest_fpga_batch_append_resource_updates(batch = %p, resource = %p, scope = %p, pos = %p)\n",
 		batch, resource, scope, pos);
 	
 	if (!batch || !resource || !pos)

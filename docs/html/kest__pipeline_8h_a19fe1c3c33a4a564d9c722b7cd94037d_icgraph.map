@@ -1,9 +1,9 @@
 <map id="kest_pipeline_get_effect_by_id" name="kest_pipeline_get_effect_by_id">
-<area shape="rect" id="Node000001" title=" " alt="" coords="676,5,857,50"/>
-<area shape="rect" id="Node000002" href="$kest__profile_8c.html#a29b790068e7677aa1e211a707409bcc4" title=" " alt="" coords="458,5,628,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="661,30,629,30,629,25,661,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="675,5,856,50"/>
+<area shape="rect" id="Node000002" href="$kest__preset_8c.html#a58e14bf946d89414715a6f2480b13587" title=" " alt="" coords="458,5,627,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="660,30,628,30,628,25,660,25"/>
 <area shape="rect" id="Node000003" href="$kest__page__id_8c.html#a63b55de25f16c715b468429c78e79af0" title=" " alt="" coords="233,14,410,42"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="443,30,411,30,411,25,443,25"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="442,30,410,30,410,25,442,25"/>
 <area shape="rect" id="Node000004" href="$kest__state_8c.html#ad67167136a5f2e68f04622bc4f518b22" title=" " alt="" coords="5,5,185,50"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="217,30,185,30,185,25,217,25"/>
 </map>

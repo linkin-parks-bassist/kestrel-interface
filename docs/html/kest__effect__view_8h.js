@@ -2,9 +2,9 @@ var kest__effect__view_8h =
 [
     [ "kest_tv_grouping", "structkest__tv__grouping.html", "structkest__tv__grouping" ],
     [ "kest_effect_view_str", "structkest__effect__view__str.html", "structkest__effect__view__str" ],
-    [ "TRANSFORMER_VIEW_GRID_CELL_HSIZE", "kest__effect__view_8h.html#ac04c54b5f0470cd4ba67c8aec19f0b60", null ],
-    [ "TRANSFORMER_VIEW_GRID_CELL_VSIZE", "kest__effect__view_8h.html#a1f656146af57afbc742bae92ab18954f", null ],
-    [ "TRANSFORMER_VIEW_MAX_GROUPS", "kest__effect__view_8h.html#a87660988bc4e2cf76e7f513352353860", null ],
+    [ "EFFECT_VIEW_GRID_CELL_HSIZE", "kest__effect__view_8h.html#a889770ca03863143a04a36bfb3fe47c1", null ],
+    [ "EFFECT_VIEW_GRID_CELL_VSIZE", "kest__effect__view_8h.html#ad2e26087eee743b3253e1abc98fd6556", null ],
+    [ "EFFECT_VIEW_MAX_GROUPS", "kest__effect__view_8h.html#a91d8ecf4e7094138e5f2c609d72b7240", null ],
     [ "configure_effect_view", "kest__effect__view_8h.html#ae392eef44a5a025bad43a7a8969ab5b0", null ],
     [ "create_effect_view_for", "kest__effect__view_8h.html#abb65b28dc293fd68d3b384f48210130e", null ],
     [ "create_effect_view_ui", "kest__effect__view_8h.html#a7d15ffb969bcf677cf4a1622e2666f8e", null ],

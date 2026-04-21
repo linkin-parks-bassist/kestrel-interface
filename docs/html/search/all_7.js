@@ -2,7 +2,7 @@ var searchData=
 [
   ['h_5fpad_0',['H_PAD',['../kest__ui_8h.html#ab44c6eba10d5b540d2b677361b84bfe4',1,'kest_ui.h']]],
   ['handle_1',['handle',['../structkest__dsp__resource.html#a419075eb9434d9c0ba9703b52852c333',1,'kest_dsp_resource']]],
-  ['has_5ffname_2',['has_fname',['../structkest__profile.html#ac1f4a71cff810d42875202d4500aff50',1,'kest_profile::has_fname'],['../structkest__sequence.html#a0825cff97340f29d3436ef73e4433918',1,'kest_sequence::has_fname']]],
+  ['has_5ffname_2',['has_fname',['../structkest__preset.html#add453d2cd93022c46fbcf5927e6deca1',1,'kest_preset::has_fname'],['../structkest__sequence.html#a0825cff97340f29d3436ef73e4433918',1,'kest_sequence::has_fname']]],
   ['height_3',['height',['../structkest__button.html#a428935732471bf0032d3facfe66fe3ab',1,'kest_button']]],
   ['hide_5fkeyboard_4',['hide_keyboard',['../kest__ui_8c.html#a449db99602c8ef93fb805362fec7fb1d',1,'hide_keyboard():&#160;kest_ui.c'],['../kest__ui_8h.html#a449db99602c8ef93fb805362fec7fb1d',1,'hide_keyboard():&#160;kest_ui.c']]],
   ['hide_5fkeyboard_5fcb_5',['hide_keyboard_cb',['../kest__ui_8c.html#aa1a8a17de784d78134c5ed69f15abf27',1,'hide_keyboard_cb(lv_event_t *e):&#160;kest_ui.c'],['../kest__ui_8h.html#aa1a8a17de784d78134c5ed69f15abf27',1,'hide_keyboard_cb(lv_event_t *e):&#160;kest_ui.c']]],

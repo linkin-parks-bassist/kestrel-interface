@@ -1,11 +1,11 @@
 <map id="kest_parameter_widget" name="kest_parameter_widget">
 <area shape="rect" id="Node000001" title=" " alt="" coords="208,330,382,357"/>
 <area shape="rect" id="Node000002" href="$structkest__parameter__id.html" title=" " alt="" coords="5,5,148,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,48,89,99,104,155,123,202,139,238,162,270,198,304,219,317,242,327,240,332,216,322,195,308,158,273,135,241,118,204,99,157,83,100,76,49"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,48,89,99,104,155,123,202,140,238,163,270,199,304,220,317,243,327,241,332,218,322,196,308,159,273,135,241,118,204,99,157,83,100,76,49"/>
 <area shape="rect" id="Node000003" href="$structkest__parameter.html" title=" " alt="" coords="114,128,237,156"/>
 <area shape="poly" id="edge5_Node000003_Node000002" title=" " alt="" coords="99,43,166,126,162,129,95,47"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,171,174,213,178,235,186,255,203,279,224,298,268,327,265,331,221,302,199,282,181,258,173,236,169,213,169,171"/>
-<area shape="rect" id="Node000005" href="$structkest__profile.html" title=" " alt="" coords="246,229,344,257"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,171,175,213,179,235,188,255,204,279,225,298,269,327,266,331,222,302,200,282,183,258,174,236,170,213,169,171"/>
+<area shape="rect" id="Node000005" href="$structkest__preset.html" title=" " alt="" coords="247,229,343,257"/>
 <area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="200,165,242,203,276,226,272,231,239,207,196,169"/>
 <area shape="rect" id="Node000004" href="$structkest__expression.html" title=" " alt="" coords="172,5,298,33"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="224,48,184,129,179,126,220,46"/>

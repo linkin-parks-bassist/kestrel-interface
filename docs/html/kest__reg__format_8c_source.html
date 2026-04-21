@@ -95,96 +95,141 @@ $(function(){initNavTree('kest__reg__format_8c_source.html','',''); });
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="kest__int_8h.html">kest_int.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef PRINTLINES_ALLOWED</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="kest__reg__format_8c.html#a925207a2b3de0a6f636d1425fcdb1a56">    6</a></span><span class="preprocessor">#define PRINTLINES_ALLOWED 1</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">//#ifndef PRINTLINES_ALLOWED</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="kest__reg__format_8c.html#a925207a2b3de0a6f636d1425fcdb1a56">    6</a></span><span class="preprocessor">#define PRINTLINES_ALLOWED 0</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">//#endif</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *FNAME = <span class="stringliteral">&quot;kest_reg_format.c&quot;</span>;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="kest__reg__format_8c.html#a2a23995382c692cce714a167deb0b94c">   11</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__reg__format_8c.html#a2a23995382c692cce714a167deb0b94c">kest_compute_register_formats</a>(kest_block_pll *blocks, <a class="code hl_struct" href="structkest__expr__scope.html">kest_expr_scope</a> *scope)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="kest__reg__format_8c.html#a3a3510c5b7672d6004e930a61e5e5e62">   11</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__reg__format_8c.html#a3a3510c5b7672d6004e930a61e5e5e62">shift_policy_determine_shift</a>(<span class="keywordtype">int</span> shift_policy, <span class="keywordtype">int</span> format_a, <span class="keywordtype">int</span> format_b, <span class="keywordtype">int</span> format_c, <span class="keywordtype">int</span> shift_given)</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats\n&quot;</span>);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">if</span> (!blocks)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats: no blocks!\n&quot;</span>);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    }</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    kest_block_pll *current = blocks;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_struct" href="structkest__interval.html">kest_interval</a> range;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">float</span> min, max;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">float</span> abs_min, abs_max;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">float</span> max_abs;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">int</span> format_0, format_1;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">int</span> shift_set;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">float</span> p2;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_typedef" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> string;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_function" href="kest__string_8c.html#ab74edc9a2be32d899a92ef58edb16286">kest_string_init</a>(&amp;<span class="keywordtype">string</span>);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">char</span> *str = NULL;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">while</span> (current)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> (current-&gt;data)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            shift_set = current-&gt;data-&gt;shift_set;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            format_0 = 0;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            format_1 = 0;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="comment">/*</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">            kest_string_appendf(&amp;string, &quot;kest_compute_register_formats(current-&gt;data = %p), shift_set = %d, reg_0_active: %d, reg_1_active: %d\n&quot;,</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">                current-&gt;data, shift_set, current-&gt;data-&gt;reg_0.active, current-&gt;data-&gt;reg_1.active);</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">            */</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_0.active)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                <span class="keywordflow">if</span> (!shift_set &amp;&amp; current-&gt;data-&gt;reg_0.expr)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                    format_0 = <a class="code hl_function" href="kest__fixed__point_8c.html#ac5145d24cb0e25a237f9c8d30b8fc0d2">kest_expression_compute_format</a>(current-&gt;data-&gt;reg_0.expr, scope, 8, <a class="code hl_define" href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a>);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                current-&gt;data-&gt;reg_0.format = format_0;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_1.active)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                <span class="keywordflow">if</span> (!shift_set &amp;&amp; current-&gt;data-&gt;reg_1.expr)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    format_1 = <a class="code hl_function" href="kest__fixed__point_8c.html#ac5145d24cb0e25a237f9c8d30b8fc0d2">kest_expression_compute_format</a>(current-&gt;data-&gt;reg_1.expr, scope, 8, <a class="code hl_define" href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a>);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                current-&gt;data-&gt;reg_1.format = format_1;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            current-&gt;data-&gt;shift = format_0 + format_1;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            <span class="comment">/*</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">            str = kest_string_to_native(&amp;string);</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">            KEST_PRINTF(&quot;%s&quot;, str);</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">            kest_free(str);</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">            kest_string_drain(&amp;string);</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">            */</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        current = current-&gt;next;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        i++;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_function" href="kest__string_8c.html#ad346e7c1a0b506f7eca9423a05b47f11">kest_string_destroy</a>(&amp;<span class="keywordtype">string</span>);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats done\n&quot;</span>);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">switch</span> (shift_policy)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a8294c4af8d92e72aba04038ed42b4fbd">SHIFT_POLICY_1</a>:  <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#ac13e92b71474fb7f382fbea5d68cae3f">SHIFT_POLICY_FA</a>:    <span class="keywordflow">return</span> format_a;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a957b0440a1e810ec473af49fcbc0c421">SHIFT_POLICY_FB</a>:    <span class="keywordflow">return</span> format_b;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a40489d9be2c96250550d898cc1b2b0fb">SHIFT_POLICY_FC</a>:    <span class="keywordflow">return</span> format_c;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a23ed762d982b26a83c098806e7c9b1dd">SHIFT_POLICY_SFAB</a>: <span class="keywordflow">return</span> format_a + format_b;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a817a29cc2357d6322263a2aae7655cd8">SHIFT_POLICY_MFAB</a>: <span class="keywordflow">return</span> format_b &gt; format_a ? format_b : format_a;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="kest__fpga__instr_8h.html#a8b9a9a37d95cd456eb6cc8982d51b5d9">SHIFT_POLICY_SET</a>:  <span class="keywordflow">return</span> shift_given;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    }</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="kest__reg__format_8c.html#a29aa51e007e672b4a6d7b9a4b287754a">   27</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__reg__format_8c.html#a29aa51e007e672b4a6d7b9a4b287754a">kest_compute_register_formats</a>(kest_block_pll *blocks, <a class="code hl_struct" href="structkest__scope.html">kest_scope</a> *scope)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats\n&quot;</span>);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">if</span> (!blocks)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats: no blocks!\n&quot;</span>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    kest_block_pll *current = blocks;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_struct" href="structkest__interval.html">kest_interval</a> range;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">float</span> min, max;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">float</span> abs_min, abs_max;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">float</span> max_abs;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">int</span> format_0, format_1;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">int</span> format_a, format_b, format_c;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">int</span> shift_set = 0;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">float</span> p2;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_typedef" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> string;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_function" href="kest__string_8c.html#ab74edc9a2be32d899a92ef58edb16286">kest_string_init</a>(&amp;<span class="keywordtype">string</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">char</span> *str = NULL;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">while</span> (current)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">if</span> (current-&gt;data &amp;&amp; !current-&gt;data-&gt;shift_set)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            format_0 = 0;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            format_1 = 0;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            format_a = 0;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            format_b = 0;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            format_c = 0;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <a class="code hl_function" href="kest__string_8c.html#a5e8184b1f070fc74a7d1d2f08c4d9658">kest_string_appendf</a>(&amp;<span class="keywordtype">string</span>, <span class="stringliteral">&quot;kest_compute_register_formats(current-&gt;data = %p), shift_set = %d, reg_0_active: %d, reg_1_active: %d\n&quot;</span>,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                current-&gt;data, shift_set, current-&gt;data-&gt;reg_0.active, current-&gt;data-&gt;reg_1.active);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_0.active)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_0.expr)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                    format_0 = <a class="code hl_function" href="kest__fixed__point_8c.html#aadbad80611ec55e1e488a3740c578c8b">kest_expression_compute_format</a>(current-&gt;data-&gt;reg_0.expr, scope, 8, <a class="code hl_define" href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                current-&gt;data-&gt;reg_0.format = format_0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_a.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_a.addr == 0) format_a = format_0;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_b.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_b.addr == 0) format_b = format_0;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_c.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_c.addr == 0) format_c = format_0;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <a class="code hl_function" href="kest__string_8c.html#a5e8184b1f070fc74a7d1d2f08c4d9658">kest_string_appendf</a>(&amp;<span class="keywordtype">string</span>, <span class="stringliteral">&quot;register 0 format: %d\n&quot;</span>, format_0);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_1.active)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;reg_1.expr)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                    format_1 = <a class="code hl_function" href="kest__fixed__point_8c.html#aadbad80611ec55e1e488a3740c578c8b">kest_expression_compute_format</a>(current-&gt;data-&gt;reg_1.expr, scope, 8, <a class="code hl_define" href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a>);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                current-&gt;data-&gt;reg_1.format = format_1;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_a.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_a.addr == 0) format_a = format_1;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_b.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_b.addr == 0) format_b = format_1;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                <span class="keywordflow">if</span> (current-&gt;data-&gt;arg_c.type == <a class="code hl_define" href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a> &amp;&amp; current-&gt;data-&gt;arg_c.addr == 0) format_c = format_1;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <a class="code hl_function" href="kest__string_8c.html#a5e8184b1f070fc74a7d1d2f08c4d9658">kest_string_appendf</a>(&amp;<span class="keywordtype">string</span>, <span class="stringliteral">&quot;register 1 format: %d\n&quot;</span>, format_1);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            current-&gt;data-&gt;shift = <a class="code hl_function" href="kest__reg__format_8c.html#a3a3510c5b7672d6004e930a61e5e5e62">shift_policy_determine_shift</a>(current-&gt;data-&gt;shift_policy, format_a, format_b, format_c, current-&gt;data-&gt;shift);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            str = <a class="code hl_function" href="kest__string_8c.html#a476a3ace857a6df4b94057b078a5bcb3">kest_string_to_native</a>(&amp;<span class="keywordtype">string</span>);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;%s&quot;</span>, str);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <a class="code hl_function" href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a>(str);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <a class="code hl_function" href="kest__string_8c.html#afa021a4021225530db818f590a416606">kest_string_drain</a>(&amp;<span class="keywordtype">string</span>);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        current = current-&gt;next;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        i++;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_function" href="kest__string_8c.html#ad346e7c1a0b506f7eca9423a05b47f11">kest_string_destroy</a>(&amp;<span class="keywordtype">string</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_compute_register_formats done\n&quot;</span>);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
+</div>
+<div class="ttc" id="akest__alloc_8c_html_a294af5728a94aa316fcf65304d388d48"><div class="ttname"><a href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a></div><div class="ttdeci">void kest_free(void *ptr)</div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8c_source.html#l00032">kest_alloc.c:32</a></div></div>
+<div class="ttc" id="akest__block_8h_html_a3beb7258b24b93121833c4fa45865aa7"><div class="ttname"><a href="kest__block_8h.html#a3beb7258b24b93121833c4fa45865aa7">BLOCK_OPERAND_TYPE_R</a></div><div class="ttdeci">#define BLOCK_OPERAND_TYPE_R</div><div class="ttdef"><b>Definition</b> <a href="kest__block_8h_source.html#l00036">kest_block.h:36</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a258bb72419ef143530a2f8f55e7d57af"><div class="ttname"><a href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a></div><div class="ttdeci">#define NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00004">kest_error_codes.h:4</a></div></div>
-<div class="ttc" id="akest__fixed__point_8c_html_ac5145d24cb0e25a237f9c8d30b8fc0d2"><div class="ttname"><a href="kest__fixed__point_8c.html#ac5145d24cb0e25a237f9c8d30b8fc0d2">kest_expression_compute_format</a></div><div class="ttdeci">int kest_expression_compute_format(kest_expression *expr, kest_expr_scope *scope, int fmax, int width)</div><div class="ttdef"><b>Definition</b> <a href="kest__fixed__point_8c_source.html#l00052">kest_fixed_point.c:52</a></div></div>
-<div class="ttc" id="akest__fpga__io_8h_html_ab048c63dba496376f600034fc7f80b93"><div class="ttname"><a href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a></div><div class="ttdeci">#define KEST_FPGA_DATA_WIDTH</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__io_8h_source.html#l00040">kest_fpga_io.h:40</a></div></div>
+<div class="ttc" id="akest__fixed__point_8c_html_aadbad80611ec55e1e488a3740c578c8b"><div class="ttname"><a href="kest__fixed__point_8c.html#aadbad80611ec55e1e488a3740c578c8b">kest_expression_compute_format</a></div><div class="ttdeci">int kest_expression_compute_format(kest_expression *expr, kest_scope *scope, int fmax, int width)</div><div class="ttdef"><b>Definition</b> <a href="kest__fixed__point_8c_source.html#l00052">kest_fixed_point.c:52</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a23ed762d982b26a83c098806e7c9b1dd"><div class="ttname"><a href="kest__fpga__instr_8h.html#a23ed762d982b26a83c098806e7c9b1dd">SHIFT_POLICY_SFAB</a></div><div class="ttdeci">#define SHIFT_POLICY_SFAB</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00008">kest_fpga_instr.h:8</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a40489d9be2c96250550d898cc1b2b0fb"><div class="ttname"><a href="kest__fpga__instr_8h.html#a40489d9be2c96250550d898cc1b2b0fb">SHIFT_POLICY_FC</a></div><div class="ttdeci">#define SHIFT_POLICY_FC</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00012">kest_fpga_instr.h:12</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a817a29cc2357d6322263a2aae7655cd8"><div class="ttname"><a href="kest__fpga__instr_8h.html#a817a29cc2357d6322263a2aae7655cd8">SHIFT_POLICY_MFAB</a></div><div class="ttdeci">#define SHIFT_POLICY_MFAB</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00009">kest_fpga_instr.h:9</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a8294c4af8d92e72aba04038ed42b4fbd"><div class="ttname"><a href="kest__fpga__instr_8h.html#a8294c4af8d92e72aba04038ed42b4fbd">SHIFT_POLICY_1</a></div><div class="ttdeci">#define SHIFT_POLICY_1</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00007">kest_fpga_instr.h:7</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a8b9a9a37d95cd456eb6cc8982d51b5d9"><div class="ttname"><a href="kest__fpga__instr_8h.html#a8b9a9a37d95cd456eb6cc8982d51b5d9">SHIFT_POLICY_SET</a></div><div class="ttdeci">#define SHIFT_POLICY_SET</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00013">kest_fpga_instr.h:13</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_a957b0440a1e810ec473af49fcbc0c421"><div class="ttname"><a href="kest__fpga__instr_8h.html#a957b0440a1e810ec473af49fcbc0c421">SHIFT_POLICY_FB</a></div><div class="ttdeci">#define SHIFT_POLICY_FB</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00011">kest_fpga_instr.h:11</a></div></div>
+<div class="ttc" id="akest__fpga__instr_8h_html_ac13e92b71474fb7f382fbea5d68cae3f"><div class="ttname"><a href="kest__fpga__instr_8h.html#ac13e92b71474fb7f382fbea5d68cae3f">SHIFT_POLICY_FA</a></div><div class="ttdeci">#define SHIFT_POLICY_FA</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__instr_8h_source.html#l00010">kest_fpga_instr.h:10</a></div></div>
+<div class="ttc" id="akest__fpga__io_8h_html_ab048c63dba496376f600034fc7f80b93"><div class="ttname"><a href="kest__fpga__io_8h.html#ab048c63dba496376f600034fc7f80b93">KEST_FPGA_DATA_WIDTH</a></div><div class="ttdeci">#define KEST_FPGA_DATA_WIDTH</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__io_8h_source.html#l00049">kest_fpga_io.h:49</a></div></div>
 <div class="ttc" id="akest__int_8h_html"><div class="ttname"><a href="kest__int_8h.html">kest_int.h</a></div></div>
-<div class="ttc" id="akest__printf_8h_html_aae8a3ac4bdf8dfa4a639c21aadbbb977"><div class="ttname"><a href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a></div><div class="ttdeci">#define KEST_PRINTF(...)</div><div class="ttdef"><b>Definition</b> <a href="kest__printf_8h_source.html#l00010">kest_printf.h:10</a></div></div>
-<div class="ttc" id="akest__reg__format_8c_html_a2a23995382c692cce714a167deb0b94c"><div class="ttname"><a href="kest__reg__format_8c.html#a2a23995382c692cce714a167deb0b94c">kest_compute_register_formats</a></div><div class="ttdeci">int kest_compute_register_formats(kest_block_pll *blocks, kest_expr_scope *scope)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">kest_reg_format.c:11</a></div></div>
+<div class="ttc" id="akest__printf_8h_html_aae8a3ac4bdf8dfa4a639c21aadbbb977"><div class="ttname"><a href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a></div><div class="ttdeci">#define KEST_PRINTF(...)</div><div class="ttdef"><b>Definition</b> <a href="kest__printf_8h_source.html#l00012">kest_printf.h:12</a></div></div>
+<div class="ttc" id="akest__reg__format_8c_html_a29aa51e007e672b4a6d7b9a4b287754a"><div class="ttname"><a href="kest__reg__format_8c.html#a29aa51e007e672b4a6d7b9a4b287754a">kest_compute_register_formats</a></div><div class="ttdeci">int kest_compute_register_formats(kest_block_pll *blocks, kest_scope *scope)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">kest_reg_format.c:27</a></div></div>
+<div class="ttc" id="akest__reg__format_8c_html_a3a3510c5b7672d6004e930a61e5e5e62"><div class="ttname"><a href="kest__reg__format_8c.html#a3a3510c5b7672d6004e930a61e5e5e62">shift_policy_determine_shift</a></div><div class="ttdeci">int shift_policy_determine_shift(int shift_policy, int format_a, int format_b, int format_c, int shift_given)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">kest_reg_format.c:11</a></div></div>
+<div class="ttc" id="akest__string_8c_html_a476a3ace857a6df4b94057b078a5bcb3"><div class="ttname"><a href="kest__string_8c.html#a476a3ace857a6df4b94057b078a5bcb3">kest_string_to_native</a></div><div class="ttdeci">char * kest_string_to_native(kest_string *string)</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8c_source.html#l00167">kest_string.c:167</a></div></div>
+<div class="ttc" id="akest__string_8c_html_a5e8184b1f070fc74a7d1d2f08c4d9658"><div class="ttname"><a href="kest__string_8c.html#a5e8184b1f070fc74a7d1d2f08c4d9658">kest_string_appendf</a></div><div class="ttdeci">int kest_string_appendf(kest_string *string, const char *fmt,...)</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8c_source.html#l00211">kest_string.c:211</a></div></div>
 <div class="ttc" id="akest__string_8c_html_ab74edc9a2be32d899a92ef58edb16286"><div class="ttname"><a href="kest__string_8c.html#ab74edc9a2be32d899a92ef58edb16286">kest_string_init</a></div><div class="ttdeci">int kest_string_init(kest_string *string)</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8c_source.html#l00012">kest_string.c:12</a></div></div>
 <div class="ttc" id="akest__string_8c_html_ad346e7c1a0b506f7eca9423a05b47f11"><div class="ttname"><a href="kest__string_8c.html#ad346e7c1a0b506f7eca9423a05b47f11">kest_string_destroy</a></div><div class="ttdeci">int kest_string_destroy(kest_string *string)</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8c_source.html#l00097">kest_string.c:97</a></div></div>
+<div class="ttc" id="akest__string_8c_html_afa021a4021225530db818f590a416606"><div class="ttname"><a href="kest__string_8c.html#afa021a4021225530db818f590a416606">kest_string_drain</a></div><div class="ttdeci">int kest_string_drain(kest_string *string)</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8c_source.html#l00127">kest_string.c:127</a></div></div>
 <div class="ttc" id="akest__string_8h_html_aa024f83c34d684c3f857f898f9f6191a"><div class="ttname"><a href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a></div><div class="ttdeci">char_list kest_string</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8h_source.html#l00006">kest_string.h:6</a></div></div>
-<div class="ttc" id="astructkest__expr__scope_html"><div class="ttname"><a href="structkest__expr__scope.html">kest_expr_scope</a></div><div class="ttdef"><b>Definition</b> <a href="kest__expr__scope_8h_source.html#l00031">kest_expr_scope.h:31</a></div></div>
-<div class="ttc" id="astructkest__interval_html"><div class="ttname"><a href="structkest__interval.html">kest_interval</a></div><div class="ttdef"><b>Definition</b> <a href="kest__expression_8h_source.html#l00071">kest_expression.h:72</a></div></div>
+<div class="ttc" id="astructkest__interval_html"><div class="ttname"><a href="structkest__interval.html">kest_interval</a></div><div class="ttdef"><b>Definition</b> <a href="kest__expression_8h_source.html#l00074">kest_expression.h:75</a></div></div>
+<div class="ttc" id="astructkest__scope_html"><div class="ttname"><a href="structkest__scope.html">kest_scope</a></div><div class="ttdef"><b>Definition</b> <a href="kest__expr__scope_8h_source.html#l00069">kest_expr_scope.h:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

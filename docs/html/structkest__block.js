@@ -10,5 +10,6 @@ var structkest__block =
     [ "res", "structkest__block.html#ad4108806d39c69a24620f949136d3b27", null ],
     [ "saturate_disable", "structkest__block.html#ac874940f29aaabc89308df70c32210ba", null ],
     [ "shift", "structkest__block.html#aa1a958d423cfa4abfebff15ab7526ae6", null ],
+    [ "shift_policy", "structkest__block.html#a8c14be31de45d0a5cca958bdcccdb1c6", null ],
     [ "shift_set", "structkest__block.html#abc443c17c487d4c0590d44abed2991ea", null ]
 ];

@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_effect_view.c";
 
@@ -194,6 +194,10 @@ int configure_effect_view(kest_ui_page *page, void *data)
 	
 	page->configured = 1;
 	
+	#ifdef KEST_ENABLE_REPRESENTATIONS
+	effect->page_rep.representer = page;
+	#endif
+	
 	return NO_ERROR;
 }
 
@@ -235,18 +239,27 @@ int create_effect_view_ui(kest_ui_page *page)
 			lv_obj_set_size(str->group_containers[i], 0, 0);
 		}
 	}
+	KEST_PRINTF("\n");
 	
 	kest_setting_widget_pll *current_setting = str->setting_widgets;
 	
+	KEST_PRINTF("\n");
 	int group;
 	int i = 0;
 	
+	KEST_PRINTF("\n");
 	while (current_setting)
 	{
+		KEST_PRINTF("\n");
 		if (current_setting->data)
 		{
+			KEST_PRINTF("\n");
 			if (current_setting->data->setting)
 			{
+				KEST_PRINTF("current_setting = %p\n", current_setting);
+				KEST_PRINTF("current_setting->data = %p\n", current_setting->data);
+				KEST_PRINTF("current_setting->data->setting = %p\n", current_setting->data->setting);
+				KEST_PRINTF("current_setting->data->setting->group = %d\n", current_setting->data->setting->group);
 				group = current_setting->data->setting->group;
 				if (0 <= group && group < EFFECT_VIEW_MAX_GROUPS)
 				{
@@ -256,15 +269,19 @@ int create_effect_view_ui(kest_ui_page *page)
 				{
 					setting_widget_create_ui(current_setting->data, page->container);
 				}
+				KEST_PRINTF("\n");
 			}
+			KEST_PRINTF("\n");
 		}
 		current_setting = current_setting->next;
 		i++;
 	}
 	
+	KEST_PRINTF("\n");
 	kest_parameter_widget_pll *current_param = str->parameter_widgets;
 	i = 0;
 	
+	KEST_PRINTF("\n");
 	while (current_param)
 	{
 		if (current_param->data)
@@ -288,6 +305,7 @@ int create_effect_view_ui(kest_ui_page *page)
 		i++;
 	}
 	
+	KEST_PRINTF("\n");
 	for (int i = 0; i < EFFECT_VIEW_MAX_GROUPS; i++)
 	{
 		if (str->group_containers[i] && str->group_inhabited[i])
@@ -299,10 +317,12 @@ int create_effect_view_ui(kest_ui_page *page)
 		}
 	}
 	
+	KEST_PRINTF("\n");
 	create_effect_settings_page_ui(str->settings_page);
 	
 	page->ui_created = 1;
 	
+	KEST_PRINTF("\n");
 	KEST_PRINTF("create_effect_view_ui done\n");
 	return NO_ERROR;
 }

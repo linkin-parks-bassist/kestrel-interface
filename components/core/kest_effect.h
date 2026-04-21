@@ -51,6 +51,7 @@ typedef struct kest_effect
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_representation_pll *reps;
+	kest_representation page_rep;
 	kest_representation preset_rep;
 	#endif
 } kest_effect;
@@ -104,6 +105,7 @@ int kest_effect_set_setting(kest_effect *effect, const char *name, int value);
 
 int kest_effect_update_reps(kest_effect *effect);
 void kest_effect_preset_rep_update(void *representer, void *representee);
+void kest_effect_page_rep_update(void *representer, void *representee);
 
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);

@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 //#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 //#endif
 
 #define INITIAL_PARAMETER_ARRAY_LENGTH 	8
@@ -30,6 +30,8 @@ int init_effect(kest_effect *effect)
 {
 	if (!effect)
 		return ERR_NULL_PTR;
+	
+	memset(effect, 0, sizeof(kest_effect));
 	
 	effect->id = 0;
 	effect->type = 0;
@@ -94,6 +96,9 @@ int init_effect(kest_effect *effect)
 	effect->preset_rep.representer = NULL;
 	effect->preset_rep.representee = effect;
 	effect->preset_rep.update = kest_effect_preset_rep_update;
+	effect->page_rep.representer = NULL;
+	effect->page_rep.representee = effect;
+	effect->page_rep.update = kest_effect_page_rep_update;
 	kest_representation_pll_safe_append(&effect->reps, &effect->preset_rep);
 	#endif
 	
@@ -541,8 +546,8 @@ void kest_effect_preset_rep_update(void *representer, void *representee)
 {
 	KEST_PRINTF("kest_effect_preset_rep_update\n");
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_preset *preset = representer;
-	kest_effect *effect = representee;
+	kest_preset *preset = (kest_preset*)representer;
+	kest_effect *effect = (kest_effect*)representee;
 	
 	if (!representee)
 		return;
@@ -554,6 +559,43 @@ void kest_effect_preset_rep_update(void *representer, void *representee)
 		return;
 	
 	save_preset(preset);
+	#endif
+	
+	KEST_PRINTF("kest_effect_preset_rep_update done\n");
+	return;
+}
+
+void kest_effect_page_rep_update(void *representer, void *representee)
+{
+	KEST_PRINTF("kest_effect_preset_rep_update\n");
+	#ifdef KEST_ENABLE_REPRESENTATIONS
+	kest_ui_page *page = (kest_ui_page*)representer;
+	kest_effect *effect = (kest_effect*)representee;
+	
+	if (!page || !effect)
+		return;
+	
+	kest_effect_view_str *str = page->data_struct;
+	
+	if (!str)
+		return;
+	
+	kest_parameter_pll *current_param = effect->parameters;
+	kest_parameter *param;
+	
+	while (current_param)
+	{
+		param = current_param->data;
+		
+		if (param)
+		{
+			if (param->widget_rep.representee)
+				kest_representation_queue_update(&param->widget_rep);
+		}
+		
+		current_param = current_param->next;
+	}
+	
 	#endif
 	
 	KEST_PRINTF("kest_effect_preset_rep_update done\n");

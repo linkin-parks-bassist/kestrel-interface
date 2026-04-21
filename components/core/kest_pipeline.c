@@ -1,8 +1,8 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 static const char *FNAME = "kest_pipeline.c";
 
@@ -18,6 +18,7 @@ int init_m_pipeline(kest_pipeline *pipeline)
 
 kest_effect *kest_pipeline_append_effect_eff(kest_pipeline *pipeline, kest_effect_desc *eff)
 {
+	KEST_PRINTF("kest_pipeline_append_effect_eff(pipeline = %p, eff = %p)\n", pipeline, eff);
 	if (!pipeline || !eff)
 		return NULL;
 	
@@ -64,6 +65,7 @@ kest_effect *kest_pipeline_append_effect_eff(kest_pipeline *pipeline, kest_effec
 		current->next = node;
 	}
 	
+	KEST_PRINTF("kest_pipeline_append_effect_eff done\n");
 	return effect;
 }
 

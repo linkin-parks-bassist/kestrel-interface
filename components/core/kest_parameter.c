@@ -1,9 +1,9 @@
 #include <float.h>
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
+//#endif
 
 #define DEFAULT_MAX_VELOCITY 0.2
 
@@ -16,6 +16,8 @@ int init_parameter_str(kest_parameter *param)
 {
 	if (!param)
 		return ERR_NULL_PTR;
+	
+	memset(param, 0, sizeof(kest_parameter));
 	
 	param->value = 0.0;
 	param->min = 0.0;
@@ -39,6 +41,11 @@ int init_parameter_str(kest_parameter *param)
 	param->effect_rep.representee = param;
 	param->effect_rep.update = kest_parameter_effect_rep_update;
 	kest_representation_pll_safe_append(&param->reps, &param->effect_rep);
+	param->widget_rep.representer = NULL;
+	param->widget_rep.representee = param;
+	KEST_PRINTF("kest_parameter_widget_rep_update = %p\n", kest_parameter_widget_rep_update);
+	param->widget_rep.update = kest_parameter_widget_rep_update;
+	//kest_representation_pll_safe_append(&param->reps, &param->widget_rep);
 	#endif
 	
 	return NO_ERROR;
@@ -47,6 +54,8 @@ int init_parameter_str(kest_parameter *param)
 int init_parameter(kest_parameter *param, const char *name, float level, float min, float max)
 {
 	if (!param) return ERR_NULL_PTR;
+	
+	memset(param, 0, sizeof(kest_parameter));
 	
 	param->name = name;
 	param->name_internal = NULL;
@@ -67,7 +76,11 @@ int init_parameter(kest_parameter *param, const char *name, float level, float m
 	param->effect_rep.representer = NULL;
 	param->effect_rep.representee = param;
 	param->effect_rep.update = kest_parameter_effect_rep_update;
-	kest_representation_pll_safe_append(&param->reps, &param->effect_rep);
+	//kest_representation_pll_safe_append(&param->reps, &param->effect_rep);
+	param->widget_rep.representer = NULL;
+	param->widget_rep.representee = param;
+	param->widget_rep.update = kest_parameter_widget_rep_update;
+	kest_representation_pll_safe_append(&param->reps, &param->widget_rep);
 	#endif
 	return NO_ERROR;
 }
@@ -98,24 +111,15 @@ int init_setting_str(kest_setting *setting)
 	if (!setting)
 		return ERR_NULL_PTR;
 	
+	memset(setting, 0, sizeof(kest_setting));
+	
 	setting->type = EFFECT_SETTING_INT;
-	
-	setting->name = NULL;
-	setting->name_internal = NULL;
-	setting->value = 0;
-	
-	setting->n_options = 0;
-	setting->options = NULL;
 	
 	setting->widget_type = SETTING_WIDGET_FIELD;
 	setting->page = EFFECT_SETTING_PAGE_SETTINGS;
 	setting->group = -1;
 	
-	setting->updated = 0;
-	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	setting->reps = NULL;
-	setting->effect_rep.representer = NULL;
 	setting->effect_rep.representee = setting;
 	setting->effect_rep.update = kest_setting_effect_rep_update;
 	kest_representation_pll_safe_append(&setting->reps, &setting->effect_rep);
@@ -129,20 +133,16 @@ int init_setting(kest_setting *setting, const char *name, uint16_t level)
 	if (!setting)
 		return ERR_NULL_PTR;
 	
+	memset(setting, 0, sizeof(kest_setting));
+	
 	setting->name = name;
 	setting->value = level;
 	
-	setting->n_options = 0;
-	setting->options = NULL;
-	
 	setting->widget_type = SETTING_WIDGET_DROPDOWN;
 	
-	setting->updated = 0;
 	setting->group = -1;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	setting->reps = NULL;
-	setting->effect_rep.representer = NULL;
 	setting->effect_rep.representee = setting;
 	setting->effect_rep.update = kest_setting_effect_rep_update;
 	kest_representation_pll_safe_append(&setting->reps, &setting->effect_rep);
@@ -234,6 +234,7 @@ kest_parameter *kest_parameter_make_clone(kest_parameter *src)
 
 kest_parameter *kest_parameter_make_clone_for_effect(kest_parameter *src, kest_effect *effect)
 {
+	KEST_PRINTF("\n");
 	if (!src)
 		return NULL;
 	
@@ -242,9 +243,11 @@ kest_parameter *kest_parameter_make_clone_for_effect(kest_parameter *src, kest_e
 	if (!param)
 		return NULL;
 	
+	KEST_PRINTF("\n");
 	clone_parameter(param, src);
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
+	KEST_PRINTF("\n");
 	param->effect_rep.representer = (void*)effect;
 	#endif
 	
@@ -486,6 +489,22 @@ void kest_parameter_effect_rep_update(void *representer, void *representee)
 	kest_effect_update_reps(effect);
 	
 	KEST_PRINTF("kest_parameter_effect_rep_update done\n");
+	return;
+}
+
+void kest_parameter_widget_rep_update(void *representer, void *representee)
+{
+	KEST_PRINTF("kest_parameter_widget_rep_update\n");
+	kest_parameter_widget *pw = (kest_parameter_widget*)representer;
+	kest_parameter *param = (kest_parameter*)representee;
+	KEST_PRINTF("(param = %p, pw = %p)\n", param, pw);
+	
+	if (!pw || !param)
+		return;
+	
+	parameter_widget_refresh(pw);
+	
+	KEST_PRINTF("kest_parameter_widget_rep_update done\n");
 	return;
 }
 

@@ -135,10 +135,35 @@ $(function(){initNavTree('kest__printf_8c_source.html','',''); });
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
 </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="kest__printf_8c.html#a258f845ff2725772e9a7b5b0a5efd522">   42</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__printf_8c.html#a258f845ff2725772e9a7b5b0a5efd522">kest_puts</a>(<a class="code hl_typedef" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> str)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">    #ifdef KEST_ENABLE_PRINTF</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="kest__printf_8c.html#a81c906e44fc8f7ab902cf384fdc97950">prints_initd</a> || xSemaphoreTake(print_mutex, portMAX_DELAY) != pdPASS) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">int</span> fza = str.count &lt; str.capacity ? str.count : str.capacity - 1;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">char</span> swpchar = str.entries[fza];</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    str.entries[fza] = 0;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    fputs(str.entries, stdout);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    str.entries[fza] = swpchar;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    xSemaphoreGive(print_mutex);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+</div>
 <div class="ttc" id="akest__int_8h_html"><div class="ttname"><a href="kest__int_8h.html">kest_int.h</a></div></div>
+<div class="ttc" id="akest__printf_8c_html_a258f845ff2725772e9a7b5b0a5efd522"><div class="ttname"><a href="kest__printf_8c.html#a258f845ff2725772e9a7b5b0a5efd522">kest_puts</a></div><div class="ttdeci">void kest_puts(kest_string str)</div><div class="ttdef"><b>Definition</b> <a href="#l00042">kest_printf.c:42</a></div></div>
 <div class="ttc" id="akest__printf_8c_html_a302714171dfa950e18d9a951bdab4105"><div class="ttname"><a href="kest__printf_8c.html#a302714171dfa950e18d9a951bdab4105">kest_printf</a></div><div class="ttdeci">void kest_printf(const char *fmt,...)</div><div class="ttdef"><b>Definition</b> <a href="#l00021">kest_printf.c:21</a></div></div>
 <div class="ttc" id="akest__printf_8c_html_a745e9edc5a495f2fbd52a34a86d71c1b"><div class="ttname"><a href="kest__printf_8c.html#a745e9edc5a495f2fbd52a34a86d71c1b">kest_printf_init</a></div><div class="ttdeci">void kest_printf_init()</div><div class="ttdef"><b>Definition</b> <a href="#l00011">kest_printf.c:11</a></div></div>
 <div class="ttc" id="akest__printf_8c_html_a81c906e44fc8f7ab902cf384fdc97950"><div class="ttname"><a href="kest__printf_8c.html#a81c906e44fc8f7ab902cf384fdc97950">prints_initd</a></div><div class="ttdeci">int prints_initd</div><div class="ttdef"><b>Definition</b> <a href="#l00006">kest_printf.c:6</a></div></div>
+<div class="ttc" id="akest__string_8h_html_aa024f83c34d684c3f857f898f9f6191a"><div class="ttname"><a href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a></div><div class="ttdeci">char_list kest_string</div><div class="ttdef"><b>Definition</b> <a href="kest__string_8h_source.html#l00006">kest_string.h:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

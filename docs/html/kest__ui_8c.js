@@ -27,6 +27,7 @@ var kest__ui_8c =
     [ "create_standard_menu_container_tall", "kest__ui_8c.html#a631a3fb795f47fc10a39f4415efe7866", null ],
     [ "create_test_page_ui", "kest__ui_8c.html#a1cc4b2ebf73c32f9c6089e25a8e67c4a", null ],
     [ "create_ui_page", "kest__ui_8c.html#acde86b2244efaf9e3c4642bb8ea740e3", null ],
+    [ "delete_keyboard", "kest__ui_8c.html#a96fe008303dd9cb0c877ce05cba93952", null ],
     [ "enter_parent_page_cb", "kest__ui_8c.html#af17d8912a520f607796e85d96467cc5a", null ],
     [ "enter_ui_page", "kest__ui_8c.html#aab9f2e82d67858edd53fd09370687007", null ],
     [ "enter_ui_page_backwardindirect_s", "kest__ui_8c.html#a55489b2aedde51875965bc8ce017f2b7", null ],

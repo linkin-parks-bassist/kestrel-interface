@@ -30,11 +30,11 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M55,-231.35C57.14,-210.33 61.94,-177.56 72.38,-151 93.96,-96.06 97.5,-75.89 143.38,-38.75 152.96,-30.99 164.95,-25.31 176.47,-21.19"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="51.52,-230.98 54.11,-241.25 58.49,-231.6 51.52,-230.98"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M54.96,-231.34C57.07,-210.31 61.85,-177.53 72.38,-151 94.23,-95.91 98.27,-76 144.38,-38.75 153.96,-31.01 165.95,-25.31 177.43,-21.18"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="51.48,-230.98 54.09,-241.24 58.45,-231.59 51.48,-230.98"/>
 </a>
 </g>
-<text xml:space="preserve" text-anchor="start" x="89.31" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">id</text>
+<text xml:space="preserve" text-anchor="start" x="89.55" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">id</text>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
@@ -59,18 +59,18 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node3&#45;&gt;Node1</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M124.43,-139.52C122.89,-121.48 123.18,-95.26 133.88,-75.5 147.62,-50.1 176.21,-31.63 196.08,-21.21"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="120.93,-139.72 125.54,-149.26 127.88,-138.93 120.93,-139.72"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M124.75,-139.51C123.49,-121.47 124.11,-95.24 134.88,-75.5 148.68,-50.17 177.16,-31.57 196.76,-21.11"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="121.25,-139.65 125.72,-149.25 128.22,-138.96 121.25,-139.65"/>
 </a>
 </g>
-<text xml:space="preserve" text-anchor="start" x="136.88" y="-82.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">param</text>
+<text xml:space="preserve" text-anchor="start" x="137.88" y="-82.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">param</text>
 </g>
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structkest__profile.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="253.88,-96.25 180.88,-96.25 180.88,-75.5 253.88,-75.5 253.88,-96.25"/>
-<text xml:space="preserve" text-anchor="middle" x="217.38" y="-82.75" font-family="Helvetica,sans-Serif" font-size="10.00">kest_profile</text>
+<g id="a_Node000005"><a xlink:href="structkest__preset.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="253.5,-96.25 181.25,-96.25 181.25,-75.5 253.5,-75.5 253.5,-96.25"/>
+<text xml:space="preserve" text-anchor="middle" x="217.38" y="-82.75" font-family="Helvetica,sans-Serif" font-size="10.00">kest_preset</text>
 </a>
 </g>
 </g>
@@ -122,7 +122,7 @@
 <polygon fill="#9a32cd" stroke="#9a32cd" points="213.88,-63.75 217.38,-73.75 220.88,-63.75 213.88,-63.75"/>
 </a>
 </g>
-<text xml:space="preserve" text-anchor="start" x="220.38" y="-45" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">profile</text>
+<text xml:space="preserve" text-anchor="start" x="220.38" y="-45" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">preset</text>
 </g>
 <!-- Node6 -->
 <g id="Node000006" class="node">

@@ -2,6 +2,7 @@ var kest__sgtl5000_8c =
 [
     [ "sgtl5000_i2c_cfg_t", "structsgtl5000__i2c__cfg__t.html", "structsgtl5000__i2c__cfg__t" ],
     [ "sgtl_reg_desc_t", "structsgtl__reg__desc__t.html", "structsgtl__reg__desc__t" ],
+    [ "PRINTLINES_ALLOWED", "kest__sgtl5000_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
     [ "SGTL5000_SCL", "kest__sgtl5000_8c.html#ad26bd279a501b987f4a6cf8ec3e32138", null ],
     [ "SGTL5000_SDA", "kest__sgtl5000_8c.html#afc53ca119a3ae8195e63ef7307a2254b", null ],
     [ "kest_sgtl5000_init", "kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b", null ],
