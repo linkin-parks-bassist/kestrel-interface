@@ -33,6 +33,9 @@ const char *kest_dict_entry_type_to_string(int type);
 const char *kest_dict_entry_type_to_string_nice(int type);
 kest_string *kest_dict_entry_to_string(kest_dictionary_entry *entry);
 
+int kest_dictionary_entry_is_constant_number(kest_dictionary_entry *entry);
+float kest_const_num_dictionary_entry_evaluate(kest_dictionary_entry *entry);
+
 typedef struct kest_dictionary_bucket {
 	int n_entries;
 	int entry_array_length;
@@ -77,6 +80,8 @@ int kest_dictionary_add_entry_int  (kest_dictionary *dict, const char *name, int
 int kest_dictionary_add_entry_float(kest_dictionary *dict, const char *name, float value);
 int kest_dictionary_add_entry_expr (kest_dictionary *dict, const char *name, kest_expression *value);
 int kest_dictionary_add_entry_dict (kest_dictionary *dict, const char *name, kest_dictionary *value);
+
+kest_dictionary_entry *kest_dictionary_get_entry(kest_dictionary *dict, const char *name);
 
 int kest_dictionary_lookup_entry(kest_dictionary *dict, const char *name, kest_dictionary_entry *result);
 int kest_dictionary_lookup_str  (kest_dictionary *dict, const char *name, const char **result);

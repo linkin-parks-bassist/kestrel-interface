@@ -17,6 +17,8 @@ int kest_cxt_enter_previous_current_page(kest_context *cxt, kest_state *state);
 
 int kest_init_state(kest_state *state);
 
+int kest_state_save(kest_state state);
+
 #ifdef KEST_USE_FREERTOS
 extern SemaphoreHandle_t state_mutex;
 #endif

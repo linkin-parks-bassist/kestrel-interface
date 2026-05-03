@@ -4,9 +4,7 @@
 
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_files.c";
 
@@ -541,7 +539,9 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		while (current_param)
 		{
 			if (current_param->data)
+			{
 				read_float(current_param->data->value);
+			}
 			
 			current_param = current_param->next;
 		}
@@ -864,7 +864,7 @@ void generate_filename(char *prefix, char *suffix, char *dest)
 	for (int i = 0; i < slen; i++)
 		fname[index++] = (suffix[i] == '%') ? '_' : suffix[i];
 	
-	fname[index] = 0;
+	fname[index++] = 0;
 	
 	KEST_PRINTF("Generated filename %s\n", fname);
 	
@@ -989,7 +989,7 @@ int load_saved_presets(kest_context *cxt)
 	while (current_file)
 	{
 		KEST_PRINTF("Loading preset %s...\n", current_file->data);
-		preset = kest_alloc(sizeof(kest_preset));
+		preset = kest_allocator_alloc(&kest_preset_allocator, 1);
 		
 		if (!preset)
 			return ERR_ALLOC_FAIL;
@@ -1039,7 +1039,7 @@ int load_saved_sequences(kest_context *cxt)
 	
 	while (current_file)
 	{
-		sequence = kest_alloc(sizeof(kest_sequence));
+		sequence = kest_allocator_alloc(&kest_sequence_allocator, 1);
 		
 		if (!sequence)
 			return ERR_ALLOC_FAIL;
@@ -1245,7 +1245,10 @@ int erase_folder(const char *dir)
 
 void erase_sd_card()
 {
-	erase_folder(MOUNT_POINT);
+	erase_folder(KEST_PRESETS_DIR);
+	erase_folder(KEST_SEQUENCES_DIR);
+	remove(MAIN_SEQUENCE_FNAME);
+	remove(SETTINGS_FNAME);
 }
 
 int fnames_agree(char *a, char *b)

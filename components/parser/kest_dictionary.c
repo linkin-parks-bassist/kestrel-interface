@@ -23,7 +23,7 @@ const char *kest_dict_entry_type_to_string(int type)
 		case DICT_ENTRY_TYPE_EXPR: 		return "DICT_ENTRY_TYPE_EXPR";
 		case DICT_ENTRY_TYPE_SUBDICT: 	return "DICT_ENTRY_TYPE_SUBDICT";
 		case DICT_ENTRY_TYPE_LIST: 		return "DICT_ENTRY_TYPE_LIST";
-		default: return "DICT_ENTRY_TYPE_UNKNOWN";
+		default: 						return "DICT_ENTRY_TYPE_UNKNOWN";
 	}
 }
 
@@ -125,6 +125,48 @@ kest_string *kest_dict_entry_to_string(kest_dictionary_entry *entry)
 	}
 	
 	return result;
+}
+
+int kest_dictionary_entry_is_constant_number(kest_dictionary_entry *entry)
+{
+	if (!entry)
+		return 0;
+	
+	switch (entry->type)
+	{
+		case DICT_ENTRY_TYPE_EXPR: 
+			return kest_expression_is_constant(entry->value.val_expr);
+			
+		case DICT_ENTRY_TYPE_INT: 
+		case DICT_ENTRY_TYPE_FLOAT: 
+			return 1;
+			
+		default: return 0;
+	}
+	
+	return 0;
+}
+
+float kest_const_num_dictionary_entry_evaluate(kest_dictionary_entry *entry)
+{
+	if (!entry)
+		return 0.0f;
+	
+	switch (entry->type)
+	{
+		case DICT_ENTRY_TYPE_INT:
+			return (float)entry->value.val_int;
+		
+		case DICT_ENTRY_TYPE_FLOAT: 
+			return entry->value.val_float;
+		
+		case DICT_ENTRY_TYPE_EXPR: 
+			return kest_expression_evaluate(entry->value.val_expr, NULL);
+			
+		default: return 0.0f;
+	}
+	
+	return 0.0f;
 }
 
 int kest_dictionary_bucket_init(kest_dictionary_bucket *bucket)
@@ -301,6 +343,22 @@ int kest_dictionary_bucket_add_entry_dict(kest_dictionary_bucket *bucket, const 
 	return NO_ERROR;
 }
 
+kest_dictionary_entry *kest_dictionary_bucket_get_entry(kest_dictionary_bucket *bucket, const char *name)
+{
+	if (!bucket || !name)
+		return NULL;
+	
+	for (int i = 0; i < bucket->n_entries; i++)
+	{
+		if (strcmp(bucket->entries[i].name, name) == 0)
+		{
+			return &bucket->entries[i];
+		}
+	}
+	
+	return NULL;
+}
+
 int kest_dictionary_bucket_lookup_entry(kest_dictionary_bucket *bucket, const char *name, kest_dictionary_entry *result)
 {
 	if (!bucket || !result || !name)
@@ -400,7 +458,6 @@ int kest_dictionary_bucket_lookup_list(kest_dictionary_bucket *bucket, const cha
 {
 	return kest_dictionary_bucket_lookup(bucket, name, result, DICT_ENTRY_TYPE_LIST);
 }
-
 
 kest_dictionary *kest_new_dictionary()
 {
@@ -589,6 +646,16 @@ int kest_dictionary_add_entry_dict(kest_dictionary *dict, const char *name, kest
 	uint32_t bucket = hash(name) & (KEST_DICTIONARY_N_BUCKETS - 1);
 	
 	return kest_dictionary_bucket_add_entry_dict(&dict->buckets[bucket], name, value);
+}
+
+kest_dictionary_entry *kest_dictionary_get_entry(kest_dictionary *dict, const char *name)
+{
+	if (!dict || !name)
+		return NULL;
+	
+	uint32_t bucket = hash(name) & (KEST_DICTIONARY_N_BUCKETS - 1);
+	
+	return kest_dictionary_bucket_get_entry(&dict->buckets[bucket], name);
 }
 
 int kest_dictionary_lookup_entry(kest_dictionary *dict, const char *name, kest_dictionary_entry *result)

@@ -15,15 +15,17 @@ int X##_list_init_reserved(X##_list *list, size_t n); \
 int X##_list_init_reserved_with_allocator(X##_list *list, size_t n, const kest_allocator *alloc); \
 int X##_list_reserve(X##_list *list, size_t n); \
 int X##_list_append(X##_list *list, X x); \
+X  *X##_list_append_return_ptr(X##_list *list, X x); \
 int X##_list_append_ref(X##_list *list, const X *x); \
+X  *X##_list_append_ref_return_ptr(X##_list *list, const X *x); \
 int X##_list_destroy(X##_list *list); \
 int X##_list_destroy_all(X##_list *list, void (*destructor)(X *x)); \
 int X##_list_contains(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
 int X##_list_contains_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*)); \
 int X##_list_index_of(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
 int X##_list_index_of_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*));\
-X *X##_list_head(X##_list *list);\
-X *X##_list_tail(X##_list *list);\
+X  *X##_list_head(X##_list *list);\
+X  *X##_list_tail(X##_list *list);\
 int X##_list_pop_tail(X##_list *list);\
 int X##_list_pop_destroy_tail(X##_list *list, void (*destructor)(X *x));\
 int X##_list_append_list(X##_list *list, X##_list *a);\
@@ -128,6 +130,26 @@ int X##_list_append_ref(X##_list *list, const X *x) \
     list->count++; \
 \
     return NO_ERROR; \
+} \
+\
+X *X##_list_append_return_ptr(X##_list *list, X x) \
+{ \
+    return X##_list_append_ref_return_ptr(list, &x); \
+} \
+\
+X *X##_list_append_ref_return_ptr(X##_list *list, const X *x) \
+{ \
+    if (!list) return NULL; \
+    if (!x) return NULL; \
+\
+    int r = X##_list_reserve(list, 1); \
+    if (r != NO_ERROR) return NULL; \
+\
+	X *ptr = &list->entries[list->count];\
+    memcpy(ptr, x, sizeof(X)); \
+    list->count++; \
+\
+    return ptr; \
 } \
 \
 int X##_list_destroy(X##_list *list) \
@@ -321,6 +343,7 @@ typedef struct X##_ptr_list { \
 } X##_ptr_list; \
 \
 int X##_ptr_list_init(X##_ptr_list *list); \
+int X##_ptr_list_init_reserved(X##_ptr_list *list, size_t n); \
 int X##_ptr_list_init_with_allocator(X##_ptr_list *list, const kest_allocator *alloc); \
 int X##_ptr_list_reserve(X##_ptr_list *list, size_t n); \
 int X##_ptr_list_append(X##_ptr_list *list, X *x); \
@@ -341,6 +364,13 @@ int X##_ptr_list_drain(X##_ptr_list *list);
 int X##_ptr_list_init(X##_ptr_list *list) \
 { \
     return X##_ptr_list_init_with_allocator(list, NULL); \
+} \
+\
+int X##_ptr_list_init_reserved(X##_ptr_list *list, size_t n) \
+{ \
+    int ret_val = X##_ptr_list_init_with_allocator(list, NULL); \
+    if (ret_val != NO_ERROR) return ret_val;\
+    return X##_ptr_list_reserve(list, n);\
 } \
 \
 int X##_ptr_list_init_with_allocator(X##_ptr_list *list, const kest_allocator *alloc) \

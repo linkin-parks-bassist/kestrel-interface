@@ -8,6 +8,11 @@ static const char *FNAME = "kest_sequence.c";
 
 IMPLEMENT_LINKED_PTR_LIST(kest_sequence);
 
+
+IMPLEMENT_POOL(kest_sequence);
+kest_allocator kest_sequence_allocator;
+kest_sequence_pool kest_sequence_mem_pool;
+
 int init_m_sequence(kest_sequence *sequence)
 {
 	if (!sequence)
@@ -76,7 +81,7 @@ int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 	
 	preset->sequence = sequence;
 	
-	kest_sequence_update_representations(sequence);
+	kest_queue_sequence_save(sequence);
 	
 	return NO_ERROR;
 }
@@ -95,7 +100,6 @@ seq_kest_preset_pll *sequence_append_preset_rp(kest_sequence *sequence, kest_pre
 	
 	if (!new_node)
 		return NULL;
-	
 	
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	new_node->data = preset;
@@ -133,7 +137,7 @@ seq_kest_preset_pll *sequence_append_preset_rp(kest_sequence *sequence, kest_pre
 	
 	
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
-	kest_sequence_update_representations(sequence);
+	kest_queue_sequence_save(sequence);
 	
 	KEST_PRINTF("sequence_append_preset_rp, line %d\n", __LINE__);
 	
@@ -194,7 +198,7 @@ int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos)
 		return ERR_BAD_ARGS;
 	}
 	
-	kest_sequence_update_representations(sequence);
+	kest_queue_sequence_save(sequence);
 	
 	return NO_ERROR;
 }
@@ -228,7 +232,7 @@ int kest_sequence_remove_preset(kest_sequence *sequence, kest_preset *preset)
 		return ERR_BAD_ARGS;
 	}
 	
-	kest_sequence_update_representations(sequence);
+	kest_queue_sequence_save(sequence);
 	
 	return NO_ERROR;
 }
@@ -245,12 +249,16 @@ int kest_sequence_delete_preset(kest_sequence *sequence, kest_preset *preset)
 		kest_free_preset(preset);
 	}
 	
+	kest_queue_sequence_save(sequence);
+	
 	return NO_ERROR;
 }
 
 void free_sequence(kest_sequence *sequence)
 {
-	return;
+	if (!sequence)
+		return;
+	kest_allocator_free(&kest_sequence_allocator, sequence);
 }
 
 int kest_sequence_add_menu_listing(kest_sequence *sequence, kest_menu_item *listing)

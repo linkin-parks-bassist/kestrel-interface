@@ -79,6 +79,8 @@ int set_active_preset(kest_preset *preset);
 int set_active_preset_from_sequence(kest_preset *preset);
 int set_working_preset(kest_preset *preset);
 
+int activate_active_preset_dma();
+
 int context_no_default_preset(kest_context *cxt);
 int resolve_default_preset(kest_context *cxt);
 

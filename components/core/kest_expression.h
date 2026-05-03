@@ -63,6 +63,7 @@ kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, k
 int kest_expression_references_param(kest_expression *expr, kest_parameter *param);
 
 float kest_expression_evaluate(kest_expression *expr, kest_scope *scope);
+float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth);
 
 int kest_expression_is_constant(kest_expression *expr);
 
@@ -113,6 +114,7 @@ extern kest_expression kest_expression_root_2_over_2;
 
 int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);
 int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);
+int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *center, kest_expression *Q);
 
 typedef struct {
 	const char *name;

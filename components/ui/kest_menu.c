@@ -8,33 +8,15 @@ static const char *FNAME = "kest_menu.c";
 
 IMPLEMENT_LINKED_PTR_LIST(kest_menu_item);
 
+kest_parameter_widget *input_gain_widget = NULL;
+kest_parameter_widget *output_gain_widget = NULL;
+
 int init_menu_item(kest_menu_item *item)
 {
 	if (!item)
 		return ERR_NULL_PTR;
 	
-	item->type = 0;
-	
-	item->text = NULL;
-	item->desc = NULL;
-	
-	item->action_cb = NULL;
-	item->click_cb  = NULL;
-	item->cb_arg    = NULL;
-	
-	item->linked_page = NULL;
-	item->linked_page_indirect = NULL;
-	
-	item->lp_configure_arg = NULL;
-	
-	item->obj   = NULL;
-	item->label = NULL;
-	item->extra = NULL;
-	
-	item->data   = NULL;
-	item->parent = NULL;
-	
-	item->long_pressed = 0;
+	memset(item, 0, sizeof(kest_menu_item));
 	
 	return NO_ERROR;
 }
@@ -796,6 +778,8 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	page->panel->text = "Main Menu";
 	page->container_type = CONTAINER_TYPE_STD_BTN_LIST;
 	
+	input_gain_widget  = &str->input_gain;
+	output_gain_widget = &str->output_gain;
 	nullify_parameter_widget(&str->input_gain);
 	nullify_parameter_widget(&str->output_gain);
 	
@@ -819,36 +803,6 @@ int configure_main_menu(kest_ui_page *page, void *data)
 	button_set_clicked_cb( &str->presets_button, enter_ui_page_forwards_cb, &global_cxt.pages.main_sequence_view);
 	button_set_clicked_cb(&str->sequences_button, enter_ui_page_forwards_cb, &global_cxt.pages.sequence_list);
 	button_set_clicked_cb(&str->msc_button, kest_msc_button_cb, &str->msc_button);
-	
-	/*
-	kest_menu_item *item = create_pad_menu_item(20);
-	menu_page_add_item(str, item);
-	
-	item = create_parameter_widget_menu_item(&global_cxt.state.input_gain, page);
-	menu_page_add_item(str, item);
-	
-	item = create_parameter_widget_menu_item(&global_cxt.state.output_gain, page);
-	menu_page_add_item(str, item);
-	
-	kest_ui_page *preset_list = &global_cxt.pages.main_sequence_view;
-	
-	preset_list->parent = page;
-	
-	item = create_page_link_menu_item("Presets", preset_list, page);
-	
-	menu_page_add_item(str, item);
-	
-	kest_ui_page *sequence_list = &global_cxt.pages.sequence_list;
-	
-	sequence_list->parent = page;
-	
-	item = create_page_link_menu_item("Sequences", sequence_list, page);
-	
-	menu_page_add_item(str, item);
-	
-	item = create_danger_button_menu_item(erase_sd_card_void_cb, NULL, "Erase SD card", page);
-	
-	menu_page_add_item(str, item);*/
 	
 	page->configured = 1;
 	

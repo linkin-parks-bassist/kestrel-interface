@@ -25,4 +25,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq);
 
 void print_instruction(uint32_t instr);
 
+int kest_fpga_transfer_batch_append_effect_register_updates_(kest_fpga_transfer_batch *batch, kest_effect *effect, int pos);
+int kest_fpga_transfer_batch_append_effect_resource_updates_(kest_fpga_transfer_batch *batch, kest_effect *effect, kest_effect_fpga_position *pos);
+
 #endif

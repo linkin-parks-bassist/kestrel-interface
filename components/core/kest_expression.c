@@ -6,9 +6,7 @@
 
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-//#endif
 
 //#define KEST_EXPR_EVAL_VERBOSE
 //#define KEST_BOUNDS_CHECK_VERBOSE
@@ -368,7 +366,7 @@ int kest_expression_arity(kest_expression *expr)
 	return 1;
 }
 
-int kest_expression_refers_constant(kest_expression *expr)
+int kest_expression_is_constant_reference(kest_expression *expr)
 {
 	if (!expr)
 		return 1;
@@ -377,14 +375,10 @@ int kest_expression_refers_constant(kest_expression *expr)
 	
 	if (expr->type == KEST_EXPR_REF)
 	{
-		if (strcmp(expr->val.ref_name, "pi") == 0)
-			ret_val = 1;
-		
-		if (!ret_val && strcmp(expr->val.ref_name, "e") == 0)
-			ret_val = 1;
-			
-		if (!ret_val && strcmp(expr->val.ref_name, "sample_rate") == 0)
-			ret_val = 1;
+		if (!ret_val) ret_val |= (strcmp(expr->val.ref_name,          "pi") == 0);
+		if (!ret_val) ret_val |= (strcmp(expr->val.ref_name,           "e") == 0);
+		if (!ret_val) ret_val |= (strcmp(expr->val.ref_name, "sample_rate") == 0);
+		if (!ret_val) ret_val |= (strcmp(expr->val.ref_name,  "data_width") == 0);
 		
 		if (ret_val) expr->constant = 1;
 	}
@@ -394,10 +388,8 @@ int kest_expression_refers_constant(kest_expression *expr)
 
 int kest_expression_is_constant(kest_expression *expr)
 {
-	if (!expr)
-		return 1;
-	
-	return (expr->type == KEST_EXPR_CONST) || expr->constant || kest_expression_refers_constant(expr);
+	if (!expr) return 0;
+	return (expr->type == KEST_EXPR_CONST) || expr->constant || kest_expression_is_constant_reference(expr);
 }
 
 int kest_expression_detect_constants_rec(kest_expression *expr, int depth)
@@ -419,7 +411,7 @@ int kest_expression_detect_constants_rec(kest_expression *expr, int depth)
 	if (expr->type == KEST_EXPR_REF)
 	{
 		//KEST_PRINTF("is a reference");
-		ret_val = kest_expression_refers_constant(expr);
+		ret_val = kest_expression_is_constant_reference(expr);
 		//if (ret_val)
 		//	KEST_PRINTF(" to a constant.\n");
 		//else
@@ -454,15 +446,19 @@ int kest_expression_detect_constants(kest_expression *expr)
 	return kest_expression_detect_constants_rec(expr, 0);
 }
 
-static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth)
+float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth)
 {
+	
 	kest_parameter_pll *current;
 	kest_scope_entry *ref;
 	kest_parameter *param;
 	int cmplen;
 	
 	float x = 0.0;
+	float y;
 	float ret_val;
+	
+	int ret;
 	
 	#ifdef KEST_EXPR_EVAL_VERBOSE
 	KEST_PRINTF("[Depth %d] kest_expression_evaluate_rec(%p = \"%s\") in scope %p\n", depth, expr, kest_expression_to_string(expr), scope);
@@ -470,9 +466,7 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *sco
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
-		#ifdef KEST_EXPR_EVAL_VERBOSE
 		KEST_PRINTF("kest_expression_evaluate(): Error: maximum recursion depth %d exceeded (possible dependency loop)\n", KEST_EXPR_REC_MAX_DEPTH);
-		#endif
 		ret_val = 0.0;
 		goto expr_compute_return;
 	}
@@ -501,6 +495,8 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *sco
 	{
 		if (!expr->val.ref_name)
 		{
+			KEST_PRINTF("Error evaluating expression \"%s\": expr->val.ref_name = NULL!\n",
+				kest_expression_to_string(expr));
 			ret_val = 0.0;
 			goto expr_compute_return;
 		}
@@ -536,49 +532,24 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *sco
 		
 		if (!ref)
 		{
+			if (strcmp(expr->val.ref_name,          "pi") == 0) return M_PI;
+			if (strcmp(expr->val.ref_name,           "e") == 0) return exp(1);
+			if (strcmp(expr->val.ref_name, "sample_rate") == 0) return (float)KEST_FPGA_SAMPLE_RATE;
+			if (strcmp(expr->val.ref_name,  "data_width") == 0) return (float)KEST_FPGA_DATA_WIDTH;
+			
 			KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it isn't found in scope!\n",
 				kest_expression_to_string(expr), expr->val.ref_name);
 			ret_val = 0.0;
 			goto expr_compute_return;
 		}
 		
-		switch (ref->type)
+		ret = kest_scope_entry_eval_rec(ref, scope, &ret_val, depth + 1);
+		
+		if (ret != NO_ERROR)
 		{
-			case KEST_SCOPE_ENTRY_TYPE_EXPR:
-				ret_val = kest_expression_evaluate_rec(ref->val.expr, scope, depth + 1);
-				break;
-				
-			case KEST_SCOPE_ENTRY_TYPE_PARAM:
-				if (!ref->val.param)
-				{
-					KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
-						kest_expression_to_string(expr), expr->val.ref_name);
-					ret_val = 0.0f;
-				}
-				else
-				{
-					ret_val = ref->val.param->value;
-				}
-				break;
-				
-			case KEST_SCOPE_ENTRY_TYPE_SETTING:
-				if (!ref->val.setting)
-				{
-					KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it is NULL!\n",
-						expr, expr->val.ref_name);
-					ret_val = 0.0f;
-				}
-				else
-				{
-					ret_val = (float)ref->val.setting->value;
-				}
-				break;
-				
-			default:
-				KEST_PRINTF("Error evaluating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
-					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
-				ret_val = 0.0;
-				break;
+			KEST_PRINTF("Error evaluating expression \"%s\": reference \"%s\" failed to evaluate, with error code %d\n",
+					kest_expression_to_string(expr), expr->val.ref_name, kest_error_code_to_string(ret));
+			ret_val = 0.0f;
 		}
 		
 		goto expr_compute_return;
@@ -607,9 +578,7 @@ static float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *sco
 			
 			if (fabsf(x) < 1e-20)
 			{
-				#ifdef KEST_EXPR_EVAL_VERBOSE
-				KEST_PRINTF("expr compute: division by zero!\n");
-				#endif
+				KEST_PRINTF("[Depth %d] expr compute: division by zero!\n", depth);
 				ret_val = 0.0;
 				goto expr_compute_return; // avoid division by zero by just returning 0 lol. idk. what else to do?
 			}
@@ -696,7 +665,7 @@ expr_compute_return:
 float kest_expression_evaluate(kest_expression *expr, kest_scope *scope)
 {
 	float ret_val = kest_expression_evaluate_rec(expr, scope, 0);
-	//KEST_PRINTF("Evaluating expression; %s = %.04f\n", kest_expression_to_string(expr), ret_val);
+	//KEST_PRINTF("Evaluated expression %p = %s = %.04f (scope: %p)\n", expr, kest_expression_to_string(expr), ret_val, scope);
 	return ret_val;
 }
 
@@ -784,9 +753,7 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 	kest_scope_entry *ref;
 	int found;
 	
-	#ifdef KEST_BOUNDS_CHECK_VERBOSE
-	KEST_PRINTF("[Depth: %d] Computing range for expression \"%s\"...\n", depth, kest_expression_to_string(expr));
-	#endif
+	//KEST_PRINTF("[Depth: %d] Computing range for expression \"%s\"...\n", depth, kest_expression_to_string(expr));
 	
 	float p1, p2, p3, p4;
 	float z;
@@ -834,7 +801,7 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 		#ifdef KEST_BOUNDS_CHECK_VERBOSE
 		KEST_PRINTF("[Depth: %d] Expression is a reference, to \"%s\". Therefore we must compute its range.\n", depth, expr->val.ref_name ? expr->val.ref_name : "(NULL)");
 		#endif
-		if (kest_expression_refers_constant(expr))
+		if (kest_expression_is_constant_reference(expr))
 		{
 			#ifdef KEST_BOUNDS_CHECK_VERBOSE
 			KEST_PRINTF("[Depth: %d] The referenced value is a constant,", depth);
@@ -933,7 +900,15 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 					#endif
 				}
 				break;
-			
+
+			case KEST_SCOPE_ENTRY_TYPE_MEM:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to a mem slot. Those have range [-1, 1).\n", depth);
+				#endif
+				ret.a = -1.0f;
+				ret.b =  1.0f - powf(2.0f, -((float)KEST_FPGA_DATA_WIDTH - 1.0f));
+				break;
+				
 			default:
 				KEST_PRINTF("Error estimating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
 					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
@@ -1353,9 +1328,7 @@ expr_int_ret:
 		ret.b = z;
 	}
 	
-	#ifdef KEST_BOUNDS_CHECK_VERBOSE
-	KEST_PRINTF("[Depth: %d] Therefore, the range of \"%s\" is [%.4f, %.4f].\n", depth, kest_expression_to_string(expr), ret.a, ret.b);
-	#endif
+	KEST_PRINTF("[Depth: %d] The range of \"%s\" is [%.4f, %.4f].\n", depth, kest_expression_to_string(expr), ret.a, ret.b);
 	
 	return ret;
 }
@@ -1366,6 +1339,8 @@ kest_interval kest_expression_compute_range(kest_expression *expr, kest_scope *s
 	return kest_expression_compute_range_rec(expr, scope, 0);
 }
 
+#define PRINTLINES_ALLOWED 0
+
 const char *kest_expression_function_string(kest_expression *expr)
 {
 	if (!expr)
@@ -1375,7 +1350,7 @@ const char *kest_expression_function_string(kest_expression *expr)
 	{
 		case KEST_EXPR_SQRT: 	return "sqrt";
 		case KEST_EXPR_EXP: 	return "e^";
-		case KEST_EXPR_LN: 	return "ln";
+		case KEST_EXPR_LN: 		return "ln";
 		case KEST_EXPR_SIN: 	return "sin";
 		case KEST_EXPR_SINH: 	return "sinh";
 		case KEST_EXPR_COS: 	return "cos";
@@ -1664,6 +1639,65 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	return NO_ERROR;
 }
 
+int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q)
+{
+	if (!array || !cutoff || !Q)
+		return ERR_NULL_PTR;
+	
+	array[0] = NULL;
+	array[1] = NULL;
+	array[2] = NULL;
+	array[3] = NULL;
+	array[4] = NULL;
+	
+	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 14);
+	
+	if (!exprs)
+		return ERR_ALLOC_FAIL;
+	
+	kest_expression *alpha 					= &exprs[0];
+	kest_expression *omega 					= &exprs[1];
+	kest_expression *sin_omega 				= &exprs[2];
+	kest_expression *cos_omega 				= &exprs[3];
+	kest_expression *Q2 					= &exprs[4];
+	kest_expression *one_plus_alpha			= &exprs[5];
+	kest_expression *inv_denom				= &exprs[6];
+	kest_expression *cos_omega_2  			= &exprs[7];
+	kest_expression *inv_denom_2			= &exprs[8];
+	kest_expression *b0						= &exprs[9];
+	kest_expression *b2						= &exprs[10];
+	kest_expression *a1  					= &exprs[11];
+	kest_expression *a2  					= &exprs[12];
+	kest_expression *zero					= &exprs[13];
+	
+	kest_expr_init_2x(Q2, Q);
+	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
+	kest_expr_init_sin(sin_omega, omega);
+	kest_expr_init_cos(cos_omega, omega);
+	kest_expr_init_div(alpha, sin_omega, Q2);
+	
+	kest_expr_init_sum(one_plus_alpha, &kest_expression_one, alpha);
+	kest_expr_init_div(inv_denom, &kest_expression_one, one_plus_alpha);
+	
+	kest_expr_init_2x(cos_omega_2, cos_omega);
+	kest_expr_init_2x(inv_denom_2, inv_denom);
+	
+	kest_expr_init_sub(b0, &kest_expression_one, inv_denom);
+	kest_expr_init_sub(b2, inv_denom, &kest_expression_one);
+	kest_expr_init_mul(a1, cos_omega_2, inv_denom);
+	kest_expr_init_sub(a2, &kest_expression_one, inv_denom_2);
+	
+	kest_expr_init_sub(zero, &kest_expression_one, &kest_expression_one);
+	
+	array[0] = b0;
+	array[1] = zero;
+	array[2] = b2;
+	array[3] = a1;
+	array[4] = a2;
+	
+	return NO_ERROR;
+}
+
 #define PRINTLINES_ALLOWED 0
 
 int kest_expression_get_references_rec(kest_expression *expr, string_list *names, int depth)
@@ -1704,6 +1738,7 @@ int kest_expression_get_references(kest_expression *expr, string_list *names)
 	return kest_expression_get_references_rec(expr, names, 0);
 }
 
+#define PRINTLINES_ALLOWED 0
 
 int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 {
@@ -1750,6 +1785,8 @@ int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 		if (ref_entry)
 			updated = updated | ref_entry->updated;
 	}
+
+	KEST_PRINTF("Ultimately, we conclude: \"%s\" is %supdated in scope %p.\n", kest_expression_to_string(expr), updated ? "" : "not ", scope);
 
 	char_ptr_list_destroy(&names);
 	return updated;

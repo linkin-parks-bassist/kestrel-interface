@@ -4,9 +4,7 @@
 
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-//#endif
 
 static const char *FNAME = "kest_asm_parser.c";
 
@@ -846,6 +844,21 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			}
 			
 			block->res = resource;
+			
+			KEST_PRINTF("Obtained resource \"%s\" = %p. One has...\n", arg.expr->val.ref_name, resource);
+			
+			switch (resource->type)
+			{
+				case KEST_DSP_RESOURCE_MEM:
+						KEST_PRINTF("\tresource->mem_size: \"%d\"\n", resource->mem_size);
+						KEST_PRINTF("\t((kest_mem_slot*)resource->data)->read_enable: \"%d\"\n", ((kest_mem_slot*)resource->data)->read_enable);
+						KEST_PRINTF("\t((kest_mem_slot*)resource->data)->read.period_ms: \"%d\"\n", ((kest_mem_slot*)resource->data)->read.period_ms);
+					break;
+				
+				default:
+					KEST_PRINTF("Whatever\n");
+					break;
+			}
 		}
 		else if (i == arg_format->shift_pos)
 		{

@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+#define PRINTLINES_ALLOWED 1
 
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 
@@ -289,7 +287,7 @@ int enter_ui_page(kest_ui_page *page)
 
 	global_cxt.pages.current_page = page;
 	
-	kest_cxt_queue_save_state(&global_cxt);
+	kest_queue_state_save();
 	
 	return NO_ERROR;
 }
@@ -344,7 +342,7 @@ int enter_ui_page_forwards(kest_ui_page *page)
 	
 	global_cxt.pages.current_page = page;
 	
-	kest_cxt_queue_save_state(&global_cxt);
+	kest_queue_state_save();
 	
 	return NO_ERROR;
 }
@@ -400,8 +398,7 @@ int enter_ui_page_backwards(kest_ui_page *page)
 
 	global_cxt.pages.current_page = page;
 	
-	
-	kest_cxt_queue_save_state(&global_cxt);
+	kest_queue_state_save();
 	
 	return NO_ERROR;
 }
@@ -1337,4 +1334,11 @@ int ui_page_set_title_rw(kest_ui_page *page, lv_event_cb_t save_cb, lv_event_cb_
 	page->panel->rw_cancel_cb = cancel_cb;
 	
 	return NO_ERROR;
+}
+
+void kest_ui_async_call(void (*f)(void*), void *arg)
+{
+	lv_lock();
+	lv_async_call(f, arg);
+	lv_unlock();
 }

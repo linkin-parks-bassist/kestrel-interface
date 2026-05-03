@@ -77,11 +77,14 @@ typedef struct {
 } kest_block;
 
 int kest_init_block(kest_block *block);
+int kest_block_clone(kest_block *dest, kest_block *src);
+int kest_block_clone_no_res(kest_block *dest, kest_block *src);
 
 struct kest_asm_instr_desc;
 
 int kest_init_block_from_instr_desc(kest_block *block, struct kest_asm_instr_desc *desc);
 
 DECLARE_LINKED_PTR_LIST(kest_block);
+DECLARE_LIST(kest_block);
 
 #endif

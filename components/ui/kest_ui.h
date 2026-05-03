@@ -211,4 +211,6 @@ void enter_parent_page_cb(lv_event_t *e);
 
 extern lv_obj_t *keyboard;
 
+void kest_ui_async_call(void (*f)(void*), void *arg);
+
 #endif

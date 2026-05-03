@@ -113,4 +113,7 @@ void menu_item_preset_listing_long_pressed_cb(lv_event_t *e);
 int preset_listing_menu_item_refresh_active(struct kest_menu_item *item);
 int preset_listing_menu_item_change_name(struct kest_menu_item *item, char *name);
 
+extern kest_parameter_widget *input_gain_widget;
+extern kest_parameter_widget *output_gain_widget;
+
 #endif

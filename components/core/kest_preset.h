@@ -95,4 +95,12 @@ void kest_preset_file_rep_update(void *representer, void *representee);
 
 kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id);
 
+int kest_preset_activate_dma(kest_preset *preset);
+int kest_preset_deactivate_dma(kest_preset *preset);
+
+
+DECLARE_POOL(kest_preset);
+extern kest_allocator kest_preset_allocator;
+extern kest_preset_pool kest_preset_mem_pool;
+
 #endif

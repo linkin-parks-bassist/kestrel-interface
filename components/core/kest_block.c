@@ -4,11 +4,12 @@
 
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
+static const char *FNAME = "kest_block.c";
+
 #define PRINTLINES_ALLOWED 0
-#endif
 
 IMPLEMENT_LINKED_PTR_LIST(kest_block);
+IMPLEMENT_LIST(kest_block);
 
 kest_block_operand operand_const_zero()
 {
@@ -81,6 +82,39 @@ int kest_init_block_from_instr_desc(kest_block *block, kest_asm_instr_desc *desc
 	
 	block->instr = desc->opcode;
 	block->shift_policy = desc->shift_policy;
+	
+	return NO_ERROR;
+}
+
+int kest_block_clone(kest_block *dest, kest_block *src)
+{
+	KEST_PRINTF("kest_block_clone\n");
+	if (!dest || !src)
+		return ERR_NULL_PTR;
+	
+	memcpy(dest, src, sizeof(kest_block));
+	
+	KEST_PRINTF("src->res = %p\n", src->res);
+	if (src->res)
+	{
+		dest->res = kest_dsp_resource_make_clone(src->res);
+		
+		if (!dest->res)
+			return ERR_ALLOC_FAIL;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_block_clone_no_res(kest_block *dest, kest_block *src)
+{
+	KEST_PRINTF("kest_block_clone_no_res\n");
+	if (!dest || !src)
+		return ERR_NULL_PTR;
+	
+	memcpy(dest, src, sizeof(kest_block));
+	
+	dest->res = NULL;
 	
 	return NO_ERROR;
 }

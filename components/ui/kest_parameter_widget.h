@@ -39,7 +39,7 @@
 
 struct kest_preset;
 
-typedef struct
+typedef struct kest_parameter_widget
 {
 	int type;
 	kest_parameter_id id;
@@ -54,6 +54,13 @@ typedef struct
 	lv_obj_t *container;
 	lv_obj_t *obj;
 	
+	lv_timer_t *timer;
+	
+	float nominal_value;
+	
+	int pressed;
+	int driven;
+	
 	kest_representation rep;
 } kest_parameter_widget;
 
@@ -65,11 +72,14 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 
 int param_widget_request_value(kest_parameter_widget *pw);
 
+int kest_parameter_widget_refresh(kest_parameter_widget *pw);
+void kest_parameter_widget_refresh_async_wrapper(void *pw);
+void parameter_widget_refresh_cb(lv_event_t *event);
+
 void parameter_widget_update_value_label(kest_parameter_widget *pot);
 void parameter_widget_refresh(kest_parameter_widget *pw);
 
 void parameter_widget_change_cb_inner(kest_parameter_widget *pw);
-void parameter_widget_refresh_cb(lv_event_t *event);
 
 void free_parameter_widget(kest_parameter_widget *pw);
 

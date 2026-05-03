@@ -45,14 +45,9 @@ static void mouse_read(lv_indev_t *indev, lv_indev_data_t *data)
         : LV_INDEV_STATE_RELEASED;
 }
 
-void main_task(void *arg)
+int kest_desktop_init_sdl()
 {
-	int ret_val;
-	
-	srand(time(0));
-	
-	kest_printf_init();
-	
+	setenv("SDL_VIDEODRIVER", "x11", 0); // Force X11; Wayland compat broke after an update =/
     SDL_Init(SDL_INIT_VIDEO);
 
     window = SDL_CreateWindow("Kestrel",
@@ -82,19 +77,22 @@ void main_task(void *arg)
     lv_indev_t *mouse = lv_indev_create();
 	lv_indev_set_type(mouse, LV_INDEV_TYPE_POINTER);
 	lv_indev_set_read_cb(mouse, mouse_read);
-    
+	
+	return NO_ERROR;
+}
+
+int kest_init()
+{
+	int ret_val = NO_ERROR;
+	
+	kest_mem_init();
+	
 	init_representation_updater();
 	kest_init_context(&global_cxt);
 	kest_init_global_pages(&global_cxt.pages);
 	
-	xTaskCreate(
-		kest_fpga_comms_task,
-		NULL,
-		4096,
-		NULL,
-		8,
-		NULL
-	);
+	kest_init_fpga_comms();
+	
 	xTaskCreate(kest_param_update_task, NULL, 4096, NULL, 8, NULL);
 	
 	kest_init_directories();
@@ -115,6 +113,7 @@ void main_task(void *arg)
 	if (ret_val == NO_ERROR)
 	{
 		ret_val = kest_cxt_restore_state(&global_cxt, &state);
+		kest_cxt_enter_previous_current_page(&global_cxt, &state);
 		
 		KEST_PRINTF("Restored state from disk with error code \"%s\"\n", kest_error_code_to_string(ret_val));
 	}
@@ -122,6 +121,22 @@ void main_task(void *arg)
 	{
 		KEST_PRINTF("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
 	}
+	
+	kest_init_fpga_updater();
+	kest_init_file_task();
+	
+	return ret_val;
+}
+
+void main_task(void *arg)
+{
+	int ret_val;
+	
+	srand(time(0));
+	
+	kest_printf_init();
+	kest_desktop_init_sdl();
+	kest_init();
 	
 	int running = 1;
 	SDL_Event e;

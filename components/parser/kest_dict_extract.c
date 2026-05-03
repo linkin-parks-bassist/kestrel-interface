@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
 
 static const char *FNAME = "kest_dict_extract.c";
 
@@ -27,6 +25,7 @@ kest_parameter *kest_extract_parameter_from_dict(kest_eff_parsing_state *ps, kes
 	float v;
 	int i;
 	kest_expression *expr;
+	kest_dictionary_entry *entry = NULL;
 	
 	if ((ret_val = kest_dictionary_lookup_str(dict, "name", (void*)&str)) == NO_ERROR)
 	{
@@ -150,6 +149,42 @@ kest_parameter *kest_extract_parameter_from_dict(kest_eff_parsing_state *ps, kes
 		}
 		
 		param->group = (int)(roundf(kest_expression_evaluate(expr, NULL)));
+	}
+	
+	entry = kest_dictionary_get_entry(dict, "driver");
+	
+	kest_driver driver;
+	
+	if (entry)
+	{
+		switch (entry->type)
+		{
+			case DICT_ENTRY_TYPE_EXPR:
+				expr = entry->value.val_expr;
+				
+				if (!expr)
+				{
+					kest_parser_error_at_node(ps, dict_node, "Something went wrong (entry->val.expr = NULL ?)\n");
+					goto parameter_extract_abort;
+				}
+				
+				switch (expr->type)
+				{
+					case KEST_EXPR_REF:
+						i = ps->drivers.count;
+						KEST_PRINTF("Creating driver \"%s\". ps->drivers.count = %d\n", expr->val.ref_name, i);
+						kest_driver_init_scope_entry(&driver, expr->val.ref_name);
+						kest_driver_list_append(&ps->drivers, driver);
+						param->driver_index = i;
+						break;
+					
+					default:
+						kest_parser_error_at_node(ps, dict_node, "\"%s\" cannot be a driver.\n", kest_expression_to_string(expr));
+						goto parameter_extract_abort;
+				}
+				
+				break;
+		}
 	}
 	
 	KEST_PRINTF("Extracted a parameter;\n");
@@ -454,8 +489,18 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 	int size = 1;
 	
 	kest_expression *expr;
+	kest_mem_slot *mem = kest_mem_slot_create(NULL);
 	
-	KEST_PRINTF("Extracting \"%s\"...\n", res->name);
+	if (!mem) return ERR_ALLOC_FAIL;
+	
+	kest_scope_add_mem(ps->scope, res->name, mem);
+	
+	res->data = mem;
+	
+	mem->read_enable = 1;
+	mem->read.period_ms = 7;
+	
+	KEST_PRINTF("Extracting mem slot \"%s\"...\n", res->name);
 	
 	ret_val = kest_dictionary_lookup_expr(dict, "size", &expr);
 	
@@ -463,8 +508,7 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 	{
 		size = (int)(roundf(fabs(kest_expression_evaluate(expr, NULL))));
 		
-		if (size == 0)
-			size = 1;
+		if (size == 0) size = 1;
 		
 		res->mem_size = size;
 	}
@@ -473,7 +517,34 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 		res->mem_size = 1;
 	}
 	
+	kest_dictionary_entry *entry = NULL;
+	
+	entry = kest_dictionary_get_entry(dict, "read_ms");
+	
+	if (entry)
+	{
+		if (!kest_dictionary_entry_is_constant_number(entry))
+		{
+			kest_parser_error_at_node(ps, dict_node, "Read period must be constant; \"%s\" (type \"%s\") is not\n",
+				kest_expression_to_string(expr), kest_expression_type_to_str(expr->type));
+			goto mem_extract_abort;
+		}
+		
+		mem->read.period_ms = kest_const_num_dictionary_entry_evaluate(entry);
+		mem->read_enable = 1;
+	}
+	
+	
+	KEST_PRINTF("Extracted a mem slot;\n");
+	KEST_PRINTF("\tres->mem_size: \"%d\"\n", res->mem_size);
+	KEST_PRINTF("\t((kest_mem_slot*)res->data)->read_enable: \"%d\"\n", ((kest_mem_slot*)res->data)->read_enable);
+	KEST_PRINTF("\t((kest_mem_slot*)res->data)->read.period_ms: \"%d\"\n", ((kest_mem_slot*)res->data)->read.period_ms);
+	
 	return NO_ERROR;
+	
+mem_extract_abort:
+	
+	return ERR_BAD_ARGS;
 }
 
 int kest_extract_filter_coefs_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
@@ -775,7 +846,120 @@ int kest_extract_hpf_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 
 int kest_extract_bpf_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
 {
-	return ERR_UNIMPLEMENTED;
+	KEST_PRINTF("kest_extract_bpf_from_dict\n");
+	if (!dict || !res)
+		return ERR_NULL_PTR;
+	
+	kest_expression *center = NULL;
+	kest_expression *Q = NULL;
+	
+	int ret_val;
+	kest_dictionary_entry entry;
+	ret_val = kest_dictionary_lookup_entry(dict, "center", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		kest_parser_error_at_node(ps, dict_node, "Could not find mandatory attribute \"center\" for filter \"%s\"", res->name);
+		return ERR_BAD_ARGS;
+	}
+	
+	switch (entry.type)
+	{
+		case DICT_ENTRY_TYPE_INT:
+			center = kest_expr_new_const(entry.value.val_int);
+			if (!center) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_FLOAT:
+			center = kest_expr_new_const(entry.value.val_float);
+			if (!center) return ERR_ALLOC_FAIL;
+			break;
+			
+		case DICT_ENTRY_TYPE_EXPR:
+			center = entry.value.val_expr;
+			if (!center)
+				return ERR_BAD_ARGS;
+			break;
+		
+		default:
+			kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+			return ERR_BAD_ARGS;
+	}
+	
+	ret_val = kest_dictionary_lookup_entry(dict, "Q", &entry);
+	
+	if (ret_val != NO_ERROR)
+	{
+		ret_val = kest_dictionary_lookup_entry(dict, "resonance", &entry);
+	}
+	
+	if (ret_val != NO_ERROR)
+	{
+		Q = &kest_expression_root_2_over_2;
+	}
+	else
+	{
+		switch (entry.type)
+		{
+			case DICT_ENTRY_TYPE_INT:
+				Q = kest_expr_new_const(entry.value.val_int);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_FLOAT:
+				Q = kest_expr_new_const(entry.value.val_float);
+				if (!Q) return ERR_ALLOC_FAIL;
+				break;
+				
+			case DICT_ENTRY_TYPE_EXPR:
+				Q = entry.value.val_expr;
+				if (!Q)
+					return ERR_BAD_ARGS;
+				break;
+			
+			default:
+				kest_parser_error_at_node(ps, dict_node, "Filter \"%s\": Cutoff must be numerical", res->name);
+				return ERR_BAD_ARGS;
+		}
+	}
+	
+	KEST_PRINTF("center  = %s\n", kest_expression_to_string(center));
+    KEST_PRINTF("Q       = %s\n", kest_expression_to_string(Q));
+	
+	kest_filter *filter = kest_filter_create(NULL);
+	
+	res->data = (void*)filter;
+	
+	filter->feed_forward = 3;
+	filter->feed_back = 2;
+	
+	kest_expression *coefs[5];
+	
+	ret_val = kest_expr_create_bpf_coefficients(coefs, center, Q);
+	
+	if (ret_val != NO_ERROR)
+	{
+		res->data = NULL;
+		kest_expression_ptr_list_destroy(&filter->coefs);
+		return ret_val;
+	}
+	
+	kest_expression_ptr_list_append(&filter->coefs, coefs[0]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[1]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[2]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[3]);
+	kest_expression_ptr_list_append(&filter->coefs, coefs[4]);
+	
+	KEST_PRINTF("Extracted (%d, %d) filter \"%s\", with coefficients\n", filter->feed_forward, filter->feed_back, res->name);
+	
+	for (int i = 0; i < filter->coefs.count; i++)
+	{
+		KEST_PRINTF("\t%s\n", kest_expression_to_string(filter->coefs.entries[i]));
+	}
+	
+	
+	KEST_PRINTF("kest_extract_bpf_from_dict done\n");
+	return NO_ERROR;
 }
 
 int kest_extract_biquad_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_node, kest_dictionary *dict, kest_dsp_resource *res)
@@ -918,6 +1102,7 @@ kest_dsp_resource *kest_extract_resource_from_dict(kest_eff_parsing_state *ps, k
 	int ret_val;
 	float delay_len;
 	char *type_str = NULL;
+	
 	kest_dsp_resource *res = kest_alloc(sizeof(kest_dsp_resource));
 	
 	if (!res) return NULL;

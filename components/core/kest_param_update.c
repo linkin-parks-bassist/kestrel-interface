@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-//#endif
 
 static const char *FNAME = "kest_param_update.c";
 
@@ -24,6 +22,12 @@ static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 
 
 int queue_initd = 0;
 QueueHandle_t update_rtos_queue;
+
+int kest_init_parameter_updater()
+{
+	xTaskCreate(kest_param_update_task, "kest_param_update_task", 4096, NULL, 8, NULL);
+	return NO_ERROR;
+}
 
 void remove_param_update(int index)
 {
@@ -71,6 +75,7 @@ void kest_param_update_task(void *arg)
 	kest_effect *effect;
 	kest_parameter *param;
 	
+	float val;
 	float diff;
 	int enqueue;
 	int send;
@@ -78,13 +83,13 @@ void kest_param_update_task(void *arg)
 	int k;
 	
 	int ret_val;
+	int wake_fpga_updater;
 	
 	while (1)
 	{
+		wake_fpga_updater = 0;
 		while ((update_queue_tail + 1) % UPDATE_QUEUE_LENGTH != update_queue_head && xQueueReceive(update_rtos_queue, &current, 0) == pdPASS)
 		{
-			//print_parameter_update(current);
-			
 			enqueue = 1;
 			for (int i = 0; i < n_updates; i++)
 			{
@@ -130,10 +135,7 @@ void kest_param_update_task(void *arg)
 			print_parameter_update(update_array[n_updates - 1]);
 		}
 		
-		
 		commit = 0;
-		
-		//KEST_PRINTF("n parameter updates: %d\n", n_updates);
 		
 		for (int i = 0; i < n_updates; i++)
 		{
@@ -169,12 +171,13 @@ void kest_param_update_task(void *arg)
 							update_array[i].send = 0;
 					}
 					
-					if (!(update_array[i].send && update_array[i].t && xSemaphoreTake(update_array[i].t->mutex, 0) == pdTRUE))
+					if (!(update_array[i].send && update_array[i].t/* && xSemaphoreTake(update_array[i].t->mutex, 0) == pdTRUE*/))
 						update_array[i].send = 0;
 				}
 			}
 			
-			diff = update_array[i].target - param->value;
+			val = kest_parameter_evaluate(param);
+			diff = update_array[i].target - val;
 			
 			if (param->scale == PARAMETER_SCALE_LINEAR)
 			{
@@ -192,32 +195,31 @@ void kest_param_update_task(void *arg)
 				if (diff < -UPDATE_PERIOD_MS * param->max_velocity * param->value)
 					diff = -UPDATE_PERIOD_MS * param->max_velocity * param->value;
 			}
-			//KEST_PRINTF("Move parameter %s (%d.%d.%d) by %f from %f to %f, with target %f\n", param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
-			//	diff, param->value, param->value + diff, update_array[i].target);
 			
-			param->value = param->value + diff;
-			param->updated = 1;
+			KEST_PRINTF("Set %s {%d.%d.%d} from %s%.05f to %s%.05f\n", param->name ? param->name : "(NULL)",
+				update_array[i].id.preset_id, update_array[i].id.effect_id, update_array[i].id.parameter_id, val < 0 ? "" : " ", val, (val + diff) < 0 ? "" : " ", val + diff);
+			kest_parameter_set(param, val + diff);
 			
 			if (update_array[i].id.preset_id == CONTEXT_PRESET_ID)
 			{
+				KEST_PRINTF("%d = update_array[%d].id.preset_id == CONTEXT_PRESET_ID = %d\n", update_array[i].id.preset_id, i, CONTEXT_PRESET_ID);
 				update_array[i].send = 0;
 				if (param == &global_cxt.input_gain)
 				{
 					kest_fpga_queue_input_gain_set(param->value);
+					kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, input_gain_widget);
 				}
 				else if (param == &global_cxt.output_gain)
 				{
 					kest_fpga_queue_output_gain_set(param->value);
+					kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, output_gain_widget);
 				}
 			}
 			else
 			{
 				commit = 1;
 			}
-			
 		}
-		
-		//KEST_PRINTF("commit = %d, n_updates = %d\n", commit, n_updates);
 		
 		if (n_updates)
 		{
@@ -235,9 +237,10 @@ void kest_param_update_task(void *arg)
 			{
 				if (global_cxt.active_preset && global_cxt.active_preset->id == update_array[i].id.preset_id)
 				{
-					kest_effect_update_fpga(update_array[i].t);
+					KEST_PRINTF("kest_ui_async_call(kest_effect_update_sync, update_array[i].t);\n");
+					kest_ui_async_call(kest_effect_update_sync_no_pw, update_array[i].t);
+					wake_fpga_updater = 1;
 				}
-				xSemaphoreGive(update_array[i].t->mutex);
 				
 				kest_representation_queue_update(&update_array[i].t->page_rep);
 			}
@@ -253,32 +256,15 @@ void kest_param_update_task(void *arg)
 				continue;
 			}
 			
-			KEST_PRINTF("\n");
-			queue_representation_list_update(update_array[i].p->reps);
+			//kest_representation_ptr_list_queue_updates_(&update_array[i].p->reps);
 			
 			if (update_array[i].p->value == update_array[i].target)
 			{
 				KEST_PRINTF("Removing update %d from queue for reason: value %.03f equals target %.03f\n", i, update_array[i].p->value, update_array[i].target);
 				if (update_array[i].p->id.preset_id == CONTEXT_PRESET_ID)
-					kest_cxt_queue_save_state(&global_cxt);
-				
-				KEST_PRINTF("update_array[i].p->reps = %p\n", update_array[i].p->reps);
-				
-				kest_representation_pll *cr = update_array[i].p->reps;
-				
-				while (cr) {
-					if (cr->data == NULL)
-					{
-						KEST_PRINTF("NULL rep...\n");
-					}
-					else
-					{
-						KEST_PRINTF("Param rep {.representer = %p, representee = %p, update = %p}\n",
-							cr->data->representer, cr->data->representee, cr->data->update);
-					}
-					
-					cr = cr->next;
-				}
+					kest_queue_state_save();
+				else if (update_array[i].t && update_array[i].t->preset)
+					kest_queue_preset_save(update_array[i].t->preset);
 				
 				remove_param_update(i);
 				i--;
@@ -290,6 +276,9 @@ void kest_param_update_task(void *arg)
 		{
 			kest_fpga_queue_register_commit();
 		}
+		
+		if (wake_fpga_updater)
+			kest_fpga_updater_wake();
 		
 		xTaskDelayUntil(&last_wake, update_period_ticks);
 	}

@@ -11,6 +11,7 @@ typedef struct {
 	int send;
 } kest_parameter_update;
 
+int kest_init_parameter_updater();
 void kest_param_update_task(void *arg);
 
 int kest_parameter_trigger_update(kest_parameter *param, float target);

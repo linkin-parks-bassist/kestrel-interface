@@ -109,7 +109,7 @@ int kest_resources_section_extract(kest_eff_parsing_state *ps, kest_dsp_resource
 	if (!sec) return ERR_BAD_ARGS;
 	
 	kest_dictionary *dict = sec->dict;
-	kest_dsp_resource *res= NULL;
+	kest_dsp_resource *res = NULL;
 	
 	if (!dict)
 		return ERR_BAD_ARGS;

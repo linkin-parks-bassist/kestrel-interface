@@ -1,8 +1,7 @@
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-//#endif
+#define PRINTLINES_ALLOWED 1
+
 #include "kest_param_update.h"
 
 static const char *FNAME = "kest_parameter_widget.c";
@@ -33,6 +32,8 @@ int nullify_parameter_widget(kest_parameter_widget *pw)
 	if (!pw)
 		return ERR_NULL_PTR;
 	
+	memset(pw, 0, sizeof(kest_parameter_widget));
+	
 	pw->param 		= NULL;
 	
 	pw->obj 		= NULL;
@@ -46,6 +47,10 @@ int nullify_parameter_widget(kest_parameter_widget *pw)
 	pw->rep.representer = pw;
 	pw->rep.representee = NULL;
 	pw->rep.update = param_widget_rep_update;
+	
+	pw->nominal_value = 0.0f;
+	pw->pressed = 0;
+	pw->driven = 0;
 	
 	return NO_ERROR;
 }
@@ -68,7 +73,7 @@ void format_parameter_widget_value_label(kest_parameter_widget *pw)
 	if (!pw || !pw->param)
 		return;
 	
-	int i = format_float(pw->val_label_text, pw->param->value, PARAM_WIDGET_LABEL_BUFSIZE);
+	int i = format_float(pw->val_label_text, pw->nominal_value, PARAM_WIDGET_LABEL_BUFSIZE);
 	
 	if (pw->param->units && i < PARAM_WIDGET_LABEL_BUFSIZE)
 	{
@@ -85,47 +90,51 @@ int parameter_widget_update_value(kest_parameter_widget *pw)
 		return ERR_BAD_ARGS;
 	
 	kest_parameter *param = pw->param;
-	kest_expr_scope *scope = NULL;
+	kest_scope *scope = NULL;
 	kest_effect *effect = NULL;
 	
-	KEST_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f\n",
-		param->id.preset_id, param->id.effect_id, param->id.parameter_id,
-		param->name ? param->name : "(NULL)", param->value);
+	float alpha = pw->driven ? 0.2 : 0.1;
+	float val = pw->nominal_value * (1.0 - alpha) + kest_parameter_evaluate(param) * alpha;
+	pw->nominal_value = val;
 	
-	uint32_t val;
+	KEST_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f, nominal value %f. pressed = %d\n",
+		param->id.preset_id, param->id.effect_id, param->id.parameter_id,
+		param->name ? param->name : "(NULL)", param->value, val, pw->pressed);
+	
+	uint32_t ival;
 	
 	kest_interval range = kest_parameter_get_range(pw->param);
 	
 	float min = range.a;
 	float max = range.b;
 	
-	if (pw->param->value > max)
+	if (val > max)
 	{
-		kest_parameter_trigger_update(pw->param, max);
+		val = max;
 	}
 	
-	if (pw->param->value < min)
+	if (val < min)
 	{
-		kest_parameter_trigger_update(pw->param, min);
+		val = min;
 	}
 	
 	KEST_PRINTF("min/max for PW: %.03f, %.03f\n", min, max);
 	
 	if (fabsf(max - min) < 1e-6)
 	{
-		val = (int)PARAMETER_WIDGET_RANGE_SIZE/2;
+		ival = (int)PARAMETER_WIDGET_RANGE_SIZE/2;
 	}
 	else
 	{
 		if (pw->param->scale == PARAMETER_SCALE_LOGARITHMIC)
 		{
 			
-			val = PARAMETER_WIDGET_RANGE_SIZE * ((logf(pw->param->value) - logf(min)) /
+			ival = PARAMETER_WIDGET_RANGE_SIZE * ((logf(val) - logf(min)) /
 												 (logf(max) - logf(min)));
 		}
 		else
 		{
-			val = PARAMETER_WIDGET_RANGE_SIZE * ((pw->param->value - min) /
+			ival = PARAMETER_WIDGET_RANGE_SIZE * ((val - min) /
 												 (max - min));
 		}
 	}
@@ -135,11 +144,11 @@ int parameter_widget_update_value(kest_parameter_widget *pw)
 		case PARAM_WIDGET_VSLIDER_TALL:
 		case PARAM_WIDGET_VSLIDER:
 		case PARAM_WIDGET_HSLIDER:
-			lv_slider_set_value(pw->obj, val, LV_ANIM_ON);
+			lv_slider_set_value(pw->obj, ival, LV_ANIM_ON);
 			break;
 			
 		default:
-			lv_arc_set_value(pw->obj, val);
+			lv_arc_set_value(pw->obj, ival);
 			break;
 	}
 	
@@ -189,30 +198,88 @@ int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param,
 	
 	pw->parent = parent;
 	
+	param->pw = pw;
+	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll_safe_append(&param->reps, &pw->rep);
 	pw->rep.representee = param;
 	param->widget_rep.representer = pw;
+	kest_representation_ptr_list_append(&param->reps, &pw->rep);
 	#endif
 	
-	format_float(pw->val_label_text, pw->param->value, PARAM_WIDGET_LABEL_BUFSIZE);
+	pw->driven = param->driver_index != KEST_PARAMETER_UNDRIVEN;
+	
+	pw->nominal_value = kest_parameter_evaluate(pw->param);
+	format_float(pw->val_label_text, pw->nominal_value, PARAM_WIDGET_LABEL_BUFSIZE);
 	
 	return NO_ERROR;
 }
 
+void kest_parameter_widget_refresh_timer_wrapper(lv_timer_t *timer)
+{
+	kest_parameter_widget* pw = lv_timer_get_user_data(timer);
+	
+	if (!pw)
+		return;
+	
+	kest_parameter_widget_refresh(pw);
+	
+	if (pw->timer && fabs(pw->nominal_value - pw->param->value) < 0.000001)
+	{
+		pw->nominal_value = pw->param->value;
+		lv_timer_del(pw->timer);
+		pw->timer = NULL;
+	}
+}
+
+void kest_parameter_widget_refresh_async_wrapper(void *pw)
+{
+	kest_parameter_widget_refresh((kest_parameter_widget*)pw);
+}
+
+int kest_parameter_widget_refresh(kest_parameter_widget *pw)
+{
+	KEST_PRINTF("kest_parameter_widget_refresh(pw = %p)\n", pw);
+	
+	if (!pw)
+		return ERR_NULL_PTR;
+	
+	if (!pw->param)
+		return ERR_BAD_ARGS;
+	
+	int ret_val = NO_ERROR;
+	
+	KEST_PRINTF("pw->pressed = %d\n", pw->pressed);
+	KEST_PRINTF("pw->nominal_value = %f, pw->param->value = %f\n", pw->nominal_value, pw->param->value);
+	
+	if (!pw->pressed)
+	{
+		ret_val = parameter_widget_update_value(pw);
+		
+		if (ret_val != NO_ERROR)
+			return ret_val;
+		
+		// Apparently this function doesn't return, lol
+		/*ret_val = */parameter_widget_update_value_label(pw);
+		
+		if (!pw->driven && fabs(pw->nominal_value - pw->param->value) > 0.00001 && !pw->timer)
+			pw->timer = lv_timer_create(kest_parameter_widget_refresh_timer_wrapper, 10, pw);
+	}
+	
+	return ret_val;
+}
+
 void parameter_widget_refresh(kest_parameter_widget *pw)
 {
-	KEST_PRINTF("\n");
 	if (!pw)
 	{
 		return;
 	}
 	
-	KEST_PRINTF("\n");
-	parameter_widget_update_value(pw);
-	KEST_PRINTF("\n");
-	parameter_widget_update_value_label(pw);
-	KEST_PRINTF("\n");
+	if (!pw->pressed)
+	{
+		parameter_widget_update_value(pw);
+		parameter_widget_update_value_label(pw);
+	}
 }
 
 void parameter_widget_refresh_cb(lv_event_t *event)
@@ -231,26 +298,29 @@ void parameter_widget_refresh_cb(lv_event_t *event)
 
 void parameter_widget_change_cb_inner(kest_parameter_widget *pw)
 {
+	KEST_PRINTF("parameter_widget_change_cb_inner(pw = %p)\n", pw);
 	if (!pw)
 	{
 		KEST_PRINTF("NULL pw pointer passed to parameter_widget_change_cb_inner");
 		return;
 	}
 	
-	if (!pw->param)
+	kest_parameter *param = pw->param;
+	
+	if (!param)
 	{
 		KEST_PRINTF("parameter_widget_change_cb_inner called on parameter widget with NULL parameter");
 		return;
 	}
 	
-	float val;
+	float val = 0.0f;
 	
-	kest_interval range = kest_parameter_get_range(pw->param);
+	kest_interval range = kest_parameter_get_range(param);
 	
 	float min = range.a;
 	float max = range.b;
 	
-	switch (pw->param->widget_type)
+	switch (param->widget_type)
 	{
 		case PARAM_WIDGET_VSLIDER_TALL:
 		case PARAM_WIDGET_VSLIDER:
@@ -265,7 +335,7 @@ void parameter_widget_change_cb_inner(kest_parameter_widget *pw)
 	
 	val /= PARAMETER_WIDGET_RANGE_SIZE;
 	
-	switch (pw->param->scale)
+	switch (param->scale)
 	{
 		case PARAMETER_SCALE_LOGARITHMIC:
 			float lnmin = logf(min);
@@ -279,20 +349,19 @@ void parameter_widget_change_cb_inner(kest_parameter_widget *pw)
 			break;
 	}
 	
+	KEST_PRINTF("Calculated nominal value %s%.05f\n", val >= 0 ? " " : "", val);
+	
+	pw->nominal_value = val;
+	
 	parameter_widget_update_value_label_v(pw, val);
 	
-	kest_parameter_trigger_update(pw->param, val);
-	
-	#ifdef USE_TEENSY
-	kest_message msg = create_m_message(KEST_MESSAGE_SET_PARAM_VALUE, "sssf", pw->param->id.preset_id, pw->param->id.effect_id, pw->param->id.parameter_id, pw->param->value);
-	queue_msg_to_teensy(msg);
-	#endif
+	kest_parameter_trigger_update(param, val);
 	
 	if (pw->preset)
 	{
 		pw->preset->unsaved_changes = 1;
 	}
-	else if (pw->param->id.preset_id == CONTEXT_PRESET_ID)
+	else if (param->id.preset_id == CONTEXT_PRESET_ID)
 	{
 		// do something
 	}
@@ -311,6 +380,37 @@ void parameter_widget_change_cb(lv_event_t *event)
 	parameter_widget_change_cb_inner(pw);
 }
 
+void parameter_widget_pressing_cb(lv_event_t *event)
+{
+	kest_parameter_widget *pw = lv_event_get_user_data(event);
+	
+	if (pw)
+	{
+		pw->pressed = 1;
+		
+		if (pw->param)
+		{
+			pw->param->driver_override = 1;
+		}
+	}
+}
+
+
+void parameter_widget_released_cb(lv_event_t *event)
+{
+	kest_parameter_widget *pw = lv_event_get_user_data(event);
+	
+	if (pw)
+	{
+		pw->pressed = 0;
+		
+		if (pw->param)
+		{
+			pw->param->driver_override = 0;
+		}
+	}
+}
+
 int parameter_widget_create_ui(kest_parameter_widget *pw, lv_obj_t *parent)
 {
 	if (!pw)
@@ -321,6 +421,9 @@ int parameter_widget_create_ui(kest_parameter_widget *pw, lv_obj_t *parent)
 		return ret_val;
 	
 	lv_obj_add_event_cb(pw->obj, parameter_widget_change_cb, LV_EVENT_VALUE_CHANGED, pw);
+	
+	lv_obj_add_event_cb(pw->obj, parameter_widget_pressing_cb,  LV_EVENT_PRESSING, pw);
+	lv_obj_add_event_cb(pw->obj, parameter_widget_released_cb, LV_EVENT_RELEASED, pw);
 	
 	return NO_ERROR;
 }

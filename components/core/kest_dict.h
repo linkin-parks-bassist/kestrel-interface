@@ -19,9 +19,14 @@ typedef struct {\
 int X##_dict_init(X##_dict *dict, size_t n_buckets);\
 int X##_dict_init_with_allocator(X##_dict *dict, size_t n_buckets, kest_allocator *alloc);\
 int X##_dict_insert(X##_dict *dict, const char *key, X x);\
+X *X##_dict_insert_return_ptr(X##_dict *dict, const char *key, X x);\
+X##_dict_entry *X##_dict_insert_return_entry_ptr(X##_dict *dict, const char *key, X x);\
 X *X##_dict_lookup(X##_dict *dict, const char *key);\
+X##_dict_entry *X##_dict_lookup_entry(X##_dict *dict, const char *key);\
 size_t X##_dict_count(X##_dict *dict);\
 X *X##_dict_index(X##_dict *dict, size_t n);\
+const char *X##_dict_index_key(X##_dict *dict, size_t n);\
+X##_dict_entry *X##_dict_index_entry(X##_dict *dict, size_t n);\
 void X##_dict_destroy(X##_dict *dict, void (*destructor)(X *x));
 
 #define IMPLEMENT_DICT(X) \
@@ -86,6 +91,56 @@ int X##_dict_insert(X##_dict *dict, const char *key, X x)\
 	\
 	return X##_dict_entry_list_append(&dict->buckets[bucket], entry);\
 }\
+\
+X *X##_dict_insert_return_ptr(X##_dict *dict, const char *key, X x)\
+{\
+	if (!dict) 				return NULL;\
+	if (!key) 				return NULL;\
+	if (!dict->n_buckets) 	return NULL;\
+	\
+	size_t bucket = hash(key) % dict->n_buckets;\
+	\
+	X##_dict_entry entry = {.key = key, .data = x};\
+	\
+	int index = X##_dict_entry_list_index_of(&dict->buckets[bucket], entry, X##_dict_entry_cmp);\
+	\
+	if (index >= 0)\
+		return NULL;\
+	\
+	entry.key = kest_allocator_strndup(&dict->alloc, key, 1024);\
+	\
+	if (!entry.key)\
+		return NULL;\
+	\
+	X##_dict_entry *entry_ptr = X##_dict_entry_list_append_return_ptr(&dict->buckets[bucket], entry);\
+	\
+	if (!entry_ptr) return NULL;\
+	\
+	return &entry_ptr->data;\
+}\
+\
+X##_dict_entry *X##_dict_insert_return_entry_ptr(X##_dict *dict, const char *key, X x)\
+{\
+	if (!dict) 				return NULL;\
+	if (!key) 				return NULL;\
+	if (!dict->n_buckets) 	return NULL;\
+	\
+	size_t bucket = hash(key) % dict->n_buckets;\
+	\
+	X##_dict_entry entry = {.key = key, .data = x};\
+	\
+	int index = X##_dict_entry_list_index_of(&dict->buckets[bucket], entry, X##_dict_entry_cmp);\
+	\
+	if (index >= 0)\
+		return NULL;\
+	\
+	entry.key = kest_allocator_strndup(&dict->alloc, key, 1024);\
+	\
+	if (!entry.key)\
+		return NULL;\
+	\
+	return X##_dict_entry_list_append_return_ptr(&dict->buckets[bucket], entry);\
+}\
 X *X##_dict_lookup(X##_dict *dict, const char *key)\
 {\
 	if (!dict || !key) return NULL;\
@@ -99,6 +154,22 @@ X *X##_dict_lookup(X##_dict *dict, const char *key)\
 	\
 	if (index >= 0 && index < dict->buckets[bucket].count)\
 		return &dict->buckets[bucket].entries[index].data;\
+	\
+	return NULL;\
+}\
+X##_dict_entry *X##_dict_lookup_entry(X##_dict *dict, const char *key)\
+{\
+	if (!dict || !key) return NULL;\
+	if (!dict->n_buckets) return NULL;\
+	\
+	X##_dict_entry entry = {.key = key};\
+	\
+	size_t bucket = hash(key) % dict->n_buckets;\
+	\
+	int index = X##_dict_entry_list_index_of(&dict->buckets[bucket], entry, X##_dict_entry_cmp);\
+	\
+	if (index >= 0 && index < dict->buckets[bucket].count)\
+		return &dict->buckets[bucket].entries[index];\
 	\
 	return NULL;\
 }\
@@ -128,6 +199,40 @@ X *X##_dict_index(X##_dict *dict, size_t n)\
 	{\
 		if (dict->buckets[i].count > n)\
 			return &dict->buckets[i].entries[n].data;\
+		else\
+			n -= dict->buckets[i].count;\
+	}\
+	\
+	return NULL;\
+}\
+const char *X##_dict_index_key(X##_dict *dict, size_t n)\
+{\
+	if (!dict) return NULL;\
+	\
+	if (!dict->buckets || !dict->n_buckets)\
+		return NULL;\
+	\
+	for (size_t i = 0; i < dict->n_buckets; i++)\
+	{\
+		if (dict->buckets[i].count > n)\
+			return dict->buckets[i].entries[n].key;\
+		else\
+			n -= dict->buckets[i].count;\
+	}\
+	\
+	return NULL;\
+}\
+X##_dict_entry *X##_dict_index_entry(X##_dict *dict, size_t n)\
+{\
+	if (!dict) return NULL;\
+	\
+	if (!dict->buckets || !dict->n_buckets)\
+		return NULL;\
+	\
+	for (size_t i = 0; i < dict->n_buckets; i++)\
+	{\
+		if (dict->buckets[i].count > n)\
+			return &dict->buckets[i].entries[n];\
 		else\
 			n -= dict->buckets[i].count;\
 	}\

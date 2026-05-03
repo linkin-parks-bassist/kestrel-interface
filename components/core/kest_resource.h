@@ -8,6 +8,7 @@
 #define KEST_DSP_RESOURCE_FILTER	4
 
 struct kest_expression;
+struct kest_effect;
 
 typedef struct kest_dsp_resource {
 	char *name;
@@ -21,9 +22,15 @@ typedef struct kest_dsp_resource {
 
 int kest_init_dsp_resource(kest_dsp_resource *res);
 
+int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src);
+kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src);
+kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *src, struct kest_effect *effect);
+
 int string_to_resource_type(const char *type_str);
 
 DECLARE_LINKED_PTR_LIST(kest_dsp_resource);
+DECLARE_PTR_LIST(kest_dsp_resource);
+DECLARE_LIST(kest_dsp_resource);
 
 struct kest_expression_ptr_list;
 
@@ -40,7 +47,26 @@ typedef struct kest_filter {
 int kest_filter_init(kest_filter *filter);
 kest_filter *kest_filter_create(kest_allocator *alloc);
 
+int kest_filter_clone(kest_filter *dest, kest_filter *src);
+kest_filter *kest_filter_make_clone(kest_filter *src);
+
 int kest_resources_assign_handles(kest_dsp_resource_pll *list);
+
+typedef struct kest_mem_slot {
+	int addr;
+	int effective_addr;
+	kest_fpga_sample_t value;
+	
+	int read_enable;
+	kest_fpga_periodic_read read;
+	
+	struct kest_effect *effect;
+} kest_mem_slot;
+
+kest_mem_slot *kest_mem_slot_create(kest_allocator *alloc);
+
+int kest_mem_slot_set_addr(kest_mem_slot *mem, int addr);
+int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr);
 
 typedef struct
 {

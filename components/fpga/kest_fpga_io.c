@@ -602,8 +602,13 @@ int64_t kest_fpga_req_data(int req, int n_bytes, kest_fpga_status_flags *flags)
 
 int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_status_flags *flags)
 {
-	if (!p || !flags)
+	if (!p)
 		return -1;
+	
+	kest_fpga_status_flags _flags;
+	
+	if (!flags)
+		flags = &_flags;
 	
 	kest_fpga_send_byte_get_flags(COMMAND_READ, flags);
 	kest_fpga_send_byte_get_flags(req, flags);

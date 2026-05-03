@@ -8,6 +8,10 @@ static const char *FNAME = "kest_preset.c";
 
 IMPLEMENT_LINKED_PTR_LIST(kest_preset);
 
+IMPLEMENT_POOL(kest_preset);
+kest_allocator kest_preset_allocator;
+kest_preset_pool kest_preset_mem_pool;
+
 static int next_preliminary_preset_id = 1;
 
 int init_m_preset(kest_preset *preset)
@@ -36,6 +40,10 @@ int init_m_preset(kest_preset *preset)
 	#else
 	preset->sequence = NULL;
 	#endif
+	#endif
+	
+	#ifdef KEST_USE_FREERTOS
+	preset->mutex = xSemaphoreCreateMutex();
 	#endif
 	
 	if (ret_val != NO_ERROR)
@@ -81,6 +89,23 @@ int kest_preset_rectify_ids(kest_preset *preset)
 	return NO_ERROR;
 }
 
+int kest_preset_activate_dma(kest_preset *preset)
+{
+	KEST_PRINTF("kest_preset_activate_dma_async\n");
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	return kest_pipeline_activate_dma(&preset->pipeline);
+}
+
+int kest_preset_deactivate_dma(kest_preset *preset)
+{
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	return kest_pipeline_deactivate_dma(&preset->pipeline);
+}
+
 int kest_preset_set_active(kest_preset *preset)
 {
 	if (!preset)
@@ -102,6 +127,7 @@ int kest_preset_set_inactive(kest_preset *preset)
 	
 	preset->active = 0;
 	
+	kest_preset_deactivate_dma(preset);
 	kest_preset_update_representations(preset);
 	
 	return NO_ERROR;
@@ -200,6 +226,8 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	#endif
 	effect_rectify_param_ids(effect);
 	
+	kest_queue_preset_save(preset);
+	
 	KEST_PRINTF("kest_preset_append_effect_eff done\n");
 	return effect;
 }
@@ -213,6 +241,8 @@ int kest_preset_remove_effect(kest_preset *preset, uint16_t id)
 	int ret_val = kest_pipeline_remove_effect(&preset->pipeline, id);
 	
 	kest_preset_if_active_update_fpga(preset);
+	
+	kest_queue_preset_save(preset);
 	
 	KEST_PRINTF("kest_preset_remove_effect done. ret_val = %s\n", kest_error_code_to_string(ret_val));
 	return ret_val;
@@ -233,6 +263,8 @@ int kest_preset_move_effect(kest_preset *preset, int new_pos, int old_pos)
 	{
 		ret_val = ERR_NULL_PTR;
 	}
+	
+	kest_queue_preset_save(preset);
 	
 	return ret_val;
 }
@@ -291,7 +323,7 @@ void free_preset(kest_preset *preset)
 		
 	gut_preset(preset);
 	
-	kest_free(preset);
+	kest_allocator_free(&kest_preset_allocator, preset);
 }
 
 void kest_free_preset(kest_preset *preset)
@@ -302,57 +334,6 @@ void kest_free_preset(kest_preset *preset)
 	free_preset(preset);
 	
 	return;
-}
-
-#ifdef USE_TEENSY
-void new_preset_receive_id(kest_message msg, kest_response response)
-{
-	kest_preset *preset = msg.cb_arg;
-	
-	if (!preset)
-	{
-		KEST_PRINTF("ERROR: Preset ID recieved, but no preset associated !\n");
-		return;
-	}
-	
-	uint16_t id;
-	memcpy(&id, response.data, sizeof(uint16_t));
-	
-	KEST_PRINTF("New preset recieved its ID: %d\n", id);
-	
-	preset_set_id(preset, id);
-	kest_preset_set_default_name_from_id(preset);
-	
-	
-	kest_preset_update_representations(preset);
-}
-#endif
-
-	
-kest_preset *create_new_preset_with_teensy()
-{
-	#ifdef USE_TEENSY
-	kest_preset *new_preset = kest_context_add_preset_rp(&global_cxt);
-	
-	if (!new_preset)
-	{
-		KEST_PRINTF("ERROR: Couldn't create new preset\n");
-		return NULL;
-	}
-	
-	kest_message msg = create_m_message_nodata(KEST_MESSAGE_CREATE_PRESET);
-	
-	msg.callback = new_preset_receive_id;
-	msg.cb_arg = new_preset;
-	
-	queue_msg_to_teensy(msg);
-	
-	create_preset_view_for(new_preset);
-
-	return new_preset;
-	#else
-	return NULL;
-	#endif
 }
 
 #ifdef KEST_ENABLE_GLOBAL_CONTEXT
@@ -436,6 +417,37 @@ int kest_preset_program_fpga(kest_preset *preset)
 	return NO_ERROR;
 }
 
+int kest_preset_update_fpga(kest_preset *preset)
+{
+	KEST_PRINTF("kest_preset_update_fpga\n");
+	return NO_ERROR;
+	
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	#ifdef KEST_USE_FREERTOS
+	if (xSemaphoreTake(preset->mutex, portMAX_DELAY) != pdTRUE)
+		return ERR_MUTEX_UNAVAILABLE;
+	#endif
+	
+	kest_pipeline_update_fpga(&preset->pipeline);
+	
+	#ifdef KEST_USE_FREERTOS
+	xSemaphoreGive(preset->mutex);
+	#endif
+	
+	return NO_ERROR;
+}
+
+int kest_preset_clear_updates(kest_preset *preset)
+{
+	#ifdef KEST_USE_FREERTOS
+	
+	#endif
+	
+	return NO_ERROR;
+}
+
 int kest_preset_if_active_update_fpga(kest_preset *preset)
 {
 	KEST_PRINTF("kest_preset_if_active_update_fpga(preset = %p)\n", preset);
@@ -448,7 +460,7 @@ int kest_preset_if_active_update_fpga(kest_preset *preset)
 		return NO_ERROR;
 	}
 	
-	int ret_val = kest_preset_program_fpga(preset);
+	int ret_val = kest_preset_update_fpga(preset);
 	
 	KEST_PRINTF("kest_preset_if_active_update_fpga done\n");
 	return ret_val;

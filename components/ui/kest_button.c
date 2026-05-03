@@ -490,6 +490,9 @@ void kest_danger_button_confirm_cb(lv_event_t *e)
 {
 	kest_danger_button *button = lv_event_get_user_data(e);
 	
+	lv_msgbox_close(button->popup);
+	button->popup = NULL;
+	
 	if (button->action_cb)
 		button->action_cb(button->cb_arg);
 }

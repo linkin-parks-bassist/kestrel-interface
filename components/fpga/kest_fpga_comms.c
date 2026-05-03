@@ -1,16 +1,21 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
 
 static const char *FNAME = "kest_fpga_comms.c";
+
+int kest_init_fpga_comms()
+{
+	xTaskCreate(kest_fpga_comms_task,   "kest_fpga_comms_task",   4096, NULL, 8, NULL);
+	return NO_ERROR;
+}
 
 #define KEST_FPGA_MSG_TYPE_BATCH 			0
 #define KEST_FPGA_MSG_TYPE_PROGRAM_BATCH 	1
 #define KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN 	2
 #define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN  3
 #define KEST_FPGA_MSG_TYPE_COMMAND			4
+#define KEST_FPGA_MSG_TYPE_READ				5
 
 typedef struct {
 	int type;
@@ -19,6 +24,7 @@ typedef struct {
 		float level;
 		uint8_t command;
 		kest_fpga_transfer_batch batch;
+		kest_fpga_read_spec *read;
 	} data;
 } kest_fpga_msg;
 
@@ -38,7 +44,9 @@ void kest_fpga_comms_task(void *param)
 	fpga_msg_queue = xQueueCreate(32, sizeof(kest_fpga_msg));
 	initialised = 1;
 	
+	#ifndef KEST_FPGA_SIMULATED
 	vTaskDelay(pdMS_TO_TICKS(FPGA_BOOT_MS));
+	#endif
 	
 	//kest_command_log_test();
 	
@@ -60,6 +68,8 @@ void kest_fpga_comms_task(void *param)
 	//kest_fpga_status_flags_print(&status);
 	
 	int busy_tries;
+	
+	int64_t addr_;
 	
 	kest_fpga_msg msg;
 	BaseType_t ret;
@@ -151,9 +161,12 @@ void kest_fpga_comms_task(void *param)
 					{
 						KEST_PRINTF("FPGA accepted the new pipeline :)\n");
 						vTaskDelay(pdMS_TO_TICKS(50));
+						activate_active_preset_dma();
 						break;
 					}
 				}
+				#else
+				activate_active_preset_dma();
 				#endif
 				
 				kest_free_fpga_transfer_batch(msg.data.batch);
@@ -169,23 +182,33 @@ void kest_fpga_comms_task(void *param)
 			
 			case KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN:
 				#ifdef PRINT_COMMANDS
-				KEST_PRINTF("Set FPGA input gain to %f\n", msg.data.level);
+				KEST_PRINTF_FORCE("Set FPGA input gain to %f\n", msg.data.level);
 				#endif
 				kest_fpga_set_input_gain(msg.data.level);
 				break;
 			
 			case KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN:
 				#ifdef PRINT_COMMANDS
-				KEST_PRINTF("Set FPGA output gain to %f\n", msg.data.level);
+				KEST_PRINTF_FORCE("Set FPGA output gain to %f\n", msg.data.level);
 				#endif
 				kest_fpga_set_output_gain(msg.data.level);
 				break;
 				
 			case KEST_FPGA_MSG_TYPE_COMMAND:
 				#ifdef PRINT_COMMANDS
-				KEST_PRINTF("send FPGA command %s\n", kest_fpga_command_to_string(msg.data.command));
+				KEST_PRINTF_FORCE("send FPGA command %s\n", kest_fpga_command_to_string(msg.data.command));
 				#endif
 				kest_fpga_send_byte(msg.data.command);
+				break;
+				
+			case KEST_FPGA_MSG_TYPE_READ:
+				if (msg.data.read)
+				{
+					msg.data.read->result = kest_fpga_req_data_p(msg.data.read->type, msg.data.read->addr, msg.data.read->addr_size, msg.data.read->ret_size, &status);
+					
+					if (msg.data.read->callback)
+						msg.data.read->callback(msg.data.read);
+				}
 				break;
 		}
 	}
@@ -255,6 +278,19 @@ int kest_fpga_queue_register_commit()
 	
 	msg.type = KEST_FPGA_MSG_TYPE_COMMAND;
 	msg.data.command = COMMAND_COMMIT_REG_UPDATES;
+	
+	return kest_fpga_queue_msg(msg);
+}
+
+int kest_fpga_queue_read(kest_fpga_read_spec *spec)
+{
+	if (!spec)
+		return ERR_NULL_PTR;
+	
+	kest_fpga_msg msg;
+	
+	msg.type = KEST_FPGA_MSG_TYPE_READ;
+	msg.data.read = spec;
 	
 	return kest_fpga_queue_msg(msg);
 }

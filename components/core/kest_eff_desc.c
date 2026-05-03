@@ -1,10 +1,12 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
 
 IMPLEMENT_LINKED_PTR_LIST(kest_effect_desc);
+
+IMPLEMENT_POOL(kest_effect_desc);
+kest_allocator kest_effect_desc_allocator;
+kest_effect_desc_pool kest_effect_desc_mem_pool;
 
 int kest_init_effect_desc(kest_effect_desc *eff)
 {
@@ -71,12 +73,12 @@ int kest_effect_desc_generate_res_rpt(kest_effect_desc *eff)
 	return NO_ERROR;
 }
 
-kest_expr_scope *kest_eff_desc_create_scope(kest_effect_desc *eff)
+kest_scope *kest_eff_desc_create_scope(kest_effect_desc *eff)
 {
 	if (!eff)
 		return NULL;
 	
-	kest_expr_scope *scope = kest_new_expr_scope();
+	kest_scope *scope = kest_scope_new();
 	
 	if (!scope)
 		return NULL;
@@ -86,7 +88,7 @@ kest_expr_scope *kest_eff_desc_create_scope(kest_effect_desc *eff)
 	while (current)
 	{
 		if (current->data)
-			kest_expr_scope_add_param(scope, current->data);
+			kest_scope_add_param(scope, current->data);
 		
 		current = current->next;
 	}

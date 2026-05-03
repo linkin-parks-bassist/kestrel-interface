@@ -13,6 +13,10 @@ int init_m_pipeline(kest_pipeline *pipeline)
 	
 	pipeline->effects = NULL;
 	
+	#ifdef KEST_USE_FREERTOS
+	pipeline->mutex = xSemaphoreCreateMutex();
+	#endif
+	
 	return NO_ERROR;
 }
 
@@ -22,7 +26,7 @@ kest_effect *kest_pipeline_append_effect_eff(kest_pipeline *pipeline, kest_effec
 	if (!pipeline || !eff)
 		return NULL;
 	
-	kest_effect *effect = kest_alloc(sizeof(kest_effect));
+	kest_effect *effect = kest_allocator_alloc(&kest_effect_allocator, 1);
 	
 	if (!effect)
 		return NULL;
@@ -193,7 +197,7 @@ int clone_pipeline(kest_pipeline *dest, kest_pipeline *src)
 		KEST_PRINTF("Cloning effect %d... current = %p, current->next = %p\n", i, current, current->next);
 		if (current->data)
 		{
-			effect = kest_alloc(sizeof(kest_effect));
+			effect = kest_allocator_alloc(&kest_effect_allocator, 1);
 			
 			if (!effect)
 				return ERR_ALLOC_FAIL;
@@ -243,6 +247,8 @@ int kest_pipeline_create_fpga_transfer_batch(kest_pipeline *pipeline, kest_fpga_
 	int pos = 0;
 	if (pipeline->effects)
 		ret_val = kest_fpga_batch_append_effects(&result, pipeline->effects, &rpt, &pos);
+	
+	kest_fpga_batch_append(&result, COMMAND_ENABLE_TAIL);
 	
 	if (ret_val != NO_ERROR)
 	{
@@ -319,6 +325,70 @@ int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int preset_id)
 		
 		current = current->next;
 	}
+	
+	return NO_ERROR;
+}
+
+int kest_pipeline_activate_dma(kest_pipeline *pipeline)
+{
+	KEST_PRINTF("kest_pipeline_activate_dma_async\n");
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		if (current->data)
+			kest_effect_activate_dma_async(current->data);
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_pipeline_deactivate_dma(kest_pipeline *pipeline)
+{
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		if (current->data)
+			kest_effect_deactivate_dma_async(current->data);
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_pipeline_update_fpga(kest_pipeline *pipeline)
+{
+	KEST_PRINTF("kest_pipeline_update_fpga\n");
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	#ifdef KEST_USE_FREERTOS
+	if (xSemaphoreTake(pipeline->mutex, portMAX_DELAY) != pdTRUE)
+		return ERR_MUTEX_UNAVAILABLE;
+	#endif
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		kest_effect_update_fpga(current->data);
+		
+		current = current->next;
+	}
+	
+	#ifdef KEST_USE_FREERTOS
+	xSemaphoreGive(pipeline->mutex);
+	#endif
 	
 	return NO_ERROR;
 }

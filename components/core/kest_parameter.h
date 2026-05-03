@@ -9,6 +9,8 @@
 #define KEST_STANDARD_GAIN_MIN -24
 #define KEST_STANDARD_GAIN_MAX  24
 
+#define KEST_PARAMETER_UNDRIVEN -1
+
 typedef struct kest_parameter_id
 {
 	uint16_t preset_id;
@@ -17,6 +19,9 @@ typedef struct kest_parameter_id
 } kest_parameter_id;
 
 struct kest_expression;
+struct kest_effect;
+
+struct kest_parameter_widget;
 
 typedef struct kest_parameter
 {
@@ -36,9 +41,8 @@ typedef struct kest_parameter
 	
 	float max_velocity;
 	
+	struct kest_effect *effect;
 	kest_parameter_id id;
-	
-	float factor;
 	
 	int widget_type;
 	const char *name;
@@ -47,12 +51,27 @@ typedef struct kest_parameter
 	
 	int group;
 	
+	int driver_override;
+	int driver_index;
+	
+	#ifdef KEST_ENABLE_UI
+	struct kest_parameter_widget *pw;
+	#endif
+	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll *reps;
 	kest_representation widget_rep;
 	kest_representation effect_rep;
+	
+	kest_representation_ptr_list reps;
 	#endif
 } kest_parameter;
+
+float kest_parameter_evaluate(kest_parameter *param);
+int kest_parameter_if_driven_refresh(kest_parameter *param);
+int kest_parameter_set(kest_parameter *param, float v);
+int kest_parameter_driver_set(kest_parameter *param, float v);
+
+int kest_parameter_clear_update(kest_parameter *param);
 
 typedef struct kest_setting_option
 {
@@ -69,7 +88,7 @@ typedef struct kest_setting_id
 
 #define EFFECT_SETTING_ENUM 	0
 #define EFFECT_SETTING_BOOL 	1
-#define EFFECT_SETTING_INT 	2
+#define EFFECT_SETTING_INT 		2
 
 #define EFFECT_SETTING_PAGE_SETTINGS 0
 #define EFFECT_SETTING_PAGE_MAIN 	  1
@@ -101,13 +120,19 @@ typedef struct kest_setting
 	int group;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll *reps;
+	kest_representation_ptr_list reps;
 	kest_representation effect_rep;
 	#endif
 } kest_setting;
 
 DECLARE_LINKED_PTR_LIST(kest_parameter);
 DECLARE_LINKED_PTR_LIST(kest_setting);
+
+DECLARE_PTR_LIST(kest_parameter);
+DECLARE_PTR_LIST(kest_setting);
+
+DECLARE_LIST(kest_parameter);
+DECLARE_LIST(kest_setting);
 
 typedef kest_setting_pll setting_ll;
 
@@ -146,5 +171,14 @@ struct kest_interval kest_parameter_get_range(kest_parameter *param);
 
 void kest_parameter_effect_rep_update(void *representer, void *representee);
 void kest_setting_effect_rep_update(void *representer, void *representee);
+
+void kest_parameter_if_updated_refresh_pw(void *param_);
+
+DECLARE_POOL(kest_parameter);
+extern kest_allocator kest_parameter_allocator;
+extern kest_parameter_pool kest_parameter_mem_pool;
+DECLARE_POOL(kest_setting);
+extern kest_allocator kest_setting_allocator;
+extern kest_setting_pool kest_setting_mem_pool;
 
 #endif

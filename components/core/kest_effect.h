@@ -36,6 +36,11 @@ typedef struct kest_effect
 	kest_parameter_pll *parameters;
 	kest_setting_pll *settings;
 	
+	kest_block_list blocks;
+	kest_driver_list drivers;
+	
+	kest_dsp_resource_ptr_list resources;
+	
 	struct kest_preset *preset;
 	
 	#ifdef KEST_ENABLE_UI
@@ -77,16 +82,13 @@ int effect_init_ui_page(kest_effect *effect, struct kest_ui_page *parent);
 void add_effect_from_menu(lv_event_t *e);
 #endif
 
-int request_append_effect(uint16_t type, kest_effect *local);
-#ifdef USE_TEENSY
-void effect_receive_id(kest_message message, kest_response response);
-#endif
-
 int clone_effect(kest_effect *dest, kest_effect *src);
 void free_effect(kest_effect *effect);
 
 kest_parameter *effect_get_parameter(kest_effect *effect, int n);
 kest_setting *effect_get_setting(kest_effect *effect, int n);
+
+int kest_effect_update_fpga(kest_effect *effect);
 
 int kest_fpga_transfer_batch_append_effect(
 		kest_effect *effect,
@@ -95,10 +97,10 @@ int kest_fpga_transfer_batch_append_effect(
 		kest_fpga_transfer_batch *batch
 	);
 
-
+int kest_effect_is_updated(kest_effect *effect);
 int kest_effect_update_fpga(kest_effect *effect);
 
-kest_scope *kest_effect_create_scope(kest_effect *effect);
+int kest_effect_create_scope(kest_effect *effect);
 
 int kest_effect_set_parameter(kest_effect *effect, const char *name, float value);
 int kest_effect_set_setting(kest_effect *effect, const char *name, int value);
@@ -107,7 +109,19 @@ int kest_effect_update_reps(kest_effect *effect);
 void kest_effect_preset_rep_update(void *representer, void *representee);
 void kest_effect_page_rep_update(void *representer, void *representee);
 
+int kest_effect_activate_dma(kest_effect *effect);
+int kest_effect_deactivate_dma(kest_effect *effect);
+int kest_effect_activate_dma_async(kest_effect *effect);
+int kest_effect_deactivate_dma_async(kest_effect *effect);
+
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);
+
+void kest_effect_update_sync(void *effect_);
+void kest_effect_update_sync_no_pw(void *effect_);
+
+DECLARE_POOL(kest_effect);
+extern kest_allocator kest_effect_allocator;
+extern kest_effect_pool kest_effect_mem_pool;
 
 #endif

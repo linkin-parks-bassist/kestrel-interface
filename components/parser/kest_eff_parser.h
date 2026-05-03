@@ -38,11 +38,13 @@ typedef struct kest_eff_parsing_state {
 	kest_token_ll *current_token;
 	
 	struct kest_asm_line_pll 	*asm_lines;
-	kest_block_pll 			*blocks;
-	kest_parameter_pll 		*parameters;
+	kest_block_pll 				*blocks;
+	kest_parameter_pll 			*parameters;
 	kest_setting_pll 			*settings;
 	kest_dsp_resource_pll 		*resources;
 	kest_named_expression_pll 	*def_exprs;
+	
+	kest_driver_list drivers;
 	
 	kest_scope *scope;
 	
@@ -63,9 +65,9 @@ void kest_parser_print_info   (kest_eff_parsing_state *ps, const char *error_msg
 void kest_parser_warn(kest_eff_parsing_state *ps, const char *error_msg, ...);
 void kest_parser_error  (kest_eff_parsing_state *ps, const char *error_msg, ...);
 
-void kest_parser_print_info_at (kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
+void kest_parser_print_info_at  (kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
 void kest_parser_warn_at		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
-void kest_parser_error_at  	(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
+void kest_parser_error_at  		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
 
 void kest_parser_print_info_at_line(kest_eff_parsing_state *ps, int line, const char *error_msg, ...);
 void kest_parser_warn_at_line		(kest_eff_parsing_state *ps, int line, const char *error_msg, ...);

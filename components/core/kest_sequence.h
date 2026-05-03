@@ -65,4 +65,9 @@ int kest_sequence_update_representations(kest_sequence *sequence);
 
 void kest_sequence_file_rep_update(void *representer, void *representee);
 
+
+DECLARE_POOL(kest_sequence);
+extern kest_allocator kest_sequence_allocator;
+extern kest_sequence_pool kest_sequence_mem_pool;
+
 #endif

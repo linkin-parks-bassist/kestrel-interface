@@ -6,17 +6,7 @@ static const char *FNAME = "kest_fpga_encoding.c";
 
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-//#endif
-/*
-#ifdef PRINT_TRANSFER_BATCHES
-#ifdef PRINTLINES_ALLOWED
-#undef PRINTLINES_ALLOWED
-#endif
-#define PRINTLINES_ALLOWED 0
-#endif
-*/
 
 int kest_fpga_block_opcode_format(int opcode)
 {
@@ -83,6 +73,7 @@ uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_ef
 				
 			case KEST_DSP_RESOURCE_MEM:
 				res_handle = block->res->handle + (res ? res->memory : 0);
+				kest_mem_slot_set_effective_addr(block->res->data, res_handle);
 				break;
 				
 			case KEST_DSP_RESOURCE_DELAY:
@@ -92,7 +83,8 @@ uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_ef
 			case KEST_DSP_RESOURCE_FILTER:
 				res_handle = block->res->handle + (res ? res->filters : 0);
 				break;
-				
+			
+			default: break;
 		}
 		
 		return kest_encode_dsp_block_instr_type_b(block, res_handle);
@@ -127,7 +119,8 @@ int kest_fpga_batch_append_block_instr(kest_fpga_transfer_batch *batch, kest_blo
 
 int kest_fpga_batch_append_block_regs(kest_fpga_transfer_batch *batch, kest_block *block, kest_scope *scope, int pos)
 {
-	KEST_PRINTF("kest_fpga_batch_append_block_regs(batch = %p, block = %p, scope = %p, pos = %d)\n");
+	KEST_PRINTF("kest_fpga_batch_append_block_regs(batch = %p, block = %p, scope = %p, pos = %d)\n",
+		batch, block, scope, pos);
 	if (!batch || !block)
 		return ERR_NULL_PTR;
 	
@@ -210,8 +203,8 @@ int kest_fpga_batch_append_block_register_updates(kest_fpga_transfer_batch *batc
 
 int kest_fpga_batch_append_filter_updates(kest_fpga_transfer_batch *batch, int handle, kest_filter *filter, kest_scope *scope)
 {
-	//KEST_PRINTF("kest_fpga_batch_append_filter_updates(batch = %p, handle = %d, filter = &p, scope = &p)\n",
-	//	batch, handle, filter, scope);
+	KEST_PRINTF("kest_fpga_batch_append_filter_updates(batch = %p, handle = %d, filter = &p, scope = &p)\n",
+		batch, handle, filter, scope);
 	
 	if (!batch || !filter || !scope)
 		return ERR_NULL_PTR;
@@ -300,6 +293,20 @@ int kest_fpga_transfer_batch_append_effect_register_updates(kest_fpga_transfer_b
 	return NO_ERROR;
 }
 
+int kest_fpga_transfer_batch_append_effect_register_updates_(kest_fpga_transfer_batch *batch, kest_effect *effect, int pos)
+{
+	KEST_PRINTF("kest_fpga_transfer_batch_append_effect_register_updates_(batch = %p, effect = %p, pos = %d)\n",
+		batch, effect, pos);
+	
+	if (!batch || !effect)
+		return ERR_NULL_PTR;
+	
+	for (int i = 0; i < effect->blocks.count; i++)
+		kest_fpga_batch_append_block_register_updates(batch, &effect->blocks.entries[i], effect->scope, pos + i);
+	
+	return NO_ERROR;
+}
+
 int kest_fpga_transfer_batch_append_effect_resource_updates(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, kest_scope *scope, kest_effect_fpga_position *pos)
 {
 	KEST_PRINTF("kest_fpga_transfer_batch_append_effect_resource_updates(batch = %p, eff = %p, scope = %p, pos = %p)\n",
@@ -317,6 +324,22 @@ int kest_fpga_transfer_batch_append_effect_resource_updates(kest_fpga_transfer_b
 		
 		current = current->next;
 		i++;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_transfer_batch_append_effect_resource_updates_(kest_fpga_transfer_batch *batch, kest_effect *effect, kest_effect_fpga_position *pos)
+{
+	KEST_PRINTF("kest_fpga_transfer_batch_append_effect_resource_updates_(batch = %p, effect = %p, pos = %p)\n",
+		batch, effect, pos);
+	
+	if (!batch || !effect || !pos)
+		return ERR_NULL_PTR;
+	
+	for (int i = 0; i < effect->resources.count; i++)
+	{
+		kest_fpga_batch_append_resource_updates(batch, effect->resources.entries[i], effect->scope, pos);
 	}
 	
 	return NO_ERROR;
@@ -355,8 +378,28 @@ int kest_fpga_batch_append_blocks(kest_fpga_transfer_batch *batch, kest_block_pl
 	return NO_ERROR;
 }
 
+int kest_fpga_batch_append_block_list(kest_fpga_transfer_batch *batch, kest_block_list *blocks, const kest_eff_resource_report *res, kest_scope *scope, int pos)
+{
+	if (!batch || !blocks)
+		return ERR_NULL_PTR;
+	
+	int i = 0;
+	
+	int ret_val = NO_ERROR;
+	for (int i = 0; i < blocks->count; i++)
+	{
+		if ((ret_val = kest_fpga_batch_append_block(batch, &blocks->entries[i], res, scope, pos + i)) != NO_ERROR)
+			return ret_val;
+	}
+	
+	return NO_ERROR;
+}
+
 int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_resource *res, const kest_eff_resource_report *rpt, kest_scope *scope)
 {
+	KEST_PRINTF("kest_fpga_batch_append_resource(batch = %p, res = %p, rpt = %p, scope = %p)\n",
+		batch, res, rpt, scope);
+	
 	if (!batch || !res || !rpt)
 		return ERR_NULL_PTR;
 	
@@ -371,6 +414,7 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	switch (res->type)
 	{
 		case KEST_DSP_RESOURCE_DELAY:
+			KEST_PRINTF("Delay\n");
 			kest_fpga_batch_append(batch, COMMAND_ALLOC_DELAY);
 			
 			delay = (uint32_t)(ceilf(kest_expression_evaluate(res->delay, scope)) * 0.001 * KEST_FPGA_SAMPLE_RATE);
@@ -388,6 +432,7 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 			
 			break;
 		case KEST_DSP_RESOURCE_FILTER:
+			KEST_PRINTF("Filter %p\n", filter);
 			if (!filter)
 				return ERR_BAD_ARGS;
 			
@@ -440,6 +485,23 @@ int kest_fpga_batch_append_resources(kest_fpga_transfer_batch *batch, kest_dsp_r
 	return NO_ERROR;
 }
 
+int kest_fpga_batch_append_resource_list(kest_fpga_transfer_batch *batch, kest_dsp_resource_ptr_list *list, const kest_eff_resource_report *rpt, kest_scope *scope)
+{
+	KEST_PRINTF("kest_fpga_batch_append_resource_list(batch = %p, list = %p, rpt = %p, scope = %p)\n",
+		batch, list, rpt, scope);
+
+	if (!batch || !list || !rpt)
+		return ERR_NULL_PTR;
+	
+	if (!list->entries && list->count)
+		return ERR_BAD_ARGS;
+	
+	for (int i = 0; i < list->count; i++)
+		kest_fpga_batch_append_resource(batch, list->entries[i], rpt, scope);
+	
+	return NO_ERROR;
+}
+
 int kest_fpga_batch_append_eff_desc(kest_fpga_transfer_batch *batch, kest_effect_desc *eff, const kest_eff_resource_report *res, kest_scope *scope, int pos)
 {
 	if (!batch || !eff || !res)
@@ -466,7 +528,8 @@ int kest_fpga_batch_append_effect(kest_fpga_transfer_batch *batch, kest_effect *
 	effect->position_.filter_start = res->filters;
 	KEST_PRINTF("Updating effect %p's position to {.block_start = %d, .filter_start = %d}\n", effect, effect->position_.block_start, effect->position_.filter_start);
 	
-	kest_fpga_batch_append_eff_desc(batch, effect->eff, res, scope, *pos);
+	kest_fpga_batch_append_resource_list(batch, &effect->resources, res, scope);
+	kest_fpga_batch_append_block_list(batch, &effect->blocks, res, scope, *pos);
 	
 	kest_resource_report_integrate(res, &effect->eff->res_rpt);
 	
@@ -571,7 +634,7 @@ void print_instruction_format_a(uint32_t instr)
 	int sat = !!(instr & (1 << 30));
 	int no_shift = !!(instr & (1 << 31));
 	
-	KEST_PRINTF_FORCE("%s %s%d %s%d %s%d, c%d (%d%s)",
+	KEST_PRINTF("%s %s%d %s%d %s%d, c%d (%d%s)",
 		kest_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -598,7 +661,7 @@ void print_instruction_format_b(uint32_t instr)
 	
 	int res_addr = range_bits(instr, 8, 20);
 	
-	KEST_PRINTF_FORCE("%s %s%d %s%d $%d c%d",
+	KEST_PRINTF("%s %s%d %s%d $%d c%d",
 		kest_block_opcode_to_name(opcode),
 			src_a_reg ? "r" : "c", src_a,
 			src_b_reg ? "r" : "c", src_b,
@@ -724,7 +787,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 	
 	while (i < n)
 	{
-		if (str.count >= 512)
+		if (str.count >= 128)
 		{
 			kest_string_append(&str, '\0');
 			KEST_PRINTF_FORCE(str.entries);

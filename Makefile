@@ -5,6 +5,7 @@ test_objdir := $(top_objdir)/tests
 
 app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_alloc.c			\
+				core/kest_pool.c			\
 				core/kest_block.c			\
 				core/kest_bump_arena.c		\
 				core/kest_context.c			\
@@ -12,8 +13,10 @@ app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_expression.c		\
 				core/kest_expr_scope.c		\
 				core/kest_files.c			\
+				core/kest_file_task.c		\
 				core/kest_helper_fn.c		\
 				core/kest_lv_log.c			\
+				core/kest_driver.c			\
 				core/kest_parameter.c		\
 				core/kest_param_update.c	\
 				core/kest_effect.c			\
@@ -42,10 +45,12 @@ app_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fpga_encoding.c	\
 				fpga/kest_fpga_comms.c		\
 				fpga/kest_fpga_instr.c		\
+				fpga/kest_fpga_dma.c		\
 				fpga/kest_fpga_io.c			\
 				fpga/kest_reg_format.c		\
 				fpga/kest_fixed_point.c		\
 				fpga/kest_fpga_position.c	\
+				fpga/kest_fpga_update.c		\
 				parser/kest_asm_parser.c	\
 				parser/kest_dict_extract.c	\
 				parser/kest_dictionary.c	\
@@ -56,6 +61,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 
 lib_cfiles := 	core/kest_error_codes.c		\
 				core/kest_alloc.c			\
+				core/kest_pool.c			\
 				core/kest_representation.c	\
 				core/kest_parameter.c		\
 				core/kest_resource.c		\
@@ -66,6 +72,7 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				core/kest_effect.c			\
 				core/kest_pipeline.c		\
 				core/kest_preset.c			\
+				core/kest_driver.c			\
 				core/kest_printf.c			\
 				core/kest_helper_fn.c		\
 				core/kest_string.c			\
@@ -83,11 +90,15 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fixed_point.c		\
 				fpga/kest_fpga_position.c	\
 				fpga/kest_fpga_instr.c		\
-				fpga/kest_fpga_io.c
+				fpga/kest_fpga_dma.c		\
+				fpga/kest_fpga_io.c			\
+				fpga/kest_fpga_update.c
 
 
-lib_hfiles := core/kest_linked_list.h $(lib_cfiles:.c=.h)
-app_hfiles := core/kest_linked_list.h $(app_cfiles:.c=.h)
+standalone_headers := core/kest_linked_list.h core/kest_dict.h
+
+lib_hfiles := $(standalone_headers) $(lib_cfiles:.c=.h)
+app_hfiles := $(standalone_headers) $(app_cfiles:.c=.h)
 
 lib_srcs := $(addprefix $(components)/,$(lib_cfiles))
 lib_objs := $(addprefix $(lib_objdir)/,$(lib_cfiles:.c=.o))
@@ -109,7 +120,7 @@ INC_FLAGS_APP := \
 CFLAGS_LIB := -fPIC -lm -DKEST_LIBRARY -Imain $(INC_FLAGS_LIB) -g
 CFLAGS_APP := -DKEST_DESKTOP -Idesktop -Imain $(INC_FLAGS_APP) -g
 LDFLAGS_APP := -lm -lSDL2 -lpthread
-CFLAGS_TEST := $(CFLAGS_APP) -Itests
+CFLAGS_TEST := $(CFLAGS_APP) -g -Itests
 
 HDR_INSTALL_DIR := /usr/include/libkest/
 
@@ -158,6 +169,9 @@ tests: kest_tests
 clean:
 	rm -r $(top_objdir)
 
+testclean:
+	rm ./kest_tests && rm -r $(test_objdir)
+
 appclean:
 	rm -r $(app_objdir)/desktop $(app_objdir)/components
 
@@ -171,7 +185,7 @@ kest: $(ALL_APP_OBJ) | $(app_objdir) $(app_objdir)/desktop
 	gcc -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
 kest_tests: $(TEST_OBJ) $(TEST_APP_OBJ) $(LVGL_OBJ) $(FREERTOS_OBJ)
-	gcc -Wl,--undefined=__start___m_tests -Wl,--undefined=__stop___m_tests \
+	gcc $(CFLAGS_TEST) -Wl,--undefined=__start___m_tests -Wl,--undefined=__stop___m_tests \
 	    -o $@ $^ `sdl2-config --libs` -lm -lpthread
 
 all : app lib

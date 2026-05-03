@@ -61,6 +61,15 @@ int kest_cxt_clone_state(kest_context *cxt, kest_state *state)
 	return NO_ERROR;
 }
 
+int kest_state_save(kest_state state)
+{
+	KEST_PRINTF("kest_save_state\n");
+	
+	int ret_val = safe_file_write((int (*)(void*, const char*))save_state_to_file, &state, SETTINGS_FNAME);
+	KEST_PRINTF("kest_save_state return code: %s\n", kest_error_code_to_string(ret_val));
+	
+	return ret_val;
+}
 
 void kest_state_representation_update(void *representer, void *representee)
 {

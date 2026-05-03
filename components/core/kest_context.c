@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
 
 #define INITIAL_PRESET_ARRAY_LENGTH 8
 #define PRESET_ARRAY_CHUNK_SIZE	 8
@@ -35,14 +33,14 @@ int kest_init_context(kest_context *cxt)
 	
 	cxt->effects = NULL;
 	
-	init_parameter(&cxt->input_gain, "Input Gain", -100, -30.0, 30.0);
+	init_parameter(&cxt->input_gain, "Input Gain", -100, -24.0, 24.0);
 	cxt->input_gain.units = " dB";
 	cxt->input_gain.id = (kest_parameter_id){.preset_id = CONTEXT_PRESET_ID, .effect_id = 0, .parameter_id = INPUT_GAIN_PID};
 	cxt->input_gain.max_velocity = 0.4;
 	cxt->input_gain.min_expr = &kest_expression_standard_gain_min;
 	cxt->input_gain.max_expr = &kest_expression_standard_gain_max;
 	
-	init_parameter(&cxt->output_gain, "Output Gain", -100, -30.0, 30.0);
+	init_parameter(&cxt->output_gain, "Output Gain", -100, -24.0, 24.0);
 	cxt->output_gain.units = " dB";
 	cxt->output_gain.id = (kest_parameter_id){.preset_id = CONTEXT_PRESET_ID, .effect_id = 0, .parameter_id = OUTPUT_GAIN_PID};
 	cxt->output_gain.max_velocity = 0.4;
@@ -505,11 +503,13 @@ int set_active_preset(kest_preset *preset)
 	
 	uint16_t id = preset ? preset->id : 0;
 	
-	#ifdef USE_TEENSY
-	int ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PRESET, "s", id));
-	#endif
-	
 	return NO_ERROR;
+}
+
+int activate_active_preset_dma()
+{
+	KEST_PRINTF("activate_active_preset_dma\n");
+	return kest_preset_activate_dma(global_cxt.active_preset);
 }
 
 // This version is called from a sequence-related-cb, so there is no need to

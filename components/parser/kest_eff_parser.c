@@ -5,9 +5,7 @@
 
 #include "kest_int.h"
 
-//#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-//#endif
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_eff_parser.c";
 
@@ -20,6 +18,8 @@ kest_allocator *kest_parser_allocator = NULL;
 
 int kest_eff_parser_init_mempool()
 {
+	KEST_PRINTF("kest_eff_parser_init_mempool\n");
+	
 	if (kest_parser_mempool_initialised)
 		return NO_ERROR;
 	
@@ -31,6 +31,7 @@ int kest_eff_parser_init_mempool()
 
 int kest_eff_parser_reset_mempool()
 {
+	KEST_PRINTF("kest_eff_parser_reset_mempool\n");
 	if (!kest_parser_mempool_initialised)
 		return ERR_BAD_ARGS;
 	
@@ -41,9 +42,12 @@ int kest_eff_parser_reset_mempool()
 
 int kest_eff_parser_deinit_mempool()
 {
+	KEST_PRINTF("kest_eff_parser_deinit_mempool\n");
 	kest_parser_mempool_initialised = 0;
 	return kest_bump_arena_destroy(&kest_eff_parser_mempool);
 }
+
+#define PRINTLINES_ALLOWED 0
 
 void *kest_parser_alloc(size_t size)
 {
@@ -401,6 +405,8 @@ int init_parsing_state(kest_eff_parsing_state *ps)
 	ps->lines = NULL;
 	ps->n_lines = 0;
 	
+	kest_driver_list_init(&ps->drivers);
+	
 	return NO_ERROR;
 }
 
@@ -581,7 +587,7 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 	
 	kest_parser_compute_formats(&ps);
 	
-	result = kest_alloc(sizeof(kest_effect_desc));
+	result = kest_allocator_alloc(&kest_effect_desc_allocator, 1);
 	
 	if (result)
 	{
@@ -591,6 +597,7 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 		result->resources = ps.resources;
 		result->settings = ps.settings;
 		result->blocks = ps.blocks;
+		result->drivers = ps.drivers;
 		
 		result->cname = kest_strndup(ps.cname, 128);
 		result->name = kest_strndup(ps.name, 128);
@@ -613,7 +620,7 @@ const char *reset_colour = "\e[0m";
 
 #define PR_LINE_INDENT 4
 
-int kest_parser_format_offending_section(char *line, int index, int length, char *buf, int buf_len, char *colour)
+int kest_parser_format_offending_section(char *line, int index, int length, char *buf, int buf_len, const char *colour)
 {
 	if (!line || !buf)
 		return ERR_NULL_PTR;
@@ -681,7 +688,7 @@ void kest_parser_print_info_at(kest_eff_parsing_state *ps, kest_token_ll *token,
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("%sINFO%s%s: %s\n", info_colour, loc_string, reset_colour, buf);
+	KEST_PRINTF("%sINFO%s%s: %s\n", info_colour, loc_string, reset_colour, buf);
 	
 	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
@@ -689,7 +696,7 @@ void kest_parser_print_info_at(kest_eff_parsing_state *ps, kest_token_ll *token,
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, info_colour);
 		
 		if (ret_val == NO_ERROR)
-			KEST_PRINTF_FORCE("%s\n", buf);
+			KEST_PRINTF("%s\n", buf);
 	}
 }
 
@@ -709,7 +716,7 @@ void kest_parser_warn_at(kest_eff_parsing_state *ps, kest_token_ll *token, const
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 	
 	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
@@ -717,7 +724,7 @@ void kest_parser_warn_at(kest_eff_parsing_state *ps, kest_token_ll *token, const
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, warn_colour);
 		
 		if (ret_val == NO_ERROR)
-			KEST_PRINTF_FORCE("%s\n", buf);
+			KEST_PRINTF("%s\n", buf);
 	}
 }
 
@@ -743,7 +750,7 @@ void kest_parser_error_at(kest_eff_parsing_state *ps, kest_token_ll *token, cons
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	KEST_PRINTF_FORCE("%sERROR%s%s: %s\n", err_colour, loc_string, reset_colour, buf);
+	KEST_PRINTF("%sERROR%s%s: %s\n", err_colour, loc_string, reset_colour, buf);
 	
 	int ret_val;
 	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
@@ -751,7 +758,7 @@ void kest_parser_error_at(kest_eff_parsing_state *ps, kest_token_ll *token, cons
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, err_colour);
 		
 		if (ret_val == NO_ERROR)
-			KEST_PRINTF_FORCE("%s\n", buf);
+			KEST_PRINTF("%s\n", buf);
 	}
 }
 
@@ -771,7 +778,7 @@ void kest_parser_print_info_at_line(kest_eff_parsing_state *ps, int line, const 
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_warn_at_line(kest_eff_parsing_state *ps, int line, const char *msg, ...)
@@ -790,7 +797,7 @@ void kest_parser_warn_at_line(kest_eff_parsing_state *ps, int line, const char *
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_error_at_line(kest_eff_parsing_state *ps, int line, const char *msg, ...)
@@ -810,7 +817,7 @@ void kest_parser_error_at_line(kest_eff_parsing_state *ps, int line, const char 
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	KEST_PRINTF_FORCE("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_print_info_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, const char *msg, ...)
@@ -829,7 +836,7 @@ void kest_parser_print_info_at_node(kest_eff_parsing_state *ps, kest_ast_node *n
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;36mINFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_warn_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, const char *msg, ...)
@@ -848,7 +855,7 @@ void kest_parser_warn_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, c
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_error_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, const char *msg, ...)
@@ -868,7 +875,7 @@ void kest_parser_error_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, 
 		loc_string[0] = 0;
 	
 	ps->errors++;
-	KEST_PRINTF_FORCE("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_print_info(kest_eff_parsing_state *ps, const char *msg, ...)
@@ -887,7 +894,7 @@ void kest_parser_print_info(kest_eff_parsing_state *ps, const char *msg, ...)
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;36INFO%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;36INFO%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_warn(kest_eff_parsing_state *ps, const char *msg, ...)
@@ -906,7 +913,7 @@ void kest_parser_warn(kest_eff_parsing_state *ps, const char *msg, ...)
 	else
 		loc_string[0] = 0;
 	
-	KEST_PRINTF_FORCE("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 }
 
 void kest_parser_error(kest_eff_parsing_state *ps, const char *msg, ...)
@@ -927,5 +934,5 @@ void kest_parser_error(kest_eff_parsing_state *ps, const char *msg, ...)
 	
 	ps->errors++;
 	
-	KEST_PRINTF_FORCE("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
+	KEST_PRINTF("\e[01;31mERROR%s\e[0m: %s\n", loc_string, buf);
 }

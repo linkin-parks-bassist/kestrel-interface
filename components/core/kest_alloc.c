@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_alloc.c";
 
@@ -24,7 +22,6 @@ void *kest_alloc(size_t size)
     
     if (total_current > total_peak)
         total_peak = total_current;
-    
     
     return ptr + sizeof(size_t);
 }
@@ -72,33 +69,20 @@ void *kest_realloc(void *ptr, size_t size)
 
 char *kest_strndup(const char *str, size_t n)
 {
-	#ifdef KEST_LOG_ALLOCS
-	#endif
-	
 	if (!str)
-	{
-		
 		return NULL;
-		
-	}
 	
     size_t len = strnlen(str, n);
     
     char *new_str = kest_alloc(len + 1);
     
     if (!new_str)
-    {
-		
 		return NULL;
-		
-	}
 	
 	memcpy(new_str, str, len);
     new_str[len] = '\0';
     
-	
 	return new_str;
-	
 }
 
 void kest_mem_monitor_task(void *param)
@@ -112,10 +96,37 @@ void kest_mem_monitor_task(void *param)
 	#endif
 }
 
+#define INIT_MEM_POOL(X, n) do {\
+		if ((ret_val = X##_pool_init(&X##_mem_pool)) != NO_ERROR)\
+		{\
+			KEST_PRINTF("Failed to init effect descriptor pool\n");\
+			return ret_val;\
+		}\
+		\
+		if ((ret_val = X##_pool_reserve(&X##_mem_pool, n)) != NO_ERROR)\
+		{\
+			KEST_PRINTF("Failed to reserve effect descriptor pool\n");\
+			return ERR_ALLOC_FAIL;\
+		}\
+		\
+		X##_pool_init_allocator(&X##_mem_pool, &X##_allocator);\
+	} while (0)
 
-void kest_mem_init()
+#define PRINT_MEMORY_USAGE
+
+int kest_mem_init()
 {
-	KEST_PRINTF("kest_mem_init()");
+	KEST_PRINTF("kest_mem_init\n");
+	
+	int ret_val;
+	
+	INIT_MEM_POOL(kest_effect_desc, KEST_EFFECT_DESC_POOL_SIZE);
+	INIT_MEM_POOL(kest_parameter, 	KEST_PARAMETER_POOL_SIZE);
+	INIT_MEM_POOL(kest_sequence, 	KEST_SEQUENCE_POOL_SIZE);
+	INIT_MEM_POOL(kest_setting, 	KEST_SETTING_POOL_SIZE);
+	INIT_MEM_POOL(kest_effect, 		KEST_EFFECT_POOL_SIZE);
+	INIT_MEM_POOL(kest_preset, 		KEST_PRESET_POOL_SIZE);
+	
 	#ifdef PRINT_MEMORY_USAGE
 	#ifdef KEST_USE_FREERTOS
 	KEST_PRINTF("Spinning off memory printer task...\n");
@@ -129,6 +140,8 @@ void kest_mem_init()
 	);
 	#endif
 	#endif
+	
+	return NO_ERROR;
 }
 
 #ifndef KEST_DESKTOP
@@ -171,50 +184,86 @@ void kest_lv_free(void *ptr)
 
 void print_memory_report()
 {
-    KEST_PRINTF("Memory usage: %d alloc'd, %d at peak\n", total_current, total_peak);
+    KEST_PRINTF("Memory usage: %d bytes (%d kb, %d mb) alloc'd, %d bytes (%d kb, %d mb) at peak\n",
+		total_current, total_current / 1024, total_current / (1024*1024),
+		total_peak, total_peak / 1024, total_peak / (1024*1024));
+}
+
+int kest_allocator_init(kest_allocator *a)
+{
+	if (!a) return ERR_NULL_PTR;
+	memset(a, 0, sizeof(kest_allocator));
+	return NO_ERROR;
 }
 
 void *kest_allocator_alloc(kest_allocator *a, size_t n)
 {
-    if (!a || !a->alloc)
-        return kest_alloc(n);
-
-    return a->alloc(a->data, n);
+	if (a)
+	{
+		if ((a->flags & KEST_ALLOCATOR_FLAG_SINGULAR) && n > 1)
+			return NULL;
+		
+		if (a->alloc)
+		{
+			return a->alloc(a->data, n);
+		}
+	}
+	
+    return kest_alloc(n);
 }
 
 void *kest_allocator_realloc(kest_allocator *a, void *p, size_t n)
 {
-    if (!a || !a->realloc)
-        return kest_realloc(p, n);
+	if (a)
+	{
+		if (a->flags & KEST_ALLOCATOR_FLAG_DISALLOW_REALLOC)
+			return NULL;
+		
+		if (a->realloc)
+			return a->realloc(a->data, p, n);
+	}
 
-    return a->realloc(a->data, p, n);
+	return kest_realloc(p, n);
 }
 
 void *kest_allocator_strndup(kest_allocator *a, const char *str, int n)
 {
 	if (!str) return NULL;
 	
-    size_t len = strnlen(str, n);
-    char *new_str = kest_allocator_alloc(a, len + 1);
-    
-    if (!new_str) return NULL;
+	if (a)
+	{
+		if (a->flags & KEST_ALLOCATOR_FLAG_DISALLOW_STRNDUP)
+			return NULL;	
 	
-	memcpy(new_str, str, len);
-    new_str[len] = '\0';
-    
-	return new_str;
+		size_t len = strnlen(str, n);
+		char *new_str = kest_allocator_alloc(a, len + 1);
+		
+		if (!new_str) return NULL;
+		
+		memcpy(new_str, str, len);
+		new_str[len] = '\0';
+		
+		return new_str;
+	}
+	
+	return (void*)kest_strndup(str, n);
 }
 
 void kest_allocator_free(kest_allocator *a, void *p)
 {
-    if (!p)
-        return;
+    if (!p) return;
 
-    if (!a || !a->free)
-    {
-        kest_free(p);
-        return;
-    }
+	if (a)
+	{
+		if (a->flags & KEST_ALLOCATOR_FLAG_DISALLOW_FREE)
+			return;
+		
+		if (a->free)
+		{
+			a->free(a->data, p);
+			return;
+		}
+	}
 
-    a->free(a->data, p);
+    kest_free(p);
 }

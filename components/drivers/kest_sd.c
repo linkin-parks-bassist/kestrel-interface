@@ -103,15 +103,15 @@ int init_sd_card()
 		return ERR_SD_INIT_FAIL;
 	}
 
-	ret = sdmmc_host_init_slot(host.slot, &slot_config);   // or SDMMC_HOST_SLOT_1 depending on your target
-	if (ret != ESP_OK)if (ret != ESP_OK)
+	ret = sdmmc_host_init_slot(host.slot, &slot_config);
+	if (ret != ESP_OK)
 	{
 		kest_printf("Failed to initialise SDMMC host slot: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
 	}
 
 	ret = sdmmc_card_init(&host, card);
-	if (ret != ESP_OK)if (ret != ESP_OK)
+	if (ret != ESP_OK)
 	{
 		kest_printf("Failed to initialise SDMMC card: %s\n", esp_err_to_name(ret));
 		return ERR_SD_INIT_FAIL;
@@ -121,7 +121,6 @@ int init_sd_card()
 	storage_cfg.medium.card = card;
 	
 	sdmmc_card_print_info(stdout, card);
-	
 	
 	if (ret != ESP_OK)
 	{

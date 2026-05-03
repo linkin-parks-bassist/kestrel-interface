@@ -38,8 +38,8 @@ void app_main()
 	#endif
 	
 	#ifdef USE_FPGA
-	xTaskCreate(kest_fpga_comms_task,   "kest_fpga_comms_task",   4096, NULL, 8, NULL);
-	xTaskCreate(kest_param_update_task, "kest_param_update_task", 4096, NULL, 8, NULL);
+	kest_init_fpga_comms();
+	kest_init_parameter_updater();
 	#endif
 	#ifdef USE_SDCARD
 	kest_printf("DOING THE SD CARD STUFF\n");
@@ -67,6 +67,9 @@ void app_main()
 	#endif
 	
 	init_representation_updater();
+	kest_init_fpga_updater();
+	
+	kest_init_file_task();
 	
 	#ifdef KEST_SIMULATED
     while (1)
