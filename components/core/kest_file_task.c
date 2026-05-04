@@ -2,7 +2,7 @@
 
 static const char *FNAME = "kest_file_task.c";
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 #define KEST_FILE_JOB_NONE 			0
 #define KEST_FILE_JOB_SAVE_STATE 	1

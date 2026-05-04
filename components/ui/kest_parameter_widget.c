@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 #include "kest_param_update.h"
 

@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 static const char *FNAME = "kest_alloc.c";
 
@@ -112,7 +112,7 @@ void kest_mem_monitor_task(void *param)
 		X##_pool_init_allocator(&X##_mem_pool, &X##_allocator);\
 	} while (0)
 
-#define PRINT_MEMORY_USAGE
+//#define PRINT_MEMORY_USAGE
 
 int kest_mem_init()
 {
