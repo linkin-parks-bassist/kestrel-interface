@@ -65,8 +65,20 @@ int kest_init_file_task()
 	return NO_ERROR;
 }
 
+#define KEST_STATE_SAVE_MIN_TIME_MS 3000
+
 int kest_queue_state_save()
 {
+	/* Avoid saving state to disk if the system hasn't been running
+	 * for a few seconds. At this time, it's possible that the state 
+	 * isn't fully initialised. Doing it here is easier than
+	 * making a mess of other functions to try and avoid errant state saves */
+	
+	int64_t time = kest_system_time_ms();
+	
+	if (time < KEST_STATE_SAVE_MIN_TIME_MS)
+		return NO_ERROR;
+	
 	int ret_val;
 	kest_state state;
 	

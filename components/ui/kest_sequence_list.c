@@ -2,9 +2,7 @@
 
 static const char *FNAME = "kest_sequence_list.c";
 
-#ifndef PRINTLINES_ALLOWED
 #define PRINTLINES_ALLOWED 0
-#endif
 
 kest_menu_item *create_sequence_listing_menu_item(char *text, kest_sequence *sequence, kest_ui_page *parent)
 {
@@ -18,13 +16,13 @@ kest_menu_item *create_sequence_listing_menu_item(char *text, kest_sequence *seq
 	item->type = MENU_ITEM_SEQUENCE_LISTING;
 	if (text)
 		item->text = kest_strndup(text, MENU_ITEM_TEXT_MAX_LEN);
+	else if (sequence->name)
+		item->text = kest_strndup(sequence->name, MENU_ITEM_TEXT_MAX_LEN);
 	else
 		item->text = "Sequence";
 	
 	item->linked_page_indirect = &sequence->view_page;
 	item->data = sequence;
-	
-	
 	
 	if (sequence)
 		kest_sequence_add_menu_listing(sequence, item);
@@ -105,6 +103,9 @@ void sequence_list_add_cb(lv_event_t *e)
 {
 	kest_ui_page *page = lv_event_get_user_data(e);
 	
+	static int any_new_sequences = 0;
+	static int next_sequence_n;
+	
 	if (!page)
 		return;
 	
@@ -121,13 +122,27 @@ void sequence_list_add_cb(lv_event_t *e)
 		return;
 	}
 	
+	if (!any_new_sequences)
+	{
+		next_sequence_n = kest_cxt_get_sequence_count(&global_cxt);
+		any_new_sequences = 1;
+	}
+	else
+	{
+		next_sequence_n++;
+	}
+	
+	kest_sequence_set_default_name(new_sequence, next_sequence_n);
+	
 	create_sequence_view_for(new_sequence);
 	
-	if (new_sequence->view_page)
+	if (!new_sequence->view_page)
 	{
-		new_sequence->view_page->parent = page;
-		enter_ui_page_forwards(new_sequence->view_page);
+		KEST_PRINTF_FORCE("Failed to create sequence view page for sequence\n");
+		return;
 	}
+	
+	kest_sequence_view_str *view_str = (kest_sequence_view_str*)new_sequence->view_page->data_struct;
 	
 	kest_menu_item *new_listing = create_sequence_listing_menu_item(new_sequence->name, new_sequence, page);
 	
@@ -137,9 +152,15 @@ void sequence_list_add_cb(lv_event_t *e)
 		return;
 	}
 	
+	new_sequence->view_page->parent = page;
+	if (view_str) view_str->menu_item = new_listing;
+	//enter_ui_page_forwards(new_sequence->view_page);
+	
 	menu_page_add_item(str, new_listing);
 	create_menu_item_ui(new_listing, page->container);
 	sequence_listing_menu_item_refresh_active(new_listing);
+	
+	kest_queue_sequence_save(new_sequence);
 }
 
 int configure_sequence_list(kest_ui_page *page, void *data)

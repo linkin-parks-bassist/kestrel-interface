@@ -8,7 +8,6 @@ static const char *FNAME = "kest_sequence.c";
 
 IMPLEMENT_LINKED_PTR_LIST(kest_sequence);
 
-
 IMPLEMENT_POOL(kest_sequence);
 kest_allocator kest_sequence_allocator;
 kest_sequence_pool kest_sequence_mem_pool;
@@ -47,6 +46,25 @@ int init_m_sequence(kest_sequence *sequence)
 	return NO_ERROR;
 }
 
+int kest_sequence_set_default_name(kest_sequence *sequence, uint32_t n)
+{
+	if (!sequence)
+		return ERR_NULL_PTR;
+	
+	// 24 bytes is safe here.
+	// 10 for "Sequence", plus space, plus null-terminator.
+	// + 10 for maximum number of digits in a uint32_t
+	// + another 4 bc paranoid, but keep it aligned to 32 bits
+	sequence->name = kest_alloc(24);
+	
+	if (!sequence->name)
+		return ERR_ALLOC_FAIL;
+	
+	sprintf(sequence->name, "Sequence %lu", n);
+	
+	return NO_ERROR;
+}
+
 int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 {
 	if (!sequence || !preset)
@@ -56,6 +74,8 @@ int sequence_append_preset(kest_sequence *sequence, kest_preset *preset)
 	
 	if (!new_node)
 		return ERR_ALLOC_FAIL;
+	
+	preset->sequence = sequence;
 	
 	new_node->data = preset;
 	new_node->next = NULL;

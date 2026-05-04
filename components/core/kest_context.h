@@ -103,6 +103,8 @@ int kest_cxt_queue_save_state(kest_context *cxt);
 int kest_cxt_set_input_gain(kest_context *cxt, float gain);
 int kest_cxt_set_output_gain(kest_context *cxt, float gain);
 
+int kest_cxt_get_sequence_count(kest_context *cxt);
+
 kest_effect_desc *kest_cxt_get_effect_desc_from_cname(kest_context *cxt, const char *cname);
 
 #endif

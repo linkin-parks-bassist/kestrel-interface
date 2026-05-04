@@ -42,8 +42,6 @@ int preset_view_index_y_position(int index);
 int preset_view_refresh_play_button(kest_ui_page *page);
 int preset_view_refresh_save_button(kest_ui_page *page);
 
-int preset_view_change_name(kest_ui_page *page, char *name);
-
 int preset_view_set_left_button_mode(kest_ui_page *page, int mode);
 
 void preset_view_rep_update(void *representer, void *representee);

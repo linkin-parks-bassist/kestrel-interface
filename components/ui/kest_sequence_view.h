@@ -1,6 +1,8 @@
 #ifndef KEST_INT_SEQUENCE_VIEW_H_
 #define KEST_INT_SEQUENCE_VIEW_H_
 
+struct kest_menu_item;
+
 typedef struct
 {
 	kest_sequence *sequence;
@@ -10,6 +12,8 @@ typedef struct
 	kest_button *play;
 	kest_button *plus;
 	kest_button *save;
+	
+	struct kest_menu_item *menu_item;
 	
 	kest_representation rep;
 } kest_sequence_view_str;

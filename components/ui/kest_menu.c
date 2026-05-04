@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_menu.c";
 
@@ -642,6 +640,8 @@ int create_menu_page_ui(kest_ui_page *page)
 
 int enter_menu_page(kest_ui_page *page)
 {
+	KEST_PRINTF("enter_menu_page\n");
+	
 	if (!page)
 		return ERR_NULL_PTR;
 	
@@ -663,7 +663,7 @@ int enter_menu_page(kest_ui_page *page)
 				if (current->data->type == MENU_ITEM_PARAMETER_WIDGET)
 				{
 					KEST_PRINTF("Requesting value for menu page parameter widget...\n");
-					//param_widget_request_value(current->data->data);
+					kest_parameter_widget_refresh((kest_parameter_widget*)current->data->data);
 				}
 			}
 			
@@ -858,7 +858,7 @@ int create_main_menu_ui(kest_ui_page *page)
 	lv_obj_remove_style_all(str->top_pad);
 	lv_obj_set_size(str->top_pad, LV_PCT(100), 20);
 	
-	create_button_ui(&str->presets_button,  page->container);
+	create_button_ui(&str->presets_button,   page->container);
 	create_button_ui(&str->sequences_button, page->container);
 	create_button_ui(&str->msc_button, 		 page->container);
 	
@@ -873,6 +873,18 @@ int enter_main_menu(kest_ui_page *page)
 {
 	if (!page)
 		return ERR_NULL_PTR;
+	
+	enter_menu_page(page);
+	
+	kest_main_menu_str *str = page->data_struct;
+	
+	if (!str)
+		return ERR_BAD_ARGS;
+	
+	kest_parameter_widget_align_nominal_value(&str->input_gain);
+	kest_parameter_widget_refresh(&str->input_gain);
+	kest_parameter_widget_align_nominal_value(&str->output_gain);
+	kest_parameter_widget_refresh(&str->output_gain);
 	
 	return NO_ERROR;
 }

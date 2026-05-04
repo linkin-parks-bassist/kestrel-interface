@@ -685,7 +685,6 @@ int read_sequence_from_file(kest_sequence *sequence, const char *fname)
 	}
 	
 	sequence->has_fname = 1;
-	
 	sequence->unsaved_changes = 0;
 	
 	return ret_val;
@@ -1208,8 +1207,11 @@ int erase_folder(const char *dir)
 	struct dirent *directory_entry = readdir(directory);
 	
 	int ret_val = NO_ERROR;
-	int bufsize = strlen(dir) + NAME_MAX + 1;
-	char *buf = kest_alloc(sizeof(bufsize));
+	int len = strnlen(dir, NAME_MAX);
+	int bufsize = len + NAME_MAX + 1;
+	const char *sep = (len > 0 && dir[len - 1] == '/') ? "" : "/";
+	
+	char *buf = kest_alloc(bufsize);
 	
 	if (!buf)
 		return ERR_ALLOC_FAIL;
@@ -1217,28 +1219,32 @@ int erase_folder(const char *dir)
 	while (directory_entry)
 	{
 		KEST_PRINTF("Directory entry: %s\n", directory_entry->d_name);
+		
+		if (strcmp(directory_entry->d_name, ".") == 0 || strcmp(directory_entry->d_name, "..") == 0)
+		{
+			directory_entry = readdir(directory);
+			continue;
+		}
+		
 		if (directory_entry->d_type == DT_DIR)
 		{
 			KEST_PRINTF("... is itself a directory!\n");
-			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
+			snprintf(buf, bufsize, "%s%s%s", dir, sep, directory_entry->d_name);
 			KEST_PRINTF("Full name: %s\n", buf);
-			kest_free(buf);
 			ret_val = erase_folder(buf);
-			rmdir(buf);
-			buf = kest_alloc(sizeof(bufsize));
-			if (!buf)
-				return ERR_ALLOC_FAIL;
 		}
 		else
 		{
 			KEST_PRINTF("... is a file. Deleting...\n");
-			snprintf(buf, bufsize, "%s/%s", dir, directory_entry->d_name);
+			snprintf(buf, bufsize, "%s%s%s", dir, sep, directory_entry->d_name);
 			KEST_PRINTF("Full name: %s\n", buf);
 			remove(buf);
 		}
 		
 		directory_entry = readdir(directory);
 	}
+	
+	kest_free(buf);
 	
 	return ret_val;
 }

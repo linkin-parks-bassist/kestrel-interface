@@ -23,6 +23,7 @@ int init_m_preset(kest_preset *preset)
 	
 	#ifdef KEST_ENABLE_UI
 	preset->view_page = NULL;
+	preset->button = NULL;
 	#endif
 	
 	preset->name = NULL;
@@ -112,8 +113,6 @@ int kest_preset_set_active(kest_preset *preset)
 		return ERR_NULL_PTR;
 	
 	preset->active = 1;
-	
-	kest_preset_update_representations(preset);
 	
 	kest_preset_program_fpga(preset);
 	

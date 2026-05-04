@@ -119,7 +119,9 @@ int kest_cxt_restore_state(kest_context *cxt, kest_state *state)
 	if (preset)
 		set_active_preset_from_sequence(preset);
 	
+	KEST_PRINTF("Setting input gain to %f...\n", state->input_gain);
 	kest_cxt_set_input_gain (cxt, state->input_gain);
+	KEST_PRINTF("Setting output gain to %f...\n", state->output_gain);
 	kest_cxt_set_output_gain(cxt, state->output_gain);
 	
 	KEST_PRINTF("kest_cxt_restore_state done\n");

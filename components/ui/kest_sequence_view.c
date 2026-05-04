@@ -160,6 +160,7 @@ void seq_plus_cb(lv_event_t *e)
 	
 	kest_active_button *button = kest_active_button_array_append_new(str->array, node->data, node->data->name);
 	
+	new_preset->button = button;
 	
 	KEST_PRINTF("seq_plus_cb, line %d\n", __LINE__);
 	kest_active_button_set_representation(button, button, new_preset, sequence_view_preset_button_rep_update);
@@ -261,6 +262,8 @@ void sequence_view_set_name(lv_event_t *e)
 	
 	kest_sequence_update_representations(str->sequence);
 	
+	sequence_listing_menu_item_change_name(str->menu_item, str->sequence->name);
+	
 	return;
 }
 
@@ -319,13 +322,26 @@ int configure_sequence_view(kest_ui_page *page, void *data)
 		ui_page_set_title_rw(page, sequence_view_set_name, sequence_view_revert_name);
 	
 	seq_kest_preset_pll *current = sequence->presets;
+	kest_preset *preset = NULL;
 	
-	kest_active_button *button;
+	kest_active_button *button = NULL;
+	kest_preset_view_str *preset_view_str = NULL;
 	
 	while (current)
 	{
-		if (current->data)
+		preset = current->data;
+		if (preset)
 		{
+			if (!preset->view_page)
+			{
+				create_preset_view_for(preset);
+			}
+			
+			if (preset->view_page)
+			{
+				preset->view_page->parent = page;
+			}
+			
 			button = kest_active_button_array_append_new(str->array, current->data, current->data->name);
 			
 			if (!button)
@@ -334,11 +350,7 @@ int configure_sequence_view(kest_ui_page *page, void *data)
 				return ERR_ALLOC_FAIL;
 			}
 			
-			kest_active_button_set_representation(button, button, current->data, sequence_view_preset_button_rep_update);
-			
-			
-			//button = append_new_glide_button_to_array(str->buttons, current->data, current->data->name);
-			//current->button = button;
+			preset->button = button;
 		}
 		
 		current = current->next;

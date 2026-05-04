@@ -83,6 +83,8 @@ void parameter_widget_change_cb_inner(kest_parameter_widget *pw);
 
 void free_parameter_widget(kest_parameter_widget *pw);
 
+int kest_parameter_widget_align_nominal_value(kest_parameter_widget *pw);
+
 DECLARE_LINKED_PTR_LIST(kest_parameter_widget);
 
 

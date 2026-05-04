@@ -223,7 +223,7 @@ void kest_parameter_widget_refresh_timer_wrapper(lv_timer_t *timer)
 	
 	kest_parameter_widget_refresh(pw);
 	
-	if (pw->timer && fabs(pw->nominal_value - pw->param->value) < 0.000001)
+	if (pw->timer && fabs(pw->nominal_value - pw->param->value) < 0.001)
 	{
 		pw->nominal_value = pw->param->value;
 		lv_timer_del(pw->timer);
@@ -261,7 +261,7 @@ int kest_parameter_widget_refresh(kest_parameter_widget *pw)
 		// Apparently this function doesn't return, lol
 		/*ret_val = */parameter_widget_update_value_label(pw);
 		
-		if (!pw->driven && fabs(pw->nominal_value - pw->param->value) > 0.00001 && !pw->timer)
+		if (!pw->driven && fabs(pw->nominal_value - pw->param->value) > 0.001 && !pw->timer)
 			pw->timer = lv_timer_create(kest_parameter_widget_refresh_timer_wrapper, 10, pw);
 	}
 	
@@ -545,6 +545,19 @@ void free_parameter_widget(kest_parameter_widget *pw)
 	// Currently the kest_parameter_widget struct contains nothing that
 	// it owns itself. This may change !
 	kest_free(pw);
+}
+
+int kest_parameter_widget_align_nominal_value(kest_parameter_widget *pw)
+{
+	if (!pw)
+		return ERR_NULL_PTR;
+	
+	if (!pw->param)
+		return ERR_BAD_ARGS;
+	
+	pw->nominal_value = kest_parameter_evaluate(pw->param);
+	
+	return NO_ERROR;
 }
 
 //

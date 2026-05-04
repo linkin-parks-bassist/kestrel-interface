@@ -5,11 +5,8 @@
 
 #define KEST_PRESET_MUTEX_TIMEOUT_MS 10
 
-
-struct kest_glide_button_pll;
-struct kest_menu_item_pll;
-
 struct kest_sequence;
+struct kest_active_button;
 
 typedef struct kest_preset
 {
@@ -34,6 +31,7 @@ typedef struct kest_preset
 	
 	#ifdef KEST_ENABLE_UI
 	struct kest_ui_page *view_page;
+	struct kest_active_button *button;
 	#endif
 	
 	kest_parameter volume;

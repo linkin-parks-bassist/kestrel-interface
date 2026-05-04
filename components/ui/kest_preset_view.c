@@ -1,8 +1,6 @@
 #include "kest_int.h"
 
-#ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
-#endif
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_preset_view.c";
 
@@ -236,15 +234,29 @@ static void menu_button_cb(lv_event_t *e)
 
 int preset_view_save_name(kest_ui_page *page)
 {
+	KEST_PRINTF("preset_view_save_name\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	
 	kest_preset_view_str *str = (kest_preset_view_str*)page->data_struct;
 	
+	if (!str)
+		return ERR_BAD_ARGS;
+	
+	if (!page->panel || !str->preset)
+		return ERR_BAD_ARGS;
+	
 	const char *new_name = lv_textarea_get_text(page->panel->title);
+	
+	KEST_PRINTF("new_name = \"%s\". str->preset->button = %p\n", new_name, str->preset->button);
 	
 	if (str->preset->name)
 		kest_free(str->preset->name);
+	
+	if (str->preset->button)
+	{
+		kest_active_button_change_label(str->preset->button, new_name);
+	}
 	
 	str->preset->name = kest_strndup(new_name, PRESET_NAME_MAX_LEN);
 	
@@ -253,13 +265,7 @@ int preset_view_save_name(kest_ui_page *page)
 	
 	hide_keyboard();
 	
-	str->preset->unsaved_changes = 1;
-	
-	#ifdef USE_SDCARD
-	kest_button_enable(str->save);
-	#endif
-	
-	kest_preset_update_representations(str->preset);
+	kest_queue_preset_save(str->preset);
 	
 	return NO_ERROR;
 }
@@ -356,6 +362,9 @@ int configure_preset_view(kest_ui_page *page, void *data)
 	
 	preset->view_page = page;
 	
+	if (preset->sequence)
+		page->parent = preset->sequence->view_page;
+	
 	int ret_val;
 	int alloc_fail = 0;
 	
@@ -434,6 +443,9 @@ int create_preset_view_ui(kest_ui_page *page)
 	
 	if (!preset)
 		return ERR_BAD_ARGS;
+	
+	if (preset->sequence)
+		page->parent = preset->view_page;
 	
 	if (page->panel->text)
 	{
@@ -547,19 +559,6 @@ int preset_view_refresh_save_button(kest_ui_page *page)
 {
 	if (!page)
 		return ERR_NULL_PTR;
-	
-	return NO_ERROR;
-}
-
-int preset_view_change_name(kest_ui_page *page, char *name)
-{
-	if (!page)
-		return ERR_NULL_PTR;
-	
-	if (!page->panel)
-		return ERR_BAD_ARGS;
-	
-
 	
 	return NO_ERROR;
 }

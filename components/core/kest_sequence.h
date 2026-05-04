@@ -40,6 +40,8 @@ typedef kest_sequence_pll sequence_ll;
 
 int init_m_sequence(kest_sequence *sequence);
 
+int kest_sequence_set_default_name(kest_sequence *sequence, uint32_t n);
+
 int sequence_append_preset(kest_sequence *sequence, kest_preset *preset);
 seq_kest_preset_pll *sequence_append_preset_rp(kest_sequence *sequence, kest_preset *preset);
 int kest_sequence_move_preset(kest_sequence *sequence, int pos, int new_pos);

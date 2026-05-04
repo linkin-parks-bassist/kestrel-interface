@@ -2,9 +2,6 @@
 
 #define PRINTLINES_ALLOWED 0
 
-#define INITIAL_PRESET_ARRAY_LENGTH 8
-#define PRESET_ARRAY_CHUNK_SIZE	 8
-
 static const char *FNAME = "kest_context.c";
 
 int kest_init_context(kest_context *cxt)
@@ -528,10 +525,8 @@ int set_active_preset_from_sequence(kest_preset *preset)
 	global_cxt.active_preset = preset;
 	
 	int ret_val = NO_ERROR;
-	#ifdef USE_TEENSY
-	uint16_t id = preset ? preset->id : 0;
-	ret_val = queue_msg_to_teensy(create_m_message(KEST_MESSAGE_SWITCH_PRESET, "s", id));
-	#endif
+	
+	kest_queue_state_save();
 	
 	return ret_val;
 }
@@ -825,4 +820,21 @@ kest_effect_desc *kest_cxt_get_effect_desc_from_cname(kest_context *cxt, const c
 	}
 	
 	return NULL;
+}
+
+int kest_cxt_get_sequence_count(kest_context *cxt)
+{
+	if (!cxt)
+		return 0;
+	
+	kest_sequence_pll *cs = cxt->sequences;
+	int i = 0;
+	
+	while (cs)
+	{
+		cs = cs->next;
+		i++;
+	}
+	
+	return i;
 }

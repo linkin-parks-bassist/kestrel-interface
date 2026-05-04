@@ -1,7 +1,7 @@
 #include <float.h>
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 #define DEFAULT_MAX_VELOCITY 0.2
 
