@@ -5,15 +5,18 @@
 #define KEST_SCOPE_ENTRY_TYPE_PARAM 	1
 #define KEST_SCOPE_ENTRY_TYPE_SETTING 	2
 #define KEST_SCOPE_ENTRY_TYPE_MEM	 	3
+#define KEST_SCOPE_ENTRY_TYPE_LFO	 	4
 
 struct kest_mem_slot;
 struct kest_expression;
 struct kest_parameter;
 struct kest_setting;
+struct kest_lfo;
 
 typedef struct kest_scope_entry {
 	int type;
 	union {
+		struct kest_lfo 		*lfo;
 		struct kest_mem_slot 	*mem;
 		struct kest_expression *expr;
 		struct kest_parameter *param;
@@ -43,6 +46,7 @@ int kest_scope_add_expr(kest_scope *scope, const char *name, struct kest_express
 int kest_scope_add_param(kest_scope *scope, struct kest_parameter *param);
 int kest_scope_add_setting(kest_scope *scope, struct kest_setting *setting);
 
+kest_scope_entry *kest_scope_add_lfo_return_entry(kest_scope *scope, const char *name, struct kest_lfo *mem);
 kest_scope_entry *kest_scope_add_mem_return_entry(kest_scope *scope, const char *name, struct kest_mem_slot *mem);
 kest_scope_entry *kest_scope_add_expr_return_entry(kest_scope *scope, const char *name, struct kest_expression *expr);
 kest_scope_entry *kest_scope_add_param_return_entry(kest_scope *scope, struct kest_parameter *param);

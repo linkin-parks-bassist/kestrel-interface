@@ -73,6 +73,7 @@ typedef struct kest_button
 	int height;
 	
 	int opacity;
+	int label_opacity;
 	
 	lv_align_t alignment;
 	int align_offs_x;

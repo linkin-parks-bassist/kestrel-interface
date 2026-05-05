@@ -61,9 +61,9 @@ int kest_parse_dictionary(kest_eff_parsing_state *ps, kest_dictionary **result, 
 
 kest_effect_desc *kest_read_eff_desc_from_file(char *fname);
 
-void kest_parser_print_info   (kest_eff_parsing_state *ps, const char *error_msg, ...);
-void kest_parser_warn(kest_eff_parsing_state *ps, const char *error_msg, ...);
-void kest_parser_error  (kest_eff_parsing_state *ps, const char *error_msg, ...);
+void kest_parser_print_info (kest_eff_parsing_state *ps, const char *error_msg, ...);
+void kest_parser_warn		(kest_eff_parsing_state *ps, const char *error_msg, ...);
+void kest_parser_error  	(kest_eff_parsing_state *ps, const char *error_msg, ...);
 
 void kest_parser_print_info_at  (kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
 void kest_parser_warn_at		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);

@@ -31,6 +31,9 @@ int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int id);
 int kest_pipeline_activate_dma(kest_pipeline *pipeline);
 int kest_pipeline_deactivate_dma(kest_pipeline *pipeline);
 
+int kest_pipeline_activate_lfos(kest_pipeline *pipeline);
+int kest_pipeline_deactivate_lfos(kest_pipeline *pipeline);
+
 int kest_pipeline_update_fpga(kest_pipeline *pipeline);
 
 #endif

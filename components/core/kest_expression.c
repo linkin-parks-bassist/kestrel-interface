@@ -16,6 +16,10 @@ static const char *FNAME = "kest_expression.c";
 IMPLEMENT_PTR_LIST(kest_expression);
 IMPLEMENT_LINKED_PTR_LIST(kest_named_expression);
 
+IMPLEMENT_POOL(kest_expression);
+kest_allocator kest_expression_allocator;
+kest_expression_pool kest_expression_mem_pool;
+
 #define KEST_EXPRESSION_CONST(x) { 		\
 	.type = KEST_EXPR_CONST,			\
 	.val = {.val_float = (float)(x)},	\
@@ -65,7 +69,7 @@ int kest_expr_init_const(kest_expression *expr, float v)
 
 kest_expression *kest_expr_new_const(float v)
 {
-	kest_expression *result = kest_alloc(sizeof(kest_expression));
+	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
 	
 	if (!result) return NULL;
 	
@@ -92,7 +96,7 @@ kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs)
 {
 	if (!rhs) return NULL;
 	
-	kest_expression *lhs = (kest_expression*)kest_alloc(sizeof(kest_expression));
+	kest_expression *lhs = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
 	
 	if (!lhs) return NULL;
 	
@@ -124,7 +128,7 @@ kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, k
 {
 	if (!arg_1 || !arg_2) return NULL;
 	
-	kest_expression *bin = (kest_expression*)kest_alloc(sizeof(kest_expression));
+	kest_expression *bin = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
 	
 	if (!bin) return NULL;
 	
@@ -161,7 +165,7 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 {
 	if (!ref_name) return NULL;
 	
-	kest_expression *result = kest_alloc(sizeof(kest_expression));
+	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
 	
 	if (!result) return NULL;
 	
@@ -170,7 +174,7 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 	
 	if (!result->val.ref_name)
 	{
-		kest_free(result);
+		kest_allocator_free(&kest_expression_allocator, result);
 		return NULL;
 	}
 	
@@ -179,7 +183,6 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 	
 	return result;
 }
-
 
 int kest_expr_init_neg(kest_expression *expr, kest_expression *a)
 {
@@ -765,6 +768,8 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 	kest_interval y_int;
 	kest_interval y_int_d;
 	
+	kest_lfo *lfo;
+	
 	int p_c = 0;
 	
 	if (!expr)
@@ -907,6 +912,27 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 				#endif
 				ret.a = -1.0f;
 				ret.b =  1.0f - powf(2.0f, -((float)KEST_FPGA_DATA_WIDTH - 1.0f));
+				break;
+
+			case KEST_SCOPE_ENTRY_TYPE_LFO:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to an lfo.\n", depth);
+				#endif
+				
+				lfo = (kest_lfo*)ref->val.lfo;
+				
+				if (!lfo)
+				{
+					ret = kest_interval_real_line();
+				}
+				else
+				{
+					x_int = kest_expression_compute_range_rec(lfo->min, scope, depth + 1);
+					y_int = kest_expression_compute_range_rec(lfo->max, scope, depth + 1);
+					
+					ret.a = x_int.a;
+					ret.b = y_int.b;
+				}
 				break;
 				
 			default:
@@ -1542,23 +1568,34 @@ int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *
 	array[3] = NULL;
 	array[4] = NULL;
 	
-	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 13);
+	kest_expression *exprs[13];
 	
-	if (!exprs) return ERR_ALLOC_FAIL;
+	for (int i = 0; i < 13; i++)
+	{
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		
+		if (!exprs[i])
+		{
+			for (int j = 0; j < i; j++)
+				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+			
+			return ERR_ALLOC_FAIL;
+		}
+	}
 	
-	kest_expression *alpha 					= &exprs[0];
-	kest_expression *omega 					= &exprs[1];
-	kest_expression *sin_omega 				= &exprs[2];
-	kest_expression *cos_omega 				= &exprs[3];
-	kest_expression *Q2 					= &exprs[4];
-	kest_expression *one_minus_cos_omega 	= &exprs[5];
-	kest_expression *alpha_minus_one  		= &exprs[6];
-	kest_expression *cos_omega_2  			= &exprs[7];
-	kest_expression *one_plus_alpha			= &exprs[8];
-	kest_expression *main  					= &exprs[9];
-	kest_expression *half_main  			= &exprs[10];
-	kest_expression *a1  					= &exprs[11];
-	kest_expression *a2  					= &exprs[12];
+	kest_expression *alpha 					= exprs[0];
+	kest_expression *omega 					= exprs[1];
+	kest_expression *sin_omega 				= exprs[2];
+	kest_expression *cos_omega 				= exprs[3];
+	kest_expression *Q2 					= exprs[4];
+	kest_expression *one_minus_cos_omega 	= exprs[5];
+	kest_expression *alpha_minus_one  		= exprs[6];
+	kest_expression *cos_omega_2  			= exprs[7];
+	kest_expression *one_plus_alpha			= exprs[8];
+	kest_expression *main  					= exprs[9];
+	kest_expression *half_main  			= exprs[10];
+	kest_expression *a1  					= exprs[11];
+	kest_expression *a2  					= exprs[12];
 	
 	kest_expr_init_2x(Q2, Q);
 	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
@@ -1596,24 +1633,35 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	array[3] = NULL;
 	array[4] = NULL;
 	
-	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 14);
+	kest_expression *exprs[14];
 	
-	if (!exprs) return ERR_ALLOC_FAIL;
+	for (int i = 0; i < 14; i++)
+	{
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		
+		if (!exprs[i])
+		{
+			for (int j = 0; j < i; j++)
+				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+			
+			return ERR_ALLOC_FAIL;
+		}
+	}
 	
-	kest_expression *alpha 					= &exprs[0];
-	kest_expression *omega 					= &exprs[1];
-	kest_expression *sin_omega 				= &exprs[2];
-	kest_expression *cos_omega 				= &exprs[3];
-	kest_expression *Q2 					= &exprs[4];
-	kest_expression *one_plus_cos_omega 	= &exprs[5];
-	kest_expression *alpha_minus_one  		= &exprs[6];
-	kest_expression *cos_omega_2  			= &exprs[7];
-	kest_expression *one_plus_alpha			= &exprs[8];
-	kest_expression *main  					= &exprs[9];
-	kest_expression *neg_main				= &exprs[10];
-	kest_expression *half_main  			= &exprs[11];
-	kest_expression *a1  					= &exprs[12];
-	kest_expression *a2  					= &exprs[13];
+	kest_expression *alpha 					= exprs[0];
+	kest_expression *omega 					= exprs[1];
+	kest_expression *sin_omega 				= exprs[2];
+	kest_expression *cos_omega 				= exprs[3];
+	kest_expression *Q2 					= exprs[4];
+	kest_expression *one_plus_cos_omega 	= exprs[5];
+	kest_expression *alpha_minus_one  		= exprs[6];
+	kest_expression *cos_omega_2  			= exprs[7];
+	kest_expression *one_plus_alpha			= exprs[8];
+	kest_expression *main  					= exprs[9];
+	kest_expression *neg_main				= exprs[10];
+	kest_expression *half_main  			= exprs[11];
+	kest_expression *a1  					= exprs[12];
+	kest_expression *a2  					= exprs[13];
 	
 	kest_expr_init_2x(Q2, Q);
 	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
@@ -1650,25 +1698,35 @@ int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *
 	array[3] = NULL;
 	array[4] = NULL;
 	
-	kest_expression *exprs = kest_alloc(sizeof(kest_expression) * 14);
+	kest_expression *exprs[14];
 	
-	if (!exprs)
-		return ERR_ALLOC_FAIL;
+	for (int i = 0; i < 14; i++)
+	{
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		
+		if (!exprs[i])
+		{
+			for (int j = 0; j < i; j++)
+				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+			
+			return ERR_ALLOC_FAIL;
+		}
+	}
 	
-	kest_expression *alpha 					= &exprs[0];
-	kest_expression *omega 					= &exprs[1];
-	kest_expression *sin_omega 				= &exprs[2];
-	kest_expression *cos_omega 				= &exprs[3];
-	kest_expression *Q2 					= &exprs[4];
-	kest_expression *one_plus_alpha			= &exprs[5];
-	kest_expression *inv_denom				= &exprs[6];
-	kest_expression *cos_omega_2  			= &exprs[7];
-	kest_expression *inv_denom_2			= &exprs[8];
-	kest_expression *b0						= &exprs[9];
-	kest_expression *b2						= &exprs[10];
-	kest_expression *a1  					= &exprs[11];
-	kest_expression *a2  					= &exprs[12];
-	kest_expression *zero					= &exprs[13];
+	kest_expression *alpha 					= exprs[0];
+	kest_expression *omega 					= exprs[1];
+	kest_expression *sin_omega 				= exprs[2];
+	kest_expression *cos_omega 				= exprs[3];
+	kest_expression *Q2 					= exprs[4];
+	kest_expression *one_plus_alpha			= exprs[5];
+	kest_expression *inv_denom				= exprs[6];
+	kest_expression *cos_omega_2  			= exprs[7];
+	kest_expression *inv_denom_2			= exprs[8];
+	kest_expression *b0						= exprs[9];
+	kest_expression *b2						= exprs[10];
+	kest_expression *a1  					= exprs[11];
+	kest_expression *a2  					= exprs[12];
+	kest_expression *zero					= exprs[13];
 	
 	kest_expr_init_2x(Q2, Q);
 	kest_expr_init_mul(omega, cutoff, &kest_expression_2pi_over_fs);
@@ -1771,10 +1829,12 @@ int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 	
 	KEST_PRINTF("The expression contains %s references.\n", names.count ? "the following" : "no");
 	
+	#ifdef PRINTLINES_ALLOWED
 	for (int j = 0; j < names.count; j++)
 	{
 		KEST_PRINTF("\t\"%s\"\n", names.entries[j]);
 	}
+	#endif
 	
 	for (int j = 0; !updated && j < names.count; j++)
 	{
@@ -1787,6 +1847,11 @@ int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 	}
 
 	KEST_PRINTF("Ultimately, we conclude: \"%s\" is %supdated in scope %p.\n", kest_expression_to_string(expr), updated ? "" : "not ", scope);
+	
+	if (updated)
+	{
+		expr->cached = 0;
+	}
 
 	char_ptr_list_destroy(&names);
 	return updated;

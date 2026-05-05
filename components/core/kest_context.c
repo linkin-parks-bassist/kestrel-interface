@@ -509,6 +509,12 @@ int activate_active_preset_dma()
 	return kest_preset_activate_dma(global_cxt.active_preset);
 }
 
+int activate_active_preset_lfos()
+{
+	KEST_PRINTF("activate_active_preset_lfos\n");
+	return kest_preset_activate_lfos(global_cxt.active_preset);
+}
+
 // This version is called from a sequence-related-cb, so there is no need to
 // tell the sequence about it; it is handled from the caller
 int set_active_preset_from_sequence(kest_preset *preset)

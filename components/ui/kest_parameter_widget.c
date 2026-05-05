@@ -94,7 +94,7 @@ int parameter_widget_update_value(kest_parameter_widget *pw)
 	kest_effect *effect = NULL;
 	
 	float alpha = pw->driven ? 0.2 : 0.1;
-	float val = pw->nominal_value * (1.0 - alpha) + kest_parameter_evaluate(param) * alpha;
+	float val = pw->nominal_value * alpha + kest_parameter_evaluate(param) * (1.0f - alpha);
 	pw->nominal_value = val;
 	
 	KEST_PRINTF("parameter_widget_update_value; parameter %d.%d.%d, \"%s\", value %f, nominal value %f. pressed = %d\n",

@@ -1,6 +1,7 @@
 #ifndef KEST_INTERFACE_DESKTOP_H_
 #define KEST_INTERFACE_DESKTOP_H_
 
+#include <stdatomic.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>

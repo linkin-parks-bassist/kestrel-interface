@@ -543,15 +543,15 @@ int set_panel_text(kest_ui_page *page, const char *text)
 	
 	page->panel->text = text;
     
-    if (text && page->ui_created && page->panel->panel)
+    if (text && page->panel->panel)
     {
 		if (!page->panel->title)
 			page->panel->title = lv_label_create(page->panel->panel);
 			
 		lv_label_set_text(page->panel->title, page->panel->text);
 		
-		lv_obj_set_style_text_color(page->panel->title, lv_color_hex(GLOBAL_MAIN_TEXT_COLOUR), 0);
-		lv_obj_set_style_text_font(page->panel->title, GLOBAL_MAIN_FONT, 0);
+		//lv_obj_set_style_text_color(page->panel->title, lv_color_hex(GLOBAL_MAIN_TEXT_COLOUR), 0);
+		//lv_obj_set_style_text_font(page->panel->title, GLOBAL_MAIN_FONT, 0);
 		
 		//lv_obj_set_flex_grow(page->panel->title, 1);
 		lv_obj_set_style_text_align(page->panel->title, LV_TEXT_ALIGN_CENTER, 0);

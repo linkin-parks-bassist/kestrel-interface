@@ -54,6 +54,8 @@ typedef struct kest_expression
 
 DECLARE_PTR_LIST(kest_expression);
 
+int kest_expr_init_const(kest_expression *expr, float v);
+
 kest_expression kest_expression_const(float v);
 kest_expression *kest_expr_new_const(float v);
 kest_expression *kest_expr_new_reference(char *ref_name);
@@ -122,5 +124,9 @@ typedef struct {
 } kest_named_expression;
 
 DECLARE_LINKED_PTR_LIST(kest_named_expression);
+
+DECLARE_POOL(kest_expression);
+extern kest_allocator kest_expression_allocator;
+extern kest_expression_pool kest_expression_mem_pool;
 
 #endif

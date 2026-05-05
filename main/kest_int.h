@@ -5,6 +5,7 @@
 #ifndef KEST_INTERFACE_MAIN_H_
 #define KEST_INTERFACE_MAIN_H_
 
+#include <stdatomic.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>

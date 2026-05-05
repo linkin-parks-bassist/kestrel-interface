@@ -6,6 +6,7 @@
 #define KEST_DSP_RESOURCE_MEM		2
 #define KEST_DSP_RESOURCE_DELAY		3
 #define KEST_DSP_RESOURCE_FILTER	4
+#define KEST_DSP_RESOURCE_LFO		5
 
 struct kest_expression;
 struct kest_effect;
@@ -68,6 +69,54 @@ kest_mem_slot *kest_mem_slot_create(kest_allocator *alloc);
 int kest_mem_slot_set_addr(kest_mem_slot *mem, int addr);
 int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr);
 
+#define KEST_DELAY_UNITS_MS 		0
+#define KEST_DELAY_UNITS_SECONDS 	1
+#define KEST_DELAY_UNITS_SAMPLES 	2
+
+typedef struct kest_delay {
+	int units;
+	
+	struct kest_expression *size;
+	struct kest_expression *delay;
+} kest_delay;
+
+kest_delay *kest_delay_create(kest_allocator *alloc);
+
+#define KEST_LFO_MODE_CENTER_AMP 	0
+#define KEST_LFO_MODE_MIN_MAX		1
+
+typedef struct kest_lfo {
+	int mode;
+	
+	kest_expression *frequency;
+	kest_expression *center;
+	kest_expression *amplitude;
+	
+	kest_expression *min;
+	kest_expression *max;
+	
+	lv_timer_t *timer;
+	
+	kest_scope_entry *scope_entry;
+	struct kest_effect *effect;
+	
+	float prev_freq;
+	float prev_center;
+	float prev_amplitude;
+	
+	float prev_t;
+	int64_t prev_ms;
+} kest_lfo;
+
+int kest_lfo_init(kest_lfo *lfo);
+kest_lfo *kest_lfo_create(kest_allocator *alloc);
+
+void kest_lfo_activate_sync(void *lfo_);
+void kest_lfo_deactivate_sync(void *lfo_);
+
+int kest_lfo_activate_async(kest_lfo *lfo);
+int kest_lfo_deactivate_async(kest_lfo *lfo);
+
 typedef struct
 {
 	unsigned int blocks;
@@ -82,5 +131,10 @@ int kest_resource_report_integrate(kest_eff_resource_report *a, const kest_eff_r
 
 extern kest_dsp_resource sin_lut;
 extern kest_dsp_resource tanh_lut;
+
+
+DECLARE_POOL(kest_dsp_resource);
+extern kest_allocator kest_dsp_resource_allocator;
+extern kest_dsp_resource_pool kest_dsp_resource_mem_pool;
 
 #endif

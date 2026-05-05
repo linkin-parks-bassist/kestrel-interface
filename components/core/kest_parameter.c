@@ -196,7 +196,7 @@ int parameter_set_id(kest_parameter *param, uint16_t pid, uint16_t tid, uint16_t
 		return ERR_NULL_PTR;
 	
 	param->id.preset_id 	= pid;
-	param->id.effect_id = tid;
+	param->id.effect_id 	= tid;
 	param->id.parameter_id 	= ppid;
 	
 	return NO_ERROR;
@@ -315,8 +315,8 @@ int clone_setting(kest_setting *dest, kest_setting *src)
 		}
 	}
 	
-	dest->widget_type = src->widget_type;
-	dest->name = src->name;
+	dest->widget_type 	= src->widget_type;
+	dest->name 			= src->name;
 	dest->name_internal = src->name_internal;
 	
 	dest->group = src->group;
@@ -574,19 +574,34 @@ float kest_parameter_evaluate(kest_parameter *param)
 	);
 	KEST_PRINTF(" = %d\n", (param->driver_index >= 0 && !param->driver_override && param->effect && (param->effect ? param->effect->drivers.count : 0) > param->driver_index));*/
 	
-	if (param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
-		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &param->value);
-	
 	kest_interval i = kest_parameter_get_range(param);
+	float val_local;
 	
-	if (param->value > i.b)
-		param->value = i.b;
-	if (param->value < i.a)
-		param->value = i.a;
+	// If the parameter has a driver which is not overridden,
+	// and the index is actually valid, then use that to get
+	// the value, and update the value stored in the parameter
+	// itself (SIDE EFFECT ALERT!)
+	if (param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
+	{
+		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &val_local);
+		
+		// Clamp to range
+		val_local = (val_local > i.b) ? i.b : ((val_local < i.a) ? i.a : val_local);
+		
+		atomic_store_explicit(&param->value, val_local, memory_order_relaxed);
+	}
+	else
+	{
+		val_local = atomic_load_explicit(&param->value, memory_order_relaxed);
+		
+		// Clamp to range (value is only accessed via this function; ensure that
+		// returned value is within range regardless of what is stored in struct.
+		// Just an extra layer to make sure numbers stay valid even if something 
+		// goes awry
+		val_local = (val_local > i.b) ? i.b : ((val_local < i.a) ? i.a : val_local);
+	}
 	
-	KEST_PRINTF("Returning result (param = %p) %s%.05f\n", param, param->value < 0 ? "" : " ", param->value);
-	
-	return param->value;
+	return val_local;
 }
 
 int kest_parameter_if_driven_refresh(kest_parameter *param)
@@ -611,10 +626,13 @@ int kest_parameter_if_driven_refresh(kest_parameter *param)
 	
 	if (param && param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
 	{
-		float value = param->value;
+		float value_local = atomic_load_explicit(&param->value, memory_order_relaxed);
+		float value;
 		
 		KEST_PRINTF("Parameter %p appears to be validly driven. Recompute value\n", param);
-		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &param->value);
+		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &value);
+		
+		atomic_store_explicit(&param->value, value, memory_order_relaxed);
 		
 		param->updated = 1;
 	}

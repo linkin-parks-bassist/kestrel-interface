@@ -62,6 +62,8 @@ int init_m_preset(kest_preset *preset)
 	kest_representation_pll_safe_append(&preset->representations, &preset->file_rep);
 	#endif
 	
+	preset->alive = 1;
+	
 	return NO_ERROR;
 }
 
@@ -105,6 +107,22 @@ int kest_preset_deactivate_dma(kest_preset *preset)
 		return ERR_NULL_PTR;
 	
 	return kest_pipeline_deactivate_dma(&preset->pipeline);
+}
+
+int kest_preset_activate_lfos(kest_preset *preset)
+{
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	return kest_pipeline_activate_lfos(&preset->pipeline);
+}
+
+int kest_preset_deactivate_lfos(kest_preset *preset)
+{
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	return kest_pipeline_deactivate_lfos(&preset->pipeline);
 }
 
 int kest_preset_set_active(kest_preset *preset)
@@ -256,7 +274,7 @@ int kest_preset_move_effect(kest_preset *preset, int new_pos, int old_pos)
 		if ((ret_val = kest_pipeline_move_effect(&preset->pipeline, new_pos, old_pos)) != NO_ERROR)
 			return ret_val;
 		
-		ret_val = kest_preset_if_active_update_fpga(preset);
+		ret_val = kest_preset_if_active_reprogram_fpga(preset);
 	}
 	else
 	{
@@ -445,6 +463,24 @@ int kest_preset_clear_updates(kest_preset *preset)
 	#endif
 	
 	return NO_ERROR;
+}
+
+int kest_preset_if_active_reprogram_fpga(kest_preset *preset)
+{
+	KEST_PRINTF("kest_preset_if_active_update_fpga(preset = %p)\n", preset);
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	if (!preset->active)
+	{
+		KEST_PRINTF("preset is not active. return NO_ERROR\n");
+		return NO_ERROR;
+	}
+	
+	int ret_val = kest_preset_program_fpga(preset);
+	
+	KEST_PRINTF("kest_preset_if_active_update_fpga done\n");
+	return ret_val;
 }
 
 int kest_preset_if_active_update_fpga(kest_preset *preset)

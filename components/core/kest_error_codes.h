@@ -64,6 +64,9 @@
 #define ERR_OVERRULED					43
 #define ERR_UNINITIALISED				44
 
+#define ERR_NOT_FOUND  					45
+#define ERR_WRONG_TYPE 					46
+
 #define ERR_UNKNOWN_ERR					4999
 #define ERR_UNIMPLEMENTED				5000
 

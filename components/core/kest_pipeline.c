@@ -348,6 +348,43 @@ int kest_pipeline_activate_dma(kest_pipeline *pipeline)
 	return NO_ERROR;
 }
 
+int kest_pipeline_deactivate_lfos(kest_pipeline *pipeline)
+{
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		if (current->data)
+			kest_effect_deactivate_lfos_async(current->data);
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_pipeline_activate_lfos(kest_pipeline *pipeline)
+{
+	KEST_PRINTF("kest_pipeline_activate_lfos_async\n");
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (current)
+	{
+		if (current->data)
+			kest_effect_activate_lfos_async(current->data);
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}
+
 int kest_pipeline_deactivate_dma(kest_pipeline *pipeline)
 {
 	if (!pipeline)
@@ -377,14 +414,21 @@ int kest_pipeline_update_fpga(kest_pipeline *pipeline)
 		return ERR_MUTEX_UNAVAILABLE;
 	#endif
 	
+	kest_fpga_transfer_batch batch = kest_new_fpga_transfer_batch();
+	
+	if (!batch.buf)
+		return ERR_ALLOC_FAIL;
+	
 	kest_effect_pll *current = pipeline->effects;
 	
 	while (current)
 	{
-		kest_effect_update_fpga(current->data);
-		
+		kest_fpga_transfer_batch_append_effect_updates(&batch, current->data);
 		current = current->next;
 	}
+	
+	kest_fpga_batch_append(&batch, COMMAND_COMMIT_REG_UPDATES);
+	kest_fpga_queue_transfer_batch(batch);
 	
 	#ifdef KEST_USE_FREERTOS
 	xSemaphoreGive(pipeline->mutex);

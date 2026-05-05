@@ -25,7 +25,7 @@ struct kest_parameter_widget;
 
 typedef struct kest_parameter
 {
-	float value;
+	_Atomic float value;
 	float min;
 	float max;
 	

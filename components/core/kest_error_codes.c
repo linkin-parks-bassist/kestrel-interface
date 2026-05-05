@@ -23,7 +23,7 @@ const char *kest_error_code_to_string(int error_code)
 		case ERR_PIPELINE_FULL: 		return "ERR_PIPELINE_FULL";
 		case ERR_POSITION_ILLEGAL: 		return "ERR_POSITION_ILLEGAL";
 		case ERR_POSITION_OCCUPIED: 	return "ERR_POSITION_OCCUPIED";
-		case ERR_EFFECT_MALFORMED: return "ERR_EFFECT_MALFORMED";
+		case ERR_EFFECT_MALFORMED: 		return "ERR_EFFECT_MALFORMED";
 		case ERR_ARRAY_MALFORMED: 		return "ERR_ARRAY_MALFORMED";
 		case ERR_POT_LINK_MALFORMED: 	return "ERR_POT_LINK_MALFORMED";
 		case ERR_SWITCH_LINK_MALFORMED: return "ERR_SWITCH_LINK_MALFORMED";
@@ -40,7 +40,7 @@ const char *kest_error_code_to_string(int error_code)
 		case ERR_VALUE_OUT_OF_BOUNDS: 	return "ERR_VALUE_OUT_OF_BOUNDS";
 		case ERR_INVALID_PARAMETER_ID: 	return "ERR_INVALID_PARAMETER_ID";
 		case ERR_INVALID_SETTING_ID: 	return "ERR_INVALID_SETTING_ID";
-		case ERR_INVALID_EFFECT_ID:return "ERR_INVALID_EFFECT_ID";
+		case ERR_INVALID_EFFECT_ID:		return "ERR_INVALID_EFFECT_ID";
 		case ERR_INVALID_PRESET_ID: 	return "ERR_INVALID_PRESET_ID";
 		case ERR_SPI_INIT_FAIL: 		return "ERR_SPI_INIT_FAIL";
 		case ERR_SD_INIT_FAIL: 			return "ERR_SD_INIT_FAIL";
@@ -55,6 +55,11 @@ const char *kest_error_code_to_string(int error_code)
 		case ERR_CURRENTLY_EXHAUSTED: 	return "ERR_CURRENTLY_EXHAUSTED";
 		case ERR_FEATURE_DISABLED: 		return "ERR_FEATURE_DISABLED";
 		case ERR_UNKNOWN_ERR: 			return "ERR_UNKNOWN_ERR";
+		case ERR_DUPLICATE_KEY:			return "ERR_DUPLICATE_KEY";
+		case ERR_RECURSION_DEPTH:		return "ERR_RECURSION_DEPTH";
+		case ERR_OVERRULED:				return "ERR_OVERRULED";
+		case ERR_NOT_FOUND:				return "ERR_NOT_FOUND";
+		case ERR_WRONG_TYPE:			return "ERR_WRONG_TYPE";
 		case ERR_UNIMPLEMENTED: 		return "ERR_UNIMPLEMENTED";
 		
 		default:

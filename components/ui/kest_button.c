@@ -47,6 +47,7 @@ int init_button(kest_button *button)
 		button->sub_buttons[i] = NULL;
 	
 	button->opacity = 255;
+	button->label_opacity = 255;
 	
 	return NO_ERROR;
 }
@@ -81,11 +82,6 @@ int create_button_ui(kest_button *button, lv_obj_t *parent)
 	if (!button->obj)
 		return ERR_ALLOC_FAIL;
 		
-	if (button->flags & KEST_BUTTON_FLAG_HIDDEN)
-		lv_obj_add_flag(button->obj, LV_OBJ_FLAG_HIDDEN);
-	else
-		lv_obj_set_style_opa(button->obj, button->opacity, 0);
-		
 	if (button->flags & KEST_BUTTON_FLAG_DISABLED)
 		lv_obj_add_state(button->obj, LV_STATE_DISABLED);
 	
@@ -104,6 +100,17 @@ int create_button_ui(kest_button *button, lv_obj_t *parent)
 		lv_obj_del(button->obj);
 		button->obj = NULL;
 		return ERR_ALLOC_FAIL;
+	}
+	
+	if (button->flags & KEST_BUTTON_FLAG_HIDDEN)
+	{
+		lv_obj_add_flag(button->obj, LV_OBJ_FLAG_HIDDEN);
+		
+	}
+	else
+	{
+		lv_obj_set_style_opa(button->obj, button->opacity, 0);
+		lv_obj_set_style_opa(button->label, button->label_opacity, 0);
 	}
 	
 	int ret_val;
@@ -368,6 +375,7 @@ int kest_button_set_opacity(kest_button *button, int opacity)
 	
 	//kest_printf("store new opacity...\n");
 	button->opacity = opacity;
+	button->label_opacity = opacity;
 	
 	if (button->flags & KEST_BUTTON_FLAG_HIDDEN)
 	{
@@ -379,6 +387,20 @@ int kest_button_set_opacity(kest_button *button, int opacity)
 	{
 		//kest_printf("button has UI and it is not hidden. apply to lv_obj...\n");
 		lv_obj_set_style_opa(button->obj, button->opacity, 0);
+		
+		if (button->label)
+			lv_obj_set_style_opa(button->label, button->label_opacity, 0);
+	}
+	
+	for (int i = 0; i < KEST_BUTTON_MAX_SUB_BUTTONS; i++)
+	{
+		if (button->sub_buttons[i])
+		{
+			if (button->sub_buttons[i]->obj)
+				lv_obj_set_style_opa(button->sub_buttons[i]->obj, 0, 0);
+			if (button->sub_buttons[i]->label)
+				lv_obj_set_style_opa(button->sub_buttons[i]->label, opacity, 0);
+		}
 	}
 	
 	//kest_printf("kest_button_set_opacity done\n");

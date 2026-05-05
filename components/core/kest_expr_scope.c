@@ -49,6 +49,22 @@ int kest_scope_entry_init_setting(kest_scope_entry *entry, kest_setting *setting
 	return NO_ERROR;
 }
 
+int kest_scope_entry_init_lfo(kest_scope_entry *entry, kest_lfo *lfo)
+{
+	if (!entry)
+		return ERR_NULL_PTR;
+	
+	if (!lfo)
+		return ERR_BAD_ARGS;
+	
+	entry->type = KEST_SCOPE_ENTRY_TYPE_LFO;
+	entry->val.lfo = lfo;
+	lfo->scope_entry = entry;
+	entry->updated = 0;
+	
+	return NO_ERROR;
+}
+
 int kest_scope_entry_init_mem(kest_scope_entry *entry, kest_mem_slot *mem)
 {
 	if (!entry)
@@ -174,6 +190,21 @@ kest_scope_entry *kest_scope_add_entry_return_ptr(kest_scope *scope, const char 
 	scope->count++;
 	
 	return kest_scope_entry_dict_insert_return_ptr(&scope->dict, name, entry);
+}
+
+kest_scope_entry *kest_scope_add_lfo_return_entry(kest_scope *scope, const char *name, kest_lfo *lfo)
+{
+	if (!scope)
+		return NULL;
+	
+	kest_scope_entry entry;
+	
+	int ret_val = kest_scope_entry_init_lfo(&entry, lfo);
+	
+	if (ret_val != NO_ERROR)
+		return NULL;
+	
+	return kest_scope_add_entry_return_ptr(scope, name, entry);
 }
 
 kest_scope_entry *kest_scope_add_mem_return_entry(kest_scope *scope, const char *name, kest_mem_slot *mem)
@@ -508,9 +539,17 @@ int kest_scope_entry_eval(kest_scope_entry *entry, kest_scope *scope, float *des
 	if (!entry || !dest)
 		return ERR_NULL_PTR;
 	
-	kest_parameter *param = NULL;
-	kest_setting *setting = NULL;
-	kest_mem_slot *mem_slot = NULL;
+	kest_parameter    *param = NULL;
+	kest_setting    *setting = NULL;
+	kest_mem_slot  *mem_slot = NULL;
+	kest_lfo			*lfo = NULL;
+	
+	float center;
+	float freq;
+	float amp;
+	float t;
+	
+	int64_t time_ms;
 	
 	switch (entry->type)
 	{
@@ -543,6 +582,38 @@ int kest_scope_entry_eval(kest_scope_entry *entry, kest_scope *scope, float *des
 			KEST_PRINTF("Evaluating mem_slot scope entry. Value: %s%.05f\n", *dest > 0 ? " " : "", *dest);
 			break;
 		
+		case KEST_SCOPE_ENTRY_TYPE_LFO:
+			lfo = entry->val.lfo;
+			
+			if (!lfo)
+				return ERR_NULL_PTR;
+			
+			switch (lfo->mode)
+			{
+				case KEST_LFO_MODE_CENTER_AMP:
+					center = kest_expression_evaluate(lfo->center,  scope);
+					freq = kest_expression_evaluate(lfo->frequency, scope);
+					amp = kest_expression_evaluate(lfo->amplitude,  scope);
+					
+					time_ms = kest_system_time_ms();
+					
+					t = 2.0f * M_PI * freq * ((float)(time_ms - lfo->prev_ms) * 0.001);
+					
+					t = lfo->prev_t + t;
+					
+					while (t > 2.0f * M_PI)
+						t -= 2.0f * M_PI;
+					
+					*dest = amp * sin(t) + center;
+					
+					lfo->prev_t = t;
+					lfo->prev_ms = time_ms;
+					
+					break;
+			}
+			
+			break;
+		
 		default: return ERR_BAD_ARGS;
 	}
 	
@@ -564,35 +635,12 @@ int kest_scope_entry_eval_rec(kest_scope_entry *entry, kest_scope *scope, float 
 	switch (entry->type)
 	{
 		case KEST_SCOPE_ENTRY_TYPE_EXPR:
-			*dest = kest_expression_evaluate_rec(entry->val.expr, scope, depth);
-			break;
-			
-		case KEST_SCOPE_ENTRY_TYPE_PARAM:
-			param = entry->val.param;
-			if (!param)
-				return ERR_BAD_ARGS;
-			*dest = kest_parameter_evaluate(param);
+			*dest = kest_expression_evaluate_rec(entry->val.expr, scope, depth + 1);
 			break;
 		
-		case KEST_SCOPE_ENTRY_TYPE_SETTING:
-			setting = entry->val.setting;
-			if (!setting)
-				return ERR_BAD_ARGS;
-			*dest = (float)setting->value;
+		default:
+			return kest_scope_entry_eval(entry, scope, dest);
 			break;
-		
-		case KEST_SCOPE_ENTRY_TYPE_MEM:
-			mem_slot = entry->val.mem;
-			
-			if (!mem_slot)
-				return ERR_BAD_ARGS;
-			
-			*dest = kest_fpga_sample_to_float(mem_slot->value);
-			
-			KEST_PRINTF("Evaluating mem_slot scope entry. Value: %s%.05f\n", *dest > 0 ? " " : "", *dest);
-			break;
-		
-		default: return ERR_BAD_ARGS;
 	}
 	
 	return NO_ERROR;

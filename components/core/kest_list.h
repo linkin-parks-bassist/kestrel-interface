@@ -24,6 +24,7 @@ int X##_list_contains(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
 int X##_list_contains_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*)); \
 int X##_list_index_of(X##_list *list, X x, int (*cmp)(const X*, const X*)); \
 int X##_list_index_of_ref(X##_list *list, const X *x, int (*cmp)(const X*, const X*));\
+X  *X##_list_find(X##_list *list, const X *x, int (*cmp)(const X*, const X*));\
 X  *X##_list_head(X##_list *list);\
 X  *X##_list_tail(X##_list *list);\
 int X##_list_pop_tail(X##_list *list);\

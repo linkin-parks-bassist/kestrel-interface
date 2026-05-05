@@ -59,6 +59,8 @@ typedef struct kest_effect
 	kest_representation page_rep;
 	kest_representation preset_rep;
 	#endif
+	
+	int alive;
 } kest_effect;
 
 const char *kest_effect_name(kest_effect *effect);
@@ -113,6 +115,11 @@ int kest_effect_activate_dma(kest_effect *effect);
 int kest_effect_deactivate_dma(kest_effect *effect);
 int kest_effect_activate_dma_async(kest_effect *effect);
 int kest_effect_deactivate_dma_async(kest_effect *effect);
+
+int kest_effect_activate_lfos(kest_effect *effect);
+int kest_effect_deactivate_lfos(kest_effect *effect);
+int kest_effect_activate_lfos_async(kest_effect *effect);
+int kest_effect_deactivate_lfos_async(kest_effect *effect);
 
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);

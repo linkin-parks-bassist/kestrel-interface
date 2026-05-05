@@ -162,11 +162,13 @@ void kest_fpga_comms_task(void *param)
 						KEST_PRINTF("FPGA accepted the new pipeline :)\n");
 						vTaskDelay(pdMS_TO_TICKS(50));
 						activate_active_preset_dma();
+						activate_active_preset_lfos();
 						break;
 					}
 				}
 				#else
 				activate_active_preset_dma();
+				activate_active_preset_lfos();
 				#endif
 				
 				kest_free_fpga_transfer_batch(msg.data.batch);

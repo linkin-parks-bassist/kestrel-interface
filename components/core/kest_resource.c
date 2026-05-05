@@ -15,6 +15,10 @@ IMPLEMENT_LINKED_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_LIST(kest_dsp_resource);
 
+IMPLEMENT_POOL(kest_dsp_resource);
+kest_allocator kest_dsp_resource_allocator;
+kest_dsp_resource_pool kest_dsp_resource_mem_pool;
+
 kest_dsp_resource sin_lut = {
 	.type   = KEST_DSP_RESOURCE_LUT,
 	.name   = NULL,
@@ -261,6 +265,103 @@ kest_mem_slot *kest_mem_slot_create(kest_allocator *alloc)
 	return mem_slot;
 }
 
+kest_delay *kest_delay_create(kest_allocator *alloc)
+{
+	kest_delay *delay = kest_allocator_alloc(alloc, sizeof(kest_delay));
+	
+	if (!delay)
+		return NULL;
+	
+	memset(delay, 0, sizeof(kest_delay));
+	
+	return delay;
+}
+
+int kest_lfo_init(kest_lfo *lfo)
+{
+	if (!lfo)
+		return ERR_NULL_PTR;
+	
+	memset(lfo, 0, sizeof(kest_lfo));
+	
+	return NO_ERROR;
+}
+
+kest_lfo *kest_lfo_create(kest_allocator *alloc)
+{
+	kest_lfo *lfo = kest_allocator_alloc(alloc, sizeof(kest_lfo));
+	
+	if (!lfo)
+		return NULL;
+	
+	kest_lfo_init(lfo);
+	
+	return lfo;
+}
+
+void kest_lfo_update(lv_timer_t *timer)
+{
+	kest_lfo *lfo = lv_timer_get_user_data(timer);
+	
+	if (!lfo)
+		return;
+	
+	if (lfo->scope_entry)
+		lfo->scope_entry->updated = 1;
+	
+	if (lfo->effect)
+		kest_ui_async_call(kest_effect_update_sync, lfo->effect);
+}
+
+void kest_lfo_activate_sync(void *lfo_)
+{
+	KEST_PRINTF("kest_lfo_activate_sync\n");
+	kest_lfo *lfo = (kest_lfo*)lfo_;
+	
+	if (!lfo)
+		return;
+	
+	lfo->timer = lv_timer_create(kest_lfo_update, 10, lfo_);
+	
+	lfo->prev_t = 0.0f;
+	lfo->prev_ms = kest_system_time_ms();
+}
+
+void kest_lfo_deactivate_sync(void *lfo_)
+{
+	KEST_PRINTF("kest_lfo_deactivate_sync\n");
+	kest_lfo *lfo = (kest_lfo*)lfo_;
+	
+	if (!lfo)
+		return;
+	
+	if (lfo->timer)
+	{
+		lv_timer_del(lfo->timer);
+		lfo->timer = NULL;
+	}
+}
+
+int kest_lfo_activate_async(kest_lfo *lfo)
+{
+	if (!lfo)
+		return ERR_NULL_PTR;
+	
+	kest_ui_async_call(kest_lfo_activate_sync, (void*)lfo);
+	
+	return NO_ERROR;
+}
+
+int kest_lfo_deactivate_async(kest_lfo *lfo)
+{
+	if (!lfo)
+		return ERR_NULL_PTR;
+	
+	kest_ui_async_call(kest_lfo_deactivate_sync, (void*)lfo);
+	
+	return NO_ERROR;
+}
+
 int kest_resource_report_integrate(kest_eff_resource_report *a, const kest_eff_resource_report *b)
 {
 	if (!a) return ERR_NULL_PTR;
@@ -307,6 +408,21 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 			KEST_PRINTF("mem->read_enable = %d, mem->read.period_ms = %d\n", mem->read_enable, mem->read.period_ms);
 		}
 	}
+	else if (dest->type == KEST_DSP_RESOURCE_LFO)
+	{
+		dest->data = kest_lfo_create(NULL);
+		
+		if (!dest->data)
+			return ERR_ALLOC_FAIL;
+		
+		kest_lfo_init(dest->data);
+		
+		if (src->data)
+		{
+			kest_lfo *lfo = (kest_lfo*)src->data;
+			memcpy(dest->data, src->data, sizeof(kest_lfo));
+		}
+	}
 	else if (dest->type == KEST_DSP_RESOURCE_FILTER)
 	{
 		dest->data = kest_filter_make_clone(src->data);
@@ -342,9 +458,19 @@ kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *sr
 {
 	kest_dsp_resource *result = kest_dsp_resource_make_clone(src);
 	
-	if (result && result->type == KEST_DSP_RESOURCE_MEM && result->data)
+	if (result && result->data)
 	{
-		((kest_mem_slot*)result->data)->effect = effect;
+		switch (result->type)
+		{
+			case KEST_DSP_RESOURCE_MEM:
+				((kest_mem_slot*)result->data)->effect = effect;
+				break;
+			
+			case KEST_DSP_RESOURCE_LFO:
+				((kest_lfo*)result->data)->effect = effect;
+				break;
+		}  
+		
 	}
 	
 	return result;

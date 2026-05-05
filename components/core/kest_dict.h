@@ -10,7 +10,7 @@ typedef struct {\
 DECLARE_LIST(X##_dict_entry);\
 typedef X##_dict_entry_list X##_dict_bucket;\
 \
-typedef struct {\
+typedef struct X##_dict {\
 	X##_dict_bucket *buckets;\
 	size_t n_buckets;\
 	kest_allocator alloc;\

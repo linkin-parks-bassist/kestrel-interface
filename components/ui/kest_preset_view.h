@@ -26,11 +26,11 @@ kest_ui_page *create_preset_view_for(kest_preset *preset);
 int init_preset_view		(kest_ui_page *page);
 int configure_preset_view	(kest_ui_page *page, void *data);
 int create_preset_view_ui	(kest_ui_page *page);
-int free_preset_view_ui	(kest_ui_page *page);
+int free_preset_view_ui		(kest_ui_page *page);
 int free_preset_view		(kest_ui_page *page);
 int enter_preset_view		(kest_ui_page *page);
 int enter_preset_view_from	(kest_ui_page *page, kest_ui_page *prev);
-int refresh_preset_view	(kest_ui_page *page);
+int refresh_preset_view		(kest_ui_page *page);
 
 int preset_view_recalculate_indices(kest_ui_page *page);
 

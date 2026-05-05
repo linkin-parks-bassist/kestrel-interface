@@ -74,10 +74,6 @@ int preset_view_effect_moved_cb(kest_active_button *button)
 	if (!effect)
 		return ERR_BAD_ARGS;
 	
-	#ifdef USE_TEENSY
-	queue_msg_to_teensy(create_m_message(KEST_MESSAGE_MOVE_EFFECT, "sss", effect->preset->id, effect->id, button->index));
-	#endif
-	
 	#ifdef USE_FPGA
 	kest_preset *preset = effect->preset;
 	

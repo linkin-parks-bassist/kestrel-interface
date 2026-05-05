@@ -61,7 +61,7 @@ int init_effect_selector_eff(kest_ui_page *page)
 
 int configure_effect_selector(kest_ui_page *page, void *data)
 {
-	//kest_printf("configure_effect_selector...\n");
+	kest_printf("configure_effect_selector...\n");
 	if (!page || !data)
 		return ERR_NULL_PTR;
 	
@@ -113,23 +113,12 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	}
 	
 	effect = kest_preset_append_effect_eff(preset, eff);
-	KEST_PRINTF("\n");
 	if (pv) preset_view_append_effect(pv, effect);
-	KEST_PRINTF("\n");
 	preset->unsaved_changes = 1;
-	KEST_PRINTF("\n");
 	kest_preset_update_representations(preset);
-	KEST_PRINTF("\n");
-	#ifdef KEST_ENABLE_FPGA
-	KEST_PRINTF("\n");
-	kest_preset_if_active_update_fpga(preset);
-	KEST_PRINTF("\n");
-	#endif
-	KEST_PRINTF("\n");
+	kest_preset_if_active_reprogram_fpga(preset);
 	kest_effect_init_view_page(effect, preset->view_page);
-	KEST_PRINTF("\n");
 	create_effect_view_ui(effect->view_page);
-	KEST_PRINTF("\n");
 }
 
 int init_effect_selector_button_from_effect(kest_effect_selector_button *button, kest_effect_desc *eff)

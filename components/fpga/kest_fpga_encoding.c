@@ -301,6 +301,8 @@ int kest_fpga_transfer_batch_append_effect_register_updates_(kest_fpga_transfer_
 	if (!batch || !effect)
 		return ERR_NULL_PTR;
 	
+	KEST_PRINTF("effect->blocks.count = %d\n", effect->blocks.count);
+	
 	for (int i = 0; i < effect->blocks.count; i++)
 		kest_fpga_batch_append_block_register_updates(batch, &effect->blocks.entries[i], effect->scope, pos + i);
 	
@@ -341,6 +343,28 @@ int kest_fpga_transfer_batch_append_effect_resource_updates_(kest_fpga_transfer_
 	{
 		kest_fpga_batch_append_resource_updates(batch, effect->resources.entries[i], effect->scope, pos);
 	}
+	
+	return NO_ERROR;
+}
+
+int kest_fpga_transfer_batch_append_effect_updates(kest_fpga_transfer_batch *batch, kest_effect *effect)
+{
+	if (!batch || !effect)
+		return ERR_NULL_PTR;
+	
+	int is_updated = kest_effect_is_updated(effect);
+	
+	KEST_PRINTF("is_updated = %d\n", is_updated);
+	
+	if (!is_updated)
+	{
+		return NO_ERROR;
+	}
+	
+	kest_fpga_transfer_batch_append_effect_register_updates_(&batch, effect, effect->block_position);
+	kest_fpga_transfer_batch_append_effect_resource_updates_(&batch, effect, &effect->position_);
+	
+	kest_scope_clear_updates(effect->scope);
 	
 	return NO_ERROR;
 }
@@ -403,13 +427,16 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	if (!batch || !res || !rpt)
 		return ERR_NULL_PTR;
 	
-	uint32_t size;
-	uint32_t delay;
+	uint32_t delay_size;
+	uint32_t delay_samples;
 	
 	int handle;
 	kest_filter *filter = (kest_filter*)res->data;
+	kest_delay *delay = (kest_delay*)res->data;
 	float c;
 	int32_t s;
+	
+	float unit_c;
 	
 	switch (res->type)
 	{
@@ -417,18 +444,38 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 			KEST_PRINTF("Delay\n");
 			kest_fpga_batch_append(batch, COMMAND_ALLOC_DELAY);
 			
-			delay = (uint32_t)(ceilf(kest_expression_evaluate(res->delay, scope)) * 0.001 * KEST_FPGA_SAMPLE_RATE);
+			unit_c = 0.001 * KEST_FPGA_SAMPLE_RATE;
 			
-			if (res->size)
-				size = (uint32_t)(ceilf(kest_expression_evaluate(res->size, scope)) * 0.001 * KEST_FPGA_SAMPLE_RATE);
+			if (!delay)
+				return ERR_BAD_ARGS;
+			
+			switch (delay->units)
+			{
+				case KEST_DELAY_UNITS_MS:
+					unit_c =  0.001 * KEST_FPGA_SAMPLE_RATE;
+					break;
+				case KEST_DELAY_UNITS_SECONDS:
+					unit_c =  KEST_FPGA_SAMPLE_RATE;
+					break;
+				case KEST_DELAY_UNITS_SAMPLES:
+					unit_c = 1.0;
+					break;
+			}
+			
+			delay_samples = (uint32_t)(ceilf(kest_expression_evaluate(delay->delay, scope)) * unit_c);
+			
+			if (delay->size)
+				delay_size = (uint32_t)(ceilf(kest_expression_evaluate(res->size, scope)) * unit_c);
 			else
-				size = delay;
+				delay_size = delay_samples + 4;
 			
-			if (size < delay + 128)
-				size = delay + 128;
+			delay_size += 4 - (delay_size % 4);
 			
-			kest_fpga_batch_append_24(batch, size);
-			kest_fpga_batch_append_24(batch, delay);
+			if (delay_size < delay_samples + 4)
+				delay_size = delay_samples + 4;
+			
+			kest_fpga_batch_append_24(batch, delay_size);
+			kest_fpga_batch_append_24(batch, delay_samples);
 			
 			break;
 		case KEST_DSP_RESOURCE_FILTER:
@@ -751,7 +798,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 {
 	int n = seq.len;
 	
-	KEST_PRINTF_FORCE("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
+	KEST_PRINTF_FORCE_("Reading out FPGA transfer batch %p (length %d)\n", seq.buf, n);
 	
 	if (!seq.buf)
 	{
@@ -1107,7 +1154,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 	}
 	
 	kest_string_append(&str, '\0');
-	KEST_PRINTF_FORCE(str.entries);
+	KEST_PRINTF_FORCE_(str.entries);
 	kest_string_destroy(&str);
 	
 	return 0;

@@ -29,6 +29,64 @@ typedef struct {
 
 DECLARE_LIST(kest_dictionary_entry);
 
+#define KEST_EFF_ENTRY_TYPE_NOT_FOUND 	22222
+#define KEST_EFF_ENTRY_TYPE_NOTHING 	22221
+#define KEST_EFF_ENTRY_TYPE_STR 		2
+#define KEST_EFF_ENTRY_TYPE_EXPR 		3
+#define KEST_EFF_ENTRY_TYPE_SUBDICT		4
+#define KEST_EFF_ENTRY_TYPE_LIST		5
+
+struct kest_eff_entry_dict;
+struct kest_eff_entry_list;
+
+typedef struct {
+	const char *name;
+	int type;
+	int line;
+	union {
+		const char *val_string;
+		kest_expression *val_expr;
+		struct kest_eff_entry_dict *val_dict;
+		struct kest_eff_entry_list *val_list;
+	} value;
+} kest_eff_entry;
+
+DECLARE_LIST(kest_eff_entry);
+
+typedef struct kest_eff_entry_dict {
+	kest_eff_entry *entries;
+	size_t capacity;
+	size_t count;
+} kest_eff_entry_dict;
+
+int kest_eff_entry_dict_init(kest_eff_entry_dict *dict);
+void kest_eff_entry_dict_print(kest_eff_entry_dict *dict);
+
+size_t kest_eff_entry_dict_count(kest_eff_entry_dict *dict);
+
+int kest_eff_entry_dict_insert(kest_eff_entry_dict *dict, const char *key, kest_eff_entry entry);
+
+const char *kest_eff_entry_dict_index_key(kest_eff_entry_dict *dict, size_t i);
+kest_eff_entry *kest_eff_entry_dict_index(kest_eff_entry_dict *dict, size_t i);
+kest_eff_entry *kest_eff_entry_dict_lookup(kest_eff_entry_dict *dict, const char *key);
+
+const char *kest_eff_entry_type_to_string(int type);
+const char *kest_eff_entry_type_to_string_nice(int type);
+kest_string *kest_eff_entry_to_string(kest_eff_entry *entry);
+kest_string *kest_eff_entry_to_string_nice(kest_eff_entry *entry);
+
+
+struct kest_eff_parsing_state;
+
+int kest_parse_eff_entry(struct kest_eff_parsing_state *ps, kest_eff_entry *result);
+int kest_parse_eff_entries(struct kest_eff_parsing_state *ps, kest_eff_entry_dict *dict);
+
+
+
+
+
+
+
 const char *kest_dict_entry_type_to_string(int type);
 const char *kest_dict_entry_type_to_string_nice(int type);
 kest_string *kest_dict_entry_to_string(kest_dictionary_entry *entry);
@@ -91,12 +149,8 @@ int kest_dictionary_lookup_expr (kest_dictionary *dict, const char *name, kest_e
 int kest_dictionary_lookup_list (kest_dictionary *dict, const char *name, kest_dictionary_entry_list **result);
 int kest_dictionary_lookup_dict (kest_dictionary *dict, const char *name, kest_dictionary **result);
 
-#define ERR_NOT_FOUND  10
-#define ERR_WRONG_TYPE 11
-
 void print_dict(kest_dictionary *dict);
 
-struct kest_eff_parsing_state;
 
 int kest_parse_dict_val(struct kest_eff_parsing_state *ps, kest_dictionary *dict, kest_dictionary_entry *result);
 int kest_parse_dictionary(struct kest_eff_parsing_state *ps, kest_dictionary **result, const char *name);

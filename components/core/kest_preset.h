@@ -21,6 +21,7 @@ typedef struct kest_preset
 	struct kest_sequence *sequence;
 	#endif
 	
+	int alive;
 	int active;
 	int unsaved_changes;
 	
@@ -87,6 +88,7 @@ int kest_preset_update_id_representations		(kest_preset *preset);
 
 int kest_preset_create_fpga_transfer_batch(kest_preset *preset, kest_fpga_transfer_batch *batch);
 int kest_preset_if_active_update_fpga(kest_preset *preset);
+int kest_preset_if_active_reprogram_fpga(kest_preset *preset);
 int kest_preset_program_fpga(kest_preset *preset);
 
 void kest_preset_file_rep_update(void *representer, void *representee);
@@ -96,6 +98,8 @@ kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id);
 int kest_preset_activate_dma(kest_preset *preset);
 int kest_preset_deactivate_dma(kest_preset *preset);
 
+int kest_preset_activate_lfos(kest_preset *preset);
+int kest_preset_deactivate_lfos(kest_preset *preset);
 
 DECLARE_POOL(kest_preset);
 extern kest_allocator kest_preset_allocator;
