@@ -361,8 +361,8 @@ int kest_fpga_transfer_batch_append_effect_updates(kest_fpga_transfer_batch *bat
 		return NO_ERROR;
 	}
 	
-	kest_fpga_transfer_batch_append_effect_register_updates_(&batch, effect, effect->block_position);
-	kest_fpga_transfer_batch_append_effect_resource_updates_(&batch, effect, &effect->position_);
+	kest_fpga_transfer_batch_append_effect_register_updates_(batch, effect, effect->block_position);
+	kest_fpga_transfer_batch_append_effect_resource_updates_(batch, effect, &effect->position_);
 	
 	kest_scope_clear_updates(effect->scope);
 	
@@ -438,6 +438,8 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	
 	float unit_c;
 	
+	KEST_PRINTF("res->type = %d\n", res->type);
+	
 	switch (res->type)
 	{
 		case KEST_DSP_RESOURCE_DELAY:
@@ -478,6 +480,7 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 			kest_fpga_batch_append_24(batch, delay_samples);
 			
 			break;
+			
 		case KEST_DSP_RESOURCE_FILTER:
 			KEST_PRINTF("Filter %p\n", filter);
 			if (!filter)
@@ -837,7 +840,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 		if (str.count >= 128)
 		{
 			kest_string_append(&str, '\0');
-			KEST_PRINTF_FORCE(str.entries);
+			KEST_PRINTF_FORCE_(str.entries);
 			kest_string_drain(&str);
 		}
 		

@@ -1607,6 +1607,7 @@ kest_dsp_resource *kest_extract_mem(kest_eff_parsing_state *ps, kest_eff_entry_d
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
 	resource->type = KEST_DSP_RESOURCE_MEM;
 	resource->mem_size = 1;
 	
@@ -1714,6 +1715,8 @@ kest_dsp_resource *kest_extract_delay(kest_eff_parsing_state *ps, kest_eff_entry
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
+	resource->type = KEST_DSP_RESOURCE_DELAY;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -1828,6 +1831,8 @@ kest_dsp_resource *kest_extract_filter(kest_eff_parsing_state *ps, kest_eff_entr
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
+	resource->type = KEST_DSP_RESOURCE_FILTER;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -1998,6 +2003,8 @@ kest_dsp_resource *kest_extract_lpf(kest_eff_parsing_state *ps, kest_eff_entry_d
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
+	resource->type = KEST_DSP_RESOURCE_FILTER;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -2131,6 +2138,8 @@ kest_dsp_resource *kest_extract_hpf(kest_eff_parsing_state *ps, kest_eff_entry_d
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
+	resource->type = KEST_DSP_RESOURCE_FILTER;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -2263,6 +2272,8 @@ kest_dsp_resource *kest_extract_bpf(kest_eff_parsing_state *ps, kest_eff_entry_d
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	
+	resource->type = KEST_DSP_RESOURCE_FILTER;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -2423,6 +2434,7 @@ kest_dsp_resource *kest_extract_lfo(kest_eff_parsing_state *ps, kest_eff_entry_d
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	resource->type = KEST_DSP_RESOURCE_LFO;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)
@@ -2446,7 +2458,6 @@ kest_dsp_resource *kest_extract_lfo(kest_eff_parsing_state *ps, kest_eff_entry_d
 		lfo->mode = KEST_LFO_MODE_MIN_MAX;
 	
 	resource->data = (void*)lfo;
-	resource->type = KEST_DSP_RESOURCE_LFO;
 	
 	size_t n = kest_eff_entry_dict_count(dict);
 	
