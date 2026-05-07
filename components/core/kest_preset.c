@@ -257,7 +257,7 @@ int kest_preset_remove_effect(kest_preset *preset, uint16_t id)
 	
 	int ret_val = kest_pipeline_remove_effect(&preset->pipeline, id);
 	
-	kest_preset_if_active_update_fpga(preset);
+	kest_preset_if_active_reprogram_fpga(preset);
 	
 	kest_queue_preset_save(preset);
 	

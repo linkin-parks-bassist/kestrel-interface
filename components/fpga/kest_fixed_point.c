@@ -49,11 +49,16 @@ int16_t float_to_q15(float x)
 
 int kest_expression_compute_format(kest_expression *expr, kest_scope *scope, int fmax, int width)
 {
+	KEST_PRINTF("kest_expression_compute_format([%s])\n", kest_expression_to_string(expr));
+	
+	fflush(stdout);
+	
 	if (!expr) return 0;
 	
-	kest_interval range = kest_expression_compute_range(expr, scope);
-	float min = range.a;
-	float max = range.b;
+	float min = kest_expression_compute_min(expr, scope);
+	float max = kest_expression_compute_max(expr, scope);
+	
+	kest_interval range = kest_interval_ab(min, max);
 	
 	kest_string string;
 	kest_string_init(&string);

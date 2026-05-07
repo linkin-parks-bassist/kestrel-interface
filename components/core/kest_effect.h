@@ -121,11 +121,16 @@ int kest_effect_deactivate_lfos(kest_effect *effect);
 int kest_effect_activate_lfos_async(kest_effect *effect);
 int kest_effect_deactivate_lfos_async(kest_effect *effect);
 
+int kest_effect_enable(kest_effect *effect);
+int kest_effect_disable(kest_effect *effect);
+
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);
 
 void kest_effect_update_sync(void *effect_);
 void kest_effect_update_sync_no_pw(void *effect_);
+
+int kest_effect_update_position(kest_effect *effect, kest_effect_fpga_position pos);
 
 DECLARE_POOL(kest_effect);
 extern kest_allocator kest_effect_allocator;

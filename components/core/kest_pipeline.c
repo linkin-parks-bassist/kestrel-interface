@@ -86,8 +86,8 @@ int kest_pipeline_remove_effect(kest_pipeline *pipeline, uint16_t id)
 	{
 		if (current->data && current->data->id == id)
 		{
-			if (current->data)
-				free_effect(current->data);
+			kest_effect_disable(current->data);
+			free_effect(current->data);
 			
 			if (prev)
 				prev->next = current->next;

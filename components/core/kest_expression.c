@@ -8,7 +8,7 @@
 
 #define PRINTLINES_ALLOWED 0
 
-//#define KEST_EXPR_EVAL_VERBOSE
+#define KEST_EXPR_EVAL_VERBOSE
 //#define KEST_BOUNDS_CHECK_VERBOSE
 
 static const char *FNAME = "kest_expression.c";
@@ -27,6 +27,11 @@ kest_expression_pool kest_expression_mem_pool;
 	.cached = 1,						\
 	.cached_val = (float)(x)			\
 };
+
+void max_depth_bp(const char *string)
+{
+	return;
+}
 
 kest_expression kest_expression_standard_gain_min 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MIN);
 kest_expression kest_expression_standard_gain_max 	= KEST_EXPRESSION_CONST(KEST_STANDARD_GAIN_MAX);
@@ -397,8 +402,14 @@ int kest_expression_is_constant(kest_expression *expr)
 
 int kest_expression_detect_constants_rec(kest_expression *expr, int depth)
 {
-	if (!expr || depth > KEST_EXPR_REC_MAX_DEPTH)
+	if (!expr)
 		return 1;
+	
+	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
+		return 1;
+	}
 	
 	//KEST_PRINTF("The expression \"%s\" ", kest_expression_to_string(expr));
 	
@@ -451,7 +462,6 @@ int kest_expression_detect_constants(kest_expression *expr)
 
 float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth)
 {
-	
 	kest_parameter_pll *current;
 	kest_scope_entry *ref;
 	kest_parameter *param;
@@ -469,6 +479,7 @@ float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
+		max_depth_bp(kest_expression_to_string(expr));
 		KEST_PRINTF("kest_expression_evaluate(): Error: maximum recursion depth %d exceeded (possible dependency loop)\n", KEST_EXPR_REC_MAX_DEPTH);
 		ret_val = 0.0;
 		goto expr_compute_return;
@@ -694,7 +705,10 @@ int kest_expression_references_param_rec(kest_expression *expr, kest_parameter *
 	}
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
 		return NO_ERROR;
+	}
 	
 	for (int i = 0; i < arity; i++)
 	{
@@ -750,6 +764,1150 @@ kest_interval kest_interval_singleton(float v)
 	return result;
 }
 
+float kest_expression_compute_max_rec(kest_expression *expr, kest_scope *scope, int depth);
+
+float kest_expression_compute_min_rec(kest_expression *expr, kest_scope *scope, int depth)
+{
+	kest_parameter_pll *current;
+	kest_scope_entry *ref;
+	int found;
+	
+	//KEST_PRINTF("[Depth: %d] Computing min for expression \"%s\"...\n", depth, kest_expression_to_string(expr));
+	
+	float p1, p2, p3, p4;
+	float z;
+	int k;
+	
+	float ret = -FLT_MAX;
+	
+	float x_min = 0.0f;
+	float x_max = 0.0f;
+	float y_min = 0.0f;
+	float y_max = 0.0f;
+	
+	int x_min_needed = 0;
+	int x_max_needed = 0;
+	
+	int y_min_needed = 0;
+	int y_max_needed = 0;
+	
+	kest_interval y_int_d;
+	
+	kest_lfo *lfo;
+	
+	int p_c = 0;
+	
+	if (!expr)
+	{
+		goto expr_int_ret;
+	}
+	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
+		goto expr_int_ret;
+	}
+	
+	if (expr->constant && expr->cached)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is constant (and cached!), with known value %.3f.\n", depth, expr->cached_val);
+		#endif
+		ret = expr->cached_val;
+		goto expr_int_ret;
+	}
+	
+	if (expr->type == KEST_EXPR_CONST)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is constant and cached, with value %.3f.\n", depth, expr->val.val_float);
+		#endif
+		ret = expr->val.val_float;
+		goto expr_int_ret;
+	}
+	
+	if (expr->type == KEST_EXPR_REF)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is a reference, to \"%s\". Therefore we must compute its min.\n", depth, expr->val.ref_name ? expr->val.ref_name : "(NULL)");
+		#endif
+		if (kest_expression_is_constant_reference(expr))
+		{
+			#ifdef KEST_BOUNDS_CHECK_VERBOSE
+			KEST_PRINTF("[Depth: %d] The referenced value is a constant,", depth);
+			#endif
+			if (expr->cached)
+				ret = expr->cached_val;
+			else
+				ret = kest_expression_evaluate(expr, NULL);
+			#ifdef KEST_BOUNDS_CHECK_VERBOSE
+			KEST_PRINTF(" with value %.4f\n", ret);
+			#endif
+			goto expr_int_ret;
+		}
+		
+		if (!scope)
+		{
+			KEST_PRINTF("Error estimating expression (%p): expression refers to non-constant \"%s\", but no scope given!\n",
+				expr->val.ref_name);
+			goto expr_int_ret;
+		}
+		
+		ref = kest_scope_fetch(scope, expr->val.ref_name);
+		
+		if (!ref)
+		{
+			KEST_PRINTF("Error estimating expression (%p): expression refers to non-constant \"%s\", but it isn't found in scope!\n",
+				expr, expr->val.ref_name);
+			goto expr_int_ret;
+		}
+		
+		switch (ref->type)
+		{
+			case KEST_SCOPE_ENTRY_TYPE_EXPR:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The referred quantity is an expression, so we recurse and compute its min!\n", depth);
+				#endif
+				ret = kest_expression_compute_min_rec(ref->val.expr, scope, depth + 1);
+				break;
+				
+			case KEST_SCOPE_ENTRY_TYPE_PARAM:
+				if (!ref->val.param)
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("The reference is to a parameter, but, ultimately, it turned up NULL!\n");
+					#endif
+				}
+				else
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] The reference is to a parameter. We compute its min.\n", depth);
+					#endif
+					if (ref->val.param->min_expr)
+					{
+						ret = kest_expression_evaluate_rec(ref->val.param->min_expr, scope, depth + 1);
+					}
+					else
+					{
+						ret = ref->val.param->min;
+					}
+					
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] Obtained parameter min %.4f.\n", depth, ret);
+					#endif
+				}
+				break;
+			
+			case KEST_SCOPE_ENTRY_TYPE_SETTING:
+				if (!ref->val.setting)
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("The reference is to a setting, but, ultimately, it turned up NULL!\n");
+					#endif
+				}
+				else
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] The reference is to a setting. We compute its min.\n", depth);
+					#endif
+					ret = ref->val.setting->min;
+					
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] Obtained setting min %.4f.\n", depth, ret);
+					#endif
+				}
+				break;
+
+			case KEST_SCOPE_ENTRY_TYPE_MEM:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to a mem slot. Those have min [-1, 1).\n", depth);
+				#endif
+				ret = -1.0f;
+				break;
+
+			case KEST_SCOPE_ENTRY_TYPE_LFO:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to an lfo.\n", depth);
+				#endif
+				
+				lfo = (kest_lfo*)ref->val.lfo;
+				
+				if (!lfo)
+				{
+					
+				}
+				else
+				{
+					ret = kest_expression_compute_min_rec(lfo->min, scope, depth + 1);
+				}
+				break;
+				
+			default:
+				KEST_PRINTF("Error estimating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
+					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
+				break;
+		}
+		
+		goto expr_int_ret;
+	}
+	
+	int arity = kest_expression_arity(expr);
+	
+	#ifdef KEST_BOUNDS_CHECK_VERBOSE
+	KEST_PRINTF("[Depth: %d] The expression has top-level arity %d; therefore we recurse and compute mins of its top-level sub-expressions.\n", depth, arity);
+	#endif
+	
+	if (arity >= 1)
+	{
+		x_min_needed = (
+				expr->type == KEST_EXPR_ADD 	||
+				expr->type == KEST_EXPR_SQRT 	||
+				expr->type == KEST_EXPR_LN 		||
+				expr->type == KEST_EXPR_ASIN 	||
+				expr->type == KEST_EXPR_ACOS 	||
+				expr->type == KEST_EXPR_ATAN 	||
+				expr->type == KEST_EXPR_LOG10 	||
+				expr->type == KEST_EXPR_TANH 	||
+				expr->type == KEST_EXPR_SINH 	||
+				expr->type == KEST_EXPR_EXP 	||
+				expr->type == KEST_EXPR_SUB 	||
+				expr->type == KEST_EXPR_SQR 	||
+				expr->type == KEST_EXPR_COSH 	||
+				expr->type == KEST_EXPR_ABS 	||
+				expr->type == KEST_EXPR_MUL 	||
+				expr->type == KEST_EXPR_DIV 	||
+				expr->type == KEST_EXPR_POW 	||
+				expr->type == KEST_EXPR_COS 	||
+				expr->type == KEST_EXPR_SIN 	||
+				expr->type == KEST_EXPR_TAN
+			);
+		x_max_needed = (
+				expr->type == KEST_EXPR_NEG 	||
+				expr->type == KEST_EXPR_ACOS 	||
+				expr->type == KEST_EXPR_MUL 	||
+				expr->type == KEST_EXPR_SQR 	||
+				expr->type == KEST_EXPR_COSH 	||
+				expr->type == KEST_EXPR_ABS 	||
+				expr->type == KEST_EXPR_DIV 	||
+				expr->type == KEST_EXPR_POW 	||
+				expr->type == KEST_EXPR_COS 	||
+				expr->type == KEST_EXPR_SIN 	||
+				expr->type == KEST_EXPR_TAN
+			);
+		
+		if (x_min_needed)
+			x_min = kest_expression_compute_min_rec(expr->sub_exprs[0], scope, depth + 1);
+		if (x_max_needed)
+			x_max = kest_expression_compute_max_rec(expr->sub_exprs[0], scope, depth + 1);
+	}
+	if (arity >  1)
+	{
+		y_min_needed = (
+				expr->type == KEST_EXPR_ADD ||
+				expr->type == KEST_EXPR_MUL ||
+				expr->type == KEST_EXPR_DIV ||
+				expr->type == KEST_EXPR_POW
+			);
+		y_max_needed = (
+				expr->type == KEST_EXPR_MUL ||
+				expr->type == KEST_EXPR_DIV ||
+				expr->type == KEST_EXPR_POW
+			);
+		
+		if (y_min_needed)
+			y_min = kest_expression_compute_min_rec(expr->sub_exprs[1], scope, depth + 1);
+		if (y_max_needed)
+			y_max = kest_expression_compute_max_rec(expr->sub_exprs[1], scope, depth + 1);
+	}
+	
+	switch (expr->type)
+	{
+		case KEST_EXPR_NEG:
+			ret = -x_max;
+			goto expr_int_ret;
+		
+		case KEST_EXPR_ADD:
+			ret = x_min + y_min;
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SQRT:
+			if (x_min < 0) ret = 0;
+			else ret = sqrt(x_min);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LN:
+			if (x_min <= 0)
+				ret = -FLT_MAX;
+			else
+				ret = log(x_min);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ASIN:
+			if (x_min < -1)
+				ret = -M_PI / 2;
+			else if (x_min > 1)
+				ret = M_PI / 2;
+			else
+				ret = asin(x_min);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ACOS:
+			if (x_max < -1) ret = M_PI;
+			else if (x_max > 1) ret = 0.0f;
+			else ret = acos(x_max);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ATAN:
+			ret = atan(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LOG10:
+			ret = log10(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_TANH:
+			ret = tanh(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SINH:
+			ret = sinh(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_EXP:
+			ret = exp(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SUB:
+			ret = x_min - y_max;
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SQR:
+			if (x_min < 0)
+			{
+				if (x_max > 0) ret = 0.0; 
+				else ret = x_max * x_max; 
+			}
+			else
+			{
+				ret = x_min * x_min;
+			}
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_COSH:
+			if (x_min < 0)
+			{
+				if (x_max > 0) ret = 1.0; 
+				else ret = cosh(x_max); 
+			}
+			else
+			{
+				ret = cosh(x_min);
+			}
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ABS:
+			if (x_min < 0)
+			{
+				if (x_max > 0) ret = 0.0; 
+				else ret = -x_max;
+			}
+			else
+			{
+				ret = x_min;
+			}
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_MUL:
+			p1 = x_min * y_min;
+			p2 = x_min * y_max;
+			p3 = x_max * y_min;
+			p4 = x_max * y_max;
+			
+			z = p1;
+			if (p2 < z) z = p2;
+			if (p3 < z) z = p3;
+			if (p4 < z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_DIV:
+			// If y crosses 0, trouble ensues
+			if (y_min <= 0.0f && 0.0f <= y_max)
+			{
+				// and x is strictly negative or strictly positive,
+				if (x_min > 0.0f || x_max < 0.0f)
+				{
+					// then the sign is that of y, can be
+					// either, and the abs can be arbitrarily
+					// large. ignore the possibility of
+					// disconnected min; our interval
+					// type cannot represent this, regardless
+					
+					goto expr_int_ret;
+				}
+				else if (x_min == 0.0f && x_max == 0.0f)
+				{
+					// if x is identically zero, then the division
+					// vanishes wherever it is defined, so call
+					// the min {0}.
+					ret = 0.0f;
+					goto expr_int_ret;
+				}
+				else
+				{
+					// In the final case, x can cross 0 as well. 
+					// All bets are off here; possibly x *equals* y,
+					// so x / y is identically 1. However, for our
+					// purposes, we take the safest route, and call
+					// it surjective
+					
+					goto expr_int_ret;
+				}	
+			}
+			
+			/*
+			 * In the case that y does not cross 0,
+			 * we can take the min of the four corners
+			 * as we did for multiplication, but multiplying
+			 * by 1/y.
+			 */
+			
+			// Clamp y away from 0, for safety
+			if (y_min < 0.0f && y_min > -1e-20f) y_min = -1e-20f;
+			if (y_min > 0.0f && y_min <  1e-20f) y_min =  1e-20f;
+			
+			if (y_max < 0.0f && y_max > -1e-20f) y_max = -1e-20f;
+			if (y_max > 0.0f && y_max <  1e-20f) y_max =  1e-20f;
+			
+			y_int_d.a = (fabsf(y_min) < 1e-20) ? FLT_MAX : 1.0 / y_min;
+			y_int_d.b = (fabsf(y_max) < 1e-20) ? FLT_MAX : 1.0 / y_max;
+			
+			p1 = x_min * y_int_d.a;
+			p2 = x_min * y_int_d.b;
+			p3 = x_max * y_int_d.a;
+			p4 = x_max * y_int_d.b;
+			
+						z = p1;
+			if (p2 < z) z = p2;
+			if (p3 < z) z = p3;
+			if (p4 < z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_POW:
+			
+			// Negative bases for powers cause sign nonsense.
+			// Ignore them. Accept that results will be wrong
+			
+			if (x_min < 0)
+				x_min = 0;
+			if (x_max < 0)
+				x_max = 0;
+			
+			if (x_min == 0 && x_max == 0)
+			{
+				ret = 0.0f;
+				goto expr_int_ret;
+			}
+			
+			p1 = pow(x_min, y_min);
+			p2 = pow(x_min, y_max);
+			p3 = pow(x_max, y_min);
+			p4 = pow(x_max, y_max);
+			
+			z = p1;
+			if (p2 < z) z = p2;
+			if (p3 < z) z = p3;
+			if (p4 < z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_COS:
+			// I am preposterously lazy and decided 
+			// to re-use the code for sin for cos,
+			// with the arguments shifted by pi/2.
+			// Mathematically provable to be correct.
+			// Fight me
+			x_min = x_min + (0.5*M_PI);
+			x_max = x_max + (0.5*M_PI);
+		case KEST_EXPR_SIN:
+			// If the min of x contains a whole period of sin,
+			// the min sin(x) is the min of sin. Easy!
+			if (x_max - x_min > (2.0*M_PI))
+			{
+				ret = -1;
+				goto expr_int_ret;
+			}
+			
+			// Detect whether there is a minimum of sin in the interval.
+			// minima have the form pi/2 + 2pi*k. Therefore, we compute
+			// the smallest such number exceeding x_min by means of 
+			// computing the smallest k for which pi/2 + 2pi*k exceeds
+			// x_min. This is gotten by looking pi/2-on from x_min,
+			// dividing by 2pi, and rounding up.
+			k = (int)ceilf((x_min + (0.5*M_PI)) / (2.0*M_PI));
+			
+			// Then, the smallest minimum of sin exceeding x_min
+			// is given by pi/2 + 2pi*k. It lives in the interval
+			// [x_min, x_max] precisely when it is leq x_max,
+			// in which case there is a minimum of sin in that interval
+			// and therefore, the minimum of our min is -1.
+			if (-(0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+			{
+				ret = -1;
+			}
+			else
+			{
+				// Otherwise, sin has no local minima in the interval, and
+				// therefore, since it is smooth, its minimum over that interval
+				// is found at an endpoint. So, compute the values there and
+				// take the minimum thereof.
+				p1 = sin(x_min);
+				p2 = sin(x_max);
+				
+				p_c = 1;
+				
+				if (p2 < p1) ret = p2;
+				else ret = p1;
+			}
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_TAN:
+			// If the min of x contains a period,
+			// then it contains a singularity of tan,
+			// so declare the min to be \mathbb R.
+			if (x_max - x_min >= M_PI)
+			{
+				
+			}
+			else
+			{
+				// ... otherwise, we can carefully detect whether there is
+				// a singularity in the interval; since tan = sin/cos,
+				// singularities of tan correspond to zeroes of cos,
+				// and cos vanishes precisely when |sin| = 1. Therefore,
+				// we can reuse the logic for detecting minima and maxima
+				// of sine!
+				k = (int)ceilf((x_min - (0.5*M_PI)) / (2.0*M_PI));
+				
+				if ((0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+				{
+					
+				}
+				else
+				{
+					k = (int)ceilf((x_min + M_PI/2) / (2.0*M_PI));
+			
+					if (-(0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+					{
+						
+					}
+					else
+					{
+						// Finally, if there is no singularity in the
+						// interval, then, since tan is monotone
+						// increasing on any connected subset of its
+						// domain, we simply apply it.
+						ret = tan(x_min);
+					}
+				}
+			}
+			
+			goto expr_int_ret;
+		
+		default:
+			goto expr_int_ret;
+	}
+	
+expr_int_ret:
+	
+	KEST_PRINTF("[Depth: %d] The min of \"%s\" is %.4f.\n", depth, kest_expression_to_string(expr), ret);
+	
+	return ret;
+}
+
+// Just a wrapper function to call the recursive function starting from depth 0
+float kest_expression_compute_min(kest_expression *expr, kest_scope *scope)
+{
+	return kest_expression_compute_min_rec(expr, scope, 0);
+}
+
+float kest_expression_compute_max_rec(kest_expression *expr, kest_scope *scope, int depth)
+{
+	kest_parameter_pll *current;
+	kest_scope_entry *ref;
+	int found;
+	
+	//KEST_PRINTF("[Depth: %d] Computing min for expression \"%s\"...\n", depth, kest_expression_to_string(expr));
+	
+	float p1, p2, p3, p4;
+	float z;
+	int k;
+	
+	float ret = FLT_MAX;
+	
+	float x_min = 0.0f;
+	float x_max = 0.0f;
+	float y_min = 0.0f;
+	float y_max = 0.0f;
+	
+	int x_min_needed = 0;
+	int x_max_needed = 0;
+	
+	int y_min_needed = 0;
+	int y_max_needed = 0;
+	
+	kest_interval y_int_d;
+	
+	kest_lfo *lfo;
+	
+	int p_c = 0;
+	
+	if (!expr)
+	{
+		
+		goto expr_int_ret;
+	}
+	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
+		goto expr_int_ret;
+	}
+	
+	if (expr->constant && expr->cached)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is constant (and cached!), with known value %.3f.\n", depth, expr->cached_val);
+		#endif
+		ret = expr->cached_val;
+		goto expr_int_ret;
+	}
+	
+	if (expr->type == KEST_EXPR_CONST)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is constant and cached, with value %.3f.\n", depth, expr->val.val_float);
+		#endif
+		ret = expr->val.val_float;
+		goto expr_int_ret;
+	}
+	
+	if (expr->type == KEST_EXPR_REF)
+	{
+		#ifdef KEST_BOUNDS_CHECK_VERBOSE
+		KEST_PRINTF("[Depth: %d] Expression is a reference, to \"%s\". Therefore we must compute its max.\n", depth, expr->val.ref_name ? expr->val.ref_name : "(NULL)");
+		#endif
+		if (kest_expression_is_constant_reference(expr))
+		{
+			#ifdef KEST_BOUNDS_CHECK_VERBOSE
+			KEST_PRINTF("[Depth: %d] The referenced value is a constant,", depth);
+			#endif
+			if (expr->cached)
+				ret = expr->cached_val;
+			else
+				ret = kest_expression_evaluate(expr, NULL);
+			#ifdef KEST_BOUNDS_CHECK_VERBOSE
+			KEST_PRINTF(" with value %.4f\n", ret);
+			#endif
+			goto expr_int_ret;
+		}
+		
+		if (!scope)
+		{
+			KEST_PRINTF("Error estimating expression (%p): expression refers to non-constant \"%s\", but no scope given!\n",
+				expr->val.ref_name);
+			
+			goto expr_int_ret;
+		}
+		
+		ref = kest_scope_fetch(scope, expr->val.ref_name);
+		
+		if (!ref)
+		{
+			KEST_PRINTF("Error estimating expression (%p): expression refers to non-constant \"%s\", but it isn't found in scope!\n",
+				expr, expr->val.ref_name);
+			
+			goto expr_int_ret;
+		}
+		
+		switch (ref->type)
+		{
+			case KEST_SCOPE_ENTRY_TYPE_EXPR:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The referred quantity is an expression, so we recurse and compute its max!\n", depth);
+				#endif
+				ret = kest_expression_compute_max_rec(ref->val.expr, scope, depth + 1);
+				break;
+				
+			case KEST_SCOPE_ENTRY_TYPE_PARAM:
+				if (!ref->val.param)
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("The reference is to a parameter, but, ultimately, it turned up NULL!\n");
+					#endif
+					
+				}
+				else
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] The reference is to a parameter. We compute its max.\n", depth);
+					#endif
+					if (ref->val.param->max_expr)
+					{
+						ret = kest_expression_evaluate_rec(ref->val.param->max_expr, scope, depth + 1);
+					}
+					else
+					{
+						ret = ref->val.param->max;
+					}
+					
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] Obtained parameter max %.4f.\n", depth, ret);
+					#endif
+				}
+				break;
+			
+			case KEST_SCOPE_ENTRY_TYPE_SETTING:
+				if (!ref->val.setting)
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("The reference is to a setting, but, ultimately, it turned up NULL!\n");
+					#endif
+					
+				}
+				else
+				{
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] The reference is to a setting. We compute its max.\n", depth);
+					#endif
+					ret = ref->val.setting->max;
+					
+					#ifdef KEST_BOUNDS_CHECK_VERBOSE
+					KEST_PRINTF("[Depth: %d] Obtained setting max %.4f.\n", depth, ret);
+					#endif
+				}
+				break;
+
+			case KEST_SCOPE_ENTRY_TYPE_MEM:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to a mem slot. Those have max [-1, 1).\n", depth);
+				#endif
+				ret =  1.0f - powf(2.0f, -((float)KEST_FPGA_DATA_WIDTH - 1.0f));
+				break;
+
+			case KEST_SCOPE_ENTRY_TYPE_LFO:
+				#ifdef KEST_BOUNDS_CHECK_VERBOSE
+				KEST_PRINTF("[Depth: %d] The reference is to an lfo.\n", depth);
+				#endif
+				
+				lfo = (kest_lfo*)ref->val.lfo;
+				
+				if (!lfo)
+				{
+					
+				}
+				else
+				{
+					ret = kest_expression_compute_max_rec(lfo->max, scope, depth + 1);
+				}
+				break;
+				
+			default:
+				KEST_PRINTF("Error estimating expression \"%s\": expression refers to non-constant \"%s\", but it has unrecognised type %d!\n",
+					kest_expression_to_string(expr), expr->val.ref_name, ref->type);
+				
+				break;
+		}
+		
+		goto expr_int_ret;
+	}
+	
+	int arity = kest_expression_arity(expr);
+	
+	#ifdef KEST_BOUNDS_CHECK_VERBOSE
+	KEST_PRINTF("[Depth: %d] The expression has top-level arity %d; therefore we recurse and compute maxs of its top-level sub-expressions.\n", depth, arity);
+	#endif
+	
+	if (arity >= 1)
+	{
+		x_min_needed = (
+				
+				expr->type == KEST_EXPR_NEG 	||
+				expr->type == KEST_EXPR_SQR 	||
+				expr->type == KEST_EXPR_COSH 	||
+				expr->type == KEST_EXPR_ABS 	||
+				expr->type == KEST_EXPR_MUL 	||
+				expr->type == KEST_EXPR_DIV 	||
+				expr->type == KEST_EXPR_POW 	||
+				expr->type == KEST_EXPR_COS 	||
+				expr->type == KEST_EXPR_SIN 	||
+				expr->type == KEST_EXPR_TAN
+			);
+		x_max_needed = (
+				expr->type == KEST_EXPR_ADD 	||
+				expr->type == KEST_EXPR_SQRT 	||
+				expr->type == KEST_EXPR_LN 		||
+				expr->type == KEST_EXPR_ASIN 	||
+				expr->type == KEST_EXPR_ACOS 	||
+				expr->type == KEST_EXPR_ATAN 	||
+				expr->type == KEST_EXPR_LOG10 	||
+				expr->type == KEST_EXPR_TANH 	||
+				expr->type == KEST_EXPR_SINH 	||
+				expr->type == KEST_EXPR_COSH 	||
+				expr->type == KEST_EXPR_ABS 	||
+				expr->type == KEST_EXPR_EXP 	||
+				expr->type == KEST_EXPR_SUB 	||
+				expr->type == KEST_EXPR_MUL 	||
+				expr->type == KEST_EXPR_DIV 	||
+				expr->type == KEST_EXPR_POW 	||
+				expr->type == KEST_EXPR_COS 	||
+				expr->type == KEST_EXPR_SIN 	||
+				expr->type == KEST_EXPR_TAN
+		
+			);
+		
+		if (x_min_needed)
+			x_min = kest_expression_compute_min_rec(expr->sub_exprs[0], scope, depth + 1);
+		if (x_max_needed)
+			x_max = kest_expression_compute_max_rec(expr->sub_exprs[0], scope, depth + 1);
+	}
+	if (arity >  1)
+	{
+		y_min_needed = (
+				expr->type == KEST_EXPR_SUB ||
+				expr->type == KEST_EXPR_MUL ||
+				expr->type == KEST_EXPR_DIV ||
+				expr->type == KEST_EXPR_POW
+			);
+		y_max_needed = (
+				expr->type == KEST_EXPR_ADD ||
+				expr->type == KEST_EXPR_MUL ||
+				expr->type == KEST_EXPR_DIV ||
+				expr->type == KEST_EXPR_POW
+			);
+		
+		if (y_min_needed)
+			y_min = kest_expression_compute_min_rec(expr->sub_exprs[1], scope, depth + 1);
+		if (y_max_needed)
+			y_max = kest_expression_compute_max_rec(expr->sub_exprs[1], scope, depth + 1);
+	}
+	
+	switch (expr->type)
+	{
+		case KEST_EXPR_NEG:
+			ret = -x_min;
+			goto expr_int_ret;
+		
+		case KEST_EXPR_ADD:
+			ret = x_max + y_max;
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SQRT:
+			if (x_max < 0) ret = 0;
+			else ret = sqrt(x_max);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LN:
+			if (x_max <= 0)
+				ret = -FLT_MAX;
+			else
+				ret = log(x_max);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ASIN:
+			if (x_max < -1)
+				ret = -M_PI / 2;
+			else if (x_max > 1)
+				ret = M_PI / 2;
+			else
+				ret = asin(x_max);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ACOS:
+			if (x_max < -1) ret = M_PI;
+			else if (x_max > 1) ret = 0.0f;
+			else ret = acos(x_max);
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ATAN:
+			ret = atan(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LOG10:
+			ret = log10(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_TANH:
+			ret = tanh(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SINH:
+			ret = sin(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_EXP:
+			ret = exp(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SUB:
+			ret = x_max - y_min;
+			goto expr_int_ret;
+			
+		case KEST_EXPR_SQR:
+			p1 = x_min * x_min;
+			p2 = x_max * x_max;
+			
+			if (p2 > p1) ret = p2;
+			else ret = p1;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_COSH:
+
+			p1 = cosh(x_min);
+			p2 = cosh(x_max);
+			
+			if (p2 > p1) ret = p2;
+			else ret = p1;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ABS:
+
+			p1 = fabs(x_min);
+			p2 = fabs(x_max);
+			
+			if (p2 > p1) ret = p2;
+			else ret = p1;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_MUL:
+			p1 = x_min * y_min;
+			p2 = x_min * y_max;
+			p3 = x_max * y_min;
+			p4 = x_max * y_max;
+			
+			z = p1;
+			if (p2 > z) z = p2;
+			if (p3 > z) z = p3;
+			if (p4 > z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_DIV:
+			// If y crosses 0, trouble ensues
+			if (y_min <= 0.0f && 0.0f <= y_max)
+			{
+				// and x is strictly negative or strictly positive,
+				if (x_min > 0.0f || x_max < 0.0f)
+				{
+					// then the sign is that of y, can be
+					// either, and the abs can be arbitrarily
+					// large. ignore the possibility of
+					// disconnected max; our interval
+					// type cannot represent this, regardless
+					
+					goto expr_int_ret;
+				}
+				else if (x_min == 0.0f && x_max == 0.0f)
+				{
+					// if x is identically zero, then the division
+					// vanishes wherever it is defined, so call
+					// the max {0}.
+					ret = 0.0f;
+					goto expr_int_ret;
+				}
+				else
+				{
+					// In the final case, x can cross 0 as well. 
+					// All bets are off here; possibly x *equals* y,
+					// so x / y is identically 1. However, for our
+					// purposes, we take the safest route, and call
+					// it surjective
+					
+					goto expr_int_ret;
+				}	
+			}
+			
+			/*
+			 * In the case that y does not cross 0,
+			 * we can take the max of the four corners
+			 * as we did for multiplication, but multiplying
+			 * by 1/y.
+			 */
+			
+			// Clamp y away from 0, for safety
+			if (y_min < 0.0f && y_min > -1e-20f) y_min = -1e-20f;
+			if (y_min > 0.0f && y_min <  1e-20f) y_min =  1e-20f;
+			
+			if (y_max < 0.0f && y_max > -1e-20f) y_max = -1e-20f;
+			if (y_max > 0.0f && y_max <  1e-20f) y_max =  1e-20f;
+			
+			y_int_d.a = (fabsf(y_min) < 1e-20) ? FLT_MAX : 1.0 / y_min;
+			y_int_d.b = (fabsf(y_max) < 1e-20) ? FLT_MAX : 1.0 / y_max;
+			
+			p1 = x_min * y_int_d.a;
+			p2 = x_min * y_int_d.b;
+			p3 = x_max * y_int_d.a;
+			p4 = x_max * y_int_d.b;
+			
+						z = p1;
+			if (p2 > z) z = p2;
+			if (p3 > z) z = p3;
+			if (p4 > z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_POW:
+			
+			// Negative bases for powers cause sign nonsense.
+			// Ignore them. Accept that results will be wrong
+			
+			if (x_min < 0)
+				x_min = 0;
+			if (x_max < 0)
+				x_max = 0;
+			
+			if (x_min == 0 && x_max == 0)
+			{
+				ret = 1.0f;
+				goto expr_int_ret;
+			}
+			
+			p1 = pow(x_min, y_min);
+			p2 = pow(x_min, y_max);
+			p3 = pow(x_max, y_min);
+			p4 = pow(x_max, y_max);
+			
+			z = p1;
+			if (p2 > z) z = p2;
+			if (p3 > z) z = p3;
+			if (p4 > z) z = p4;
+			
+			ret = z;
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_COS:
+			// I am preposterously lazy and decided 
+			// to re-use the code for sin for cos,
+			// with the arguments shifted by pi/2.
+			// Mathematically provable to be correct
+			// Fight me
+			x_min = x_min + (0.5*M_PI);
+			x_max = x_max + (0.5*M_PI);
+		case KEST_EXPR_SIN:
+			// If the max of x contains a whole period of sin,
+			// the max sin(x) is the max of sin. Easy!
+			if (x_max - x_min > (2.0*M_PI))
+			{
+				ret = 1.0f;
+				goto expr_int_ret;
+			}
+			
+			k = (int)ceilf((x_min - (0.5*M_PI)) / (2.0*M_PI));
+			
+			if ((0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+			{
+				ret = 1;
+			}
+			else
+			{
+				if (!p_c)
+				{
+					p1 = sin(x_min);
+					p2 = sin(x_max);
+				}
+				
+				if (p2 > p1) ret = p2;
+				else ret = p1;
+			}
+			
+			goto expr_int_ret;
+			
+		case KEST_EXPR_TAN:
+			// If the max of x contains a period,
+			// then it contains a singularity of tan,
+			// so declare the max to be \mathbb R.
+			if (x_max - x_min >= M_PI)
+			{
+				
+			}
+			else
+			{
+				// ... otherwise, we can carefully detect whether there is
+				// a singularity in the interval; since tan = sin/cos,
+				// singularities of tan correspond to zeroes of cos,
+				// and cos vanishes precisely when |sin| = 1. Therefore,
+				// we can reuse the logic for detecting minima and maxima
+				// of sine!
+				k = (int)ceilf((x_min - (0.5*M_PI)) / (2.0*M_PI));
+				
+				if ((0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+				{
+					
+				}
+				else
+				{
+					k = (int)ceilf((x_min + M_PI/2) / (2.0*M_PI));
+			
+					if (-(0.5*M_PI) + k * (2.0*M_PI) <= x_max)
+					{
+						
+					}
+					else
+					{
+						// Finally, if there is no singularity in the
+						// interval, then, since tan is monotone
+						// increasing on any connected subset of its
+						// domain, we simply apply it.
+						ret = tan(x_max);
+					}
+				}
+			}
+			
+			goto expr_int_ret;
+		
+		default:
+			
+			goto expr_int_ret;
+	}
+	
+expr_int_ret:
+	
+	KEST_PRINTF("[Depth: %d] The max of \"%s\" is %.04f\n", depth, kest_expression_to_string(expr), ret);
+	
+	return ret;
+}
+
+// Just a wrapper function to call the recursive function starting from depth 0
+float kest_expression_compute_max(kest_expression *expr, kest_scope *scope)
+{
+	return kest_expression_compute_max_rec(expr, scope, 0);
+}
+
 kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scope *scope, int depth)
 {
 	kest_parameter_pll *current;
@@ -779,6 +1937,7 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 	}
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
+		max_depth_bp(kest_expression_to_string(expr));
 		ret = kest_interval_real_line();
 		goto expr_int_ret;
 	}
@@ -1427,7 +2586,10 @@ int kest_expression_print_rec(kest_expression *expr, char *buf, int buf_len, int
 		return 0;
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
 		goto kest_expr_print_end;
+	}
 	
 	switch (kest_expression_form(expr))
 	{
@@ -1766,7 +2928,10 @@ int kest_expression_get_references_rec(kest_expression *expr, string_list *names
 	KEST_PRINTF("Get references for expression \"%s\"...\n", kest_expression_to_string(expr));
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(kest_expression_to_string(expr));
 		return ERR_RECURSION_DEPTH;
+	}
 	
 	int arity = kest_expression_arity(expr);
 	

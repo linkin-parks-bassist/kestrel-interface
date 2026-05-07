@@ -6,6 +6,7 @@
 //#define PRINT_PROGRAM_BATCHES
 //#define PRINT_FLAGS
 //#define PRINT_COMMANDS
+//#define PRINT_READS
 
 int kest_init_fpga_comms();
 

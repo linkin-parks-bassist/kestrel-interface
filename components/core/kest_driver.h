@@ -26,7 +26,7 @@ int kest_driver_init(kest_driver *driver);
 
 int kest_driver_init_scope_entry(kest_driver *driver, const char *key);
 
-int kest_driver_evaluate(kest_driver *driver, float *dest);
+int kest_driver_evaluate(kest_driver *driver, struct kest_scope *scope, float *dest);
 
 int kest_driver_clone(kest_driver *dest, kest_driver *src);
 kest_driver *kest_driver_make_clone(kest_driver *src);

@@ -523,7 +523,7 @@ int parameter_widget_create_ui_no_callback(kest_parameter_widget *pw, lv_obj_t *
 			
 			pw->name_label = lv_label_create(pw->container);
 			lv_label_set_text(pw->name_label, pw->param->name);
-			lv_obj_align(pw->name_label, LV_ALIGN_BOTTOM_MID, 0, 0);
+			lv_obj_align(pw->name_label, LV_ALIGN_BOTTOM_MID, 0, -35);
 			lv_obj_set_size(pw->name_label, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
 			
 			pw->val_label = lv_label_create(pw->obj);

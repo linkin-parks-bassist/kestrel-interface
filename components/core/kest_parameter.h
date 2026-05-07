@@ -67,6 +67,7 @@ typedef struct kest_parameter
 } kest_parameter;
 
 float kest_parameter_evaluate(kest_parameter *param);
+float kest_parameter_evaluate_rec(kest_parameter *param, int depth);
 int kest_parameter_if_driven_refresh(kest_parameter *param);
 int kest_parameter_set(kest_parameter *param, float v);
 int kest_parameter_driver_set(kest_parameter *param, float v);
@@ -167,11 +168,15 @@ void kest_setting_free(kest_setting *setting);
 #ifdef KEST_ENABLE_GLOBAL_CONTEXT
 struct kest_interval;
 struct kest_interval kest_parameter_get_range(kest_parameter *param);
+struct kest_interval kest_parameter_get_range_rec(kest_parameter *param, int depth);
 #endif
 
 void kest_parameter_effect_rep_update(void *representer, void *representee);
 void kest_setting_effect_rep_update(void *representer, void *representee);
 
+struct kest_scope;
+
+int kest_parameter_detect_bounds_updates(kest_parameter *param, struct kest_scope *scope);
 void kest_parameter_if_updated_refresh_pw(void *param_);
 
 DECLARE_POOL(kest_parameter);

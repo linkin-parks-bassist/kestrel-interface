@@ -572,9 +572,19 @@ int kest_fpga_batch_append_effect(kest_fpga_transfer_batch *batch, kest_effect *
 		return ERR_BAD_ARGS;
 	
 	kest_scope *scope = effect->scope;
+	kest_effect_fpga_position new_pos;
+	
+	kest_effect_deactivate_dma(effect);
+	
+	new_pos.block_start  = *pos;
+	new_pos.mem_start 	 = res->memory;
+	new_pos.filter_start = res->filters;
+	
+	kest_effect_update_position(effect, new_pos);
 	
 	effect->block_position = *pos;
 	effect->position_.block_start = *pos;
+	effect->position_.mem_start = res->memory;
 	effect->position_.filter_start = res->filters;
 	KEST_PRINTF("Updating effect %p's position to {.block_start = %d, .filter_start = %d}\n", effect, effect->position_.block_start, effect->position_.filter_start);
 	

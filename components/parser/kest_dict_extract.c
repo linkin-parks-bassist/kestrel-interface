@@ -1634,7 +1634,6 @@ kest_dsp_resource *kest_extract_mem(kest_eff_parsing_state *ps, kest_eff_entry_d
 	resource->data = mem;
 	
 	mem->read_enable = 1;
-	mem->read.period_ms = 10;
 	
 	size_t n = kest_eff_entry_dict_count(dict);
 	

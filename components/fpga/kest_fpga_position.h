@@ -3,7 +3,7 @@
 
 typedef struct {
 	int block_start;
-	
+	int mem_start;
 	int filter_start;
 } kest_effect_fpga_position;
 

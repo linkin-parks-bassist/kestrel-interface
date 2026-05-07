@@ -208,6 +208,18 @@ void kest_fpga_comms_task(void *param)
 				{
 					msg.data.read->result = kest_fpga_req_data_p(msg.data.read->type, msg.data.read->addr, msg.data.read->addr_size, msg.data.read->ret_size, &status);
 					
+					#ifdef PRINT_READS
+					if (msg.data.read->type == DATA_REQ_MEM)
+					{
+						uint16_t addr = (msg.data.read->addr[0] << 8) | msg.data.read->addr[1];
+						
+						float s = (float)((int16_t)(msg.data.read->result) & (int16_t)0xFFFF) * powf(2, -15);
+						
+						KEST_PRINTF("Probed FPGA memory at address 0x%04x, with result 0x%04x = %s%.05f\n",
+							addr, msg.data.read->result & 0xFFFF, s < 0 ? "" : " ", s);
+					}
+					#endif
+					
 					if (msg.data.read->callback)
 						msg.data.read->callback(msg.data.read);
 				}

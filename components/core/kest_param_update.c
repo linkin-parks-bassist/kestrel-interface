@@ -238,7 +238,7 @@ void kest_param_update_task(void *arg)
 				if (global_cxt.active_preset && global_cxt.active_preset->id == update_array[i].id.preset_id)
 				{
 					KEST_PRINTF("kest_ui_async_call(kest_effect_update_sync, update_array[i].t);\n");
-					kest_ui_async_call(kest_effect_update_sync_no_pw, update_array[i].t);
+					kest_ui_async_call(kest_effect_update_sync, update_array[i].t);
 					wake_fpga_updater = 1;
 				}
 				

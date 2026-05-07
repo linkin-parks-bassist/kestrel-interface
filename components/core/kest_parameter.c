@@ -433,14 +433,17 @@ int kest_settings_assign_ids(kest_setting_pll *list)
 	return NO_ERROR;
 }
 
-#ifdef KEST_ENABLE_GLOBAL_CONTEXT
-kest_interval kest_parameter_get_range(kest_parameter *param)
+kest_interval kest_parameter_get_range_rec(kest_parameter *param, int depth)
 {
 	KEST_PRINTF("kest_parameter_get_range\n");
 	
 	kest_interval i = kest_interval_real_line();
 	
-	if (!param) return i;
+	if (!param || depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(param->name);
+		return i;
+	}
 	
 	kest_effect *effect = param->effect;
 	
@@ -457,13 +460,13 @@ kest_interval kest_parameter_get_range(kest_parameter *param)
 	{
 		if (kest_expression_is_constant(param->min_expr))
 		{
-			i.a = kest_expression_evaluate(param->min_expr, NULL);
+			i.a = kest_expression_evaluate_rec(param->min_expr, NULL, depth);
 		}
 		else
 		{
 			if (effect && effect->scope)
 			{
-				i.a = kest_expression_evaluate(param->min_expr, effect->scope);
+				i.a = kest_expression_evaluate_rec(param->min_expr, effect->scope, depth);
 			}
 			else
 			{
@@ -479,13 +482,13 @@ kest_interval kest_parameter_get_range(kest_parameter *param)
 	{
 		if (kest_expression_is_constant(param->max_expr))
 		{
-			i.b = kest_expression_evaluate(param->max_expr, NULL);
+			i.b = kest_expression_evaluate_rec(param->max_expr, NULL, depth);
 		}
 		else
 		{
 			if (effect && effect->scope)
 			{
-				i.b = kest_expression_evaluate(param->max_expr, effect->scope);
+				i.b = kest_expression_evaluate_rec(param->max_expr, effect->scope, depth);
 			}
 			else
 			{
@@ -499,7 +502,11 @@ kest_interval kest_parameter_get_range(kest_parameter *param)
 	
 	return i;
 }
-#endif
+
+kest_interval kest_parameter_get_range(kest_parameter *param)
+{
+	return kest_parameter_get_range_rec(param, 0);
+}
 
 void kest_parameter_effect_rep_update(void *representer, void *representee)
 {
@@ -552,9 +559,19 @@ void kest_setting_effect_rep_update(void *representer, void *representee)
 	return;
 }
 
-float kest_parameter_evaluate(kest_parameter *param)
+float kest_parameter_evaluate_rec(kest_parameter *param, int depth)
 {
+	if (!param)
+		return 0.0f;
+	
+	if (depth > KEST_EXPR_REC_MAX_DEPTH)
+	{
+		max_depth_bp(param->name);
+		return 0.0f;
+	}
+	
 	KEST_PRINTF("kest_parameter_evaluate(param = %p)\n", param);
+	
 	if (!param)
 		return 1.0f;
 	
@@ -574,7 +591,6 @@ float kest_parameter_evaluate(kest_parameter *param)
 	);
 	KEST_PRINTF(" = %d\n", (param->driver_index >= 0 && !param->driver_override && param->effect && (param->effect ? param->effect->drivers.count : 0) > param->driver_index));*/
 	
-	kest_interval i = kest_parameter_get_range(param);
 	float val_local;
 	
 	// If the parameter has a driver which is not overridden,
@@ -583,25 +599,20 @@ float kest_parameter_evaluate(kest_parameter *param)
 	// itself (SIDE EFFECT ALERT!)
 	if (param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
 	{
-		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &val_local);
-		
-		// Clamp to range
-		val_local = (val_local > i.b) ? i.b : ((val_local < i.a) ? i.a : val_local);
-		
+		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], param->effect->scope, &val_local);
 		atomic_store_explicit(&param->value, val_local, memory_order_relaxed);
 	}
 	else
 	{
 		val_local = atomic_load_explicit(&param->value, memory_order_relaxed);
-		
-		// Clamp to range (value is only accessed via this function; ensure that
-		// returned value is within range regardless of what is stored in struct.
-		// Just an extra layer to make sure numbers stay valid even if something 
-		// goes awry
-		val_local = (val_local > i.b) ? i.b : ((val_local < i.a) ? i.a : val_local);
 	}
 	
 	return val_local;
+}
+
+float kest_parameter_evaluate(kest_parameter *param)
+{
+	return kest_parameter_evaluate_rec(param, 0);
 }
 
 int kest_parameter_if_driven_refresh(kest_parameter *param)
@@ -630,7 +641,7 @@ int kest_parameter_if_driven_refresh(kest_parameter *param)
 		float value;
 		
 		KEST_PRINTF("Parameter %p appears to be validly driven. Recompute value\n", param);
-		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], &value);
+		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], param->effect->scope, &value);
 		
 		atomic_store_explicit(&param->value, value, memory_order_relaxed);
 		
@@ -670,6 +681,25 @@ int kest_parameter_driver_set(kest_parameter *param, float v)
 	
 	param->value = v;
 	param->updated = 1;
+	
+	return NO_ERROR;
+}
+
+int kest_parameter_detect_bounds_updates(kest_parameter *param, kest_scope *scope)
+{
+	if (!param)
+		return ERR_NULL_PTR;
+	
+
+	KEST_PRINTF("kest_parameter_detect_bounds_updates(param = \"%s\")\n", param->name);
+	
+	int min_updated = kest_expression_updated_in_scope(param->min_expr, scope);
+	int max_updated = kest_expression_updated_in_scope(param->max_expr, scope);
+	
+	KEST_PRINTF("min = \"%s\", min_updated = %d\n", kest_expression_to_string(param->min_expr), min_updated);
+	KEST_PRINTF("max = \"%s\", max_updated = %d\n", kest_expression_to_string(param->max_expr), max_updated);
+	
+	param->updated |= min_updated | max_updated; 
 	
 	return NO_ERROR;
 }

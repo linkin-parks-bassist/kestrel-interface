@@ -1149,6 +1149,7 @@ void kest_effect_update_sync(void *effect_)
 	int i = 0;
 	while (cp)
 	{
+		kest_parameter_detect_bounds_updates(cp->data, effect->scope);
 		kest_parameter_if_updated_refresh_pw((void*)cp->data);
 		cp = cp->next;
 		i++;
@@ -1229,4 +1230,74 @@ void kest_effect_update_sync_no_pw(void *effect_)
 	#ifdef KEST_USE_FREERTOS
 	xSemaphoreGive(effect->mutex);
 	#endif
+}
+
+
+int kest_effect_enable(kest_effect *effect)
+{
+	return ERR_UNIMPLEMENTED;
+}
+
+int kest_effect_disable(kest_effect *effect)
+{
+	if (!effect)
+		return ERR_NULL_PTR;
+	
+	kest_dsp_resource *res = NULL;
+	
+	kest_mem_slot *mem = NULL;
+	kest_lfo 	  *lfo = NULL;
+	
+	for (size_t i = 0; i < effect->resources.count; i++)
+	{
+		res = effect->resources.entries[i];
+		
+		if (!res)
+			continue;
+		
+		switch (res->type)
+		{
+			case KEST_DSP_RESOURCE_MEM:
+				mem = (kest_mem_slot*)res->data;
+				
+				if (!mem)
+					break;
+				
+				mem->read.active = 0;
+				if (mem->read.timer)
+				{
+					lv_timer_del(mem->read.timer);
+					mem->read.timer = NULL;
+				}
+				
+				break;
+			
+			case KEST_DSP_RESOURCE_LFO:
+				lfo = (kest_lfo*)res->data;
+				
+				if (!lfo)
+					break;
+				
+				if (lfo->timer)
+				{
+					lv_timer_del(lfo->timer);
+					lfo->timer = NULL;
+				}
+				
+				break;
+		}
+	}
+	
+	return NO_ERROR;
+}
+
+
+int kest_effect_update_position(kest_effect *effect, kest_effect_fpga_position pos)
+{
+	if (!effect)
+		return ERR_NULL_PTR;
+	
+	memcpy(&effect->position_, &pos, sizeof(kest_effect_fpga_position));
+	
+	return NO_ERROR;
 }

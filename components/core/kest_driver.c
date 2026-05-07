@@ -37,9 +37,9 @@ int kest_driver_init_scope_entry(kest_driver *driver, const char *key)
 	return NO_ERROR;
 }
 
-int kest_driver_evaluate(kest_driver *driver, float *dest)
+int kest_driver_evaluate(kest_driver *driver, kest_scope *scope, float *dest)
 {
-	KEST_PRINTF("kest_driver_evaluate(driver = %p, dest = %p)\n");
+	KEST_PRINTF("kest_driver_evaluate(driver = %p, scope = %p, dest = %p)\n", driver, scope, dest);
 	if (!driver || !dest)
 		return ERR_NULL_PTR;
 	
@@ -49,6 +49,7 @@ int kest_driver_evaluate(kest_driver *driver, float *dest)
 	switch (driver->type)
 	{
 		case KEST_DRIVER_SCOPE_ENTRY:
+			KEST_PRINTF("It is a scope entry driver\n");
 			scope_entry_str = (kest_driver_scope_entry*)driver->data;
 			
 			if (!scope_entry_str)
@@ -59,7 +60,7 @@ int kest_driver_evaluate(kest_driver *driver, float *dest)
 			
 			if (!scope_entry_str->entry) scope_entry_str->entry = kest_scope_lookup(scope_entry_str->scope, scope_entry_str->key);
 			
-			ret_val = kest_scope_entry_eval(scope_entry_str->entry, scope_entry_str->scope, dest);
+			ret_val = kest_scope_entry_eval(scope_entry_str->entry, scope, dest);
 			
 			KEST_PRINTF("Scope entry driver eval ran giving error code %s, *dest = %.06f\n", kest_error_code_to_string(ret_val), *dest);
 			break;

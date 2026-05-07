@@ -36,7 +36,7 @@ int kest_fpga_periodic_read_init_mem(kest_fpga_periodic_read *read)
 	read->spec.ret_size 	= KEST_FPGA_DATA_BYTES;
 	read->spec.callback 	= kest_periodic_mem_read_cb;
 	
-	read->period_ms 		= 100;
+	read->period_ms 		= 2000;
 	
 	return NO_ERROR;
 }

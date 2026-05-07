@@ -86,7 +86,10 @@ kest_interval kest_interval_a_(float a);
 kest_interval kest_interval__b(float b);
 kest_interval kest_interval_singleton(float v);
 
+float kest_expression_compute_min(kest_expression *expr, kest_scope *scope);
+float kest_expression_compute_max(kest_expression *expr, kest_scope *scope);
 kest_interval kest_expression_compute_range(kest_expression *expr, kest_scope *scope);
+kest_interval kest_expression_compute_instantaneous_range(kest_expression *expr, kest_scope *scope);
 
 char *kest_expression_type_to_str(int type);
 int kest_expression_print(kest_expression *expr);
@@ -128,5 +131,7 @@ DECLARE_LINKED_PTR_LIST(kest_named_expression);
 DECLARE_POOL(kest_expression);
 extern kest_allocator kest_expression_allocator;
 extern kest_expression_pool kest_expression_mem_pool;
+
+void max_depth_bp(const char *string);
 
 #endif

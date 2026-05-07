@@ -86,6 +86,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 	
 	if (depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
+		max_depth_bp(NULL);
 		kest_parser_error_at(ps, tokens, "Expression too deep.");
 		return NULL;
 	}
