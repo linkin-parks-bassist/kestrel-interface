@@ -24,6 +24,7 @@ idf_component_register(SRCS "kest_alloc.c"
 							"kest_state.c"
 							"kest_effect.c"
 							"kest_global.c"
+							"kest_update.c"
 					REQUIRES
 							driver
 							drivers

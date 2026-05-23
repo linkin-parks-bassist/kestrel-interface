@@ -4,16 +4,16 @@
 
 static const char *FNAME = "kest_fixed_point.c";
 
-int32_t float_to_q_nminus1_18bit(float x, int shift)
+int32_t float_to_q_nminus1_filter_width(float x, int shift)
 {
-	if (shift < 0 || shift > 17) return 0;
+	if (shift < 0 || shift > KEST_FPGA_FILTER_WIDTH - 1) return 0;
 	
-	int n = (18 - 1) - shift;
+	int n = (KEST_FPGA_FILTER_WIDTH - 1) - shift;
 
     float scale = ldexpf(1.0f, n);
 
-    float max =  (float)((1 << (18 - 1)) - 1) / scale;
-    float min = -(float)(1  << (18 - 1))      / scale;
+    float max =  (float)((1 << (KEST_FPGA_FILTER_WIDTH - 1)) - 1) / scale;
+    float min = -(float)(1  << (KEST_FPGA_FILTER_WIDTH - 1))      / scale;
 
     if (x > max) x = max;
     if (x < min) x = min;
@@ -101,11 +101,11 @@ int kest_filter_compute_format(kest_filter *filter, kest_scope *scope)
 	
 	for (int i = 0; i < filter->coefs.count; i++)
 	{
-		current_format = kest_expression_compute_format(filter->coefs.entries[i], scope, 8, KEST_FPGA_FILTER_WIDTH);
+		current_format = kest_expression_compute_format(filter->coefs.entries[i], scope, KEST_FPGA_DATA_WIDTH, KEST_FPGA_DATA_WIDTH);
 		format = (current_format > format) ? current_format : format;
 	}
 	
-	KEST_PRINTF("Filter format: q%d.%d\n", 1 + format, 18 - format);
+	KEST_PRINTF("Filter format: q%d.%d\n", 1 + format, KEST_FPGA_FILTER_WIDTH - format);
 	filter->format = format;
 	
 	return NO_ERROR;

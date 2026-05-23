@@ -124,7 +124,9 @@ int kest_mem_init()
 	INIT_MEM_POOL(kest_effect_desc, 	KEST_EFFECT_DESC_POOL_SIZE);
 	INIT_MEM_POOL(kest_expression,		KEST_EXPRESSION_POOL_SIZE);
 	INIT_MEM_POOL(kest_parameter, 		KEST_PARAMETER_POOL_SIZE);
+	#ifndef KEST_LIBRARY
 	INIT_MEM_POOL(kest_sequence, 		KEST_SEQUENCE_POOL_SIZE);
+	#endif
 	INIT_MEM_POOL(kest_setting, 		KEST_SETTING_POOL_SIZE);
 	INIT_MEM_POOL(kest_effect, 			KEST_EFFECT_POOL_SIZE);
 	INIT_MEM_POOL(kest_preset, 			KEST_PRESET_POOL_SIZE);

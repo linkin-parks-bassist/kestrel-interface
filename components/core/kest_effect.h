@@ -66,6 +66,7 @@ typedef struct kest_effect
 const char *kest_effect_name(kest_effect *effect);
 
 DECLARE_LINKED_PTR_LIST(kest_effect);
+DECLARE_PTR_LIST(kest_effect);
 
 int init_effect(kest_effect *effect);
 
@@ -127,8 +128,13 @@ int kest_effect_disable(kest_effect *effect);
 struct kest_ui_page;
 int kest_effect_init_view_page(kest_effect *effect, struct kest_ui_page *parent);
 
+int kest_effect_handle_updates(kest_effect *effect);
+int kest_effect_handle_updates_inc_ui(kest_effect *effect);
 void kest_effect_update_sync(void *effect_);
 void kest_effect_update_sync_no_pw(void *effect_);
+
+int kest_effect_update_pws(kest_effect *effect);
+int kest_effect_clear_updates(kest_effect *effect);
 
 int kest_effect_update_position(kest_effect *effect, kest_effect_fpga_position pos);
 

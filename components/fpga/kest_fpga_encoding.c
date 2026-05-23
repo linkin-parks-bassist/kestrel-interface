@@ -131,26 +131,36 @@ int kest_fpga_batch_append_block_regs(kest_fpga_transfer_batch *batch, kest_bloc
 	{
 		KEST_PRINTF("register 0 active. evaluating...\n");
 		v = kest_expression_evaluate(block->reg_0.expr, scope);
-		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_0.format, 15-block->reg_0.format);
+		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_0.format, KEST_FPGA_DATA_WIDTH - 1 - block->reg_0.format);
 		s = float_to_q_nminus1(v, block->reg_0.format);
 		KEST_PRINTF("result: %d = 0x%02x\n", s, s);
 		
 		kest_fpga_batch_append(batch, COMMAND_WRITE_BLOCK_REG_0);
 		kest_fpga_batch_append_block_number(batch, pos);
+		
+		#if KEST_FPGA_DATA_WIDTH == 16
 		kest_fpga_batch_append_16(batch, s);
+		#elif KEST_FPGA_DATA_WIDTH == 24
+		kest_fpga_batch_append_24(batch, s);
+		#endif
 	}
 	
 	if (block->reg_1.active && block->reg_1.expr)
 	{
 		KEST_PRINTF("register 1 active. evaluating...\n");
 		v = kest_expression_evaluate(block->reg_1.expr, scope);
-		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_1.format, 15-block->reg_1.format);
+		KEST_PRINTF("result: %f. formatting to q%d.%d...\n", v, 1+block->reg_1.format, KEST_FPGA_DATA_WIDTH - 1 - block->reg_1.format);
 		s = float_to_q_nminus1(v, block->reg_1.format);
 		KEST_PRINTF("result: %d = 0x%02x\n", s, s);
 		
 		kest_fpga_batch_append(batch, COMMAND_WRITE_BLOCK_REG_1);
 		kest_fpga_batch_append_block_number(batch, pos);
+		
+		#if KEST_FPGA_DATA_WIDTH == 16
 		kest_fpga_batch_append_16(batch, s);
+		#elif KEST_FPGA_DATA_WIDTH == 24
+		kest_fpga_batch_append_24(batch, s);
+		#endif
 	}
 	
 	return NO_ERROR;
@@ -185,9 +195,9 @@ int kest_fpga_batch_append_block_register_updates(kest_fpga_transfer_batch *batc
 	
 	if (block->reg_1.active)
 	{
-		if (block->reg_1.expr && kest_expression_updated_in_scope(block->reg_0.expr, scope))
+		if (block->reg_1.expr && kest_expression_updated_in_scope(block->reg_1.expr, scope))
 		{
-			KEST_PRINTF("Block %p register 0 updated in scope %p\n", block, scope);
+			KEST_PRINTF("Block %p register 1 updated in scope %p\n", block, scope);
 			v = kest_expression_evaluate(block->reg_1.expr, scope);
 			
 			s = float_to_q_nminus1(v, block->reg_1.format);
@@ -229,16 +239,11 @@ int kest_fpga_batch_append_filter_updates(kest_fpga_transfer_batch *batch, int h
 	{
 		c = kest_expression_evaluate(filter->coefs.entries[i], scope);
 		KEST_PRINTF("Update filter %d coefficient %d to %f\n", handle, i, c);
-		s = float_to_q_nminus1_18bit(c, filter->format);
+		s = float_to_q_nminus1_filter_width(c, filter->format);
 
 		kest_fpga_batch_append(batch, COMMAND_UPDATE_FILTER_COEF);
 		kest_fpga_batch_append(batch, handle & 0xFF);
 		kest_fpga_batch_append_16(batch, i);
-		
-		if (s & ((1ul << 17)))
-		{
-			s |= (0b111111) << 18;
-		}
 		
 		kest_fpga_batch_append_24(batch, s);
 	}
@@ -484,12 +489,12 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 		case KEST_DSP_RESOURCE_FILTER:
 			KEST_PRINTF("Filter %p\n", filter);
 			if (!filter)
-				return ERR_BAD_ARGS;
-			
+			return ERR_BAD_ARGS;
+		
 			kest_fpga_batch_append(batch, COMMAND_ALLOC_FILTER);
-			kest_fpga_batch_append(batch, filter->format && 0xFF);
-			kest_fpga_batch_append_16(batch, filter->feed_forward);
-			kest_fpga_batch_append_16(batch, filter->feed_back);
+			kest_fpga_batch_append(batch, filter->format 		& 0xFF);
+			kest_fpga_batch_append(batch, filter->feed_forward 	& 0xFF);
+			kest_fpga_batch_append(batch, filter->feed_back 	& 0xFF);
 			
 			handle = res->handle + rpt->filters;
 			
@@ -501,15 +506,10 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 				kest_fpga_batch_append_16(batch, i);
 				c = kest_expression_evaluate(filter->coefs.entries[i], scope);
 				KEST_PRINTF("Coefficient %d: %.06f\n", i, c);
-				s = float_to_q_nminus1_18bit(c, filter->format);
-				
-				if (s & ((1ul << 17)))
-				{
-					s |= (0b111111) << 18;
-				}
+				s = float_to_q_nminus1_filter_width(c, filter->format);
 				
 				KEST_PRINTF("Converting to q%d.%d, we get %d. Masked to 18 bits, that's %d.\n",
-					1 + filter->format, KEST_FPGA_FILTER_WIDTH - 1 - filter->format, s, s & ((1u << 18) - 1));
+					1 + filter->format, KEST_FPGA_FILTER_WIDTH - 1 - filter->format, s, s);
 				kest_fpga_batch_append_24(batch, s);
 			}
 			
@@ -1028,7 +1028,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					state = 0;
 					
 					value = (value << 8) | byte;
-					kest_string_appendf(&str, "Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, 15 - shift)), 1 + shift, 15 - shift);
+					kest_string_appendf(&str, "Value: %s = %d = %f (in q%d.%d)", binary_print_24(value), value, (float)value / (powf(2.0, (KEST_FPGA_DATA_WIDTH - 1) - shift)), 1 + shift, (KEST_FPGA_DATA_WIDTH - 1) - shift);
 				}
 				else
 				{
@@ -1046,7 +1046,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				else if (ctr == 2)
 				{
 					value = (value << 8) | byte;
-					kest_string_appendf(&str, "%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, (15 - shift))));
+					kest_string_appendf(&str, "%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, ((KEST_FPGA_DATA_WIDTH - 1) - shift))));
 					
 					ctr = 0;
 					
@@ -1070,40 +1070,26 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 			case 6:
 				if (ctr_2 == 0)
 				{
-					kest_string_appendf(&str, "Format: q%d.%d", 1 + byte, 17 - byte);
+					kest_string_appendf(&str, "Format: q%d.%d", 1 + byte, (KEST_FPGA_DATA_WIDTH - 1) - byte);
 					shift = byte;
 					ctr_2++;
 				}
 				else if (ctr_2 == 1)
 				{
-					if (ctr == 0)
-					{
-						value = byte;
-						ctr++;
-					}
-					else
-					{
-						value = (value << 8) | byte;
-						kest_string_appendf(&str, "Feed-forward: %d", value);
-						
-						ctr_2++;
-						ctr = 0;
-					}
+					value = byte;
+					
+					value = byte;
+					kest_string_appendf(&str, "Feed-forward: %d", value);
+					
+					ctr_2++;
+					ctr = 0;
 				}
 				else
 				{
-					if (ctr == 0)
-					{
-						value = byte;
-						ctr++;
-					}
-					else
-					{
-						value = (value << 8) | byte;
-						kest_string_appendf(&str, "Feed-back:    %d", value);
-						
-						state = 0;
-					}
+					value = byte;
+					kest_string_appendf(&str, "Feed-back:    %d", value);
+					
+					state = 0;
 				}
 				
 				break;
@@ -1145,7 +1131,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 							signed_val |= 0xFF000000;
 						}
 						
-						kest_string_appendf(&str, "Value: %.04f", ((float)signed_val) * pow(2, -(16 - shift)));
+						kest_string_appendf(&str, "Value: %.04f", ((float)signed_val) * pow(2, -(KEST_FPGA_DATA_WIDTH - shift)));
 						state = 0;
 					}
 				}

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -14,6 +15,10 @@ static const char *FNAME = "kest_resource.c";
 IMPLEMENT_LINKED_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_LIST(kest_dsp_resource);
+
+#ifdef KEST_ENABLE_UI
+void kest_lfo_update(lv_timer_t *timer);
+#endif
 
 IMPLEMENT_POOL(kest_dsp_resource);
 kest_allocator kest_dsp_resource_allocator;
@@ -299,8 +304,27 @@ kest_lfo *kest_lfo_create(kest_allocator *alloc)
 	return lfo;
 }
 
+void kest_lfo_activate_sync(void *lfo_)
+{
+	KEST_PRINTF("kest_lfo_activate_sync\n");
+	kest_lfo *lfo = (kest_lfo*)lfo_;
+	
+	if (!lfo)
+		return;
+	
+#ifdef KEST_ENABLE_UI
+	//lfo->timer = lv_timer_create(kest_lfo_update, 10, lfo_);
+#endif
+	
+	lfo->prev_t = 0.0f;
+	lfo->prev_ms = kest_system_time_ms();
+}
+
+#ifdef KEST_ENABLE_UI
 void kest_lfo_update(lv_timer_t *timer)
 {
+	return;
+	
 	kest_lfo *lfo = lv_timer_get_user_data(timer);
 	
 	if (!lfo)
@@ -312,44 +336,41 @@ void kest_lfo_update(lv_timer_t *timer)
 	if (lfo->effect)
 		kest_ui_async_call(kest_effect_update_sync, lfo->effect);
 }
-
-void kest_lfo_activate_sync(void *lfo_)
-{
-	KEST_PRINTF("kest_lfo_activate_sync\n");
-	kest_lfo *lfo = (kest_lfo*)lfo_;
-	
-	if (!lfo)
-		return;
-	
-	lfo->timer = lv_timer_create(kest_lfo_update, 10, lfo_);
-	
-	lfo->prev_t = 0.0f;
-	lfo->prev_ms = kest_system_time_ms();
-}
+#endif
 
 void kest_lfo_deactivate_sync(void *lfo_)
 {
+	return;
+	
 	KEST_PRINTF("kest_lfo_deactivate_sync\n");
 	kest_lfo *lfo = (kest_lfo*)lfo_;
 	
 	if (!lfo)
 		return;
 	
+#ifdef KEST_ENABLE_UI
 	if (lfo->timer)
 	{
 		lv_timer_del(lfo->timer);
 		lfo->timer = NULL;
 	}
+#endif
 }
 
 int kest_lfo_activate_async(kest_lfo *lfo)
 {
+	return ERR_FEATURE_DISABLED;
+	
 	if (!lfo)
 		return ERR_NULL_PTR;
 	
+#ifndef KEST_ENABLE_UI
+	return ERR_FEATURE_DISABLED;
+#else
 	kest_ui_async_call(kest_lfo_activate_sync, (void*)lfo);
 	
 	return NO_ERROR;
+#endif
 }
 
 int kest_lfo_deactivate_async(kest_lfo *lfo)
@@ -357,9 +378,94 @@ int kest_lfo_deactivate_async(kest_lfo *lfo)
 	if (!lfo)
 		return ERR_NULL_PTR;
 	
+#ifndef KEST_ENABLE_UI
+	return ERR_FEATURE_DISABLED;
+#else
 	kest_ui_async_call(kest_lfo_deactivate_sync, (void*)lfo);
 	
 	return NO_ERROR;
+#endif
+}
+
+int kest_lfo_evaluate_rec(kest_lfo *lfo, kest_scope *scope, float *dest, int depth)
+{
+	if (!lfo || !dest)
+		return ERR_NULL_PTR;
+	
+	float result = 0.0f;
+	float tmp 	 = 0.0f;
+	
+	float min 	 = 0.0f;
+	float max 	 = 0.0f;
+	float center = 0.0f;
+	float amp 	 = 0.0f;
+
+	float freq = kest_expression_evaluate_rec(lfo->frequency, scope, depth + 1);
+	
+	KEST_PRINTF("freq = %s = %f\n", kest_expression_to_string(lfo->frequency), freq);
+	
+	int64_t time_ms = kest_system_time_ms();
+	
+	float t = lfo->prev_t + 2.0f * M_PI * freq * ((float)(time_ms - lfo->prev_ms) * 0.001);
+	
+	while (t > 2.0f * M_PI)
+		t -= 2.0f * M_PI;
+	
+	switch (lfo->mode)
+	{
+		case KEST_LFO_MODE_MIN_MAX:
+			
+			min = kest_expression_evaluate_rec(lfo->min, scope, depth + 1);
+			max = kest_expression_evaluate_rec(lfo->max, scope, depth + 1);
+			
+			if (min > max)
+			{
+				tmp = max;
+				max = min;
+				min = tmp;
+			}
+			
+			center = 0.5 * (min + max);
+			amp    = 0.5 * (max - min);
+			
+			break;
+			
+		case KEST_LFO_MODE_CENTER_AMP:
+			
+			center = kest_expression_evaluate_rec(lfo->center,    scope, depth + 1);
+			amp    = kest_expression_evaluate_rec(lfo->amplitude, scope, depth + 1);
+			
+			min = center - amp;
+			max = center + amp;
+			
+			break;
+	}
+	
+	if (lfo->scale == KEST_LFO_SCALE_LOG)
+	{
+		min = min < 0 ? -FLT_MAX : log(min);
+		max = max < 0 ? -FLT_MAX : log(max);
+		
+		center = 0.5 * (min + max);
+		amp    = 0.5 * (max - min);
+	}
+
+	result = amp * sin(t) + center;
+	
+	if (lfo->scale == KEST_LFO_SCALE_LOG)
+		result = expf(result);
+	
+	lfo->prev_t = t;
+	lfo->prev_ms = time_ms;
+	*dest = result;
+	
+	return NO_ERROR;
+}
+
+
+int kest_lfo_evaluate(kest_lfo *lfo, kest_scope *scope, float *dest)
+{
+	return kest_lfo_evaluate_rec(lfo, scope, dest, 0);
 }
 
 int kest_resource_report_integrate(kest_eff_resource_report *a, const kest_eff_resource_report *b)

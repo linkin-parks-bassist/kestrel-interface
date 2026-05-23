@@ -574,12 +574,12 @@ float kest_parameter_evaluate_rec(kest_parameter *param, int depth)
 	
 	if (!param)
 		return 1.0f;
-	
+	/*
 	KEST_PRINTF("Parameter name: %s, ID: {%d.%d.%d}, value: %s%.05f. param->driver_index = %d. param->pw = %p\n",
 		param->name, param->id.preset_id, param->id.effect_id, param->id.parameter_id,
 		param->value > 0 ? " " : "", param->value, param->driver_index, param->pw);
 	
-	/*KEST_PRINTF("param->driver_index = %d\n", param->driver_index);
+	KEST_PRINTF("param->driver_index = %d\n", param->driver_index);
 	KEST_PRINTF("param->driver_override = %d\n", param->driver_override);
 	KEST_PRINTF("param->effect = %p\n", param->effect);
 	if (param->effect)
@@ -600,11 +600,19 @@ float kest_parameter_evaluate_rec(kest_parameter *param, int depth)
 	if (param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
 	{
 		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], param->effect->scope, &val_local);
+		#ifdef KEST_ATOMIC_EXPLICIT
 		atomic_store_explicit(&param->value, val_local, memory_order_relaxed);
+		#else
+		param->value = val_local;
+		#endif
 	}
 	else
 	{
+		#ifdef KEST_ATOMIC_EXPLICIT
 		val_local = atomic_load_explicit(&param->value, memory_order_relaxed);
+		#else
+		val_local = param->value;
+		#endif
 	}
 	
 	return val_local;
@@ -637,13 +645,15 @@ int kest_parameter_if_driven_refresh(kest_parameter *param)
 	
 	if (param && param->driver_index >= 0 && !param->driver_override && param->effect && param->effect->drivers.count > param->driver_index)
 	{
-		float value_local = atomic_load_explicit(&param->value, memory_order_relaxed);
 		float value;
 		
 		KEST_PRINTF("Parameter %p appears to be validly driven. Recompute value\n", param);
 		kest_driver_evaluate(&param->effect->drivers.entries[param->driver_index], param->effect->scope, &value);
-		
+		#ifdef KEST_ATOMIC_EXPLICIT
 		atomic_store_explicit(&param->value, value, memory_order_relaxed);
+		#else
+		param->value = value;
+		#endif
 		
 		param->updated = 1;
 	}
@@ -706,6 +716,7 @@ int kest_parameter_detect_bounds_updates(kest_parameter *param, kest_scope *scop
 
 void kest_parameter_if_updated_refresh_pw(void *param_)
 {	
+#ifdef KEST_ENABLE_UI
 	kest_parameter *param = param_;
 	
 	if (!param)
@@ -720,4 +731,29 @@ void kest_parameter_if_updated_refresh_pw(void *param_)
 	{
 		kest_parameter_widget_refresh(param->pw);
 	}
+#else
+	(void)param_;
+#endif
+}
+
+void kest_parameter_if_updated_refresh_pw_async(void *param_)
+{	
+#ifdef KEST_ENABLE_UI
+	kest_parameter *param = param_;
+	
+	if (!param)
+		return;
+	
+	KEST_PRINTF("kest_parameter_if_updated_refresh_pw(param = %s)\n", param->name);
+	
+	KEST_PRINTF("param->pw = %p, param->updated = %d, param->driver_index = %d, param->driver_override = %d\n",
+		param->pw, param->updated, param->driver_index, param->driver_override);
+	
+	if (param->pw && param->updated)
+	{
+		kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, param->pw);
+	}
+#else
+	(void)param_;
+#endif
 }

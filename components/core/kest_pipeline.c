@@ -405,6 +405,9 @@ int kest_pipeline_deactivate_dma(kest_pipeline *pipeline)
 
 int kest_pipeline_update_fpga(kest_pipeline *pipeline)
 {
+	#ifdef KEST_LIBRARY
+	return NO_ERROR;
+	#else
 	KEST_PRINTF("kest_pipeline_update_fpga\n");
 	if (!pipeline)
 		return ERR_NULL_PTR;
@@ -432,6 +435,7 @@ int kest_pipeline_update_fpga(kest_pipeline *pipeline)
 	
 	#ifdef KEST_USE_FREERTOS
 	xSemaphoreGive(pipeline->mutex);
+	#endif
 	#endif
 	
 	return NO_ERROR;

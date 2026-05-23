@@ -493,6 +493,7 @@ int kest_sequence_activate_at(kest_sequence *sequence, kest_preset *preset)
 
 int kest_sequence_add_representation(kest_sequence *sequence, kest_representation *rep)
 {
+	#ifdef KEST_ENABLE_REPRESENTATIONS
 	#ifdef KEST_ENABLE_UI
 	if (!sequence)
 		return ERR_NULL_PTR;
@@ -505,6 +506,9 @@ int kest_sequence_add_representation(kest_sequence *sequence, kest_representatio
 		return ERR_ALLOC_FAIL;
 	
 	return NO_ERROR;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 	#else
 	return ERR_FEATURE_DISABLED;
 	#endif

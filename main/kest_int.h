@@ -29,7 +29,7 @@
 //#define USE_TEENSY
 //#define PRINT_MEMORY_USAGE
 
-#define KEST_ENABLE_REPRESENTATIONS
+//#define KEST_ENABLE_REPRESENTATIONS
 #define KEST_ENABLE_GLOBAL_CONTEXT
 #define KEST_ENABLE_SEQUENCES
 
@@ -126,6 +126,7 @@
 #include "kest_dict_extract.h"
 #include "kest_printf.h"
 #include "kest_state.h"
+#include "kest_update.h"
 
 #endif
 #endif

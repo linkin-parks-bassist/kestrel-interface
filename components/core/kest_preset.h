@@ -23,6 +23,7 @@ typedef struct kest_preset
 	
 	int alive;
 	int active;
+	int pending;
 	int unsaved_changes;
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
@@ -64,6 +65,8 @@ void kest_free_preset(kest_preset *preset);
 
 int kest_preset_set_active(kest_preset *preset);
 int kest_preset_set_inactive(kest_preset *preset);
+
+int kest_preset_clear_pending(kest_preset *preset);
 
 struct kest_menu_item;
 

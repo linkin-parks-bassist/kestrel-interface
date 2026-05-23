@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 #ifndef PRINTLINES_ALLOWED
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 #endif
 
 static const char *FNAME = "kest_expr_parser.c";
@@ -10,23 +10,24 @@ int kest_expression_token_unary_type(char *token)
 {
 	if (!token) return 0;
 	
-	if (strcmp(token,  "-"  ) == 0) return KEST_EXPR_NEG;
-	if (strcmp(token, "abs" ) == 0) return KEST_EXPR_ABS;
-	if (strcmp(token, "sqr" ) == 0) return KEST_EXPR_SQR;
-	if (strcmp(token, "sqrt") == 0) return KEST_EXPR_SQRT;
-	if (strcmp(token, "exp" ) == 0) return KEST_EXPR_EXP;
-	if (strcmp(token, "ln"  ) == 0) return KEST_EXPR_LN;
-	if (strcmp(token, "log" ) == 0) return KEST_EXPR_LN;
-	if (strcmp(token, "sin" ) == 0) return KEST_EXPR_SIN;
-	if (strcmp(token, "cos" ) == 0) return KEST_EXPR_COS;
-	if (strcmp(token, "tan" ) == 0) return KEST_EXPR_TAN;
-	if (strcmp(token, "sinh") == 0) return KEST_EXPR_SINH;
-	if (strcmp(token, "cosh") == 0) return KEST_EXPR_COSH;
-	if (strcmp(token, "tanh") == 0) return KEST_EXPR_TANH;
-	if (strcmp(token, "asin") == 0) return KEST_EXPR_ASIN;
-	if (strcmp(token, "acos") == 0) return KEST_EXPR_ACOS;
-	if (strcmp(token, "atan") == 0) return KEST_EXPR_ATAN;
+	if (strcmp(token,  "-"   ) == 0) return KEST_EXPR_NEG;
+	if (strcmp(token, "abs"  ) == 0) return KEST_EXPR_ABS;
+	if (strcmp(token, "sqr"  ) == 0) return KEST_EXPR_SQR;
+	if (strcmp(token, "sqrt" ) == 0) return KEST_EXPR_SQRT;
+	if (strcmp(token, "exp"  ) == 0) return KEST_EXPR_EXP;
+	if (strcmp(token, "ln"   ) == 0) return KEST_EXPR_LN;
+	if (strcmp(token, "log"  ) == 0) return KEST_EXPR_LN;
+	if (strcmp(token, "sin"  ) == 0) return KEST_EXPR_SIN;
+	if (strcmp(token, "cos"  ) == 0) return KEST_EXPR_COS;
+	if (strcmp(token, "tan"  ) == 0) return KEST_EXPR_TAN;
+	if (strcmp(token, "sinh" ) == 0) return KEST_EXPR_SINH;
+	if (strcmp(token, "cosh" ) == 0) return KEST_EXPR_COSH;
+	if (strcmp(token, "tanh" ) == 0) return KEST_EXPR_TANH;
+	if (strcmp(token, "asin" ) == 0) return KEST_EXPR_ASIN;
+	if (strcmp(token, "acos" ) == 0) return KEST_EXPR_ACOS;
+	if (strcmp(token, "atan" ) == 0) return KEST_EXPR_ATAN;
 	if (strcmp(token, "log10") == 0) return KEST_EXPR_LOG10;
+	if (strcmp(token, "erf"  ) == 0) return KEST_EXPR_ERF;
 	
 	return 0;
 }

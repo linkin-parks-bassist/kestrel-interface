@@ -85,8 +85,12 @@ kest_delay *kest_delay_create(kest_allocator *alloc);
 #define KEST_LFO_MODE_CENTER_AMP 	0
 #define KEST_LFO_MODE_MIN_MAX		1
 
+#define KEST_LFO_SCALE_LINEAR	0
+#define KEST_LFO_SCALE_LOG		1
+
 typedef struct kest_lfo {
 	int mode;
+	int scale;
 	
 	kest_expression *frequency;
 	kest_expression *center;
@@ -95,7 +99,9 @@ typedef struct kest_lfo {
 	kest_expression *min;
 	kest_expression *max;
 	
+#ifdef KEST_ENABLE_UI
 	lv_timer_t *timer;
+#endif
 	
 	kest_scope_entry *scope_entry;
 	struct kest_effect *effect;
@@ -116,6 +122,9 @@ void kest_lfo_deactivate_sync(void *lfo_);
 
 int kest_lfo_activate_async(kest_lfo *lfo);
 int kest_lfo_deactivate_async(kest_lfo *lfo);
+
+int kest_lfo_evaluate(kest_lfo *lfo, kest_scope *scope, float *dest);
+int kest_lfo_evaluate_rec(kest_lfo *lfo, kest_scope *scope, float *dest, int depth);
 
 typedef struct
 {

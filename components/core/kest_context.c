@@ -729,7 +729,9 @@ int kest_cxt_queue_save_state(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
+	#ifdef KEST_ENABLE_REPRESENTATIONS
 	queue_representation_list_update(&cxt->state_rep_lstub);
+	#endif
 	
 	return NO_ERROR;
 }

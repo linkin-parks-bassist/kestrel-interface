@@ -2515,6 +2515,24 @@ kest_dsp_resource *kest_extract_lfo(kest_eff_parsing_state *ps, kest_eff_entry_d
 			ASSERT_ATTR_EXPR();
 			lfo->max = expr;
 		}
+		else if (strcmp(key, "scale") == 0)
+		{
+			ASSERT_ATTR_STRING();
+			
+			if (strcmp(string, "log") == 0 || strcmp(string, "logarithmic") == 0)
+			{
+				lfo->scale = KEST_LFO_SCALE_LOG;
+			}
+			else if (strcmp(string, "linear") == 0)
+			{
+				lfo->scale = KEST_LFO_SCALE_LINEAR;
+			}
+			else
+			{
+				kest_parser_error(ps, "%s \"%s\": unknown scale \"%s\"", type, name, string); \
+				ret_val = ERR_BAD_ARGS;
+			}
+		}
 		else
 		{
 			kest_parser_error(ps, "Resource \"%s\": attribute \"%s\" unrecognised", name, key);

@@ -5,6 +5,7 @@
 static const char *FNAME = "kest_effect.c";
 
 IMPLEMENT_LINKED_PTR_LIST(kest_effect);
+IMPLEMENT_PTR_LIST(kest_effect);
 
 IMPLEMENT_POOL(kest_effect);
 kest_allocator kest_effect_allocator;
@@ -520,20 +521,24 @@ void gut_effect(kest_effect *effect)
 		{
 			case KEST_DSP_RESOURCE_MEM:
 				mem = (kest_mem_slot*)effect->resources.entries[i]->data;
+#ifdef KEST_ENABLE_UI
 				if (mem->read.timer)
 				{
 					lv_timer_del(mem->read.timer);
 					mem->read.timer = NULL;
 				}
+#endif
 				break;
 			
 			case KEST_DSP_RESOURCE_LFO:
 				lfo = (kest_lfo*)effect->resources.entries[i]->data;
+#ifdef KEST_ENABLE_UI
 				if (lfo->timer)
 				{
 					lv_timer_del(lfo->timer);
 					lfo->timer = NULL;
 				}
+#endif
 				break;
 		}
 	}
@@ -637,7 +642,7 @@ int kest_effect_update_fpga(kest_effect *effect)
 	
 	kest_scope_clear_updates(effect->scope);
 	
-	#ifdef KEST_ENABLE_FPGA
+	#if defined(KEST_ENABLE_FPGA) && !defined(KEST_LIBRARY)
 	int ret_val = kest_fpga_queue_transfer_batch(batch);
 	
 	return ret_val;
@@ -725,7 +730,8 @@ int kest_effect_create_scope(kest_effect *effect)
 			KEST_PRINTF("mem = %p. mem->addr = %d, mem->effective_addr = %d, mem->value = %d, mem->read_enable = %d\n",
 					mem, mem->addr, mem->effective_addr, mem->value, mem->read_enable);
 			
-			mem->read.spec.data = kest_scope_add_mem_return_entry(scope, effect->resources.entries[i]->name, mem);
+			entry_ptr = kest_scope_add_mem_return_entry(scope, effect->resources.entries[i]->name, mem);
+			if (!entry_ptr) goto create_scope_disaster_recovery;
 		}
 		else if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_LFO)
 		{
@@ -733,7 +739,33 @@ int kest_effect_create_scope(kest_effect *effect)
 			
 			if (!lfo) continue;
 			
-			lfo->scope_entry = kest_scope_add_lfo_return_entry(scope, effect->resources.entries[i]->name, lfo);
+			entry_ptr = kest_scope_add_lfo_return_entry(scope, effect->resources.entries[i]->name, lfo);
+			if (!entry_ptr) goto create_scope_disaster_recovery;
+		}
+	}
+	
+	for (int i = 0; i < effect->resources.count; i++)
+	{
+		if (!effect->resources.entries[i])
+			continue;
+		
+		if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_MEM)
+		{
+			mem = (kest_mem_slot*)effect->resources.entries[i]->data;
+			
+			if (!mem) continue;
+			
+			mem->read.spec.data = kest_scope_lookup(scope, effect->resources.entries[i]->name);
+			if (!mem->read.spec.data) goto create_scope_disaster_recovery;
+		}
+		else if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_LFO)
+		{
+			lfo = (kest_lfo*)effect->resources.entries[i]->data;
+			
+			if (!lfo) continue;
+			
+			lfo->scope_entry = kest_scope_lookup(scope, effect->resources.entries[i]->name);
+			if (!lfo->scope_entry) goto create_scope_disaster_recovery;
 		}
 	}
 	
@@ -1112,23 +1144,38 @@ int kest_effect_deactivate_lfos_async(kest_effect *effect)
 	return NO_ERROR;
 }
 
-void kest_effect_update_sync(void *effect_)
+int kest_effect_update_pws(kest_effect *effect)
 {
-	KEST_PRINTF("kest_effect_update_sync(effect = %p)\n", effect_);
-	
-	kest_effect *effect = effect_;
-	
 	if (!effect)
-		return;
+		return ERR_NULL_PTR;
+	
+	kest_parameter_pll *cp = effect->parameters;
+	
+	int i = 0;
+	while (cp)
+	{
+		kest_parameter_detect_bounds_updates(cp->data, effect->scope);
+		kest_parameter_if_updated_refresh_pw_async((void*)cp->data);
+		cp = cp->next;
+		i++;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_effect_handle_updates(kest_effect *effect)
+{
+	if (!effect)
+		return ERR_NULL_PTR;
 		
 	if (!effect->alive)
-		return;
+		return NO_ERROR;
 	
 	#ifdef KEST_USE_FREERTOS
 	if (xSemaphoreTake(effect->mutex, 1) != pdTRUE)
 	{
 		KEST_PRINTF("Unable to obtain mutex for effect %p...\n", effect);
-		return;
+		return ERR_MUTEX_UNAVAILABLE;
 	}
 	#endif
 	
@@ -1141,24 +1188,13 @@ void kest_effect_update_sync(void *effect_)
 		#ifdef KEST_USE_FREERTOS
 		xSemaphoreGive(effect->mutex);
 		#endif
-		return;
-	}
-	
-	kest_parameter_pll *cp = effect->parameters;
-	
-	int i = 0;
-	while (cp)
-	{
-		kest_parameter_detect_bounds_updates(cp->data, effect->scope);
-		kest_parameter_if_updated_refresh_pw((void*)cp->data);
-		cp = cp->next;
-		i++;
+		return NO_ERROR;
 	}
 	
 	kest_fpga_transfer_batch batch = kest_new_fpga_transfer_batch();
 	
 	if (!batch.buf)
-		return;
+		return ERR_ALLOC_FAIL;
 	
 	kest_fpga_transfer_batch_append_effect_register_updates_(&batch, effect, effect->block_position);
 	kest_fpga_transfer_batch_append_effect_resource_updates_(&batch, effect, &effect->position_);
@@ -1167,15 +1203,91 @@ void kest_effect_update_sync(void *effect_)
 	
 	kest_scope_clear_updates(effect->scope);
 	
-	#ifdef KEST_ENABLE_FPGA
+	#if defined(KEST_ENABLE_FPGA) && !defined(KEST_LIBRARY)
 	int ret_val = kest_fpga_queue_transfer_batch(batch);
+	#else
+	int ret_val = NO_ERROR;
 	#endif
-	
-	kest_scope_clear_updates(effect->scope);
 	
 	#ifdef KEST_USE_FREERTOS
 	xSemaphoreGive(effect->mutex);
 	#endif
+	
+	return ret_val;
+}
+
+int kest_effect_handle_updates_inc_ui(kest_effect *effect)
+{
+	if (!effect)
+		return ERR_NULL_PTR;
+		
+	if (!effect->alive)
+		return NO_ERROR;
+	
+	#ifdef KEST_USE_FREERTOS
+	if (xSemaphoreTake(effect->mutex, 1) != pdTRUE)
+	{
+		KEST_PRINTF("Unable to obtain mutex for effect %p...\n", effect);
+		return ERR_MUTEX_UNAVAILABLE;
+	}
+	#endif
+	
+	int is_updated = kest_effect_is_updated(effect);
+	
+	KEST_PRINTF("is_updated = %d\n", is_updated);
+	
+	if (!is_updated)
+	{
+		#ifdef KEST_USE_FREERTOS
+		xSemaphoreGive(effect->mutex);
+		#endif
+		return NO_ERROR;
+	}
+	
+	kest_fpga_transfer_batch batch = kest_new_fpga_transfer_batch();
+	
+	if (!batch.buf)
+		return ERR_ALLOC_FAIL;
+	
+	kest_fpga_transfer_batch_append_effect_register_updates_(&batch, effect, effect->block_position);
+	kest_fpga_transfer_batch_append_effect_resource_updates_(&batch, effect, &effect->position_);
+	
+	kest_fpga_batch_append(&batch, COMMAND_COMMIT_REG_UPDATES);
+	
+	kest_effect_update_pws(effect);
+	kest_effect_clear_updates(effect);
+	
+	#if defined(KEST_ENABLE_FPGA) && !defined(KEST_LIBRARY)
+	int ret_val = kest_fpga_queue_transfer_batch(batch);
+	#else
+	int ret_val = NO_ERROR;
+	#endif
+	
+	#ifdef KEST_USE_FREERTOS
+	xSemaphoreGive(effect->mutex);
+	#endif
+	
+	return ret_val;
+}
+
+int kest_effect_clear_updates(kest_effect *effect)
+{
+	if (!effect)
+		return ERR_NULL_PTR;
+	
+	if (!effect->scope)
+		return ERR_BAD_ARGS;
+	
+	return kest_scope_clear_updates(effect->scope);
+}
+
+void kest_effect_update_sync(void *effect_)
+{
+	KEST_PRINTF("kest_effect_update_sync(effect = %p)\n", effect_);
+	
+	kest_effect *effect = (kest_effect*)effect_;
+	
+	kest_effect_handle_updates(effect);
 }
 
 void kest_effect_update_sync_no_pw(void *effect_)
@@ -1221,7 +1333,7 @@ void kest_effect_update_sync_no_pw(void *effect_)
 	
 	kest_scope_clear_updates(effect->scope);
 	
-	#ifdef KEST_ENABLE_FPGA
+	#if defined(KEST_ENABLE_FPGA) && !defined(KEST_LIBRARY)
 	int ret_val = kest_fpga_queue_transfer_batch(batch);
 	#endif
 	
@@ -1264,11 +1376,13 @@ int kest_effect_disable(kest_effect *effect)
 					break;
 				
 				mem->read.active = 0;
+#ifdef KEST_ENABLE_UI
 				if (mem->read.timer)
 				{
 					lv_timer_del(mem->read.timer);
 					mem->read.timer = NULL;
 				}
+#endif
 				
 				break;
 			
@@ -1278,11 +1392,13 @@ int kest_effect_disable(kest_effect *effect)
 				if (!lfo)
 					break;
 				
+#ifdef KEST_ENABLE_UI
 				if (lfo->timer)
 				{
 					lv_timer_del(lfo->timer);
 					lfo->timer = NULL;
 				}
+#endif
 				
 				break;
 		}

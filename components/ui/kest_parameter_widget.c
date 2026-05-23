@@ -261,8 +261,8 @@ int kest_parameter_widget_refresh(kest_parameter_widget *pw)
 		// Apparently this function doesn't return, lol
 		/*ret_val = */parameter_widget_update_value_label(pw);
 		
-		if (!pw->driven && fabs(pw->nominal_value - pw->param->value) > 0.001 && !pw->timer)
-			pw->timer = lv_timer_create(kest_parameter_widget_refresh_timer_wrapper, 10, pw);
+		//if (!pw->driven && fabs(pw->nominal_value - pw->param->value) > 0.001 && !pw->timer)
+		//	pw->timer = lv_timer_create(kest_parameter_widget_refresh_timer_wrapper, 10, pw);
 	}
 	
 	return ret_val;

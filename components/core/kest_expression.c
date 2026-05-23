@@ -8,7 +8,7 @@
 
 #define PRINTLINES_ALLOWED 0
 
-#define KEST_EXPR_EVAL_VERBOSE
+//#define KEST_EXPR_EVAL_VERBOSE
 //#define KEST_BOUNDS_CHECK_VERBOSE
 
 static const char *FNAME = "kest_expression.c";
@@ -306,6 +306,7 @@ char *kest_expression_type_to_str(int type)
 		case KEST_EXPR_ACOS:	return "ACOS";
 		case KEST_EXPR_ATAN: 	return "ATAN";
 		case KEST_EXPR_LOG10: 	return "LOG10";
+		case KEST_EXPR_ERF: 	return "ERF";
 	}
 	
 	return "TYPE_UNKNOWN";
@@ -341,6 +342,7 @@ int kest_expression_form(kest_expression *expr)
 		case KEST_EXPR_ACOS:	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_ATAN: 	return KEST_EXPR_FORM_UNARY_FN;
 		case KEST_EXPR_LOG10: 	return KEST_EXPR_FORM_UNARY_FN;
+		case KEST_EXPR_ERF: 	return KEST_EXPR_FORM_UNARY_FN;
 	}
 	
 	return KEST_EXPR_FORM_ATOMIC;
@@ -662,6 +664,10 @@ float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int
 		case KEST_EXPR_LOG10:
 			ret_val = log10(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
 			break;
+			
+		case KEST_EXPR_ERF:
+			ret_val = erf(kest_expression_evaluate_rec(expr->sub_exprs[0], scope, depth + 1));
+			break;
 	}
 	
 expr_compute_return:
@@ -966,6 +972,7 @@ float kest_expression_compute_min_rec(kest_expression *expr, kest_scope *scope, 
 				expr->type == KEST_EXPR_ACOS 	||
 				expr->type == KEST_EXPR_ATAN 	||
 				expr->type == KEST_EXPR_LOG10 	||
+				expr->type == KEST_EXPR_ERF 	||
 				expr->type == KEST_EXPR_TANH 	||
 				expr->type == KEST_EXPR_SINH 	||
 				expr->type == KEST_EXPR_EXP 	||
@@ -1066,6 +1073,10 @@ float kest_expression_compute_min_rec(kest_expression *expr, kest_scope *scope, 
 			
 		case KEST_EXPR_LOG10:
 			ret = log10(x_min);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_ERF:
+			ret = erf(x_min);
 			goto expr_int_ret;
 			
 		case KEST_EXPR_TANH:
@@ -1564,6 +1575,7 @@ float kest_expression_compute_max_rec(kest_expression *expr, kest_scope *scope, 
 				expr->type == KEST_EXPR_ACOS 	||
 				expr->type == KEST_EXPR_ATAN 	||
 				expr->type == KEST_EXPR_LOG10 	||
+				expr->type == KEST_EXPR_ERF 	||
 				expr->type == KEST_EXPR_TANH 	||
 				expr->type == KEST_EXPR_SINH 	||
 				expr->type == KEST_EXPR_COSH 	||
@@ -1650,8 +1662,12 @@ float kest_expression_compute_max_rec(kest_expression *expr, kest_scope *scope, 
 			ret = atan(x_max);
 			goto expr_int_ret;
 			
-		case KEST_EXPR_LOG10:
+		case KEST_EXPR_ERF:
 			ret = log10(x_max);
+			goto expr_int_ret;
+			
+		case KEST_EXPR_LOG10:
+			ret = erf(x_max);
 			goto expr_int_ret;
 			
 		case KEST_EXPR_TANH:
@@ -2181,6 +2197,10 @@ kest_interval kest_expression_compute_range_rec(kest_expression *expr, kest_scop
 			ret = kest_interval_ab(log10(x_int.a), log10(x_int.b));
 			goto expr_int_ret;
 			
+		case KEST_EXPR_ERF:
+			ret = kest_interval_ab(erf(x_int.a), erf(x_int.b));
+			goto expr_int_ret;
+			
 		case KEST_EXPR_TANH:
 			ret =  kest_interval_ab(tanh(x_int.a), tanh(x_int.b));
 			goto expr_int_ret;
@@ -2524,8 +2544,6 @@ kest_interval kest_expression_compute_range(kest_expression *expr, kest_scope *s
 	return kest_expression_compute_range_rec(expr, scope, 0);
 }
 
-#define PRINTLINES_ALLOWED 0
-
 const char *kest_expression_function_string(kest_expression *expr)
 {
 	if (!expr)
@@ -2546,6 +2564,7 @@ const char *kest_expression_function_string(kest_expression *expr)
 		case KEST_EXPR_ACOS: 	return "acos";
 		case KEST_EXPR_ATAN: 	return "atan";
 		case KEST_EXPR_LOG10: 	return "log10";
+		case KEST_EXPR_ERF: 	return "erf";
 		default: return "";
 	}
 	
@@ -2918,8 +2937,6 @@ int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *
 	return NO_ERROR;
 }
 
-#define PRINTLINES_ALLOWED 0
-
 int kest_expression_get_references_rec(kest_expression *expr, string_list *names, int depth)
 {
 	if (!expr || !names)
@@ -2960,8 +2977,6 @@ int kest_expression_get_references(kest_expression *expr, string_list *names)
 {
 	return kest_expression_get_references_rec(expr, names, 0);
 }
-
-#define PRINTLINES_ALLOWED 0
 
 int kest_expression_updated_in_scope(kest_expression *expr, kest_scope *scope)
 {

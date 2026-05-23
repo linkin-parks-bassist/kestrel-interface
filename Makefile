@@ -91,11 +91,10 @@ lib_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fpga_position.c	\
 				fpga/kest_fpga_instr.c		\
 				fpga/kest_fpga_dma.c		\
-				fpga/kest_fpga_io.c			\
-				fpga/kest_fpga_update.c
+				fpga/kest_fpga_io.c			
 
 
-standalone_headers := core/kest_linked_list.h core/kest_dict.h
+standalone_headers := core/kest_linked_list.h core/kest_dict.h fpga/kest_fpga_defs.h
 
 lib_hfiles := $(standalone_headers) $(lib_cfiles:.c=.h)
 app_hfiles := $(standalone_headers) $(app_cfiles:.c=.h)

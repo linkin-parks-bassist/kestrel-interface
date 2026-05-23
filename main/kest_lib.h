@@ -38,6 +38,7 @@ extern "C" {
 #include "kest_resource.h"
 #include "kest_block.h"
 #include "kest_fpga_instr.h"
+#include "kest_driver.h"
 #include "kest_eff_desc.h"
 #include "kest_fpga_io.h"
 #include "kest_effect.h"

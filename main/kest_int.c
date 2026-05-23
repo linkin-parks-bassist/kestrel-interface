@@ -66,8 +66,12 @@ void app_main()
 	}
 	#endif
 	
+	
+	#ifdef KEST_ENABLE_REPRESENTATIONS
 	init_representation_updater();
+	#endif
 	kest_init_fpga_updater();
+	kest_active_preset_updater_start();
 	
 	kest_init_file_task();
 	

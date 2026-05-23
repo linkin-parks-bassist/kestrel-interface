@@ -33,6 +33,7 @@ int init_m_preset(kest_preset *preset)
 	preset->has_fname = 0;
 	
 	preset->active = 0;
+	preset->pending = 0;
 	preset->unsaved_changes = 1;
 	
 	#ifdef KEST_ENABLE_SEQUENCES
@@ -131,8 +132,19 @@ int kest_preset_set_active(kest_preset *preset)
 		return ERR_NULL_PTR;
 	
 	preset->active = 1;
+	preset->pending = 1;
 	
 	kest_preset_program_fpga(preset);
+	
+	return NO_ERROR;
+}
+
+int kest_preset_clear_pending(kest_preset *preset)
+{
+	if (!preset)
+		return ERR_NULL_PTR;
+	
+	preset->pending = 0;
 	
 	return NO_ERROR;
 }
@@ -243,7 +255,9 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	#endif
 	effect_rectify_param_ids(effect);
 	
+#ifndef KEST_LIBRARY
 	kest_queue_preset_save(preset);
+#endif
 	
 	KEST_PRINTF("kest_preset_append_effect_eff done\n");
 	return effect;
@@ -259,7 +273,9 @@ int kest_preset_remove_effect(kest_preset *preset, uint16_t id)
 	
 	kest_preset_if_active_reprogram_fpga(preset);
 	
+#ifndef KEST_LIBRARY
 	kest_queue_preset_save(preset);
+#endif
 	
 	KEST_PRINTF("kest_preset_remove_effect done. ret_val = %s\n", kest_error_code_to_string(ret_val));
 	return ret_val;
@@ -281,7 +297,9 @@ int kest_preset_move_effect(kest_preset *preset, int new_pos, int old_pos)
 		ret_val = ERR_NULL_PTR;
 	}
 	
+#ifndef KEST_LIBRARY
 	kest_queue_preset_save(preset);
+#endif
 	
 	return ret_val;
 }
@@ -353,7 +371,7 @@ void kest_free_preset(kest_preset *preset)
 	return;
 }
 
-#ifdef KEST_ENABLE_GLOBAL_CONTEXT
+#if defined(KEST_ENABLE_GLOBAL_CONTEXT) && !defined(KEST_LIBRARY)
 kest_preset *create_new_preset()
 {
 	kest_preset *new_preset = kest_context_add_preset_rp(&global_cxt);
@@ -374,7 +392,7 @@ kest_preset *create_new_preset()
 
 int kest_preset_save(kest_preset *preset)
 {
-	#ifdef KEST_ENABLE_SDCARD
+	#if defined(KEST_ENABLE_SDCARD) && !defined(KEST_LIBRARY)
 	if (!preset)
 		return ERR_NULL_PTR;
 	
@@ -504,7 +522,7 @@ int kest_preset_if_active_update_fpga(kest_preset *preset)
 void kest_preset_file_rep_update(void *representer, void *representee)
 {
 	KEST_PRINTF("kest_preset_file_rep_update\n");
-	#ifdef KEST_ENABLE_REPRESENTATIONS
+	#if defined(KEST_ENABLE_REPRESENTATIONS) && !defined(KEST_LIBRARY)
 	if (!representee)
 		return;
 	

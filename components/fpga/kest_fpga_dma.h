@@ -16,6 +16,7 @@
 #define DATA_REQ_STUCK_FLAGS	 13
 #define DATA_REQ_N_BLOCKS 		 14
 #define DATA_REQ_MEM			 15
+#define DATA_REQ_COMMAND_LOG	 33
 
 typedef struct kest_fpga_read_spec {
 	int type;
@@ -32,12 +33,16 @@ typedef struct kest_fpga_read_spec {
 typedef struct {
 	int active;
 	int period_ms;
+#ifdef KEST_ENABLE_UI
 	lv_timer_t *timer;
+#endif
 	kest_fpga_read_spec spec;
 } kest_fpga_periodic_read;
 
 int kest_fpga_periodic_read_init(kest_fpga_periodic_read *read);
 int kest_fpga_periodic_read_init_mem(kest_fpga_periodic_read *read);
+
+int kest_periodic_read_dispatch(kest_fpga_periodic_read *read);
 
 int kest_periodic_mem_read_cb(kest_fpga_read_spec *spec);
 

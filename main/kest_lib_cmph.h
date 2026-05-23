@@ -14,6 +14,8 @@
 #define SETTING_WIDGET_SWITCH 	 1
 #define SETTING_WIDGET_FIELD 	 2
 
+#define EFFECT_VIEW_MAX_GROUPS 5
+
 #define KEST_FPGA_SIMULATED
 
 #endif

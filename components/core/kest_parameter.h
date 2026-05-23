@@ -11,6 +11,12 @@
 
 #define KEST_PARAMETER_UNDRIVEN -1
 
+#ifdef __cplusplus
+#define KEST_ATOMIC(type) type
+#else
+#define KEST_ATOMIC(type) _Atomic type
+#endif
+
 typedef struct kest_parameter_id
 {
 	uint16_t preset_id;
@@ -25,7 +31,7 @@ struct kest_parameter_widget;
 
 typedef struct kest_parameter
 {
-	_Atomic float value;
+	KEST_ATOMIC(float) value;
 	float min;
 	float max;
 	
@@ -71,6 +77,8 @@ float kest_parameter_evaluate_rec(kest_parameter *param, int depth);
 int kest_parameter_if_driven_refresh(kest_parameter *param);
 int kest_parameter_set(kest_parameter *param, float v);
 int kest_parameter_driver_set(kest_parameter *param, float v);
+
+void kest_parameter_if_updated_refresh_pw_async(void *param_);
 
 int kest_parameter_clear_update(kest_parameter *param);
 

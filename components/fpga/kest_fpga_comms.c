@@ -161,14 +161,16 @@ void kest_fpga_comms_task(void *param)
 					{
 						KEST_PRINTF("FPGA accepted the new pipeline :)\n");
 						vTaskDelay(pdMS_TO_TICKS(50));
-						activate_active_preset_dma();
-						activate_active_preset_lfos();
+						//activate_active_preset_dma();
+						//activate_active_preset_lfos();
+						kest_preset_clear_pending(global_cxt.active_preset);
 						break;
 					}
 				}
 				#else
-				activate_active_preset_dma();
-				activate_active_preset_lfos();
+				//activate_active_preset_dma();
+				//activate_active_preset_lfos();
+				kest_preset_clear_pending(global_cxt.active_preset);
 				#endif
 				
 				kest_free_fpga_transfer_batch(msg.data.batch);
@@ -215,8 +217,8 @@ void kest_fpga_comms_task(void *param)
 						
 						float s = (float)((int16_t)(msg.data.read->result) & (int16_t)0xFFFF) * powf(2, -15);
 						
-						KEST_PRINTF("Probed FPGA memory at address 0x%04x, with result 0x%04x = %s%.05f\n",
-							addr, msg.data.read->result & 0xFFFF, s < 0 ? "" : " ", s);
+						KEST_PRINTF_FORCE("Probed FPGA memory at address 0x%04x, with result 0x%04x = %.05f\n",
+							addr, msg.data.read->result & 0xFFFF, s);
 					}
 					#endif
 					
