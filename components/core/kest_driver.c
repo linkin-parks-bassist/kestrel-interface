@@ -21,11 +21,13 @@ int kest_driver_init_scope_entry(kest_driver *driver, const char *key)
 	if (!driver)
 		return ERR_NULL_PTR;
 	
+	memset(driver, 0, sizeof(kest_driver));
+	
 	driver->type = KEST_DRIVER_SCOPE_ENTRY;
 	
 	kest_driver_scope_entry *sed = kest_alloc(sizeof(kest_driver_scope_entry));
 	
-	if(!driver->data)
+	if(!sed)
 		return ERR_ALLOC_FAIL;
 	
 	driver->data = sed;

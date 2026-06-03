@@ -26,6 +26,8 @@
 #define KEST_ENABLE_FPGA
 #define USE_FPGA
 
+#define KEST_PLATFORM_P4_NANO
+
 //#define USE_TEENSY
 //#define PRINT_MEMORY_USAGE
 

@@ -151,6 +151,7 @@ int kest_mem_init()
 
 #ifndef KEST_DESKTOP
 #ifndef KEST_LIBRARY
+#ifdef KEST_OVERRIDE_LV_MALLOC
 void lv_mem_init(void)
 {
 	return;
@@ -184,6 +185,7 @@ void kest_lv_free(void *ptr)
 {
     heap_caps_free(ptr);
 }
+#endif
 #endif
 #endif
 

@@ -278,6 +278,7 @@ int save_state_to_file(kest_state *state, const char *fname)
 	write_float(state->output_gain);
 	
 	write_string(state->active_preset_fname);
+	write_string(state->active_sequence_fname);
 	
 	KEST_PRINTF("Write state->current_page.type = %d = 0x%08x\n", state->current_page.type, state->current_page.type);
 	write_int32(state->current_page.type);
@@ -935,7 +936,6 @@ int save_sequence(kest_sequence *sequence)
 			
 			if (test)
 			{
-				kest_free(sequence->fname);
 				fclose(test);
 			}
 		} while (test);

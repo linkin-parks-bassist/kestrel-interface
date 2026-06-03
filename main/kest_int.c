@@ -51,29 +51,7 @@ void app_main()
 	
 	context_print_presets(&global_cxt);
 	load_saved_sequences(&global_cxt);
-	kest_state state;
-	ret_val = load_state_from_file(&state, SETTINGS_FNAME);
-	
-	if (ret_val == NO_ERROR)
-	{
-		ret_val = kest_cxt_restore_state(&global_cxt, &state);
-		
-		kest_printf("Restored state from disk with error code \"%s\"\n", kest_error_code_to_string(ret_val));
-	}
-	else
-	{
-		kest_printf("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
-	}
 	#endif
-	
-	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	init_representation_updater();
-	#endif
-	kest_init_fpga_updater();
-	kest_active_preset_updater_start();
-	
-	kest_init_file_task();
 	
 	#ifdef KEST_SIMULATED
     while (1)
@@ -88,7 +66,6 @@ void app_main()
 		kest_log_init();
 		lv_log_register_print_cb(kest_lv_log_cb);
 		kest_create_ui(disp);
-		kest_cxt_enter_previous_current_page(&global_cxt, &state);
 		#ifdef KEST_PRINT_MEMORY_REPORT
 		lv_timer_create(print_memory_report, 2000, NULL);
 		#endif
@@ -97,7 +74,23 @@ void app_main()
 	#endif
 	#endif
 	
-	//init_footswitch_task();
+	kest_state state;
+	ret_val = load_state_from_file(&state, SETTINGS_FNAME);
 	
-	while (1);
+	if (ret_val == NO_ERROR)
+	{
+		ret_val = kest_cxt_restore_state(&global_cxt, &state);
+		kest_cxt_enter_previous_current_page(&global_cxt, &state);
+		
+		kest_printf("Restored state from disk with error code \"%s\"\n", kest_error_code_to_string(ret_val));
+	}
+	else
+	{
+		kest_printf("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
+	}
+	
+	kest_active_preset_updater_start();
+	kest_init_file_task();
+	
+	//init_footswitch_task();
 }

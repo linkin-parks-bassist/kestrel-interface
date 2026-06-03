@@ -1,4 +1,7 @@
 #include "kest_int.h"
+#ifdef KEST_PLATFORM_P4_NANO
+#include "bsp/esp32_p4_nano.h"
+#endif
 
 #define PRINTLINES_ALLOWED 1
 
@@ -1359,7 +1362,17 @@ int ui_page_set_title_rw(kest_ui_page *page, lv_event_cb_t save_cb, lv_event_cb_
 
 void kest_ui_async_call(void (*f)(void*), void *arg)
 {
+	#ifdef KEST_PLATFORM_P4_NANO
+	if (bsp_display_lock(0))
+	{
+	#else
 	lv_lock();
-	lv_async_call(f, arg);
-	lv_unlock();
+	#endif
+		lv_async_call(f, arg);
+	#ifdef KEST_PLATFORM_P4_NANO
+		bsp_display_unlock();
+	}
+	#else
+	lv_unlock
+	#endif
 }
