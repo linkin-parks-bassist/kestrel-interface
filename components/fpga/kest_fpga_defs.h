@@ -60,7 +60,7 @@
 
 static inline float kest_fpga_sample_to_float(kest_fpga_sample_t s)
 {
-	return powf(2, -(KEST_FPGA_DATA_WIDTH - 1)) * (float)s;
+	return powf(2.0f, -(KEST_FPGA_DATA_WIDTH - 1)) * (float)s;
 }
 
 #endif

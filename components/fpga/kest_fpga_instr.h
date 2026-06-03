@@ -11,6 +11,7 @@
 #define SHIFT_POLICY_FB		5
 #define SHIFT_POLICY_FC		6
 #define SHIFT_POLICY_SET	7
+#define SHIFT_POLICY_F0		8
 
 typedef struct {
 	int n_args;

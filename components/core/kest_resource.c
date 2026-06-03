@@ -464,6 +464,9 @@ int kest_lfo_evaluate_rec(kest_lfo *lfo, kest_scope *scope, float *dest, int dep
 		amp    = 0.5 * (max - min);
 	}
 
+	KEST_PRINTF("result = amp * sin(t) + center = %f + sin(%f) + %f = %f * %f + %f = %f\n",
+		amp, t, center, amp, sin(t), center, amp * sin(t) + center);
+
 	result = amp * sin(t) + center;
 	
 	if (lfo->scale == KEST_LFO_SCALE_LOG)

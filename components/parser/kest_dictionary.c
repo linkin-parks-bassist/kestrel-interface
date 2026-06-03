@@ -740,7 +740,6 @@ void print_dict_entry(kest_dictionary_entry *entry)
 
 void print_dict(kest_dictionary *dict)
 {
-	#if 0
 	KEST_PRINTF("Dictionary ");
 	if (!dict)
 	{
@@ -769,7 +768,6 @@ void print_dict(kest_dictionary *dict)
 	KEST_PRINTF("%s", str);
 	kest_free(str);
 	kest_string_destroy(&full_string);
-	#endif
 }
 
 #define LIST_ENTRY_NAME_BUF_LEN 128
@@ -1394,7 +1392,7 @@ void kest_eff_entry_dict_print(kest_eff_entry_dict *dict)
 		kest_string_append(&full_string, '\n');
 	}
 	
-	kest_puts(full_string);
+	KEST_PRINTF("%s", full_string);
 	kest_string_destroy(&full_string);
 }
 

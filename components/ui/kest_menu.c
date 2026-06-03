@@ -93,8 +93,8 @@ int delete_menu_item_ui(kest_menu_item *item)
 
 int free_menu_item(kest_menu_item *item)
 {
-	if (item->text)
-		kest_free(item->text);
+	//if (item->text)
+	//	kest_free(item->text);
 	if (item->desc)
 		kest_free(item->desc);
 	

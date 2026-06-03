@@ -866,8 +866,8 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 	
 	uint8_t reg_no = 0;
 	uint16_t block = 0;
-	uint32_t value = 0;
-	int32_t signed_val = 0;
+	uint16_t value = 0;
+	int16_t signed_val = 0;
 	uint32_t instruction = 0;
 	
 	kest_string str;
@@ -1056,7 +1056,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 					state = 0;
 					
 					value = (value << 8) | byte;
-					kest_string_appendf(&str, "Value: %s = %d = %f (in q%d.%d)", binary_print_24(value), value, (float)value / (powf(2.0, (KEST_FPGA_DATA_WIDTH - 1) - shift)), 1 + shift, (KEST_FPGA_DATA_WIDTH - 1) - shift);
+					kest_string_appendf(&str, "Value: %s = %d = %f (in q%d.%d)", binary_print_16(value), value, (float)value / (powf(2.0, (KEST_FPGA_DATA_WIDTH - 1) - shift)), 1 + shift, (KEST_FPGA_DATA_WIDTH - 1) - shift);
 				}
 				else
 				{
@@ -1074,7 +1074,7 @@ int kest_fpga_batch_print(kest_fpga_transfer_batch seq)
 				else if (ctr == 2)
 				{
 					value = (value << 8) | byte;
-					kest_string_appendf(&str, "%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((uint32_t)value) / (powf(2.0, ((KEST_FPGA_DATA_WIDTH - 1) - shift))));
+					kest_string_appendf(&str, "%s: %s = 0x%06x = %.02f", ctr_2 ? "Delay" : "Size", binary_print_24(value), value, (float)((int16_t)value) / (powf(2.0, ((KEST_FPGA_DATA_WIDTH - 1) - shift))));
 					
 					ctr = 0;
 					

@@ -478,7 +478,7 @@ int clone_effect(kest_effect *dest, kest_effect *src)
 	}
 	
 	#ifdef KEST_ENABLE_UI
-	src->view_page = NULL;
+	dest->view_page = NULL;
 	#endif
 	
 	return NO_ERROR;

@@ -3,7 +3,7 @@
 #include "bsp/esp32_p4_nano.h"
 #endif
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 
@@ -1360,19 +1360,30 @@ int ui_page_set_title_rw(kest_ui_page *page, lv_event_cb_t save_cb, lv_event_cb_
 	return NO_ERROR;
 }
 
-void kest_ui_async_call(void (*f)(void*), void *arg)
+int kest_ui_lock()
 {
 	#ifdef KEST_PLATFORM_P4_NANO
-	if (bsp_display_lock(0))
-	{
+	return bsp_display_lock(0);
 	#else
 	lv_lock();
+	return 1;
 	#endif
-		lv_async_call(f, arg);
+}
+
+void kest_ui_unlock()
+{
 	#ifdef KEST_PLATFORM_P4_NANO
-		bsp_display_unlock();
-	}
+	bsp_display_unlock();
 	#else
-	lv_unlock
+	lv_unlock();
 	#endif
+}
+
+void kest_ui_async_call(void (*f)(void*), void *arg)
+{
+	if (kest_ui_lock())
+	{
+		lv_async_call(f, arg);
+		kest_ui_unlock();
+	}
 }

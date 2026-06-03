@@ -338,7 +338,7 @@ static const kest_asm_instr_desc kest_instr_desc_delay_mread = {
 	.name = "delay_mread",
 	.opcode = BLOCK_INSTR_DELAY_READ,
 	.arg_fmt = arg_format_res_read_3,
-	.shift_policy = SHIFT_POLICY_0
+	.shift_policy = SHIFT_POLICY_F0
 };
 
 static const kest_asm_instr_desc kest_instr_desc_delay_write = {
