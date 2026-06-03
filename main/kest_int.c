@@ -50,7 +50,9 @@ void app_main()
 	load_saved_presets(&global_cxt);
 	
 	context_print_presets(&global_cxt);
+	kest_ui_lock();
 	load_saved_sequences(&global_cxt);
+	kest_ui_unlock();
 	#endif
 	
 	#ifdef KEST_SIMULATED
