@@ -45,7 +45,10 @@ void *kest_realloc(void *ptr, size_t size)
 		return kest_alloc(size);
 	
 	if (size == 0)
+	{
 		kest_free(ptr);
+		return NULL;
+	}
 	
     uint8_t *base_ptr = (uint8_t*)ptr - sizeof(size_t);
     size_t base_size = *(size_t*)base_ptr;
@@ -62,9 +65,7 @@ void *kest_realloc(void *ptr, size_t size)
     if (total_current > total_peak)
         total_peak = total_current;
     
-    
     return new_ptr + sizeof(size_t);
-    
 }
 
 char *kest_strndup(const char *str, size_t n)
@@ -99,13 +100,13 @@ void kest_mem_monitor_task(void *param)
 #define INIT_MEM_POOL(X, n) do {\
 		if ((ret_val = X##_pool_init(&X##_mem_pool)) != NO_ERROR)\
 		{\
-			KEST_PRINTF("Failed to init effect descriptor pool\n");\
+			KEST_PRINTF_FORCE("Failed to init " #X " pool\n");\
 			return ret_val;\
 		}\
 		\
 		if ((ret_val = X##_pool_reserve(&X##_mem_pool, n)) != NO_ERROR)\
 		{\
-			KEST_PRINTF("Failed to reserve effect descriptor pool\n");\
+			KEST_PRINTF_FORCE("Failed to reserve " #X " pool\n");\
 			return ERR_ALLOC_FAIL;\
 		}\
 		\

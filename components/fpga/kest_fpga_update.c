@@ -2,7 +2,7 @@
 
 static const char *FNAME = "kest_fpga_update.c";
 
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 
 void kest_fpga_update_task(void *arg);
 

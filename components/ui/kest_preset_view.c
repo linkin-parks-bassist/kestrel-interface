@@ -466,7 +466,7 @@ int create_preset_view_ui(kest_ui_page *page)
 	
 	if (preset->active)
 	{
-		kest_button_disable(str->play);
+		//kest_button_disable(str->play);
 	}
 	
 	if (!str->preset->unsaved_changes)
@@ -590,7 +590,7 @@ void preset_view_rep_update(void *representer, void *representee)
 	
 	if (preset->active)
 	{
-		kest_button_disable(str->play);
+		//kest_button_disable(str->play);
 	}
 	else
 	{

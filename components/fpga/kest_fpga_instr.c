@@ -112,6 +112,17 @@ static const kest_instr_arg_fmt arg_format_res_read_2 = {
 	.shift_pos = KEST_ARG_POS_NONE
 };
 
+static const kest_instr_arg_fmt arg_format_res_read_3 = {
+	.n_args = 4,
+	
+	.arg_a_pos = 1,
+	.arg_b_pos = 2,
+	.arg_c_pos = KEST_ARG_POS_NONE,
+	.res_pos   = 0,
+	.dest_pos  = 3,
+	.shift_pos = KEST_ARG_POS_NONE
+};
+
 static const kest_instr_arg_fmt arg_format_res_write = {
 	.n_args = 2,
 	
@@ -323,6 +334,12 @@ static const kest_asm_instr_desc kest_instr_desc_delay_read = {
 	.shift_policy = SHIFT_POLICY_0
 };
 
+static const kest_asm_instr_desc kest_instr_desc_delay_mread = {
+	.name = "delay_mread",
+	.opcode = BLOCK_INSTR_DELAY_READ,
+	.arg_fmt = arg_format_res_read_3,
+	.shift_policy = SHIFT_POLICY_0
+};
 
 static const kest_asm_instr_desc kest_instr_desc_delay_write = {
 	.name = "delay_write",
@@ -444,6 +461,7 @@ const kest_asm_instr_desc *kest_instr_name_to_desc(char *name)
 	if (strcmp(name, "mac"         ) == 0) return &kest_instr_desc_mac;
 	if (strcmp(name, "umac"        ) == 0) return &kest_instr_desc_umac;
 	if (strcmp(name, "delay_read"  ) == 0) return &kest_instr_desc_delay_read;
+	if (strcmp(name, "delay_mread" ) == 0) return &kest_instr_desc_delay_mread;
 	if (strcmp(name, "delay_write" ) == 0) return &kest_instr_desc_delay_write;
 	if (strcmp(name, "mem_read"    ) == 0) return &kest_instr_desc_mem_read;
 	if (strcmp(name, "mem_write"   ) == 0) return &kest_instr_desc_mem_write;

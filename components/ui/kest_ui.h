@@ -120,6 +120,7 @@ int configure_ui_page(kest_ui_page *page, void *data);
 int create_page_ui(kest_ui_page *page);
 
 int enter_ui_page(kest_ui_page *page);
+void enter_ui_page_async(kest_ui_page *page);
 int enter_ui_page_forwards(kest_ui_page *page);
 int enter_ui_page_backwards(kest_ui_page *page);
 

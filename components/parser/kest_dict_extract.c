@@ -1771,25 +1771,25 @@ kest_dsp_resource *kest_extract_delay(kest_eff_parsing_state *ps, kest_eff_entry
 		}
 		else if (strcmp(key, "delay") == 0 || strcmp(key, "delay") == 0) // If unspecified, assume ms
 		{
-			ASSERT_ATTR_CONST_EXPR();
+			//ASSERT_ATTR_CONST_EXPR();
 			delay->delay = expr;
 			delay->units = KEST_DELAY_UNITS_MS;
 		}
 		else if (strcmp(key, "delay_seconds") == 0)
 		{
-			ASSERT_ATTR_CONST_EXPR();
+			//ASSERT_ATTR_CONST_EXPR();
 			delay->delay = expr;
 			delay->units = KEST_DELAY_UNITS_SECONDS;
 		}
 		else if (strcmp(key, "delay_samples") == 0)
 		{
-			ASSERT_ATTR_CONST_INT();
+			//ASSERT_ATTR_CONST_INT();
 			delay->delay = expr;
 			delay->units = KEST_DELAY_UNITS_SAMPLES;
 		}
 		else if (strcmp(key, "size") == 0)
 		{
-			ASSERT_ATTR_CONST_EXPR();
+			//ASSERT_ATTR_CONST_EXPR();
 			delay->size = expr;
 		}
 		else
@@ -2455,6 +2455,8 @@ kest_dsp_resource *kest_extract_lfo(kest_eff_parsing_state *ps, kest_eff_entry_d
 		lfo->mode = KEST_LFO_MODE_CENTER_AMP;
 	else
 		lfo->mode = KEST_LFO_MODE_MIN_MAX;
+	
+	lfo->scale = KEST_LFO_SCALE_LINEAR;
 	
 	resource->data = (void*)lfo;
 	

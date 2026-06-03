@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_fpga_comms.c";
 
@@ -74,23 +74,34 @@ void kest_fpga_comms_task(void *param)
 	kest_fpga_msg msg;
 	BaseType_t ret;
 	
+	#ifdef PRINT_SCAN
+	uint64_t last_scan_ms = kest_system_time_ms();
+	uint64_t current_time_ms = last_scan_ms;
+	#endif
+	
 	while (1)
 	{
 		do {
 			ret = xQueueReceive(fpga_msg_queue, &msg, pdMS_TO_TICKS(1000));
+			
+			#ifdef PRINT_SCAN
+			current_time_ms = kest_system_time_ms();
+			
+			if (current_time_ms - last_scan_ms >= 1000)
+			{
+				last_scan_ms = current_time_ms;
+				kest_fpga_comms_print_full_scan();
+			}
+			#endif
+			
 			if (ret != pdPASS)
 			{
 				kest_fpga_get_status_flags(&status);
 				
-				#ifdef PRINT_SCAN
-				kest_fpga_comms_print_full_scan();
-				#else
 				#ifdef PRINT_FLAGS
 				kest_fpga_status_flags_print(&status);
 				#endif
-				#endif
 				
-								
 				if (status.timeout)
 				{
 					kest_fpga_send_byte(COMMAND_CLEAR_TIMEOUT_FLAG);
@@ -232,7 +243,7 @@ void kest_fpga_comms_task(void *param)
 	vTaskDelete(NULL);
 }
 
-static inline int kest_fpga_queue_msg(kest_fpga_msg msg)
+int kest_fpga_queue_msg(kest_fpga_msg msg)
 {
 	while (!initialised);
 	

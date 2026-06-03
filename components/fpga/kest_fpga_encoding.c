@@ -424,6 +424,8 @@ int kest_fpga_batch_append_block_list(kest_fpga_transfer_batch *batch, kest_bloc
 	return NO_ERROR;
 }
 
+#define PRINTLINES_ALLOWED 0
+
 int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_resource *res, const kest_eff_resource_report *rpt, kest_scope *scope)
 {
 	KEST_PRINTF("kest_fpga_batch_append_resource(batch = %p, res = %p, rpt = %p, scope = %p)\n",
@@ -441,9 +443,10 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	float c;
 	int32_t s;
 	
-	float unit_c;
+	float unit_c = 0.0;
+	float v = 0.0;
 	
-	KEST_PRINTF("res->type = %d\n", res->type);
+	KEST_PRINTF("res->type = %d, res->data = %p\n", res->type, res->data);
 	
 	switch (res->type)
 	{
@@ -459,27 +462,50 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 			switch (delay->units)
 			{
 				case KEST_DELAY_UNITS_MS:
-					unit_c =  0.001 * KEST_FPGA_SAMPLE_RATE;
+					KEST_PRINTF("Units: ms\n");
+					unit_c = 0.001 * KEST_FPGA_SAMPLE_RATE;
 					break;
 				case KEST_DELAY_UNITS_SECONDS:
-					unit_c =  KEST_FPGA_SAMPLE_RATE;
+					KEST_PRINTF("Units: s\n");
+					unit_c = KEST_FPGA_SAMPLE_RATE;
 					break;
 				case KEST_DELAY_UNITS_SAMPLES:
+					KEST_PRINTF("Units: samples\n");
 					unit_c = 1.0;
 					break;
 			}
 			
+			KEST_PRINTF("unit_c = %f\n", unit_c);
+			
+			v = kest_expression_evaluate(delay->delay, scope);
+			
+			KEST_PRINTF("kest_expression_evaluate(delay->delay, scope) = %f\n", v);
+			
 			delay_samples = (uint32_t)(ceilf(kest_expression_evaluate(delay->delay, scope)) * unit_c);
 			
+			KEST_PRINTF("delay_samples = %d\n", delay_samples);
+			
 			if (delay->size)
-				delay_size = (uint32_t)(ceilf(kest_expression_evaluate(res->size, scope)) * unit_c);
+			{
+				delay_size = (uint32_t)(ceilf(kest_expression_evaluate(delay->size, scope)) * unit_c);
+				
+				KEST_PRINTF("delay->size = %s\n", kest_expression_to_string(delay->size));
+				
+				KEST_PRINTF("delay_size = (uint32_t)(ceilf(kest_expression_evaluate(delay->size, scope)) * unit_c) = ceilf(%f) * %f = %d\n",
+					kest_expression_evaluate(delay->size, scope), unit_c, delay_size);
+			}
 			else
+			{
+				delay_size = delay_samples + 4;
+			}
+			
+			
+			if (delay_size < delay_samples + 4)
 				delay_size = delay_samples + 4;
 			
 			delay_size += 4 - (delay_size % 4);
 			
-			if (delay_size < delay_samples + 4)
-				delay_size = delay_samples + 4;
+			KEST_PRINTF("delay->size = %p, delay_size = %d\n", delay->size, delay_size);
 			
 			kest_fpga_batch_append_24(batch, delay_size);
 			kest_fpga_batch_append_24(batch, delay_samples);
@@ -518,6 +544,8 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	
 	return NO_ERROR;
 }
+
+#define PRINTLINES_ALLOWED 0
 
 int kest_fpga_batch_append_resources(kest_fpga_transfer_batch *batch, kest_dsp_resource_pll *list, const kest_eff_resource_report *rpt, kest_scope *scope)
 {

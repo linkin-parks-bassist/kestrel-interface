@@ -28,7 +28,7 @@ typedef struct kest_update {
 QueueHandle_t update_queue = NULL;
 static int initialised = 0;
 
-#define UPDATE_RATE_HZ 200
+#define UPDATE_RATE_HZ 150
 #define UPDATE_PERIOD_MS (1000.0f / (float)UPDATE_RATE_HZ)
 
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
@@ -50,6 +50,7 @@ void kest_active_preset_updater_task(void *arg)
 	kest_effect_pll *current_effect = NULL;
 	kest_effect *effect = NULL;
 	kest_mem_slot *mem = NULL;
+	kest_lfo *lfo = NULL;
 	kest_dsp_resource *resource = NULL;
 	kest_preset *active_preset = NULL;
 	kest_preset *active_preset_prev = NULL;
@@ -103,6 +104,12 @@ void kest_active_preset_updater_task(void *arg)
 								KEST_PRINTF("Dispatching mem slot %p read\n", mem);
 								kest_periodic_read_dispatch(&mem->read);
 							}
+							break;
+						case KEST_DSP_RESOURCE_LFO:
+							lfo = (kest_lfo*)resource->data;
+							if (lfo->scope_entry)
+								lfo->scope_entry->updated = 1;
+							kest_active_preset_updater_notify_effect_by_ptr(current_effect->data);
 							break;
 					}
 				}

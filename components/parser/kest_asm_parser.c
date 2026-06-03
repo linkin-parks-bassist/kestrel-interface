@@ -21,7 +21,7 @@ static const char *instrs [] = {
 	"min", "max", "clamp",
 	"mov_acc", "mov_lacc", "mov_uacc",
 	"macz", "umacz", "mac", "umac",
-	"delay_read", "delay_write", "delay_mwrite",
+	"delay_read", "delay_write", "delay_mread",
 	"mem_read", "mem_write", "filter", "fcasc",
 	"tanh4", "sin2pi", "svf", "svf_low", "svf_high",
 	"svf_band", "poly"
@@ -149,6 +149,16 @@ static const kest_arg_format arg_format_res_read_2 = {
 	.shift_pos = KEST_ARG_POS_NONE
 };
 */
+static const kest_arg_format arg_format_res_read_3 = {
+	.n_args = 4,
+	
+	.arg_a_pos = 1,
+	.arg_b_pos = 2,
+	.arg_c_pos = KEST_ARG_POS_NONE,
+	.res_pos   = 0,
+	.dest_pos  = 3,
+	.shift_pos = KEST_ARG_POS_NONE
+};
 static const kest_arg_format arg_format_res_write = {
 	.n_args = 2,
 	
@@ -207,6 +217,7 @@ const kest_arg_format *kest_instr_arg_format(const char *instr)
 	if (strcmp(instr, "mac"         ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "umac"        ) == 0) return &arg_format_mac;
 	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
+	if (strcmp(instr, "delay_mread" ) == 0) return &arg_format_res_read_3;
 	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
 	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
 	if (strcmp(instr, "mem_write"   ) == 0) return &arg_format_res_write;
@@ -243,6 +254,7 @@ int kest_instr_opcode(const char *instr)
 	if (strcmp(instr, "mac"         ) == 0) return BLOCK_INSTR_MAC;
 	if (strcmp(instr, "umac"        ) == 0) return BLOCK_INSTR_UMAC;
 	if (strcmp(instr, "delay_read"  ) == 0) return BLOCK_INSTR_DELAY_READ;
+	if (strcmp(instr, "delay_mread" ) == 0) return BLOCK_INSTR_DELAY_READ;
 	if (strcmp(instr, "delay_write" ) == 0) return BLOCK_INSTR_DELAY_WRITE;
 	if (strcmp(instr, "mem_read"    ) == 0) return BLOCK_INSTR_MEM_READ;
 	if (strcmp(instr, "mem_write"   ) == 0) return BLOCK_INSTR_MEM_WRITE;

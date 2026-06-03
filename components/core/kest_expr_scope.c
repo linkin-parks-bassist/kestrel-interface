@@ -588,36 +588,7 @@ int kest_scope_entry_eval_rec(kest_scope_entry *entry, kest_scope *scope, float 
 			KEST_PRINTF("Eval LFO\n");
 			lfo = entry->val.lfo;
 			
-			KEST_PRINTF("Eval LFO\n");
-			if (!lfo)
-				return ERR_NULL_PTR;
-			
-			KEST_PRINTF("Eval LFO\n");
-			switch (lfo->mode)
-			{
-				case KEST_LFO_MODE_CENTER_AMP:
-					KEST_PRINTF("Eval LFO\n");
-					center = kest_expression_evaluate_rec(lfo->center,  scope, depth + 1);
-					freq = kest_expression_evaluate_rec(lfo->frequency, scope, depth + 1);
-					KEST_PRINTF("freq = %s = %f\n", kest_expression_to_string(lfo->frequency), freq);
-					amp = kest_expression_evaluate_rec(lfo->amplitude,  scope, depth + 1);
-					
-					time_ms = kest_system_time_ms();
-					
-					t = 2.0f * M_PI * freq * ((float)(time_ms - lfo->prev_ms) * 0.001);
-					
-					t = lfo->prev_t + t;
-					
-					while (t > 2.0f * M_PI)
-						t -= 2.0f * M_PI;
-					
-					*dest = amp * sin(t) + center;
-					
-					lfo->prev_t = t;
-					lfo->prev_ms = time_ms;
-					
-					break;
-			}
+			kest_lfo_evaluate(lfo, scope, dest);
 			
 			break;
 		

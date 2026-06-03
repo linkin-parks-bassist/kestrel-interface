@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 
 IMPLEMENT_LINKED_PTR_LIST(lv_obj_t);
 
@@ -290,6 +290,17 @@ int enter_ui_page(kest_ui_page *page)
 	kest_queue_state_save();
 	
 	return NO_ERROR;
+}
+
+void enter_ui_page_async_wrapper(void *ui_page)
+{
+	enter_ui_page((kest_ui_page*)ui_page);
+}
+
+
+void enter_ui_page_async(kest_ui_page *page)
+{
+	kest_ui_async_call(enter_ui_page_async_wrapper, (void*)page);
 }
 
 int enter_ui_page_forwards(kest_ui_page *page)
@@ -1087,6 +1098,8 @@ int ui_page_create_panel_ui(kest_ui_page *page)
 	if (!page->panel)
 		return ERR_BAD_ARGS;
 	
+	KEST_PRINTF("ui_page_create_panel_ui(page = %p)\n", page);
+	
 	page->panel->panel = lv_obj_create(page->screen);
     
     lv_obj_set_size				 (page->panel->panel, LV_PCT(100), TOP_PANEL_HEIGHT);
@@ -1111,6 +1124,8 @@ int ui_page_create_panel_ui(kest_ui_page *page)
 		lv_obj_align_to(page->panel->rb->obj, page->panel->panel, LV_ALIGN_RIGHT_MID, 0, 0);
 	}
 	
+	KEST_PRINTF("ui_page_create_panel_ui done\n");
+	
 	return NO_ERROR;
 }
 
@@ -1122,6 +1137,8 @@ int ui_page_add_back_button(kest_ui_page *page)
 	if (!page->panel)
 		return ERR_BAD_ARGS;
 	
+	KEST_PRINTF("ui_page_add_back_button(page = %p)\n", page);
+	
 	page->panel->lb = new_button(LV_SYMBOL_LEFT);
 	
 	if (!page->panel->lb)
@@ -1132,6 +1149,7 @@ int ui_page_add_back_button(kest_ui_page *page)
 	
 	button_set_clicked_cb(page->panel->lb, enter_parent_page_cb, page);
 	
+	KEST_PRINTF("ui_page_add_back_button done\n");
 	return NO_ERROR;
 }
 
@@ -1220,6 +1238,8 @@ int ui_page_create_container(kest_ui_page *page)
 	if (!page)
 		return ERR_NULL_PTR;
 	
+	KEST_PRINTF("ui_page_create_container(page = %p)\n", page);
+	
 	int tall = 1;
 	
 	for (int i = 0; i < MAX_BOTTOM_BUTTONS; i++)
@@ -1253,6 +1273,7 @@ int ui_page_create_container(kest_ui_page *page)
 			return ERR_BAD_ARGS;
 	}
 	
+	KEST_PRINTF("ui_page_create_container done\n");
 	return NO_ERROR;
 }
 

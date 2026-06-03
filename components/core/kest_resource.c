@@ -282,6 +282,18 @@ kest_delay *kest_delay_create(kest_allocator *alloc)
 	return delay;
 }
 
+int kest_delay_init(kest_delay *delay)
+{
+	if (!delay)
+		return ERR_NULL_PTR;
+	
+	memset(delay, 0, sizeof(kest_delay));
+	
+	delay->units = KEST_DELAY_UNITS_MS;
+	
+	return NO_ERROR;
+}
+
 int kest_lfo_init(kest_lfo *lfo)
 {
 	if (!lfo)
@@ -411,6 +423,8 @@ int kest_lfo_evaluate_rec(kest_lfo *lfo, kest_scope *scope, float *dest, int dep
 	while (t > 2.0f * M_PI)
 		t -= 2.0f * M_PI;
 	
+	KEST_PRINTF("lfo->mode = %d, lfo->scale = %d\n", lfo->mode, lfo->scale);
+	
 	switch (lfo->mode)
 	{
 		case KEST_LFO_MODE_MIN_MAX:
@@ -461,7 +475,6 @@ int kest_lfo_evaluate_rec(kest_lfo *lfo, kest_scope *scope, float *dest, int dep
 	
 	return NO_ERROR;
 }
-
 
 int kest_lfo_evaluate(kest_lfo *lfo, kest_scope *scope, float *dest)
 {
@@ -527,6 +540,21 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 		{
 			kest_lfo *lfo = (kest_lfo*)src->data;
 			memcpy(dest->data, src->data, sizeof(kest_lfo));
+		}
+	}
+	else if (dest->type == KEST_DSP_RESOURCE_DELAY)
+	{
+		dest->data = kest_delay_create(NULL);
+		
+		if (!dest->data)
+			return ERR_ALLOC_FAIL;
+		
+		kest_delay_init(dest->data);
+		
+		if (src->data)
+		{
+			kest_delay *del = (kest_delay*)src->data;
+			memcpy(dest->data, src->data, sizeof(kest_delay));
 		}
 	}
 	else if (dest->type == KEST_DSP_RESOURCE_FILTER)

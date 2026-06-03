@@ -66,10 +66,10 @@ int kest_begin_periodic_read(kest_fpga_periodic_read *read)
 #ifndef KEST_ENABLE_UI
 	return ERR_FEATURE_DISABLED;
 #else
-	read->timer = lv_timer_create(kest_fpga_periodic_read_timer_cb, read->period_ms, read);
+	//read->timer = lv_timer_create(kest_fpga_periodic_read_timer_cb, read->period_ms, read);
 	
-	if (!read->timer)
-		return ERR_UNKNOWN_ERR;
+	//if (!read->timer)
+	//	return ERR_UNKNOWN_ERR;
 	
 	KEST_PRINTF("kest_begin_periodic_read done\n");
 	return NO_ERROR;
@@ -109,9 +109,7 @@ int kest_periodic_mem_read_cb(kest_fpga_read_spec *read)
 	entry->updated = 1;
 	
 	if (mem_slot->effect && mem_slot->effect->preset)
-	{
 		kest_active_preset_updater_notify_effect_by_ptr(mem_slot->effect);
-	}
 	#endif
 	
 	return NO_ERROR;
@@ -131,7 +129,7 @@ int kest_fpga_periodic_read_activate(kest_fpga_periodic_read *read)
 #ifndef KEST_ENABLE_UI
 	return ERR_FEATURE_DISABLED;
 #else
-	read->timer = lv_timer_create(kest_fpga_periodic_read_timer_cb, read->period_ms, read);
+	//read->timer = lv_timer_create(kest_fpga_periodic_read_timer_cb, read->period_ms, read);
 	read->active = 1;
 	
 	return NO_ERROR;
@@ -150,7 +148,7 @@ int kest_fpga_periodic_read_deactivate(kest_fpga_periodic_read *read)
 #ifdef KEST_ENABLE_UI
 	if (read->timer)
 	{
-		lv_timer_del(read->timer);
+		//lv_timer_del(read->timer);
 		read->timer = NULL;
 	}
 #endif
