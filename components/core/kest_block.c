@@ -109,12 +109,15 @@ int kest_block_clone(kest_block *dest, kest_block *src)
 int kest_block_clone_no_res(kest_block *dest, kest_block *src)
 {
 	KEST_PRINTF("kest_block_clone_no_res\n");
+	
 	if (!dest || !src)
 		return ERR_NULL_PTR;
 	
 	memcpy(dest, src, sizeof(kest_block));
 	
-	dest->res = NULL;
+	if (dest->instr != BLOCK_INSTR_LUT_READ)
+		dest->res = NULL;
 	
+	KEST_PRINTF("kest_block_clone_no_res done\n");
 	return NO_ERROR;
 }

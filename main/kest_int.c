@@ -29,9 +29,10 @@ void app_main()
 	waveshare_dsi_touch_5_a_init(&disp);
 	#endif
 	
+	kest_ui_lock();
 	kest_init_context(&global_cxt);
-	
 	kest_init_global_pages(&global_cxt.pages);
+	kest_ui_unlock();
 	
 	#ifdef USE_SGTL5000
 	xTaskCreate(kest_sgtl5000_init, "kest_sgtl5000_init_task", 8192, NULL, 8, NULL);
@@ -46,11 +47,9 @@ void app_main()
 	init_sd_card();
 	kest_init_directories();
 	load_effects(&global_cxt);
+	kest_ui_lock();
 	init_effect_selector_eff(&global_cxt.pages.effect_selector);
 	load_saved_presets(&global_cxt);
-	
-	context_print_presets(&global_cxt);
-	kest_ui_lock();
 	load_saved_sequences(&global_cxt);
 	kest_ui_unlock();
 	#endif

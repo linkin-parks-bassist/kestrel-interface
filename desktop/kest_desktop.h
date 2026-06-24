@@ -121,6 +121,7 @@
 #include "kest_dict_extract.h"
 #include "kest_printf.h"
 #include "kest_state.h"
+#include "kest_update.h"
 
 #define xTaskCreatePinnedToCore( \
     task_func,                   \

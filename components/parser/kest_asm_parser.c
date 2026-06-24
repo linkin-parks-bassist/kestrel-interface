@@ -231,7 +231,11 @@ const kest_arg_format *kest_instr_arg_format(const char *instr)
 
 int kest_instr_opcode(const char *instr)
 {
-	if (!instr) return BLOCK_INSTR_NOP;
+	if (!instr)
+	{
+		KEST_PRINTF_FORCE("kest_instr_opcode(instr = %p)\n", instr);
+		return BLOCK_INSTR_NOP;
+	}
 	
 	if (strcmp(instr, "nop"         ) == 0) return BLOCK_INSTR_NOP;
 	if (strcmp(instr, "mov"         ) == 0) return BLOCK_INSTR_MADD;

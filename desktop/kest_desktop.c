@@ -122,7 +122,7 @@ int kest_init()
 		KEST_PRINTF("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
 	}
 	
-	kest_init_fpga_updater();
+	kest_active_preset_updater_start();
 	kest_init_file_task();
 	
 	return ret_val;

@@ -610,7 +610,8 @@ void kest_instr_print_format_a(kest_string *str, uint32_t instr)
 		src_c_reg,
 		dest,
 		shift,
-		0);
+		0
+	);
 }
 
 void kest_instr_print_format_b(kest_string *str, uint32_t instr)

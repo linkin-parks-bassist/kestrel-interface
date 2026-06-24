@@ -30,6 +30,7 @@ int kest_block_instr_format(kest_block *block)
 
 uint32_t kest_encode_dsp_block_instr_type_a(kest_block *block)
 {
+	KEST_PRINTF("kest_encode_dsp_block_instr_type_a\n");
 	if (!block) return 0;
 	
 	KEST_PRINTF("Encoding instruction of format A. dest = %d\n", block->dest);
@@ -55,10 +56,14 @@ uint32_t kest_encode_dsp_block_instr_type_b(kest_block *block, int res_handle)
 
 uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_eff_resource_report *res)
 {
+	KEST_PRINTF("kest_block_instr_encode_resource_aware(block = %p, res = %p)\n", block, res);
+	
 	if (!block)
 		return 0;
 	
 	int res_handle = 0;
+	
+	KEST_PRINTF("kest_block_instr_format(block) = %d, block->res = %p\n", kest_block_instr_format(block), block->res);
 	
 	if (kest_block_instr_format(block))
 	{
@@ -105,6 +110,7 @@ int kest_fpga_batch_append_block_number(kest_fpga_transfer_batch *batch, int blo
 
 int kest_fpga_batch_append_block_instr(kest_fpga_transfer_batch *batch, kest_block *block, const kest_eff_resource_report *res, int pos)
 {
+	KEST_PRINTF("kest_fpga_batch_append_block_instr\n");
 	if (!batch || !block)
 		return ERR_NULL_PTR;
 	
@@ -112,6 +118,12 @@ int kest_fpga_batch_append_block_instr(kest_fpga_transfer_batch *batch, kest_blo
 	
 	kest_fpga_batch_append(batch, COMMAND_WRITE_BLOCK_INSTR);
 	kest_fpga_batch_append_block_number(batch, pos);
+	
+	instr = kest_block_instr_encode_resource_aware(block, res);
+	
+	KEST_PRINTF("block->instr = %s\n", binary_print_32(block->instr));
+	KEST_PRINTF("instr = %s\n", binary_print_32(instr));
+	
 	kest_fpga_batch_append_32(batch, kest_block_instr_encode_resource_aware(block, res));
 	
 	return NO_ERROR;
@@ -424,8 +436,6 @@ int kest_fpga_batch_append_block_list(kest_fpga_transfer_batch *batch, kest_bloc
 	return NO_ERROR;
 }
 
-#define PRINTLINES_ALLOWED 0
-
 int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_resource *res, const kest_eff_resource_report *rpt, kest_scope *scope)
 {
 	KEST_PRINTF("kest_fpga_batch_append_resource(batch = %p, res = %p, rpt = %p, scope = %p)\n",
@@ -544,8 +554,6 @@ int kest_fpga_batch_append_resource(kest_fpga_transfer_batch *batch, kest_dsp_re
 	
 	return NO_ERROR;
 }
-
-#define PRINTLINES_ALLOWED 0
 
 int kest_fpga_batch_append_resources(kest_fpga_transfer_batch *batch, kest_dsp_resource_pll *list, const kest_eff_resource_report *rpt, kest_scope *scope)
 {
