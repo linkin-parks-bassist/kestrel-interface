@@ -72,6 +72,8 @@ void kest_param_update_task(void *arg)
 	TickType_t last_wake = xTaskGetTickCount();
 	
 	kest_parameter_update current;
+	kest_event event;
+	kest_update update;
 	kest_effect *effect;
 	kest_parameter *param;
 	
@@ -237,6 +239,10 @@ void kest_param_update_task(void *arg)
 			{
 				if (global_cxt.active_preset && global_cxt.active_preset->id == update_array[i].id.preset_id)
 				{
+					update.type = KEST_UPDATE_PARAM;
+					update.data.param = update_array[i].p;
+					kest_update_queue(update);
+					
 					kest_active_preset_updater_notify_effect_by_ptr(update_array[i].t);
 				}
 			}

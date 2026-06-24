@@ -148,6 +148,17 @@ void kest_create_ui(lv_disp_t *disp)
 		enter_ui_page(&global_cxt.pages.main_sequence_view);
 }
 
+
+void kest_create_ui_async_wrapper(void *arg)
+{
+	kest_create_ui(NULL);
+}
+
+void kest_create_ui_async()
+{
+	kest_ui_async_call(kest_create_ui_async_wrapper, NULL);
+}
+
 int init_ui_page(kest_ui_page *page)
 {
 	if (!page)
@@ -1384,6 +1395,22 @@ void kest_ui_async_call(void (*f)(void*), void *arg)
 	if (kest_ui_lock())
 	{
 		lv_async_call(f, arg);
+		kest_ui_unlock();
+	}
+}
+
+void kest_async_call_void_wrapper(void *arg)
+{
+	void (*f)(void) = arg;
+	f();
+}
+
+
+void kest_ui_async_call_void(void (*f)(void))
+{
+	if (kest_ui_lock())
+	{
+		lv_async_call(kest_async_call_void_wrapper, (void*)f);
 		kest_ui_unlock();
 	}
 }

@@ -30,36 +30,12 @@ int init_parameter_str(kest_parameter *param)
 	
 	memset(param, 0, sizeof(kest_parameter));
 	
-	param->value = 0.0;
-	param->min = 0.0;
-	param->min_expr = NULL;
-	param->max = 1.0;
-	param->max_expr = NULL;
+	param->max 			= 1.0;
 	param->max_velocity = DEFAULT_MAX_VELOCITY;
-	param->id = (kest_parameter_id){.preset_id = 0, .effect_id = 0, .parameter_id = 0};
-	param->name = NULL;
-	param->name_internal = NULL;
-	param->units = NULL;
-	param->widget_type = PARAM_WIDGET_VIRTUAL_POT;
-	param->scale = PARAMETER_SCALE_LINEAR;
-	param->group = -1;
-	param->updated = 0;
-	param->effect = NULL;
-	
+	param->widget_type 	= PARAM_WIDGET_VIRTUAL_POT;
+	param->scale 		= PARAMETER_SCALE_LINEAR;
+	param->group 		= -1;
 	param->driver_index = KEST_PARAMETER_UNDRIVEN;
-	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	param->effect_rep.representer = NULL;
-	param->effect_rep.representee = param;
-	param->effect_rep.update = kest_parameter_effect_rep_update;
-	param->widget_rep.representer = NULL;
-	param->widget_rep.representee = param;
-	KEST_PRINTF("kest_parameter_widget_rep_update = %p\n", kest_parameter_widget_rep_update);
-	param->widget_rep.update = kest_parameter_widget_rep_update;
-	
-	kest_representation_ptr_list_init(&param->reps);
-	//kest_representation_ptr_list_append(&param->reps, &param->effect_rep);
-	#endif
 	
 	return NO_ERROR;
 }
@@ -756,4 +732,12 @@ void kest_parameter_if_updated_refresh_pw_async(void *param_)
 #else
 	(void)param_;
 #endif
+}
+
+int kest_parameter_add_dependent_block(kest_parameter *param, kest_block *block)
+{
+	if (!param)
+		return ERR_NULL_PTR;
+	
+	return NO_ERROR;
 }

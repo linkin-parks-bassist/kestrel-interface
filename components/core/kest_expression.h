@@ -63,15 +63,18 @@ kest_expression *kest_expr_new_reference(char *ref_name);
 kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs);
 kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, kest_expression *arg_2);
 
-int kest_expression_references_param(kest_expression *expr, kest_parameter *param);
+struct kest_parameter;
+struct kest_parameter_pll;
+
+int kest_expression_references_param(kest_expression *expr, struct kest_parameter *param);
 
 float kest_expression_evaluate(kest_expression *expr, kest_scope *scope);
 float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int depth);
 
 int kest_expression_is_constant(kest_expression *expr);
 
-float kest_expression_min(kest_expression *expr, kest_parameter_pll *params);
-float kest_expression_max(kest_expression *expr, kest_parameter_pll *params);
+float kest_expression_min(kest_expression *expr, struct kest_parameter_pll *params);
+float kest_expression_max(kest_expression *expr, struct kest_parameter_pll *params);
 
 int kest_expression_detect_constants(kest_expression *expr);
 

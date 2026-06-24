@@ -9,6 +9,7 @@ static const char *FNAME = "kest_block.c";
 #define PRINTLINES_ALLOWED 0
 
 IMPLEMENT_LINKED_PTR_LIST(kest_block);
+IMPLEMENT_PTR_LIST(kest_block);
 IMPLEMENT_LIST(kest_block);
 
 kest_block_operand operand_const_zero()

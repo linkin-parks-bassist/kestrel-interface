@@ -29,6 +29,11 @@ int kest_fpga_batch_append_16(kest_fpga_transfer_batch *seq, uint16_t x);
 int kest_fpga_batch_append_24(kest_fpga_transfer_batch *seq, uint32_t x);
 int kest_fpga_batch_append_32(kest_fpga_transfer_batch *seq, uint32_t x);
 
+int kest_fpga_batch_append_float(kest_fpga_transfer_batch *seq, float x, int format);
+int kest_fpga_batch_append_float_filter_width(kest_fpga_transfer_batch *seq, float x, int format);
+
+int kest_fpga_batch_append_bytes(kest_fpga_transfer_batch *seq, uint8_t  *x, int n);
+
 int kest_fpga_transfer_batch_send(kest_fpga_transfer_batch batch);
 int kest_fpga_transfer_batch_send_careful(kest_fpga_transfer_batch batch);
 int kest_fpga_program_batch_send_careful(kest_fpga_transfer_batch batch);

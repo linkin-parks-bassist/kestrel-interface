@@ -10,7 +10,9 @@
 struct kest_mem_slot;
 struct kest_expression;
 struct kest_parameter;
+struct kest_parameter_pll;
 struct kest_setting;
+struct kest_setting_pll;
 struct kest_lfo;
 
 typedef struct kest_scope_entry {
@@ -22,6 +24,8 @@ typedef struct kest_scope_entry {
 		struct kest_parameter *param;
 		struct kest_setting *setting;
 	} val;
+	
+	kest_dependent_list dependents;
 	
 	int updated;
 } kest_scope_entry;
@@ -40,6 +44,12 @@ int kest_scope_entry_init_mem(kest_scope_entry *entry, struct kest_mem_slot *mem
 int kest_scope_entry_init_expr(kest_scope_entry *entry, struct kest_expression *expr);
 int kest_scope_entry_init_param(kest_scope_entry *entry, struct kest_parameter *param);
 int kest_scope_entry_init_setting(kest_scope_entry *entry, struct kest_setting *setting);
+
+int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, kest_scope_entry *dep);
+int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filter, int coef);
+int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg);
+int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep);
+
 
 int kest_scope_add_mem(kest_scope *scope, const char *name, struct kest_mem_slot *mem);
 int kest_scope_add_expr(kest_scope *scope, const char *name, struct kest_expression *expr);
@@ -65,7 +75,13 @@ kest_scope_entry *kest_scope_lookup(kest_scope *scope, const char *name);
 kest_scope_entry *kest_scope_fetch(kest_scope *scope, const char *name);
 
 size_t kest_scope_count(kest_scope *scope);
-kest_scope_entry *kest_scope_index(kest_scope *scope, size_t n);
 const char *kest_scope_index_key(kest_scope *scope, size_t n);
+kest_scope_entry *kest_scope_index(kest_scope *scope, size_t n);
+
+struct kest_expression;
+
+int kest_scope_detect_dependencies(kest_scope *scope);
+int kest_scope_add_block_reg_dependencies(kest_scope *scope, struct kest_expression *expr, int block, int reg);
+int kest_scope_add_filter_coef_dependencies(kest_scope *scope, struct kest_expression *expr, int filter, int coef);
 
 #endif

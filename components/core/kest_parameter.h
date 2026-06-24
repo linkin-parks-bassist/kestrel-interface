@@ -29,6 +29,8 @@ struct kest_effect;
 
 struct kest_parameter_widget;
 
+struct kest_scope_entry;
+
 typedef struct kest_parameter
 {
 	KEST_ATOMIC(float) value;
@@ -60,6 +62,8 @@ typedef struct kest_parameter
 	int driver_override;
 	int driver_index;
 	
+	struct kest_scope_entry *scope_entry;
+	
 	#ifdef KEST_ENABLE_UI
 	struct kest_parameter_widget *pw;
 	#endif
@@ -81,6 +85,8 @@ int kest_parameter_driver_set(kest_parameter *param, float v);
 void kest_parameter_if_updated_refresh_pw_async(void *param_);
 
 int kest_parameter_clear_update(kest_parameter *param);
+
+int kest_parameter_add_dependent_block(kest_parameter *param, kest_block *block);
 
 typedef struct kest_setting_option
 {

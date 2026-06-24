@@ -112,6 +112,7 @@ typedef struct kest_ui_page
 } kest_ui_page;
 
 void kest_create_ui(lv_disp_t *disp);
+void kest_create_ui_async();
 
 int init_ui_page(kest_ui_page *page);
 int init_ui_page_dp(kest_ui_page **page);
@@ -215,5 +216,6 @@ extern lv_obj_t *keyboard;
 int kest_ui_lock();
 void kest_ui_unlock();
 void kest_ui_async_call(void (*f)(void*), void *arg);
+void kest_ui_async_call_void(void (*f)(void));
 
 #endif

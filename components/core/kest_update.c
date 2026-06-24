@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
 
 static const char *FNAME = "kest_update.c";
 
@@ -20,15 +20,15 @@ typedef struct kest_effect_update {
 #define KEST_UPDATE_TYPE_NONE 	0
 #define KEST_UPDATE_TYPE_EFFECT 1
 
-typedef struct kest_update {
+typedef struct kest_update_ {
 	int type;
 	uint8_t data[UPDATE_DATA_SIZE];
-} kest_update;
+} kest_update_;
 
 QueueHandle_t update_queue = NULL;
 static int initialised = 0;
 
-#define UPDATE_RATE_HZ 150
+#define UPDATE_RATE_HZ 2
 #define UPDATE_PERIOD_MS (1000.0f / (float)UPDATE_RATE_HZ)
 
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
@@ -46,7 +46,7 @@ void kest_active_preset_updater_task(void *arg)
 	
 	TickType_t last_wake = xTaskGetTickCount();
 	kest_effect_update *effect_update;
-	kest_update update;
+	kest_update_ update;
 	kest_effect_pll *current_effect = NULL;
 	kest_effect *effect = NULL;
 	kest_mem_slot *mem = NULL;
@@ -202,7 +202,9 @@ void kest_active_preset_updater_task(void *arg)
 
 void kest_active_preset_updater_start()
 {
-	update_queue = xQueueCreate(16, sizeof(kest_update));
+	return;
+	
+	update_queue = xQueueCreate(16, sizeof(kest_update_));
 	xTaskCreate(kest_active_preset_updater_task, "kest_update_task", 4096, NULL, 8, NULL);
 }
 
@@ -211,10 +213,10 @@ int kest_active_preset_updater_notify_effect_by_id(int preset_id, int effect_id)
 	if (!initialised)
 		return ERR_UNINITIALISED;
 	
-	kest_update update;
+	kest_update_ update;
 	kest_effect_update *effect_update = (kest_effect_update*)&update.data;
 	
-	memset(&update, 0, sizeof(kest_update));
+	memset(&update, 0, sizeof(kest_update_));
 	
 	update.type = KEST_UPDATE_TYPE_EFFECT;
 	effect_update->type = 0;
@@ -236,10 +238,10 @@ int kest_active_preset_updater_notify_effect_by_ptr(kest_effect *effect)
 	if (!effect)
 		return ERR_NULL_PTR;
 	
-	kest_update update;
+	kest_update_ update;
 	kest_effect_update *effect_update = (kest_effect_update*)&update.data;
 	
-	memset(&update, 0, sizeof(kest_update));
+	memset(&update, 0, sizeof(kest_update_));
 	
 	update.type = KEST_UPDATE_TYPE_EFFECT;
 	effect_update->type = 0;
@@ -248,6 +250,134 @@ int kest_active_preset_updater_notify_effect_by_ptr(kest_effect *effect)
 	
 	if (xQueueSend(update_queue, &update, pdMS_TO_TICKS(1)) != pdPASS)
 		return ERR_CURRENTLY_EXHAUSTED;
+	
+	return NO_ERROR;
+}
+
+/********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************
+ ********************************************************************/
+
+QueueHandle_t update_queue_ = NULL;
+
+void kest_update_task(void *arg);
+
+#define KEST_UPDATER_STATE_READY 0
+
+typedef struct {
+	int state;
+	
+	kest_preset *active_preset;
+	kest_fpga_command_list cmds;
+} kest_updater_state;
+
+int kest_update_task_start()
+{
+	KEST_PRINTF("kest_update_task_start\n");
+	update_queue_ = xQueueCreate(16, sizeof(kest_update));
+	
+	if (!update_queue_)
+		return ERR_UNKNOWN_ERR;
+	
+	xTaskCreate(kest_update_task, "kest_update_task", 4096, NULL, 8, NULL);
+	
+	return NO_ERROR;
+}
+
+int kest_update_handle(kest_updater_state *state, kest_update update);
+
+int kest_updater_state_init(kest_updater_state *state)
+{
+	if (!state)
+		return ERR_NULL_PTR;
+	
+	state->state = KEST_UPDATER_STATE_READY;
+	state->active_preset = global_cxt.active_preset;
+	kest_fpga_command_list_init(&state->cmds);
+	
+	return NO_ERROR;
+}
+
+void kest_update_task(void *arg)
+{
+	kest_update update;
+	TickType_t last_wake = xTaskGetTickCount();
+	
+	kest_updater_state state;
+	kest_updater_state_init(&state);
+	
+	while (1)
+	{
+		while (xQueueReceive(update_queue_, &update, 0) == pdPASS)
+		{
+			kest_update_handle(&state, update);
+		}
+		
+		xTaskDelayUntil(&last_wake, update_period_ticks);
+	}
+	
+	vTaskDelete(NULL);
+}
+
+int kest_update_queue(kest_update update)
+{
+	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
+		return ERR_CURRENTLY_EXHAUSTED;
+	
+	return NO_ERROR;
+}
+
+
+int kest_update_handle(kest_updater_state *state, kest_update update)
+{
+	if (!state)
+		return ERR_NULL_PTR;
+	
+	kest_parameter *param = NULL;
+	kest_scope_entry *entry = NULL;
+	kest_string str;
+	kest_string_init(&str);
+	
+	switch (update.type)
+	{
+		case KEST_UPDATE_PARAM:
+			param = update.data.param;
+			
+			if (!param)
+				break;
+			
+			KEST_PRINTF("Handling update of parameter \"%s\"...\n", param->name);
+			entry = param->scope_entry;
+			
+			if (!entry)
+				break;
+			
+			KEST_PRINTF("parameter has scope entry %p, with %d dependents\n", entry, entry->dependents.count);
+			
+			if (entry->dependents.count)
+				KEST_PRINTF("Dependents:\n");
+			
+			for (size_t i = 0; i < entry->dependents.count; i++)
+			{
+				kest_string_append(&str, '\t');
+				kest_string_append_dependent(&str, entry->dependents.entries[i]);
+				kest_string_append(&str, '\n');
+				KEST_PUTS(str);
+				kest_string_drain(&str);
+			}
+			
+			break;
+	}
 	
 	return NO_ERROR;
 }

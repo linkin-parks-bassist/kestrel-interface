@@ -85,6 +85,7 @@ struct kest_asm_instr_desc;
 int kest_init_block_from_instr_desc(kest_block *block, struct kest_asm_instr_desc *desc);
 
 DECLARE_LINKED_PTR_LIST(kest_block);
+DECLARE_PTR_LIST(kest_block);
 DECLARE_LIST(kest_block);
 
 #endif

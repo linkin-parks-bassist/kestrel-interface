@@ -119,6 +119,7 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	
 	kest_block block_clone;
 	kest_block *block = NULL;
+	kest_filter *filter = NULL;
 	kest_dsp_resource *res = NULL;
 	
 	kest_block_pll 	   *current_block = NULL;
@@ -251,6 +252,41 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 		
 		current_block = current_block->next;
 		i++;
+	}
+	
+	/* Now, detect dependencies of block registers on scope entries */
+	current_block = eff->blocks;
+	i = 0;
+	while (current_block)
+	{
+		block = current_block->data;
+		
+		if (block)
+		{
+			if (block->reg_0.active)
+				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_0.expr, i, 0);
+			
+			if (block->reg_1.active)
+				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_1.expr, i, 1);
+		}
+		
+		current_block = current_block->next;
+		i++;
+	}
+	
+	/* Similarly for filter coefficients */
+	for (int j = 0; j < effect->resources.count; j++)
+	{
+		if (effect->resources.entries[j] && effect->resources.entries[j]->type == KEST_DSP_RESOURCE_FILTER)
+		{
+			filter = effect->resources.entries[j]->data;
+			
+			if (!filter)
+				continue;
+			
+			for (int k = 0; k < filter->coefs.count; k++)
+				kest_scope_add_filter_coef_dependencies(effect->scope, filter->coefs.entries[k], effect->resources.entries[j]->handle, k);
+		}
 	}
 	
 	/* Finally, set up drivers */
@@ -651,6 +687,7 @@ int kest_effect_update_fpga(kest_effect *effect)
 	#endif
 }
 
+#define PRINTLINES_ALLOWED 1
 
 int kest_effect_create_scope(kest_effect *effect)
 {
@@ -687,8 +724,18 @@ int kest_effect_create_scope(kest_effect *effect)
 	{
 		if (current_param->data)
 		{
-			ret_val = kest_scope_add_param(scope, current_param->data);
-			if (ret_val != NO_ERROR) goto create_scope_disaster_recovery;
+			entry_ptr = kest_scope_add_param_return_entry(scope, current_param->data);
+			
+			KEST_PRINTF("Added parameter \"%s\" (\"%s\") to scope; obtained scope entry %p\n", current_param->data->name,
+				current_param->data->name_internal, entry_ptr);
+			
+			if (!entry_ptr)
+			{
+				ret_val = ERR_UNKNOWN_ERR;
+				goto create_scope_disaster_recovery;
+			}
+			
+			current_param->data->scope_entry = entry_ptr;
 		}
 		
 		current_param = current_param->next;
@@ -769,6 +816,8 @@ int kest_effect_create_scope(kest_effect *effect)
 		}
 	}
 	
+	kest_scope_detect_dependencies(scope);
+	
 	effect->scope = scope;
 	KEST_PRINTF("kest_effect_create_scope succeeded; effect->scope = %p.\n", effect->scope);
 	return NO_ERROR;
@@ -780,6 +829,9 @@ create_scope_disaster_recovery:
 	KEST_PRINTF("kest_effect_create_scope FAILED!! Error code %s\n", kest_error_code_to_string(ret_val));
 	return ret_val;
 }
+
+
+#define PRINTLINES_ALLOWED 0
 
 int kest_effect_set_parameter(kest_effect *effect, const char *name, float value)
 {
