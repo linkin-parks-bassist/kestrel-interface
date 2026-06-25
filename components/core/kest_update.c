@@ -318,6 +318,7 @@ void kest_update_task(void *arg)
 	
 	while (1)
 	{
+		KEST_PRINTF("Hi...\n");
 		while (xQueueReceive(update_queue_, &update, 0) == pdPASS)
 		{
 			kest_update_handle(&state, update);
@@ -345,6 +346,7 @@ int kest_update_handle(kest_updater_state *state, kest_update update)
 	
 	kest_parameter *param = NULL;
 	kest_scope_entry *entry = NULL;
+	kest_effect *effect = NULL;
 	kest_string str;
 	kest_string_init(&str);
 	
@@ -357,7 +359,13 @@ int kest_update_handle(kest_updater_state *state, kest_update update)
 				break;
 			
 			KEST_PRINTF("Handling update of parameter \"%s\"...\n", param->name);
-			entry = param->scope_entry;
+			
+			effect = param->effect;
+			
+			if (!effect || !effect->scope)
+				break;
+			
+			entry = kest_scope_lookup(effect->scope, param->name_internal);
 			
 			if (!entry)
 				break;
@@ -369,10 +377,10 @@ int kest_update_handle(kest_updater_state *state, kest_update update)
 			
 			for (size_t i = 0; i < entry->dependents.count; i++)
 			{
-				kest_string_append(&str, '\t');
+				KEST_PRINTF_("\t");
 				kest_string_append_dependent(&str, entry->dependents.entries[i]);
-				kest_string_append(&str, '\n');
-				KEST_PUTS(str);
+				KEST_PUTS_(str);
+				KEST_PRINTF_("\n");
 				kest_string_drain(&str);
 			}
 			

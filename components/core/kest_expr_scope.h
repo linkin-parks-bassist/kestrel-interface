@@ -45,16 +45,17 @@ int kest_scope_entry_init_expr(kest_scope_entry *entry, struct kest_expression *
 int kest_scope_entry_init_param(kest_scope_entry *entry, struct kest_parameter *param);
 int kest_scope_entry_init_setting(kest_scope_entry *entry, struct kest_setting *setting);
 
-int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, kest_scope_entry *dep);
+int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, const char *key);
 int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filter, int coef);
 int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg);
 int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep);
-
 
 int kest_scope_add_mem(kest_scope *scope, const char *name, struct kest_mem_slot *mem);
 int kest_scope_add_expr(kest_scope *scope, const char *name, struct kest_expression *expr);
 int kest_scope_add_param(kest_scope *scope, struct kest_parameter *param);
 int kest_scope_add_setting(kest_scope *scope, struct kest_setting *setting);
+
+int kest_scope_entry_print(kest_scope_entry *entry, kest_string *str);
 
 kest_scope_entry *kest_scope_add_lfo_return_entry(kest_scope *scope, const char *name, struct kest_lfo *mem);
 kest_scope_entry *kest_scope_add_mem_return_entry(kest_scope *scope, const char *name, struct kest_mem_slot *mem);
@@ -83,5 +84,7 @@ struct kest_expression;
 int kest_scope_detect_dependencies(kest_scope *scope);
 int kest_scope_add_block_reg_dependencies(kest_scope *scope, struct kest_expression *expr, int block, int reg);
 int kest_scope_add_filter_coef_dependencies(kest_scope *scope, struct kest_expression *expr, int filter, int coef);
+
+int kest_scope_transitivize_updatable_dependents(kest_scope *scope);
 
 #endif

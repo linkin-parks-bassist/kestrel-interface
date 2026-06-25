@@ -46,9 +46,11 @@ kest_expression kest_expression_pi 					= KEST_EXPRESSION_CONST(M_PI);
 kest_expression kest_expression_2pi 				= KEST_EXPRESSION_CONST(2 * M_PI);
 kest_expression kest_expression_e 					= KEST_EXPRESSION_CONST(exp(1));
 kest_expression kest_expression_sample_rate 		= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE);
+kest_expression kest_expression_data_width			= KEST_EXPRESSION_CONST((float)KEST_FPGA_DATA_WIDTH);
 kest_expression kest_expression_int_max				= KEST_EXPRESSION_CONST( pow(2, (float)KEST_FPGA_DATA_WIDTH - 1) - 1);
 kest_expression kest_expression_int_min				= KEST_EXPRESSION_CONST(-pow(2, (float)KEST_FPGA_DATA_WIDTH - 1));
 kest_expression kest_expression_freq_max 			= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE / 2 - 50);
+kest_expression kest_expression_nyquist 			= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE / 2);
 kest_expression kest_expression_2pi_over_fs 		= KEST_EXPRESSION_CONST((2 * M_PI) / (float)KEST_FPGA_SAMPLE_RATE);
 kest_expression kest_expression_root_2_over_2 		= KEST_EXPRESSION_CONST(sqrt(2.0) / 2.0);
 

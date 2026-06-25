@@ -109,6 +109,8 @@ int init_effect(kest_effect *effect)
 	return NO_ERROR;
 }
 
+#define PRINTLINES_ALLOWED 1
+
 int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 {
 	KEST_PRINTF("init_effect_from_effect_desc\n");
@@ -218,7 +220,7 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	{
 		if (current_block->data)
 		{
-			if (current_block->data->res)
+			if (current_block->data->res && current_block->data->instr != BLOCK_INSTR_LUT_READ)
 			{
 				/* Okay, the block uses a resource. We'll have to look at the resources
 				 * copied over, finding the correct one to assign to the cloned block.
@@ -289,6 +291,9 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 		}
 	}
 	
+	/* Transitivize the dependents */
+	kest_scope_transitivize_updatable_dependents(effect->scope);
+	
 	/* Finally, set up drivers */
 	
 	for (size_t i = 0; i < eff->drivers.count; i++)
@@ -306,6 +311,8 @@ init_effect_from_desc_disaster_recovery:
 	
 	return ret_val;
 }
+
+#define PRINTLINES_ALLOWED 0
 
 int effect_rectify_param_ids(kest_effect *effect)
 {
@@ -724,18 +731,10 @@ int kest_effect_create_scope(kest_effect *effect)
 	{
 		if (current_param->data)
 		{
-			entry_ptr = kest_scope_add_param_return_entry(scope, current_param->data);
+			ret_val = kest_scope_add_param(scope, current_param->data);
 			
-			KEST_PRINTF("Added parameter \"%s\" (\"%s\") to scope; obtained scope entry %p\n", current_param->data->name,
-				current_param->data->name_internal, entry_ptr);
-			
-			if (!entry_ptr)
-			{
-				ret_val = ERR_UNKNOWN_ERR;
+			if (ret_val != NO_ERROR)
 				goto create_scope_disaster_recovery;
-			}
-			
-			current_param->data->scope_entry = entry_ptr;
 		}
 		
 		current_param = current_param->next;

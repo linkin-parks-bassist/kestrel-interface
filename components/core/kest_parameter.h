@@ -62,8 +62,6 @@ typedef struct kest_parameter
 	int driver_override;
 	int driver_index;
 	
-	struct kest_scope_entry *scope_entry;
-	
 	#ifdef KEST_ENABLE_UI
 	struct kest_parameter_widget *pw;
 	#endif

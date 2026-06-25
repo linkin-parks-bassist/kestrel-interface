@@ -9,4 +9,9 @@ typedef struct {
 
 int kest_effect_fpga_position_init(kest_effect_fpga_position *pos);
 
+int kest_effect_fpga_position_resolve_block(kest_effect_fpga_position *pos, int block);
+
+int kest_effect_fpga_position_resolve_mem(kest_effect_fpga_position *pos, int addr);
+int kest_effect_fpga_position_resolve_filter(kest_effect_fpga_position *pos, int handle);
+
 #endif

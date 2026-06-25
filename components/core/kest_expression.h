@@ -115,9 +115,11 @@ extern kest_expression kest_expression_pi;
 extern kest_expression kest_expression_2pi;
 extern kest_expression kest_expression_e;
 extern kest_expression kest_expression_sample_rate;
+extern kest_expression kest_expression_data_width;
 extern kest_expression kest_expression_int_max;
 extern kest_expression kest_expression_int_min;
 extern kest_expression kest_expression_freq_max;
+extern kest_expression kest_expression_nyquist;
 extern kest_expression kest_expression_2pi_over_fs;
 extern kest_expression kest_expression_root_2_over_2;
 

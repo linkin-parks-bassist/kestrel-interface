@@ -5,15 +5,15 @@ static const char *FNAME = "kest_dependent.c";
 
 IMPLEMENT_LIST(kest_dependent);
 
-kest_dependent kest_dependent_scope_entry(struct kest_scope_entry *entry)
+kest_dependent kest_dependent_scope_entry(const char *key)
 {
 	kest_dependent dep = {0};
 	
-	if (!entry)
+	if (!key)
 		return dep;
 	
 	dep.type = KEST_DEPENDENT_SCOPE_ENTRY;
-	dep.data.scope_entry = entry;
+	dep.data.entry_key = key;
 	return dep;
 }
 
@@ -43,17 +43,28 @@ int kest_string_append_dependent(kest_string *str, kest_dependent dep)
 	switch (dep.type)
 	{
 		case KEST_DEPENDENT_SCOPE_ENTRY:
-			return kest_string_appendf(str, "scope entry %p\n", dep.data.scope_entry);
+			kest_string_appendf(str, "Scope entry \"%s\"", dep.data.entry_key);
 			break;
 		case KEST_DEPENDENT_BLOCK_REG:
-			return kest_string_appendf(str, "block %d reg %d\n", dep.data.block_reg.block, dep.data.block_reg.reg);
+			return kest_string_appendf(str, "block %d reg %d", dep.data.block_reg.block, dep.data.block_reg.reg);
 			break;
 		case KEST_DEPENDENT_FILTER_COEF:
-			return kest_string_appendf(str, "filter %d coef %d\n", dep.data.filter_coef.filter, dep.data.filter_coef.coef);
+			return kest_string_appendf(str, "filter %d coef %d", dep.data.filter_coef.filter, dep.data.filter_coef.coef);
 			break;
 		default:
 			return kest_string_appendf(str, "unknown");
 	}
 	
 	return NO_ERROR;
+}
+
+int kest_dependent_is_updatable(int type)
+{
+	switch (type)
+	{
+		case KEST_DEPENDENT_BLOCK_REG:
+		case KEST_DEPENDENT_FILTER_COEF:
+			return 1;
+	}
+	return 0;
 }
