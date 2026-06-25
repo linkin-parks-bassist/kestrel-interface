@@ -93,6 +93,7 @@
 #include "kest_preset.h"
 #include "kest_param_update.h"
 #include "kest_status.h"
+#include "kest_event.h"
 #include "kest_helper_fn.h"
 #include "kest_i2c.h"
 #include "kest_sgtl5000.h"

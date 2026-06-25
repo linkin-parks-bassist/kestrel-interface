@@ -4,6 +4,7 @@ lib_objdir := $(top_objdir)/lib
 test_objdir := $(top_objdir)/tests
 
 app_cfiles := 	core/kest_error_codes.c		\
+				core/kest_init.c			\
 				core/kest_alloc.c			\
 				core/kest_pool.c			\
 				core/kest_block.c			\
@@ -19,6 +20,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_driver.c			\
 				core/kest_parameter.c		\
 				core/kest_param_update.c	\
+				core/kest_update.c			\
 				core/kest_effect.c			\
 				core/kest_state.c			\
 				core/kest_pipeline.c		\
@@ -29,6 +31,8 @@ app_cfiles := 	core/kest_error_codes.c		\
 				core/kest_printf.c			\
 				core/kest_string.c			\
 				core/kest_global.c			\
+				core/kest_event.c			\
+				core/kest_dependent.c		\
 				ui/kest_button.c			\
 				ui/kest_home_view.c			\
 				ui/kest_menu.c				\
@@ -51,6 +55,7 @@ app_cfiles := 	core/kest_error_codes.c		\
 				fpga/kest_fixed_point.c		\
 				fpga/kest_fpga_position.c	\
 				fpga/kest_fpga_update.c		\
+				fpga/kest_fpga_cmd.c		\
 				parser/kest_asm_parser.c	\
 				parser/kest_dict_extract.c	\
 				parser/kest_dictionary.c	\
