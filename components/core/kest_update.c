@@ -1234,14 +1234,29 @@ int kest_updater_send(kest_updater_state *state)
 	
 	int ret_val = NO_ERROR;
 	
+	kest_fpga_transfer_batch send_batch;
+	
+	int len = state->batch.len;
+	
+	send_batch.buf = kest_alloc(len);
+	
+	if (!send_batch.buf)
+		return ERR_ALLOC_FAIL;
+	
+	send_batch.buf_len = len;
+	send_batch.len = len;
+	send_batch.buffer_owned = 0;
+	
+	memcpy(send_batch.buf, state->batch.buf, len);
+	
 	switch (state->state)
 	{
 		case KEST_UPDATER_STATE_READY:
-			kest_fpga_queue_transfer_batch(state->batch);
+			kest_fpga_queue_transfer_batch(send_batch);
 			break;
 		
 		case KEST_UPDATER_STATE_REPROGRAM:
-			kest_fpga_queue_program_batch(state->batch);
+			kest_fpga_queue_program_batch(send_batch);
 			state->state = KEST_UPDATER_STATE_READY;
 			break;
 	}
