@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 static const char *FNAME = "kest_init.c";
 
@@ -32,10 +32,12 @@ int kest_init()
 	
 	kest_init_directories();
 	
+	kest_ui_lock();
 	load_effects(&global_cxt);
 	init_effect_selector_eff(&global_cxt.pages.effect_selector);
 	load_saved_presets(&global_cxt);
 	load_saved_sequences(&global_cxt);
+	kest_ui_unlock();
 	
 	kest_create_ui_async();
 	

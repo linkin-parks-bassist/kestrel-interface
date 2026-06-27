@@ -1,7 +1,7 @@
 #include "kest_int.h"
 
 static const char *FNAME = "kest_dependent.c";
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 IMPLEMENT_LIST(kest_dependent);
 

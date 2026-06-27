@@ -2,7 +2,7 @@
 
 static const char *FNAME = "kest_fpga_dma.c";
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 IMPLEMENT_LIST(kest_fpga_read_spec);
 

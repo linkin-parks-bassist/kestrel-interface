@@ -1,6 +1,12 @@
 #ifndef KEST_UPDATE_H_
 #define KEST_UPDATE_H_
 
+//#define PRINT_ALLOCS
+//#define PRINT_INSTR_WRITES
+//#define PRINT_REG_WRITES
+//#define PRINT_FILTER_WRITES
+#define PRINT_COMMAND_LIST
+
 #define KEST_UPDATE_NONE 	0
 #define KEST_UPDATE_PARAM	1
 #define KEST_UPDATE_PRESET	2

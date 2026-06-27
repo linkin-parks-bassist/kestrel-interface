@@ -146,7 +146,7 @@ int sgtl5000_enable(void)
 
     muted = true;
 	
-	kest_printf("Send power sequence...\n");
+	KEST_PRINTF("Send power sequence...\n");
 
 	int ret_val;
 
@@ -183,7 +183,7 @@ int sgtl5000_enable(void)
     if ((ret_val = sgtl5000_modify_reg(CHIP_ADCDAC_CTRL, 0, 0x0300, NULL)) != NO_ERROR)
 		return ret_val;
 	
-	kest_printf("Done.\n");
+	KEST_PRINTF("Done.\n");
 
     return NO_ERROR;
 }
@@ -260,7 +260,7 @@ void sgtl5000_readout_registers()
         { CHIP_SSS_CTRL, 	 "CHIP_SSS_CTRL"	    },
     };
 
-    kest_printf("\n=== SGTL5000 READ DUMP ===\n");
+    KEST_PRINTF_FORCE("\n=== SGTL5000 READ DUMP ===\n");
     for (size_t i = 0; i < sizeof(reads)/sizeof(reads[0]); i++) {
         (void)read_and_print(reads[i].reg, reads[i].name);
     }
@@ -281,33 +281,29 @@ void kest_sgtl5000_init(void *param)
 
     int ret_val;
     
-    kest_printf("Initialise I2C bus with SGTL5000...\n");
+    KEST_PRINTF("Initialise I2C bus with SGTL5000...\n");
     if ((ret_val = sgtl5000_i2c_init(&sgtl_i2c_cfg)) != NO_ERROR)
 	{
-		kest_printf("Error initialising I2C bus with SGTL5000...\n");
+		KEST_PRINTF("Error initialising I2C bus with SGTL5000...\n");
 		return;
 	}
     
     if ((ret_val = sgtl5000_set_address_level(0)) != NO_ERROR)
 		return;
     
-    kest_printf("Initialising SGTL5000...\n");
+    KEST_PRINTF("Initialising SGTL5000...\n");
     if ((ret_val = sgtl5000_enable()) != NO_ERROR)
 	{
-		kest_printf("Error initialising SGTL5000L %s\n", kest_error_code_to_string(ret_val));
+		KEST_PRINTF("Error initialising SGTL5000L %s\n", kest_error_code_to_string(ret_val));
 		return;
 	}
 	
 	sgtl5000_line_in_level(7);
 	sgtl5000_line_out_level(31);
 	
-	sgtl5000_readout_registers();
-	
 	sgtl5000_status = 1;
 	
-	kest_printf("SGTL5000 Initialised\n");
-	
-	//sgtl5000_readout_registers();
+	KEST_PRINTF("SGTL5000 Initialised\n");
 	
 	vTaskDelete(NULL);
 }

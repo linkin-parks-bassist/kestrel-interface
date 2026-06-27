@@ -4,7 +4,7 @@
 #define PRINT_TRANSFER_BATCHES
 //#define PRINT_SCAN
 //#define PRINT_PROGRAM_BATCHES
-//#define PRINT_FLAGS
+#define PRINT_FLAGS
 //#define PRINT_COMMANDS
 //#define PRINT_READS
 

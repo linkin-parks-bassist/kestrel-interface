@@ -1,6 +1,6 @@
 #include "kest_int.h"
 
-#define PRINTLINES_ALLOWED 1
+#define PRINTLINES_ALLOWED 0
 
 static const char *FNAME = "kest_update.c";
 
@@ -501,7 +501,7 @@ void kest_updater_print_reg_writes(kest_updater_state *state)
 	kest_fpga_write_list *writes = &state->reg_writes;
 	kest_fpga_write write;
 	
-	KEST_PRINTF("Updater tick %d register writes (n = %d):\n", state->tick_ctr, state->reg_writes.count);
+	KEST_PRINTF_FORCE("Updater tick %d register writes (n = %d):\n", state->tick_ctr, state->reg_writes.count);
 	
 	float val;
 	
@@ -510,7 +510,7 @@ void kest_updater_print_reg_writes(kest_updater_state *state)
 		write = writes->entries[i];
 		
 		val = kest_expression_evaluate(write.expr, write.scope);
-		KEST_PRINTF_("\tBlock %d reg %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.format,
+		KEST_PRINTF_FORCE_("\tBlock %d reg %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.format,
 			write.scope, val < 0 ? "" : " ", val, kest_expression_to_string(write.expr));
 	}
 }
@@ -526,7 +526,7 @@ void kest_updater_print_filter_writes(kest_updater_state *state)
 	kest_fpga_write_list *writes = &state->filter_writes;
 	kest_fpga_write write;
 	
-	KEST_PRINTF("Updater tick %d filter writes (n = %d):\n", state->tick_ctr, state->filter_writes.count);
+	KEST_PRINTF_FORCE("Updater tick %d filter writes (n = %d):\n", state->tick_ctr, state->filter_writes.count);
 	
 	float val;
 	
@@ -535,7 +535,7 @@ void kest_updater_print_filter_writes(kest_updater_state *state)
 		write = writes->entries[i];
 		
 		val = kest_expression_evaluate(write.expr, write.scope);
-		KEST_PRINTF_("\tFilter %d coef %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.format,
+		KEST_PRINTF_FORCE_("\tFilter %d coef %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.format,
 			write.scope, val < 0 ? "" : " ", val, kest_expression_to_string(write.expr));
 	}
 }
@@ -553,17 +553,17 @@ void kest_updater_print_command_list(kest_updater_state *state)
 	kest_string str;
 	kest_string_init(&str);
 	
-	KEST_PRINTF("Updater tick %d commands (n = %d):\n", state->tick_ctr, state->cmds.count);
+	KEST_PRINTF_FORCE("Updater tick %d commands (n = %d):\n", state->tick_ctr, state->cmds.count);
 	
 	for (size_t i = 0; i < state->cmds.count; i++)
 	{
 		cmd = state->cmds.entries[i];
 		
-		KEST_PRINTF_("\tCommand %d: ", i);
+		KEST_PRINTF_FORCE_("\tCommand %d: ", i);
 		kest_fpga_command_to_string_(cmd, &str);
-		KEST_PUTS_(str);
+		KEST_PUTS_FORCE(str);
 		kest_string_drain(&str);
-		KEST_PRINTF_("\n");
+		KEST_PRINTF_FORCE_("\n");
 	}
 }
 
@@ -638,14 +638,24 @@ void kest_update_task(void *arg)
 		while (xQueueReceive(update_queue_, &update, 0) == pdPASS)
 			kest_updater_handle_update(&state, update);
 		
+		#ifdef PRINT_ALLOCS
 		kest_updater_print_allocs(&state);
+		#endif
+		#ifdef PRINT_INSTR_WRITES
 		kest_updater_print_instr_writes(&state);
+		#endif
+		#ifdef PRINT_REG_WRITES
 		kest_updater_print_reg_writes(&state);
+		#endif
+		#ifdef PRINT_FILTER_WRITES
 		kest_updater_print_filter_writes(&state);
+		#endif
 		
 		kest_updater_generate_command_list(&state);
 		
+		#ifdef PRINT_COMMAND_LIST
 		kest_updater_print_command_list(&state);
+		#endif
 		
 		kest_updater_generate_tx_batch(&state);
 		kest_updater_send(&state);

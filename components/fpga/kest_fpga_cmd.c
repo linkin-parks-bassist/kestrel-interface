@@ -200,11 +200,6 @@ int kest_fpga_command_append_encoded(kest_fpga_command cmd, kest_fpga_transfer_b
 		case COMMAND_COMMIT_FILTER_COEF:
 			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_1.handle & 0xFF) != NO_ERROR)) break;
 			break;
-			
-		default:
-			batch->len--;
-			ret_val = ERR_BAD_ARGS;
-			break;
 	}
 	
 	return ret_val;
