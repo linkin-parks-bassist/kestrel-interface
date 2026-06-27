@@ -147,6 +147,14 @@ uint8_t kest_fpga_readout_byte()
 	return rx;
 }
 
+
+int kest_fpga_batch_drain(kest_fpga_transfer_batch *seq)
+{
+	if (seq) seq->len = 0;
+	else return ERR_NULL_PTR;
+	return NO_ERROR;
+}
+
 int kest_fpga_readout_bytes(uint8_t *buf, int n)
 {
 	if (!buf) return ERR_NULL_PTR;

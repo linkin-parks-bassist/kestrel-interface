@@ -38,7 +38,7 @@ typedef struct kest_effect
 	
 	kest_block_list blocks;
 	kest_driver_list drivers;
-	
+
 	kest_dsp_resource_ptr_list resources;
 	
 	struct kest_preset *preset;

@@ -123,13 +123,13 @@ int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, const ch
 	return kest_dependent_list_append(&entry->dependents, kest_dependent_scope_entry(key));
 }
 
-int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg)
+int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg, int format)
 {
 	if (!entry)
 		return ERR_NULL_PTR;
 	
 	if (!entry->dependents.entries)
-		return kest_dependent_list_append(&entry->dependents, kest_dependent_block_reg(block, reg));
+		return kest_dependent_list_append(&entry->dependents, kest_dependent_block_reg(block, reg, format));
 	
 	for (size_t i = 0; i < entry->dependents.count; i++)
 	{
@@ -139,16 +139,16 @@ int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block,
 			return NO_ERROR;
 	}
 	
-	return kest_dependent_list_append(&entry->dependents, kest_dependent_block_reg(block, reg));
+	return kest_dependent_list_append(&entry->dependents, kest_dependent_block_reg(block, reg, format));
 }
 
-int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filter, int coef)
+int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filter, int coef, int format)
 {
 	if (!entry)
 		return ERR_NULL_PTR;
 	
 	if (!entry->dependents.entries)
-		return kest_dependent_list_append(&entry->dependents, kest_dependent_filter_coef(filter, coef));
+		return kest_dependent_list_append(&entry->dependents, kest_dependent_filter_coef(filter, coef, format));
 	
 	for (size_t i = 0; i < entry->dependents.count; i++)
 	{
@@ -158,7 +158,7 @@ int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filt
 			return NO_ERROR;
 	}
 	
-	return kest_dependent_list_append(&entry->dependents, kest_dependent_filter_coef(filter, coef));
+	return kest_dependent_list_append(&entry->dependents, kest_dependent_filter_coef(filter, coef, format));
 }
 
 int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep)
@@ -171,10 +171,12 @@ int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep)
 		case KEST_DEPENDENT_SCOPE_ENTRY:
 			return kest_scope_entry_add_dependent_scope_entry(entry, dep.data.entry_key);
 		case KEST_DEPENDENT_BLOCK_REG:
-			return kest_scope_entry_add_dependent_block_reg(entry, dep.data.block_reg.block, dep.data.block_reg.reg);
+			return kest_scope_entry_add_dependent_block_reg(entry, dep.data.block_reg.block, dep.data.block_reg.reg, dep.format);
 		case KEST_DEPENDENT_FILTER_COEF:
-			return kest_scope_entry_add_dependent_filter_coef(entry, dep.data.filter_coef.filter, dep.data.filter_coef.coef);
+			return kest_scope_entry_add_dependent_filter_coef(entry, dep.data.filter_coef.filter, dep.data.filter_coef.coef, dep.format);
 	}
+	
+	return ERR_BAD_ARGS;
 }
 
 int kest_scope_entry_print(kest_scope_entry *entry, kest_string *str)
@@ -641,8 +643,6 @@ int kest_scope_propagate_updates(kest_scope *scope)
 	return any_updates;
 }
 
-#define PRINTLINES_ALLOWED 1
-
 int kest_scope_detect_dependencies(kest_scope *scope)
 {
 	KEST_PRINTF("kest_scope_detect_dependencies(scope = %p)\n", scope);
@@ -715,7 +715,7 @@ int kest_scope_detect_dependencies(kest_scope *scope)
 	return any_updates;
 }
 
-int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *expr, int block, int reg)
+int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *expr, int block, int reg, int format)
 {
 	KEST_PRINTF("Adding block %d register %d dependencies to scope %p...\n", block, reg, scope);
 	if (!scope || !expr)
@@ -740,13 +740,13 @@ int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *ex
 		if (!ref_entry) continue;
 		KEST_PRINTF("Returned entry: %p\n", ref_entry);
 		
-		ret_val = kest_scope_entry_add_dependent_block_reg(ref_entry, block, reg);
+		ret_val = kest_scope_entry_add_dependent_block_reg(ref_entry, block, reg, format);
 	}
 	
 	return ret_val;
 }
 
-int kest_scope_add_filter_coef_dependencies(kest_scope *scope, kest_expression *expr, int filter, int coef)
+int kest_scope_add_filter_coef_dependencies(kest_scope *scope, kest_expression *expr, int filter, int coef, int format)
 {
 	KEST_PRINTF("Adding filter %d coefficient %d dependencies to scope %p...\n", filter, coef, scope);
 	
@@ -772,7 +772,7 @@ int kest_scope_add_filter_coef_dependencies(kest_scope *scope, kest_expression *
 		if (!ref_entry) continue;
 		KEST_PRINTF("Returned entry: %p\n", ref_entry);
 		
-		ret_val = kest_scope_entry_add_dependent_filter_coef(ref_entry, filter, coef);
+		ret_val = kest_scope_entry_add_dependent_filter_coef(ref_entry, filter, coef, format);
 	}
 	
 	return ret_val;
@@ -879,8 +879,6 @@ int kest_scope_transitivize_updatable_dependents(kest_scope *scope)
 	
 	return NO_ERROR;
 }
-
-#define PRINTLINES_ALLOWED 0
 
 int kest_scope_clear_updates(kest_scope *scope)
 {

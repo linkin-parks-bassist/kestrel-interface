@@ -22,13 +22,15 @@ typedef struct {
 			int coef;
 		} filter_coef;
 	} data;
+	
+	int format;
 } kest_dependent;
 
 DECLARE_LIST(kest_dependent);
 
 kest_dependent kest_dependent_scope_entry(const char *key);
-kest_dependent kest_dependent_block_reg(int block, int reg);
-kest_dependent kest_dependent_filter_coef(int block, int reg);
+kest_dependent kest_dependent_block_reg(int block, int reg, int format);
+kest_dependent kest_dependent_filter_coef(int block, int reg, int format);
 
 int kest_string_append_dependent(kest_string *str, kest_dependent dep);
 

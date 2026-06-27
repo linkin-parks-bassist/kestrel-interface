@@ -2,7 +2,9 @@
 
 static const char *FNAME = "kest_fpga_dma.c";
 
-#define PRINTLINES_ALLOWED 0
+#define PRINTLINES_ALLOWED 1
+
+IMPLEMENT_LIST(kest_fpga_read_spec);
 
 #ifdef KEST_ENABLE_UI
 void kest_fpga_periodic_read_timer_cb(lv_timer_t *timer)

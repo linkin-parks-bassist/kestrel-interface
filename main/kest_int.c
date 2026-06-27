@@ -22,37 +22,17 @@ void app_main()
 	
 	esp_task_wdt_deinit();
 	
-	kest_mem_init();
-	
 	#ifdef USE_DISPLAY
 	lv_disp_t *disp;
 	waveshare_dsi_touch_5_a_init(&disp);
 	#endif
 	
-	kest_ui_lock();
-	kest_init_context(&global_cxt);
-	kest_init_global_pages(&global_cxt.pages);
-	kest_ui_unlock();
+	kest_event_task_start();
 	
-	#ifdef USE_SGTL5000
-	xTaskCreate(kest_sgtl5000_init, "kest_sgtl5000_init_task", 8192, NULL, 8, NULL);
-	#endif
+	kest_event startup_event;
+	startup_event.type = KEST_EVENT_STARTUP;
 	
-	#ifdef USE_FPGA
-	kest_init_fpga_comms();
-	kest_init_parameter_updater();
-	#endif
-	#ifdef USE_SDCARD
-	kest_printf("DOING THE SD CARD STUFF\n");
-	init_sd_card();
-	kest_init_directories();
-	load_effects(&global_cxt);
-	kest_ui_lock();
-	init_effect_selector_eff(&global_cxt.pages.effect_selector);
-	load_saved_presets(&global_cxt);
-	load_saved_sequences(&global_cxt);
-	kest_ui_unlock();
-	#endif
+	kest_event_log(startup_event);
 	
 	#ifdef KEST_SIMULATED
     while (1)
@@ -60,38 +40,5 @@ void app_main()
         lv_timer_handler();
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-	#else
-	#ifdef USE_DISPLAY
-	if (bsp_display_lock(0))
-	{
-		kest_log_init();
-		lv_log_register_print_cb(kest_lv_log_cb);
-		kest_create_ui(disp);
-		#ifdef KEST_PRINT_MEMORY_REPORT
-		lv_timer_create(print_memory_report, 2000, NULL);
-		#endif
-		bsp_display_unlock();
-	}
 	#endif
-	#endif
-	
-	kest_state state;
-	ret_val = load_state_from_file(&state, SETTINGS_FNAME);
-	
-	if (ret_val == NO_ERROR)
-	{
-		ret_val = kest_cxt_restore_state(&global_cxt, &state);
-		kest_cxt_enter_previous_current_page(&global_cxt, &state);
-		
-		kest_printf("Restored state from disk with error code \"%s\"\n", kest_error_code_to_string(ret_val));
-	}
-	else
-	{
-		kest_printf("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
-	}
-	
-	kest_active_preset_updater_start();
-	kest_init_file_task();
-	
-	//init_footswitch_task();
 }

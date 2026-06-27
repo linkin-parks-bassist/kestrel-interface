@@ -1,6 +1,7 @@
 #include "kest_int.h"
 
 IMPLEMENT_LIST(int);
+IMPLEMENT_LIST(byte);
 IMPLEMENT_LIST(uint8_t);
 IMPLEMENT_PTR_LIST(char);
 IMPLEMENT_LINKED_PTR_LIST(char);

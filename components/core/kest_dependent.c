@@ -14,24 +14,27 @@ kest_dependent kest_dependent_scope_entry(const char *key)
 	
 	dep.type = KEST_DEPENDENT_SCOPE_ENTRY;
 	dep.data.entry_key = key;
+	
 	return dep;
 }
 
-kest_dependent kest_dependent_block_reg(int block, int reg)
+kest_dependent kest_dependent_block_reg(int block, int reg, int format)
 {
 	kest_dependent dep = {0};
 	dep.type = KEST_DEPENDENT_BLOCK_REG;
 	dep.data.block_reg.block = block;
 	dep.data.block_reg.reg = reg;
+	dep.format = format;
 	return dep;
 }
 
-kest_dependent kest_dependent_filter_coef(int filter, int coef)
+kest_dependent kest_dependent_filter_coef(int filter, int coef, int format)
 {
 	kest_dependent dep = {0};
 	dep.type = KEST_DEPENDENT_FILTER_COEF;
 	dep.data.filter_coef.filter = filter;
 	dep.data.filter_coef.coef = coef;
+	dep.format = format;
 	return dep;
 }
 

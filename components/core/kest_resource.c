@@ -103,6 +103,21 @@ int string_to_resource_type(const char *type_str)
 	return KEST_DSP_RESOURCE_NOTHING;
 }
 
+char *kest_dsp_resource_type_to_string(int type)
+{
+	switch (type)
+	{
+		case KEST_DSP_RESOURCE_NOTHING: return "KEST_DSP_RESOURCE_NOTHING";
+		case KEST_DSP_RESOURCE_LUT: 	return "KEST_DSP_RESOURCE_LUT";
+		case KEST_DSP_RESOURCE_MEM: 	return "KEST_DSP_RESOURCE_MEM";
+		case KEST_DSP_RESOURCE_DELAY: 	return "KEST_DSP_RESOURCE_DELAY";
+		case KEST_DSP_RESOURCE_FILTER: 	return "KEST_DSP_RESOURCE_FILTER";
+		case KEST_DSP_RESOURCE_LFO: 	return "KEST_DSP_RESOURCE_LFO";
+	}
+	
+	return "UNKNOWN";
+}
+
 int kest_mem_slot_set_addr(kest_mem_slot *mem, int addr)
 {
 	if (!mem) return ERR_NULL_PTR;

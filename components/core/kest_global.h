@@ -2,6 +2,8 @@
 #define KEST_GLOBAL_H_
 
 DECLARE_LIST(int);
+typedef uint8_t byte;
+DECLARE_LIST(byte);
 DECLARE_LIST(uint8_t);
 DECLARE_PTR_LIST(char);
 DECLARE_LINKED_PTR_LIST(char);

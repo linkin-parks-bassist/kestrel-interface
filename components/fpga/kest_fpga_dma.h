@@ -30,6 +30,8 @@ typedef struct kest_fpga_read_spec {
 	int (*callback)(struct kest_fpga_read_spec*);
 } kest_fpga_read_spec;
 
+DECLARE_LIST(kest_fpga_read_spec);
+
 typedef struct {
 	int active;
 	int period_ms;

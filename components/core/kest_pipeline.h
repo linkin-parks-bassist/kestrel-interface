@@ -36,4 +36,9 @@ int kest_pipeline_deactivate_lfos(kest_pipeline *pipeline);
 
 int kest_pipeline_update_fpga(kest_pipeline *pipeline);
 
+int kest_pipeline_update_positions(kest_pipeline *pipeline);
+
+
+int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects);
+
 #endif

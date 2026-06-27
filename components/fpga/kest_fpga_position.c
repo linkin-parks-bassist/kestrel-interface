@@ -35,3 +35,23 @@ int kest_effect_fpga_position_resolve_filter(kest_effect_fpga_position *pos, int
 	
 	return pos->filter_start + handle;
 }
+
+int kest_effect_fpga_position_resolve_delay(kest_effect_fpga_position *pos, int handle)
+{
+	if (!pos)
+		return handle;
+	
+	return pos->delay_start + handle;
+}
+
+kest_effect_fpga_position kest_fpga_position_start()
+{
+	kest_effect_fpga_position start;
+	
+	start.block_start 	= 0;
+	start.filter_start 	= 0;
+	start.mem_start 	= 0;
+	start.delay_start 	= 0;
+	
+	return start;
+}

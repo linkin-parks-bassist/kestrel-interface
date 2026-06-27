@@ -54,6 +54,52 @@ uint32_t kest_encode_dsp_block_instr_type_b(kest_block *block, int res_handle)
 			 | place_bits(31, 20, res_handle);
 }
 
+uint32_t kest_block_instr_encode_positional(kest_block *block, const kest_effect_fpga_position *pos)
+{
+	KEST_PRINTF("kest_block_instr_encode_positional(block = %p, pos = %p)\n", block, pos);
+	
+	if (!block)
+		return 0;
+	
+	int handle = 0;
+	
+	KEST_PRINTF("kest_block_instr_format(block) = %d, block->res = %p\n", kest_block_instr_format(block), block->res);
+	
+	if (kest_block_instr_format(block))
+	{
+		if (!block->res)
+			return 0;
+		
+		switch (block->res->type)
+		{
+			case KEST_DSP_RESOURCE_LUT:
+				handle = block->res->handle;
+				break;
+				
+			case KEST_DSP_RESOURCE_MEM:
+				handle = block->res->handle + (pos ? pos->mem_start : 0);
+				kest_mem_slot_set_effective_addr(block->res->data, handle);
+				break;
+				
+			case KEST_DSP_RESOURCE_DELAY:
+				handle = block->res->handle + (pos ? pos->delay_start : 0);
+				break;
+				
+			case KEST_DSP_RESOURCE_FILTER:
+				handle = block->res->handle + (pos ? pos->filter_start : 0);
+				break;
+			
+			default: break;
+		}
+		
+		return kest_encode_dsp_block_instr_type_b(block, handle);
+	}
+	else
+	{
+		return kest_encode_dsp_block_instr_type_a(block);
+	}
+}
+
 uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_eff_resource_report *res)
 {
 	KEST_PRINTF("kest_block_instr_encode_resource_aware(block = %p, res = %p)\n", block, res);

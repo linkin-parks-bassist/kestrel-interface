@@ -16,6 +16,7 @@ int kest_init_fpga_comms()
 #define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN  3
 #define KEST_FPGA_MSG_TYPE_COMMAND			4
 #define KEST_FPGA_MSG_TYPE_READ				5
+#define KEST_FPGA_MSG_TYPE_BYTE_BATCH 		6
 
 typedef struct {
 	int type;
@@ -25,6 +26,7 @@ typedef struct {
 		uint8_t command;
 		kest_fpga_transfer_batch batch;
 		kest_fpga_read_spec *read;
+		byte_list *byte_batch;
 	} data;
 } kest_fpga_msg;
 
@@ -187,6 +189,17 @@ void kest_fpga_comms_task(void *param)
 				kest_free_fpga_transfer_batch(msg.data.batch);
 				break;
 			
+			case KEST_FPGA_MSG_TYPE_BYTE_BATCH:
+				if (!msg.data.byte_batch)
+				{
+					KEST_PRINTF_FORCE("Error: NULL byte batch\n");
+					break;
+				}
+				KEST_PRINTF("Sending byte batch (length %d)\n", msg.data.byte_batch->count);
+				kest_fpga_txrx(msg.data.byte_batch->entries, NULL, msg.data.byte_batch->count);
+				KEST_PRINTF("Done\n");
+				break;
+			
 			case KEST_FPGA_MSG_TYPE_BATCH:
 				#ifdef PRINT_TRANSFER_BATCHES
 				kest_fpga_batch_print(msg.data.batch);
@@ -256,6 +269,9 @@ int kest_fpga_queue_msg(kest_fpga_msg msg)
 
 int kest_fpga_queue_transfer_batch(kest_fpga_transfer_batch batch)
 {
+	if (batch.len == 0)
+		return NO_ERROR;
+	
 	kest_fpga_msg msg;
 	
 	msg.type = KEST_FPGA_MSG_TYPE_BATCH;

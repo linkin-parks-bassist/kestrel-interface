@@ -13,6 +13,8 @@ typedef struct {
 kest_fpga_transfer_batch kest_new_fpga_transfer_batch();
 void kest_free_fpga_transfer_batch(kest_fpga_transfer_batch batch);
 
+int kest_fpga_txrx(uint8_t *tx, uint8_t *rx, size_t len);
+
 int kest_send_bytes_to_fpga(uint8_t *buf, int n);
 int kest_send_byte_to_fpga(uint8_t byte);
 
@@ -24,10 +26,14 @@ void kest_fpga_set_input_gain (float gain_db);
 void kest_fpga_set_output_gain(float gain_db);
 void kest_fpga_commit_reg_updates();
 
+int kest_fpga_transfer_batch_init(kest_fpga_transfer_batch *seq);
+
 int kest_fpga_batch_append   (kest_fpga_transfer_batch *seq, uint8_t  x);
 int kest_fpga_batch_append_16(kest_fpga_transfer_batch *seq, uint16_t x);
 int kest_fpga_batch_append_24(kest_fpga_transfer_batch *seq, uint32_t x);
 int kest_fpga_batch_append_32(kest_fpga_transfer_batch *seq, uint32_t x);
+
+int kest_fpga_batch_drain(kest_fpga_transfer_batch *seq);
 
 int kest_fpga_batch_append_float(kest_fpga_transfer_batch *seq, float x, int format);
 int kest_fpga_batch_append_float_filter_width(kest_fpga_transfer_batch *seq, float x, int format);

@@ -1,4 +1,5 @@
 idf_component_register(SRCS "kest_fpga_comms.c"
+							"kest_fpga_cmd.c"
 							"kest_fpga_encoding.c"
 							"kest_fpga_instr.c"
 							"kest_fpga_dma.c"

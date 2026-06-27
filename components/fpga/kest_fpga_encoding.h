@@ -14,6 +14,8 @@
 
 int kest_fpga_batch_append_block_number(kest_fpga_transfer_batch *batch, int block);
 
+
+uint32_t kest_block_instr_encode_positional(kest_block *block, const kest_effect_fpga_position *pos);
 uint32_t kest_block_instr_encode_resource_aware(kest_block *block, const kest_eff_resource_report *res);
 
 int kest_fpga_batch_append_effect(kest_fpga_transfer_batch *batch, kest_effect *effect, kest_eff_resource_report *res, int *pos);

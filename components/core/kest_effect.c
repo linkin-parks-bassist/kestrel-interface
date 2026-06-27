@@ -109,8 +109,6 @@ int init_effect(kest_effect *effect)
 	return NO_ERROR;
 }
 
-#define PRINTLINES_ALLOWED 1
-
 int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 {
 	KEST_PRINTF("init_effect_from_effect_desc\n");
@@ -266,10 +264,10 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 		if (block)
 		{
 			if (block->reg_0.active)
-				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_0.expr, i, 0);
+				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_0.expr, i, 0, block->reg_0.format);
 			
 			if (block->reg_1.active)
-				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_1.expr, i, 1);
+				kest_scope_add_block_reg_dependencies(effect->scope, block->reg_1.expr, i, 1, block->reg_1.format);
 		}
 		
 		current_block = current_block->next;
@@ -287,7 +285,7 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 				continue;
 			
 			for (int k = 0; k < filter->coefs.count; k++)
-				kest_scope_add_filter_coef_dependencies(effect->scope, filter->coefs.entries[k], effect->resources.entries[j]->handle, k);
+				kest_scope_add_filter_coef_dependencies(effect->scope, filter->coefs.entries[k], effect->resources.entries[j]->handle, k, filter->format);
 		}
 	}
 	
@@ -311,8 +309,6 @@ init_effect_from_desc_disaster_recovery:
 	
 	return ret_val;
 }
-
-#define PRINTLINES_ALLOWED 0
 
 int effect_rectify_param_ids(kest_effect *effect)
 {
@@ -694,8 +690,6 @@ int kest_effect_update_fpga(kest_effect *effect)
 	#endif
 }
 
-#define PRINTLINES_ALLOWED 1
-
 int kest_effect_create_scope(kest_effect *effect)
 {
 	if (!effect) return ERR_NULL_PTR;
@@ -828,9 +822,6 @@ create_scope_disaster_recovery:
 	KEST_PRINTF("kest_effect_create_scope FAILED!! Error code %s\n", kest_error_code_to_string(ret_val));
 	return ret_val;
 }
-
-
-#define PRINTLINES_ALLOWED 0
 
 int kest_effect_set_parameter(kest_effect *effect, const char *name, float value)
 {

@@ -28,6 +28,7 @@ kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src);
 kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *src, struct kest_effect *effect);
 
 int string_to_resource_type(const char *type_str);
+char *kest_dsp_resource_type_to_string(int type);
 
 DECLARE_LINKED_PTR_LIST(kest_dsp_resource);
 DECLARE_PTR_LIST(kest_dsp_resource);

@@ -440,3 +440,98 @@ int kest_pipeline_update_fpga(kest_pipeline *pipeline)
 	
 	return NO_ERROR;
 }
+
+int kest_pipeline_update_positions(kest_pipeline *pipeline)
+{
+	if (!pipeline)
+		return ERR_NULL_PTR;
+	
+	kest_effect_fpga_position pos = kest_fpga_position_start();
+	
+	kest_effect_pll *current = pipeline->effects;
+	kest_effect *effect = NULL;
+	
+	kest_dsp_resource *res = NULL;
+	
+	while (current)
+	{
+		effect = current->data;
+		
+		effect->position_ = pos;
+		
+		pos.block_start += effect->blocks.count;
+		
+		for (size_t j = 0; j < effect->resources.count; j++)
+		{
+			res = effect->resources.entries[j];
+			
+			if (!res)
+				continue;
+			
+			switch (res->type)
+			{
+				case KEST_DSP_RESOURCE_MEM:
+					pos.mem_start += res->mem_size;
+					break;
+
+				case KEST_DSP_RESOURCE_DELAY:
+					pos.delay_start += 1;
+					break;
+
+				case KEST_DSP_RESOURCE_FILTER:
+					pos.filter_start += 1;
+					break;
+			}
+		}
+		
+		current = current->next;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects)
+{
+	if (!effects)
+		return ERR_NULL_PTR;
+	
+	kest_effect_fpga_position pos = kest_fpga_position_start();
+	
+	kest_effect *effect = NULL;
+	
+	kest_dsp_resource *res = NULL;
+	
+	for (size_t i = 0; i < effects->count; i++)
+	{
+		effect = effects->entries[i];
+		
+		effect->position_ = pos;
+		
+		pos.block_start += effect->blocks.count;
+		
+		for (size_t j = 0; j < effect->resources.count; j++)
+		{
+			res = effect->resources.entries[j];
+			
+			if (!res)
+				continue;
+			
+			switch (res->type)
+			{
+				case KEST_DSP_RESOURCE_MEM:
+					pos.mem_start += res->mem_size;
+					break;
+
+				case KEST_DSP_RESOURCE_DELAY:
+					pos.delay_start += 1;
+					break;
+
+				case KEST_DSP_RESOURCE_FILTER:
+					pos.filter_start += 1;
+					break;
+			}
+		}
+	}
+	
+	return NO_ERROR;
+}

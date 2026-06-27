@@ -134,7 +134,10 @@ int kest_preset_set_active(kest_preset *preset)
 	preset->active = 1;
 	preset->pending = 1;
 	
-	kest_preset_program_fpga(preset);
+	kest_pipeline_update_positions(&preset->pipeline);
+	kest_updater_notify_preset(preset);
+	
+	//kest_preset_program_fpga(preset);
 	
 	return NO_ERROR;
 }

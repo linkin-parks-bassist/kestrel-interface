@@ -10,18 +10,27 @@ int kest_init()
 	
 	kest_mem_init();
 	
-	init_representation_updater();
+	kest_update_task_start();
+	
+	kest_ui_lock();
 	kest_init_context(&global_cxt);
 	kest_init_global_pages(&global_cxt.pages);
+	kest_ui_unlock();
 	
+	#ifdef USE_FPGA
 	kest_init_fpga_comms();
+	kest_init_parameter_updater();
+	#endif
 	
-	xTaskCreate(kest_param_update_task, NULL, 4096, NULL, 8, NULL);
+	#ifdef USE_SDCARD
+	init_sd_card();
+	#endif
+	
+	#ifdef USE_SGTL5000
+	xTaskCreate(kest_sgtl5000_init, "kest_sgtl5000_init_task", 8192, NULL, 8, NULL);
+	#endif
 	
 	kest_init_directories();
-	
-	//if (load_state_from_file(&global_cxt.state, SETTINGS_FNAME) == ERR_FOPEN_FAIL)
-	//		save_state_to_file(&global_cxt.state, SETTINGS_FNAME);
 	
 	load_effects(&global_cxt);
 	init_effect_selector_eff(&global_cxt.pages.effect_selector);
@@ -45,8 +54,6 @@ int kest_init()
 		KEST_PRINTF("Unable to restore state from disk: \"%s\"\n", kest_error_code_to_string(ret_val));
 	}
 	
-	kest_active_preset_updater_start();
-	kest_update_task_start();
 	kest_init_file_task();
 	
 	return ret_val;
