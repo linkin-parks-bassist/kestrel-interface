@@ -23,7 +23,9 @@ var kest__error__codes_8h =
     [ "ERR_MUTEX_UNAVAILABLE", "kest__error__codes_8h.html#a37b1db756c998715795c812d771da5d8", null ],
     [ "ERR_NO_RESPONSE", "kest__error__codes_8h.html#a10a4ef7bd430657218510fcb444a2944", null ],
     [ "ERR_NODE_PRIVATE", "kest__error__codes_8h.html#a3269674e11271fcb1ca419412f5c2697", null ],
+    [ "ERR_NOT_FOUND", "kest__error__codes_8h.html#a47744541258a26adfce215564d8d05f4", null ],
     [ "ERR_NULL_PTR", "kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a", null ],
+    [ "ERR_OVERRULED", "kest__error__codes_8h.html#aeff19120e68c0dd81d70cf97eebc6b36", null ],
     [ "ERR_PIPELINE_BUSTED", "kest__error__codes_8h.html#a8e621f024332eab559042f416b4469e1", null ],
     [ "ERR_PIPELINE_FULL", "kest__error__codes_8h.html#af4941598f30a8688ff1d333bad05ef9b", null ],
     [ "ERR_PIPELINE_NULL", "kest__error__codes_8h.html#a9554b80a4ea1bba095f9cb827643b56b", null ],
@@ -41,8 +43,10 @@ var kest__error__codes_8h =
     [ "ERR_SWITCH_LINK_MALFORMED", "kest__error__codes_8h.html#ac2ce6113b6d1ad67e20bb47f935cc4cc", null ],
     [ "ERR_UNFINISHED_WRITE", "kest__error__codes_8h.html#a0998693252bd69688dff60384dd11d5d", null ],
     [ "ERR_UNIMPLEMENTED", "kest__error__codes_8h.html#ac32e0108e60494b10f5bf370bfb576b3", null ],
+    [ "ERR_UNINITIALISED", "kest__error__codes_8h.html#a4c495f42936852f013b88c55c178039a", null ],
     [ "ERR_UNKNOWN_ERR", "kest__error__codes_8h.html#aaa7cb28e392744d7999dd0f3f68a768c", null ],
     [ "ERR_VALUE_OUT_OF_BOUNDS", "kest__error__codes_8h.html#aebbc0d3d643b544fda4944e7e1a23348", null ],
+    [ "ERR_WRONG_TYPE", "kest__error__codes_8h.html#a699fcc5561d75c476b535d52a51566f4", null ],
     [ "NO_ERROR", "kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af", null ],
     [ "kest_error_code_to_string", "kest__error__codes_8h.html#a0f4c77127bc0b77264a21104979c576a", null ]
 ];

@@ -1,8 +1,8 @@
 var kest__context_8c =
 [
-    [ "INITIAL_PRESET_ARRAY_LENGTH", "kest__context_8c.html#aeee8d46752d04d07e63d3b2d9f518591", null ],
-    [ "PRESET_ARRAY_CHUNK_SIZE", "kest__context_8c.html#accd79599a2bd1e5f32dd27eb79733da6", null ],
     [ "PRINTLINES_ALLOWED", "kest__context_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
+    [ "activate_active_preset_dma", "kest__context_8c.html#a26fedd5766a54cb888dc4e9e08a14fdd", null ],
+    [ "activate_active_preset_lfos", "kest__context_8c.html#a13852baed60b9da53ab6025c8f6d3e14", null ],
     [ "context_print_presets", "kest__context_8c.html#a84b346cf5b2a30814456fcff5dda09c7", null ],
     [ "cxt_effect_id_to_position", "kest__context_8c.html#a0cb853ce1a381f28648c60bc32e70dde", null ],
     [ "cxt_effect_position_to_id", "kest__context_8c.html#a6f0b2e2e5496bfba74d7a37a5b693abe", null ],
@@ -26,6 +26,7 @@ var kest__context_8c =
     [ "kest_context_init_main_sequence", "kest__context_8c.html#ac93ad47b7b693a17e3416824b4c416ad", null ],
     [ "kest_context_init_ui", "kest__context_8c.html#a2201d0b7bb37ff309b1dd4bed24b88a0", null ],
     [ "kest_cxt_get_effect_desc_from_cname", "kest__context_8c.html#a6e14c685fa54daae3472e4fdb9603e4e", null ],
+    [ "kest_cxt_get_sequence_count", "kest__context_8c.html#afeccb4dd20b458f755bcdcb268a25dc9", null ],
     [ "kest_cxt_obtain_mutex", "kest__context_8c.html#a415a69f679e71fe9b3299473a5f9ca3f", null ],
     [ "kest_cxt_obtain_mutex_wait_forever", "kest__context_8c.html#abf533634156a111cff2187e49673777a", null ],
     [ "kest_cxt_queue_save_state", "kest__context_8c.html#a6292c7a2d7f0502ea5a59bbe9b552791", null ],

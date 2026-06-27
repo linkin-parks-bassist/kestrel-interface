@@ -1,7 +1,9 @@
 <map id="sgtl5000_readout_registers" name="sgtl5000_readout_registers">
-<area shape="rect" id="Node000001" title=" " alt="" coords="326,5,524,33"/>
-<area shape="rect" id="Node000002" href="$kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b" title=" " alt="" coords="139,5,278,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="310,22,279,22,279,16,310,16"/>
-<area shape="rect" id="Node000003" href="$kest__int_8c.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="5,5,91,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,22,91,22,91,16,123,16"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="508,5,707,33"/>
+<area shape="rect" id="Node000002" href="$kest__sgtl5000_8c.html#ab1fee6b32d3be05247ada395bd60915b" title=" " alt="" coords="321,5,460,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="493,22,461,22,461,16,493,16"/>
+<area shape="rect" id="Node000003" href="$kest__init_8c.html#ad1373cd24ac2876b2830d1ad2eb92721" title=" " alt="" coords="197,5,273,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="305,22,273,22,273,16,305,16"/>
+<area shape="rect" id="Node000004" href="$kest__event_8c.html#ad7148b990af9fe15dae1b2093872732b" title=" " alt="" coords="5,5,149,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="181,22,149,22,149,16,181,16"/>
 </map>

@@ -98,6 +98,7 @@ $(function(){initNavTree('kest__alloc_8c.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a925207a2b3de0a6f636d1425fcdb1a56" id="r_a925207a2b3de0a6f636d1425fcdb1a56"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a925207a2b3de0a6f636d1425fcdb1a56">PRINTLINES_ALLOWED</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:a20461f7ba9f2f5710a56d9688810833b" id="r_a20461f7ba9f2f5710a56d9688810833b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20461f7ba9f2f5710a56d9688810833b">INIT_MEM_POOL</a>(X,  n)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -106,21 +107,57 @@ Functions</h2></td></tr>
 <tr class="memitem:ac3afebacd5118241e9f677df59a469b0" id="r_ac3afebacd5118241e9f677df59a469b0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3afebacd5118241e9f677df59a469b0">kest_realloc</a> (void *ptr, size_t size)</td></tr>
 <tr class="memitem:aed9ede1276c1ab3b4042c264ce64a3d2" id="r_aed9ede1276c1ab3b4042c264ce64a3d2"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed9ede1276c1ab3b4042c264ce64a3d2">kest_strndup</a> (const char *str, size_t n)</td></tr>
 <tr class="memitem:aeedc5ac6c48c67b0f16cef7560ec5813" id="r_aeedc5ac6c48c67b0f16cef7560ec5813"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeedc5ac6c48c67b0f16cef7560ec5813">kest_mem_monitor_task</a> (void *param)</td></tr>
-<tr class="memitem:aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c" id="r_aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c">kest_mem_init</a> ()</td></tr>
-<tr class="memitem:ab6a1069ab1e16cca811cd4203cd97ccc" id="r_ab6a1069ab1e16cca811cd4203cd97ccc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6a1069ab1e16cca811cd4203cd97ccc">lv_mem_init</a> (void)</td></tr>
-<tr class="memitem:ae94f89d2267ed9b203e5224c8ce8ec5c" id="r_ae94f89d2267ed9b203e5224c8ce8ec5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae94f89d2267ed9b203e5224c8ce8ec5c">lv_mem_deinit</a> (void)</td></tr>
-<tr class="memitem:ab9d387cd3cc50af9623e11ad5af214f2" id="r_ab9d387cd3cc50af9623e11ad5af214f2"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9d387cd3cc50af9623e11ad5af214f2">lv_malloc_core</a> (size_t size)</td></tr>
-<tr class="memitem:a5c3f4d9424047272bf4987344a823cbf" id="r_a5c3f4d9424047272bf4987344a823cbf"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c3f4d9424047272bf4987344a823cbf">lv_realloc_core</a> (void *p, size_t new_size)</td></tr>
-<tr class="memitem:a0410ce8f2096ca5cd2c065bd10689e09" id="r_a0410ce8f2096ca5cd2c065bd10689e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0410ce8f2096ca5cd2c065bd10689e09">lv_free_core</a> (void *p)</td></tr>
-<tr class="memitem:a4b4050bbb38f259648a3d85444c50767" id="r_a4b4050bbb38f259648a3d85444c50767"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b4050bbb38f259648a3d85444c50767">kest_lv_malloc</a> (size_t size)</td></tr>
-<tr class="memitem:afceda9593b8843f6b84d22c16fd541a2" id="r_afceda9593b8843f6b84d22c16fd541a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afceda9593b8843f6b84d22c16fd541a2">kest_lv_free</a> (void *ptr)</td></tr>
+<tr class="memitem:ae3a88d97ced988c0649b9d6cd8a82481" id="r_ae3a88d97ced988c0649b9d6cd8a82481"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3a88d97ced988c0649b9d6cd8a82481">kest_mem_init</a> ()</td></tr>
 <tr class="memitem:a78465771e821845999fad24dca873c9a" id="r_a78465771e821845999fad24dca873c9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78465771e821845999fad24dca873c9a">print_memory_report</a> ()</td></tr>
+<tr class="memitem:aa5046597fbc446dad54a2e03113c2620" id="r_aa5046597fbc446dad54a2e03113c2620"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5046597fbc446dad54a2e03113c2620">kest_allocator_init</a> (<a class="el" href="structkest__allocator.html">kest_allocator</a> *a)</td></tr>
 <tr class="memitem:a4bb52284828149d9a740bac0c9706ecd" id="r_a4bb52284828149d9a740bac0c9706ecd"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bb52284828149d9a740bac0c9706ecd">kest_allocator_alloc</a> (<a class="el" href="structkest__allocator.html">kest_allocator</a> *a, size_t n)</td></tr>
 <tr class="memitem:aea68b9d53bda8bdbb23521bca9758a5e" id="r_aea68b9d53bda8bdbb23521bca9758a5e"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea68b9d53bda8bdbb23521bca9758a5e">kest_allocator_realloc</a> (<a class="el" href="structkest__allocator.html">kest_allocator</a> *a, void *p, size_t n)</td></tr>
 <tr class="memitem:a5c912e0ea909c2936856b46189e2c704" id="r_a5c912e0ea909c2936856b46189e2c704"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c912e0ea909c2936856b46189e2c704">kest_allocator_strndup</a> (<a class="el" href="structkest__allocator.html">kest_allocator</a> *a, const char *str, int n)</td></tr>
 <tr class="memitem:ac70a0464d391cefa33eb0f6d746ff7aa" id="r_ac70a0464d391cefa33eb0f6d746ff7aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac70a0464d391cefa33eb0f6d746ff7aa">kest_allocator_free</a> (<a class="el" href="structkest__allocator.html">kest_allocator</a> *a, void *p)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a20461f7ba9f2f5710a56d9688810833b" name="a20461f7ba9f2f5710a56d9688810833b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20461f7ba9f2f5710a56d9688810833b">&#9670;&#160;</a></span>INIT_MEM_POOL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define INIT_MEM_POOL</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>X</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>n</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {\</div>
+<div class="line">        if ((ret_val = X##_pool_init(&amp;X##_mem_pool)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)\</div>
+<div class="line">        {\</div>
+<div class="line">            KEST_PRINTF_FORCE(<span class="stringliteral">&quot;Failed to init &quot;</span> #X <span class="stringliteral">&quot; pool\n&quot;</span>);\</div>
+<div class="line">            <span class="keywordflow">return</span> ret_val;\</div>
+<div class="line">        }\</div>
+<div class="line">        \</div>
+<div class="line">        if ((ret_val = X##_pool_reserve(&amp;X##_mem_pool, n)) != <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>)\</div>
+<div class="line">        {\</div>
+<div class="line">            KEST_PRINTF_FORCE(<span class="stringliteral">&quot;Failed to reserve &quot;</span> #X <span class="stringliteral">&quot; pool\n&quot;</span>);\</div>
+<div class="line">            <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a058d08ccb1672909ca217f4b0a950669">ERR_ALLOC_FAIL</a>;\</div>
+<div class="line">        }\</div>
+<div class="line">        \</div>
+<div class="line">        X##_pool_init_allocator(&amp;X##_mem_pool, &amp;X##_allocator);\</div>
+<div class="line">    } <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="akest__error__codes_8h_html_a058d08ccb1672909ca217f4b0a950669"><div class="ttname"><a href="kest__error__codes_8h.html#a058d08ccb1672909ca217f4b0a950669">ERR_ALLOC_FAIL</a></div><div class="ttdeci">#define ERR_ALLOC_FAIL</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00009">kest_error_codes.h:9</a></div></div>
+<div class="ttc" id="akest__error__codes_8h_html_a258bb72419ef143530a2f8f55e7d57af"><div class="ttname"><a href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a></div><div class="ttdeci">#define NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00004">kest_error_codes.h:4</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00100">100</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00118">kest_mem_init()</a>.</p>
+
+</div>
+</div>
 <a id="a925207a2b3de0a6f636d1425fcdb1a56" name="a925207a2b3de0a6f636d1425fcdb1a56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a925207a2b3de0a6f636d1425fcdb1a56">&#9670;&#160;</a></span>PRINTLINES_ALLOWED</h2>
 
@@ -133,7 +170,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00004">4</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00003">3</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__update_8c_source.html#l00702">kest_updater_handle_update()</a>.</p>
 
 </div>
 </div>
@@ -153,9 +192,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00011">11</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00009">9</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00179">clone_pipeline()</a>, <a class="el" href="kest__parameter_8c_source.html#l00254">clone_setting()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00106">configure_effect_view()</a>, <a class="el" href="kest__menu_8c_source.html#l00779">configure_main_menu()</a>, <a class="el" href="kest__menu_8c_source.html#l00523">create_danger_button_menu_item()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00009">create_effect_view_for()</a>, <a class="el" href="kest__menu_8c_source.html#l00357">create_menu_item_ui()</a>, <a class="el" href="kest__menu_8c_source.html#l00440">create_pad_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00475">create_page_linindirect_k_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00455">create_page_link_menu_item()</a>, <a class="el" href="kest__ui_8c_source.html#l00512">create_panel()</a>, <a class="el" href="kest__menu_8c_source.html#l00492">create_parameter_widget_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00208">create_preset_listing_menu_item()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00009">create_preset_view_for()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00009">create_sequence_listing_menu_item()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00009">create_sequence_view_for()</a>, <a class="el" href="kest__ui_8c_source.html#l00183">create_ui_page()</a>, <a class="el" href="kest__effect_8c_source.html#l00204">effect_add_parameter()</a>, <a class="el" href="kest__effect_8c_source.html#l00231">effect_add_setting()</a>, <a class="el" href="kest__files_8c_source.html#l01196">erase_folder()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00076">init_amplifier()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00258">init_delay()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00372">init_distortion()</a>, <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>, <a class="el" href="kest__effect__select_8c_source.html#l00016">init_effect_selector_eff()</a>, <a class="el" href="kest__effect__settings_8c_source.html#l00009">init_effect_settings_page()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00043">init_effect_view()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00594">init_flanger()</a>, <a class="el" href="kest__menu_8c_source.html#l00559">init_menu_page()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00118">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__ui_8c_source.html#l00030">init_test_page()</a>, <a class="el" href="kest__button_8c_source.html#l01290">kest_active_button_array_append_new()</a>, <a class="el" href="kest__button_8c_source.html#l01278">kest_active_button_array_new()</a>, <a class="el" href="kest__button_8c_source.html#l01258">kest_active_button_array_set_length()</a>, <a class="el" href="kest__alloc_8c_source.html#l00177">kest_allocator_alloc()</a>, <a class="el" href="kest__bump__arena_8c_source.html#l00038">kest_bump_arena_init()</a>, <a class="el" href="kest__context_8c_source.html#l00105">kest_context_add_preset()</a>, <a class="el" href="kest__context_8c_source.html#l00132">kest_context_add_preset_rp()</a>, <a class="el" href="kest__context_8c_source.html#l00166">kest_context_add_sequence_rp()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, <a class="el" href="kest__expression_8c_source.html#l01611">kest_expr_create_hpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l01557">kest_expr_create_lpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l00125">kest_expr_new_binary()</a>, <a class="el" href="kest__expression_8c_source.html#l00068">kest_expr_new_const()</a>, <a class="el" href="kest__expression_8c_source.html#l00162">kest_expr_new_reference()</a>, <a class="el" href="kest__expression_8c_source.html#l00093">kest_expr_new_unary()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00913">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00280">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00294">kest_fpga_batch_concat()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00080">kest_new_expr_scope()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00011">kest_new_expr_scope_entry_expr()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00030">kest_new_expr_scope_entry_param()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00048">kest_new_expr_scope_entry_setting()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00203">kest_new_fpga_transfer_batch()</a>, <a class="el" href="kest__parameter_8c_source.html#l00220">kest_parameter_make_clone()</a>, <a class="el" href="kest__parameter_8c_source.html#l00235">kest_parameter_make_clone_for_effect()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00576">kest_parse_asm_line()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00019">kest_pipeline_append_effect_eff()</a>, <a class="el" href="kest__preset_8c_source.html#l00156">kest_preset_set_default_name_from_id()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__alloc_8c_source.html#l00045">kest_realloc()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00302">kest_scope_new()</a>, <a class="el" href="kest__parameter_8c_source.html#l00307">kest_setting_make_clone()</a>, <a class="el" href="kest__parameter_8c_source.html#l00322">kest_setting_make_clone_for_effect()</a>, <a class="el" href="kest__string_8c_source.html#l00167">kest_string_to_native()</a>, <a class="el" href="kest__alloc_8c_source.html#l00073">kest_strndup()</a>, <a class="el" href="kest__tokenizer_8c_source.html#l00299">kest_token_ll_safe_append()</a>, <a class="el" href="kest__files_8c_source.html#l01125">list_files_in_directory()</a>, <a class="el" href="kest__files_8c_source.html#l00962">load_saved_presets()</a>, <a class="el" href="kest__files_8c_source.html#l01028">load_saved_sequences()</a>, <a class="el" href="kest__files_8c_source.html#l00300">load_state_from_file()</a>, <a class="el" href="kest__alloc_8c_source.html#l00146">lv_malloc_core()</a>, <a class="el" href="kest__button_8c_source.html#l00054">new_button()</a>, <a class="el" href="kest__parameter_8c_source.html#l00075">new_m_parameter_wni()</a>, <a class="el" href="kest__ui_8c_source.html#l00982">new_panel()</a>, <a class="el" href="kest__sequence_8c_source.html#l00045">sequence_append_preset()</a>, and <a class="el" href="kest__sequence_8c_source.html#l00085">sequence_append_preset_rp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter_8c_source.html#l00256">clone_setting()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00106">configure_effect_view()</a>, <a class="el" href="kest__menu_8c_source.html#l00761">configure_main_menu()</a>, <a class="el" href="kest__menu_8c_source.html#l00503">create_danger_button_menu_item()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00009">create_effect_view_for()</a>, <a class="el" href="kest__menu_8c_source.html#l00337">create_menu_item_ui()</a>, <a class="el" href="kest__menu_8c_source.html#l00420">create_pad_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00455">create_page_linindirect_k_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00435">create_page_link_menu_item()</a>, <a class="el" href="kest__ui_8c_source.html#l00534">create_panel()</a>, <a class="el" href="kest__menu_8c_source.html#l00472">create_parameter_widget_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00188">create_preset_listing_menu_item()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00007">create_preset_view_for()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00007">create_sequence_listing_menu_item()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00009">create_sequence_view_for()</a>, <a class="el" href="kest__ui_8c_source.html#l00195">create_ui_page()</a>, <a class="el" href="kest__effect_8c_source.html#l00385">effect_add_parameter()</a>, <a class="el" href="kest__effect_8c_source.html#l00412">effect_add_setting()</a>, <a class="el" href="kest__files_8c_source.html#l01195">erase_folder()</a>, <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>, <a class="el" href="kest__effect__select_8c_source.html#l00016">init_effect_selector_eff()</a>, <a class="el" href="kest__effect__settings_8c_source.html#l00009">init_effect_settings_page()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00043">init_effect_view()</a>, <a class="el" href="kest__menu_8c_source.html#l00539">init_menu_page()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00112">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__ui_8c_source.html#l00031">init_test_page()</a>, <a class="el" href="kest__button_8c_source.html#l01315">kest_active_button_array_append_new()</a>, <a class="el" href="kest__button_8c_source.html#l01303">kest_active_button_array_new()</a>, <a class="el" href="kest__button_8c_source.html#l01283">kest_active_button_array_set_length()</a>, <a class="el" href="kest__alloc_8c_source.html#l00206">kest_allocator_alloc()</a>, <a class="el" href="kest__bump__arena_8c_source.html#l00038">kest_bump_arena_init()</a>, <a class="el" href="kest__context_8c_source.html#l00100">kest_context_add_preset()</a>, <a class="el" href="kest__context_8c_source.html#l00127">kest_context_add_preset_rp()</a>, <a class="el" href="kest__context_8c_source.html#l00161">kest_context_add_sequence_rp()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00162">kest_defs_section_extract()</a>, <a class="el" href="kest__driver_8c_source.html#l00079">kest_driver_clone()</a>, <a class="el" href="kest__driver_8c_source.html#l00019">kest_driver_init_scope_entry()</a>, <a class="el" href="kest__driver_8c_source.html#l00109">kest_driver_make_clone()</a>, <a class="el" href="kest__resource_8c_source.html#l00588">kest_dsp_resource_make_clone()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02259">kest_extract_bpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01692">kest_extract_delay()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01818">kest_extract_filter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02125">kest_extract_hpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02398">kest_extract_lfo()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01990">kest_extract_lpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01597">kest_extract_mem()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01093">kest_extract_parameter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02561">kest_extract_polynomial()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00892">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01311">kest_extract_setting()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00464">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__resource_8c_source.html#l00251">kest_filter_make_clone()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00325">kest_fpga_batch_concat()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00168">kest_fpga_transfer_batch_init()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00590">kest_parse_asm_line()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00023">kest_pipeline_append_effect_eff()</a>, <a class="el" href="kest__preset_8c_source.html#l00214">kest_preset_set_default_name_from_id()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>, <a class="el" href="kest__alloc_8c_source.html#l00042">kest_realloc()</a>, <a class="el" href="kest__representation_8c_source.html#l00070">kest_representation_queue_update()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00221">kest_scope_new()</a>, <a class="el" href="kest__sequence_8c_source.html#l00049">kest_sequence_set_default_name()</a>, <a class="el" href="kest__string_8c_source.html#l00167">kest_string_to_native()</a>, <a class="el" href="kest__alloc_8c_source.html#l00071">kest_strndup()</a>, <a class="el" href="kest__tokenizer_8c_source.html#l00299">kest_token_ll_safe_append()</a>, <a class="el" href="kest__files_8c_source.html#l01124">list_files_in_directory()</a>, <a class="el" href="kest__files_8c_source.html#l00299">load_state_from_file()</a>, <a class="el" href="kest__button_8c_source.html#l00055">new_button()</a>, <a class="el" href="kest__ui_8c_source.html#l01004">new_panel()</a>, <a class="el" href="kest__sequence_8c_source.html#l00068">sequence_append_preset()</a>, and <a class="el" href="kest__sequence_8c_source.html#l00110">sequence_append_preset_rp()</a>.</p>
 
 </div>
 </div>
@@ -178,9 +217,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00177">177</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00206">206</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00193">kest_allocator_strndup()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00044">kest_dict_entry_to_string()</a>, <a class="el" href="kest__resource_8c_source.html#l00155">kest_filter_create()</a>, and <a class="el" href="kest__string_8c_source.html#l00189">kest_string_to_native_with_allocator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00183">clone_pipeline()</a>, <a class="el" href="kest__alloc_8c_source.html#l00236">kest_allocator_strndup()</a>, <a class="el" href="kest__resource_8c_source.html#l00288">kest_delay_create()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00041">kest_dict_entry_to_string()</a>, <a class="el" href="kest__dictionary_8c_source.html#l01273">kest_eff_entry_to_string()</a>, <a class="el" href="kest__expression_8c_source.html#l02873">kest_expr_create_bpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l02806">kest_expr_create_hpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l02741">kest_expr_create_lpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l00134">kest_expr_new_binary()</a>, <a class="el" href="kest__expression_8c_source.html#l00077">kest_expr_new_const()</a>, <a class="el" href="kest__expression_8c_source.html#l00171">kest_expr_new_reference()</a>, <a class="el" href="kest__expression_8c_source.html#l00102">kest_expr_new_unary()</a>, <a class="el" href="kest__resource_8c_source.html#l00210">kest_filter_create()</a>, <a class="el" href="kest__resource_8c_source.html#l00322">kest_lfo_create()</a>, <a class="el" href="kest__resource_8c_source.html#l00274">kest_mem_slot_create()</a>, <a class="el" href="kest__parameter_8c_source.html#l00215">kest_parameter_make_clone()</a>, <a class="el" href="kest__parameter_8c_source.html#l00230">kest_parameter_make_clone_for_effect()</a>, <a class="el" href="kest__dictionary_8c_source.html#l01476">kest_parse_eff_entry()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00023">kest_pipeline_append_effect_eff()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__parameter_8c_source.html#l00309">kest_setting_make_clone()</a>, <a class="el" href="kest__parameter_8c_source.html#l00324">kest_setting_make_clone_for_effect()</a>, <a class="el" href="kest__string_8c_source.html#l00189">kest_string_to_native_with_allocator()</a>, <a class="el" href="kest__files_8c_source.html#l00961">load_saved_presets()</a>, <a class="el" href="kest__files_8c_source.html#l01027">load_saved_sequences()</a>, and <a class="el" href="kest__parameter_8c_source.html#l00079">new_m_parameter_wni()</a>.</p>
 <div id="dynsection-0" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
@@ -215,13 +254,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00208">208</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00259">259</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00587">free_effect()</a>, <a class="el" href="kest__preset_8c_source.html#l00357">free_preset()</a>, <a class="el" href="kest__sequence_8c_source.html#l00277">free_sequence()</a>, <a class="el" href="kest__expression_8c_source.html#l02873">kest_expr_create_bpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l02806">kest_expr_create_hpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l02741">kest_expr_create_lpf_coefficients()</a>, <a class="el" href="kest__expression_8c_source.html#l00171">kest_expr_new_reference()</a>, <a class="el" href="kest__parameter_8c_source.html#l00158">kest_parameter_free()</a>, and <a class="el" href="kest__parameter_8c_source.html#l00357">kest_setting_free()</a>.</p>
 <div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ac70a0464d391cefa33eb0f6d746ff7aa_cgraph.svg" width="286" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ac70a0464d391cefa33eb0f6d746ff7aa_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aa5046597fbc446dad54a2e03113c2620" name="aa5046597fbc446dad54a2e03113c2620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5046597fbc446dad54a2e03113c2620">&#9670;&#160;</a></span>kest_allocator_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_allocator_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__allocator.html">kest_allocator</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00199">199</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
 </div>
 </div>
@@ -249,11 +315,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00185">185</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00222">222</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aea68b9d53bda8bdbb23521bca9758a5e_cgraph.svg" width="456" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
@@ -283,12 +349,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00193">193</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00236">236</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_a5c912e0ea909c2936856b46189e2c704_cgraph.svg" width="512" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_a5c912e0ea909c2936856b46189e2c704_cgraph.svg" width="512" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -308,58 +374,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00032">32</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00029">29</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00393">cxt_remove_preset()</a>, <a class="el" href="kest__context_8c_source.html#l00434">cxt_remove_sequence()</a>, <a class="el" href="kest__effect_8c_source.html#l00204">effect_add_parameter()</a>, <a class="el" href="kest__effect_8c_source.html#l00231">effect_add_setting()</a>, <a class="el" href="kest__files_8c_source.html#l01196">erase_folder()</a>, <a class="el" href="kest__effect_8c_source.html#l00369">free_effect()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00333">free_effect_view()</a>, <a class="el" href="kest__menu_8c_source.html#l00114">free_menu_item()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00409">free_parameter_widget()</a>, <a class="el" href="kest__preset_8c_source.html#l00287">free_preset()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00928">free_setting_widget()</a>, <a class="el" href="kest__preset_8c_source.html#l00263">gut_preset()</a>, <a class="el" href="kest__parameter_8c_source.html#l00341">gut_setting()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00118">init_preset_view()</a>, <a class="el" href="kest__button_8c_source.html#l01290">kest_active_button_array_append_new()</a>, <a class="el" href="kest__button_8c_source.html#l01108">kest_active_button_free()</a>, <a class="el" href="kest__alloc_8c_source.html#l00208">kest_allocator_free()</a>, <a class="el" href="kest__bump__arena_8c_source.html#l00130">kest_bump_arena_destroy()</a>, <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>, <a class="el" href="kest__expression_8c_source.html#l00162">kest_expr_new_reference()</a>, <a class="el" href="kest__fixed__point_8c_source.html#l00052">kest_expression_compute_format()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00479">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00913">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00280">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00215">kest_free_fpga_transfer_batch()</a>, <a class="el" href="kest__parameter_8c_source.html#l00164">kest_parameter_free()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00711">kest_parse_dict_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00826">kest_parse_dict_val()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00072">kest_pipeline_remove_effect()</a>, <a class="el" href="kest__preset_8c_source.html#l00156">kest_preset_set_default_name_from_id()</a>, <a class="el" href="kest__alloc_8c_source.html#l00045">kest_realloc()</a>, <a class="el" href="kest__representation_8c_source.html#l00077">kest_representation_pll_remove()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00302">kest_scope_new()</a>, <a class="el" href="kest__sequence_8c_source.html#l00202">kest_sequence_remove_preset()</a>, <a class="el" href="kest__parameter_8c_source.html#l00355">kest_setting_free()</a>, <a class="el" href="kest__alloc_8c_source.html#l00155">lv_free_core()</a>, <a class="el" href="kest__menu_8c_source.html#l00926">menu_page_remove_item()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00237">preset_view_save_name()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00677">print_dict()</a>, <a class="el" href="kest__files_8c_source.html#l00923">save_sequence()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00242">sequence_view_set_name()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00713">sw_field_cancel_cb()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00619">sw_field_save_cb()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00388">cxt_remove_preset()</a>, <a class="el" href="kest__context_8c_source.html#l00429">cxt_remove_sequence()</a>, <a class="el" href="kest__effect_8c_source.html#l00385">effect_add_parameter()</a>, <a class="el" href="kest__effect_8c_source.html#l00412">effect_add_setting()</a>, <a class="el" href="kest__files_8c_source.html#l01195">erase_folder()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00353">free_effect_view()</a>, <a class="el" href="kest__menu_8c_source.html#l00094">free_menu_item()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00540">free_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l01081">free_setting_widget()</a>, <a class="el" href="kest__preset_8c_source.html#l00333">gut_preset()</a>, <a class="el" href="kest__parameter_8c_source.html#l00343">gut_setting()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00112">init_preset_view()</a>, <a class="el" href="kest__button_8c_source.html#l01315">kest_active_button_array_append_new()</a>, <a class="el" href="kest__button_8c_source.html#l01133">kest_active_button_free()</a>, <a class="el" href="kest__alloc_8c_source.html#l00259">kest_allocator_free()</a>, <a class="el" href="kest__bump__arena_8c_source.html#l00130">kest_bump_arena_destroy()</a>, <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>, <a class="el" href="kest__resource_8c_source.html#l00588">kest_dsp_resource_make_clone()</a>, <a class="el" href="kest__fixed__point_8c_source.html#l00050">kest_expression_compute_format()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02259">kest_extract_bpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01692">kest_extract_delay()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01818">kest_extract_filter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00699">kest_extract_filter_coefs_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02125">kest_extract_hpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02398">kest_extract_lfo()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01990">kest_extract_lpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01597">kest_extract_mem()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01093">kest_extract_parameter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02561">kest_extract_polynomial()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00892">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01311">kest_extract_setting()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00464">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__resource_8c_source.html#l00251">kest_filter_make_clone()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00195">kest_free_fpga_transfer_batch()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00775">kest_parse_dict_list()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00890">kest_parse_dict_val()</a>, <a class="el" href="kest__dictionary_8c_source.html#l01476">kest_parse_eff_entry()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00076">kest_pipeline_remove_effect()</a>, <a class="el" href="kest__preset_8c_source.html#l00214">kest_preset_set_default_name_from_id()</a>, <a class="el" href="kest__alloc_8c_source.html#l00042">kest_realloc()</a>, <a class="el" href="kest__representation_8c_source.html#l00129">kest_representation_pll_remove()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00221">kest_scope_new()</a>, <a class="el" href="kest__sequence_8c_source.html#l00226">kest_sequence_remove_preset()</a>, <a class="el" href="kest__menu_8c_source.html#l00892">menu_page_remove_item()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00231">preset_view_save_name()</a>, <a class="el" href="kest__dictionary_8c_source.html#l00741">print_dict()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00243">sequence_view_set_name()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00866">sw_field_cancel_cb()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00772">sw_field_save_cb()</a>.</p>
 
 </div>
 </div>
-<a id="afceda9593b8843f6b84d22c16fd541a2" name="afceda9593b8843f6b84d22c16fd541a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afceda9593b8843f6b84d22c16fd541a2">&#9670;&#160;</a></span>kest_lv_free()</h2>
+<a id="ae3a88d97ced988c0649b9d6cd8a82481" name="ae3a88d97ced988c0649b9d6cd8a82481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3a88d97ced988c0649b9d6cd8a82481">&#9670;&#160;</a></span>kest_mem_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kest_lv_free </td>
-          <td>(</td>
-          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>ptr</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00165">165</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-
-</div>
-</div>
-<a id="a4b4050bbb38f259648a3d85444c50767" name="a4b4050bbb38f259648a3d85444c50767"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b4050bbb38f259648a3d85444c50767">&#9670;&#160;</a></span>kest_lv_malloc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void * kest_lv_malloc </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00160">160</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-
-</div>
-</div>
-<a id="aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c" name="aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c">&#9670;&#160;</a></span>kest_mem_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void kest_mem_init </td>
+          <td class="memname">int kest_mem_init </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -367,20 +395,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00116">116</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00118">118</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>.</p>
-<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c_cgraph.svg" width="566" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<p class="reference">Referenced by <a class="el" href="kest__init_8c_source.html#l00007">kest_init()</a>.</p>
+<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aa0e80da4e1c1ccbe3a4c3f2eb56c4d3c_icgraph.svg" width="262" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ae3a88d97ced988c0649b9d6cd8a82481_cgraph.svg" width="566" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ae3a88d97ced988c0649b9d6cd8a82481_icgraph.svg" width="619" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -400,20 +428,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00104">104</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00089">89</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00116">kest_mem_init()</a>.</p>
-<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aeedc5ac6c48c67b0f16cef7560ec5813_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00118">kest_mem_init()</a>.</p>
+<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aeedc5ac6c48c67b0f16cef7560ec5813_icgraph.svg" width="492" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aeedc5ac6c48c67b0f16cef7560ec5813_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aeedc5ac6c48c67b0f16cef7560ec5813_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -437,19 +465,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00045">45</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00042">42</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00185">kest_allocator_realloc()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00220">kest_fpga_batch_append()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00294">kest_fpga_batch_concat()</a>, and <a class="el" href="kest__alloc_8c_source.html#l00150">lv_realloc_core()</a>.</p>
-<div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ac3afebacd5118241e9f677df59a469b0_cgraph.svg" width="244" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00222">kest_allocator_realloc()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00200">kest_fpga_batch_append()</a>, <a class="el" href="kest__fpga__io_8c_source.html#l00225">kest_fpga_batch_append_bytes()</a>, and <a class="el" href="kest__fpga__io_8c_source.html#l00325">kest_fpga_batch_concat()</a>.</p>
+<div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ac3afebacd5118241e9f677df59a469b0_cgraph.svg" width="244" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ac3afebacd5118241e9f677df59a469b0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -474,137 +502,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00073">73</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00071">71</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__preset_8c_source.html#l00240">clone_preset()</a>, <a class="el" href="kest__effect__settings_8c_source.html#l00048">configure_effect_settings_page()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, <a class="el" href="kest__menu_8c_source.html#l00523">create_danger_button_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00475">create_page_linindirect_k_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00455">create_page_link_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00208">create_preset_listing_menu_item()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00009">create_sequence_listing_menu_item()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00738">edit_sw_field_cb()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, <a class="el" href="kest__expression_8c_source.html#l00144">kest_expr_init_reference()</a>, <a class="el" href="kest__expression_8c_source.html#l00162">kest_expr_new_reference()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00009">kest_extract_parameter_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00913">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00280">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00237">preset_view_save_name()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00075">sequence_listing_menu_item_change_name()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00242">sequence_view_set_name()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00619">sw_field_save_cb()</a>.</p>
-<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aed9ede1276c1ab3b4042c264ce64a3d2_cgraph.svg" width="250" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<p class="reference">Referenced by <a class="el" href="kest__preset_8c_source.html#l00310">clone_preset()</a>, <a class="el" href="kest__effect__settings_8c_source.html#l00048">configure_effect_settings_page()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, <a class="el" href="kest__menu_8c_source.html#l00503">create_danger_button_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00455">create_page_linindirect_k_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00435">create_page_link_menu_item()</a>, <a class="el" href="kest__menu_8c_source.html#l00188">create_preset_listing_menu_item()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00007">create_sequence_listing_menu_item()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00891">edit_sw_field_cb()</a>, <a class="el" href="kest__alloc_8c_source.html#l00236">kest_allocator_strndup()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00162">kest_defs_section_extract()</a>, <a class="el" href="kest__expression_8c_source.html#l00153">kest_expr_init_reference()</a>, <a class="el" href="kest__expression_8c_source.html#l00171">kest_expr_new_reference()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02259">kest_extract_bpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01692">kest_extract_delay()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01818">kest_extract_filter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02125">kest_extract_hpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02398">kest_extract_lfo()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01990">kest_extract_lpf()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01597">kest_extract_mem()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01093">kest_extract_parameter()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l02561">kest_extract_polynomial()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00892">kest_extract_resource_from_dict()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l01311">kest_extract_setting()</a>, <a class="el" href="kest__dict__extract_8c_source.html#l00464">kest_extract_setting_from_dict()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00231">preset_view_save_name()</a>, <a class="el" href="kest__sequence__list_8c_source.html#l00073">sequence_listing_menu_item_change_name()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00243">sequence_view_set_name()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00772">sw_field_save_cb()</a>.</p>
+<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aed9ede1276c1ab3b4042c264ce64a3d2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aed9ede1276c1ab3b4042c264ce64a3d2_cgraph.svg" width="250" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-
-</div>
-</div>
-<a id="a0410ce8f2096ca5cd2c065bd10689e09" name="a0410ce8f2096ca5cd2c065bd10689e09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0410ce8f2096ca5cd2c065bd10689e09">&#9670;&#160;</a></span>lv_free_core()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lv_free_core </td>
-          <td>(</td>
-          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00155">155</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-13-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_a0410ce8f2096ca5cd2c065bd10689e09_cgraph.svg" width="242" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="ab9d387cd3cc50af9623e11ad5af214f2" name="ab9d387cd3cc50af9623e11ad5af214f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9d387cd3cc50af9623e11ad5af214f2">&#9670;&#160;</a></span>lv_malloc_core()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void * lv_malloc_core </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>size</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00146">146</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_ab9d387cd3cc50af9623e11ad5af214f2_cgraph.svg" width="264" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="ae94f89d2267ed9b203e5224c8ce8ec5c" name="ae94f89d2267ed9b203e5224c8ce8ec5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae94f89d2267ed9b203e5224c8ce8ec5c">&#9670;&#160;</a></span>lv_mem_deinit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lv_mem_deinit </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00141">141</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-
-</div>
-</div>
-<a id="ab6a1069ab1e16cca811cd4203cd97ccc" name="ab6a1069ab1e16cca811cd4203cd97ccc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6a1069ab1e16cca811cd4203cd97ccc">&#9670;&#160;</a></span>lv_mem_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lv_mem_init </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00136">136</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-
-</div>
-</div>
-<a id="a5c3f4d9424047272bf4987344a823cbf" name="a5c3f4d9424047272bf4987344a823cbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c3f4d9424047272bf4987344a823cbf">&#9670;&#160;</a></span>lv_realloc_core()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void * lv_realloc_core </td>
-          <td>(</td>
-          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>new_size</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00150">150</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
-<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_a5c3f4d9424047272bf4987344a823cbf_cgraph.svg" width="412" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_aed9ede1276c1ab3b4042c264ce64a3d2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -624,13 +535,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00172">172</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__alloc_8c_source.html#l00192">192</a> of file <a class="el" href="kest__alloc_8c_source.html">kest_alloc.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>, and <a class="el" href="kest__alloc_8c_source.html#l00104">kest_mem_monitor_task()</a>.</p>
-<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__alloc_8c_source.html#l00089">kest_mem_monitor_task()</a>.</p>
+<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__alloc_8c_a78465771e821845999fad24dca873c9a_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 

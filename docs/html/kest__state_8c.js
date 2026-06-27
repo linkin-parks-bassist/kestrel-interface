@@ -4,5 +4,6 @@ var kest__state_8c =
     [ "kest_cxt_clone_state", "kest__state_8c.html#a816d674320b40283e9c91ed95b9282a1", null ],
     [ "kest_cxt_enter_previous_current_page", "kest__state_8c.html#ad67167136a5f2e68f04622bc4f518b22", null ],
     [ "kest_cxt_restore_state", "kest__state_8c.html#ab26da214ed0f9d143d63e80a7012796b", null ],
-    [ "kest_state_representation_update", "kest__state_8c.html#a2c43a0057886626aaebb61a5d017da31", null ]
+    [ "kest_state_representation_update", "kest__state_8c.html#a2c43a0057886626aaebb61a5d017da31", null ],
+    [ "kest_state_save", "kest__state_8c.html#ae843d6ea4ed9af4c5bc5a66542a13062", null ]
 ];

@@ -12,6 +12,7 @@ var structkest__button =
     [ "height", "structkest__button.html#a428935732471bf0032d3facfe66fe3ab", null ],
     [ "hider", "structkest__button.html#a1e0728f5e461f9002e508ff6f8204ab3", null ],
     [ "label", "structkest__button.html#ab72cf236753ed34d2407d15716357dcb", null ],
+    [ "label_opacity", "structkest__button.html#a7fc966b498d77e9528fbe5a37ad58708", null ],
     [ "label_text", "structkest__button.html#a13bd61016bda1fde2942ffdb30a2735e", null ],
     [ "long_pressed", "structkest__button.html#af13c2935add51b276fcc125d7a30bcc4", null ],
     [ "long_pressed_cb", "structkest__button.html#a66b841b7c132c818bc4424a5f06a3b48", null ],

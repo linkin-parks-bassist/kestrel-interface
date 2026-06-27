@@ -1,5 +1,7 @@
 <map id="kest_fpga_msg" name="kest_fpga_msg">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,123,136,151"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="104,123,223,151"/>
 <area shape="rect" id="Node000002" href="$structkest__fpga__transfer__batch.html" title=" " alt="" coords="5,5,148,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,65,79,123,74,123,74,65"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,60,155,121,151,124,101,64"/>
+<area shape="rect" id="Node000003" href="$structkest__fpga__read__spec.html" title=" " alt="" coords="171,14,328,42"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="232,55,176,124,172,121,228,52"/>
 </map>

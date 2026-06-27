@@ -10,7 +10,6 @@ var kest__preset__view_8h =
     [ "free_preset_view_ui", "kest__preset__view_8h.html#af4ca5a25571fca57f465a68a6c493c48", null ],
     [ "init_preset_view", "kest__preset__view_8h.html#a7aa469a400baf1fdf82d314a2ad5ddbb", null ],
     [ "preset_view_append_effect", "kest__preset__view_8h.html#aed5789e6285a903942736fef4408ce40", null ],
-    [ "preset_view_change_name", "kest__preset__view_8h.html#ac2582f71255ed9c1fcda9d13a8df20ab", null ],
     [ "preset_view_index_y_position", "kest__preset__view_8h.html#ab9849d0f8a27a12704e96c5ebea82222", null ],
     [ "preset_view_populate_index_pos_array", "kest__preset__view_8h.html#aefc0d1970f0fb49e72352bbebdbcc7b7", null ],
     [ "preset_view_recalculate_indices", "kest__preset__view_8h.html#ae9d858cd6ece7b12ae5c0fb932e0fd97", null ],

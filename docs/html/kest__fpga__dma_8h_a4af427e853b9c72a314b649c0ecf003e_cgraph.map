@@ -1,0 +1,13 @@
+<map id="kest_fpga_periodic_read_deactivate_async" name="kest_fpga_periodic_read_deactivate_async">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,48,184,93"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__dma_8c.html#a5200af5bcaf64fa08b1a7e567e56060c" title=" " alt="" coords="232,5,410,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,54,216,50,216,55,185,60"/>
+<area shape="rect" id="Node000004" href="$kest__ui_8c.html#abb436cbf4403efe8fe122cdfbcaa3a76" title=" " alt="" coords="250,92,392,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,82,235,90,234,95,184,87"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__dma_8c.html#a01e8a435d07261ee581aec6d7c65ed81" title=" " alt="" coords="458,14,601,58"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,34,442,34,442,39,410,39"/>
+<area shape="rect" id="Node000005" href="$kest__ui_8c.html#aebba54d5d7fa842d060318e7305ab00a" title=" " alt="" coords="479,86,580,114"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="392,101,463,99,463,105,393,106"/>
+<area shape="rect" id="Node000006" href="$kest__ui_8c.html#a0057bcc95db9fe3c57986a61175de9b0" title=" " alt="" coords="471,138,588,166"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="386,117,457,133,455,138,385,122"/>
+</map>

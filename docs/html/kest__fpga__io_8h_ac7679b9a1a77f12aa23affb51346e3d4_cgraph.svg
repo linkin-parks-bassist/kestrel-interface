@@ -67,9 +67,10 @@ var sectionId = 'dynsection-7';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="kest__fpga__io_8c.html#a6900c9b759f1dccf1b3535cc76ad83e3" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="326.75,-39.75 190,-39.75 190,-19 326.75,-19 326.75,-39.75"/>
-<text xml:space="preserve" text-anchor="middle" x="258.38" y="-26.25" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
+<g id="a_Node000002"><a xlink:href="kest__fpga__io_8c.html#ac4570962996cb50a17f816b060c7df8e" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="326.75,-46.12 190,-46.12 190,-12.62 326.75,-12.62 326.75,-46.12"/>
+<text xml:space="preserve" text-anchor="start" x="198" y="-32.62" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
+<text xml:space="preserve" text-anchor="middle" x="258.38" y="-19.88" font-family="Helvetica,sans-Serif" font-size="10.00">_bytes</text>
 </a>
 </g>
 </g>

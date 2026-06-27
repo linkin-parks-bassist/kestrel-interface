@@ -97,7 +97,7 @@ $(function(){initNavTree('structkest__effect__desc.html','',''); });
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__effect__desc__coll__graph.svg" width="347" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__effect__desc__coll__graph.svg" width="310" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -109,8 +109,9 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a0c5a4161f1d40f31188b82f6c0347e1c" id="r_a0c5a4161f1d40f31188b82f6c0347e1c"><td class="memItemLeft" align="right" valign="top">kest_parameter_pll *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c5a4161f1d40f31188b82f6c0347e1c">parameters</a></td></tr>
 <tr class="memitem:a97c18a2398066b0c1a74ec61bbe0d175" id="r_a97c18a2398066b0c1a74ec61bbe0d175"><td class="memItemLeft" align="right" valign="top">kest_dsp_resource_pll *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97c18a2398066b0c1a74ec61bbe0d175">resources</a></td></tr>
 <tr class="memitem:aed4ac283f9930134af2881788ab456d3" id="r_aed4ac283f9930134af2881788ab456d3"><td class="memItemLeft" align="right" valign="top">kest_named_expression_pll *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed4ac283f9930134af2881788ab456d3">def_exprs</a></td></tr>
+<tr class="memitem:af1f9ab1fb98052e6923f6aa371bd1ed0" id="r_af1f9ab1fb98052e6923f6aa371bd1ed0"><td class="memItemLeft" align="right" valign="top">kest_driver_list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1f9ab1fb98052e6923f6aa371bd1ed0">drivers</a></td></tr>
 <tr class="memitem:acfa0c36a9e4c799612bbc31b4afe38d7" id="r_acfa0c36a9e4c799612bbc31b4afe38d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__eff__resource__report.html">kest_eff_resource_report</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfa0c36a9e4c799612bbc31b4afe38d7">res_rpt</a></td></tr>
-<tr class="memitem:a69bc1eed21bc1c5681e168a76d88aab7" id="r_a69bc1eed21bc1c5681e168a76d88aab7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69bc1eed21bc1c5681e168a76d88aab7">scope</a></td></tr>
+<tr class="memitem:acd8eaf4019b5f8c73dae7f346cb6557e" id="r_acd8eaf4019b5f8c73dae7f346cb6557e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope.html">kest_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd8eaf4019b5f8c73dae7f346cb6557e">scope</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -130,7 +131,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00008">8</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00026">kest_effect_desc_generate_res_rpt()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00443">kest_fpga_batch_append_eff_desc()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00281">kest_fpga_transfer_batch_append_effect_register_updates()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00028">kest_effect_desc_generate_res_rpt()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00637">kest_fpga_batch_append_eff_desc()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00337">kest_fpga_transfer_batch_append_effect_register_updates()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>
@@ -148,7 +149,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00006">6</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>
@@ -166,7 +167,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00012">12</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00451">kest_effect_create_scope()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
+
+</div>
+</div>
+<a id="af1f9ab1fb98052e6923f6aa371bd1ed0" name="af1f9ab1fb98052e6923f6aa371bd1ed0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1f9ab1fb98052e6923f6aa371bd1ed0">&#9670;&#160;</a></span>drivers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">kest_driver_list kest_effect_desc::drivers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00014">14</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>
@@ -184,7 +203,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00005">5</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect__select_8c_source.html#l00131">init_effect_selector_button_from_effect()</a>, <a class="el" href="kest__effect_8c_source.html#l00017">kest_effect_name()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__files_8c_source.html#l01076">load_effects()</a>, and <a class="el" href="kest__files_8c_source.html#l00436">read_preset_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect__select_8c_source.html#l00124">init_effect_selector_button_from_effect()</a>, <a class="el" href="kest__effect_8c_source.html#l00014">kest_effect_name()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>, <a class="el" href="kest__files_8c_source.html#l01075">load_effects()</a>, and <a class="el" href="kest__files_8c_source.html#l00435">read_preset_from_file()</a>.</p>
 
 </div>
 </div>
@@ -202,7 +221,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00010">10</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00105">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00074">kest_eff_desc_create_scope()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00076">kest_eff_desc_create_scope()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>
@@ -218,9 +237,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00014">14</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00016">16</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00026">kest_effect_desc_generate_res_rpt()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00454">kest_fpga_batch_append_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00028">kest_effect_desc_generate_res_rpt()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>.</p>
 
 </div>
 </div>
@@ -238,25 +257,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00011">11</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00026">kest_effect_desc_generate_res_rpt()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00443">kest_fpga_batch_append_eff_desc()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00303">kest_fpga_transfer_batch_append_effect_resource_updates()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00028">kest_effect_desc_generate_res_rpt()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00637">kest_fpga_batch_append_eff_desc()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00375">kest_fpga_transfer_batch_append_effect_resource_updates()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>
-<a id="a69bc1eed21bc1c5681e168a76d88aab7" name="a69bc1eed21bc1c5681e168a76d88aab7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69bc1eed21bc1c5681e168a76d88aab7">&#9670;&#160;</a></span>scope</h2>
+<a id="acd8eaf4019b5f8c73dae7f346cb6557e" name="acd8eaf4019b5f8c73dae7f346cb6557e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd8eaf4019b5f8c73dae7f346cb6557e">&#9670;&#160;</a></span>scope</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a>* kest_effect_desc::scope</td>
+          <td class="memname"><a class="el" href="structkest__scope.html">kest_scope</a>* kest_effect_desc::scope</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00016">16</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00018">18</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>.</p>
 
 </div>
 </div>
@@ -274,7 +293,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__desc_8h_source.html#l00009">9</a> of file <a class="el" href="kest__eff__desc_8h_source.html">kest_eff_desc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00105">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00009">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00481">kest_read_eff_desc_from_file()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, <a class="el" href="kest__eff__desc_8c_source.html#l00011">kest_init_effect_desc()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00507">kest_read_eff_desc_from_file()</a>.</p>
 
 </div>
 </div>

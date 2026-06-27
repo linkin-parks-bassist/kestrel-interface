@@ -108,23 +108,5 @@
 </a>
 </g>
 </g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="kest__eff__parser_8c.html#a73ef6962d1925857ec3e4b12d1aad834" target="_top" xlink:title=" ">
-<polygon fill="#fff0f0" stroke="red" points="109,-27.12 3,-27.12 3,-6.38 109,-6.38 109,-27.12"/>
-<text xml:space="preserve" text-anchor="middle" x="56" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">kest_parse_tokens</text>
-</a>
-</g>
-</g>
-<!-- Node5&#45;&gt;Node6 -->
-<g id="edge7_Node000005_Node000006" class="edge">
-<title>Node5&#45;&gt;Node6</title>
-<g id="a_edge7_Node000005_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M136.22,-16.75C127.17,-16.75 118.05,-16.75 109.38,-16.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="136.09,-20.25 146.09,-16.75 136.09,-13.25 136.09,-20.25"/>
-</a>
-</g>
-</g>
 </g>
 </svg>

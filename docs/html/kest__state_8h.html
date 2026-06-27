@@ -110,6 +110,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ab26da214ed0f9d143d63e80a7012796b" id="r_ab26da214ed0f9d143d63e80a7012796b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab26da214ed0f9d143d63e80a7012796b">kest_cxt_restore_state</a> (<a class="el" href="structkest__context.html">kest_context</a> *cxt, <a class="el" href="structkest__state.html">kest_state</a> *state)</td></tr>
 <tr class="memitem:ad67167136a5f2e68f04622bc4f518b22" id="r_ad67167136a5f2e68f04622bc4f518b22"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad67167136a5f2e68f04622bc4f518b22">kest_cxt_enter_previous_current_page</a> (<a class="el" href="structkest__context.html">kest_context</a> *cxt, <a class="el" href="structkest__state.html">kest_state</a> *state)</td></tr>
 <tr class="memitem:ace4b0d94b552ce9c42975d1b47f26b9e" id="r_ace4b0d94b552ce9c42975d1b47f26b9e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace4b0d94b552ce9c42975d1b47f26b9e">kest_init_state</a> (<a class="el" href="structkest__state.html">kest_state</a> *state)</td></tr>
+<tr class="memitem:ae843d6ea4ed9af4c5bc5a66542a13062" id="r_ae843d6ea4ed9af4c5bc5a66542a13062"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae843d6ea4ed9af4c5bc5a66542a13062">kest_state_save</a> (<a class="el" href="structkest__state.html">kest_state</a> state)</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a816d674320b40283e9c91ed95b9282a1" name="a816d674320b40283e9c91ed95b9282a1"></a>
@@ -131,9 +132,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00013">13</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00011">11</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__state_8c_source.html#l00065">kest_state_representation_update()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__file__task_8c_source.html#l00070">kest_queue_state_save()</a>, and <a class="el" href="kest__state_8c_source.html#l00072">kest_state_representation_update()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
@@ -144,7 +145,7 @@ Functions</h2></td></tr>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_a816d674320b40283e9c91ed95b9282a1_icgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_a816d674320b40283e9c91ed95b9282a1_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -168,20 +169,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00120">120</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00129">129</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__init_8c_source.html#l00007">kest_init()</a>.</p>
 <div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ad67167136a5f2e68f04622bc4f518b22_cgraph.svg" width="100%" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ad67167136a5f2e68f04622bc4f518b22_cgraph.svg" width="100%" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ad67167136a5f2e68f04622bc4f518b22_icgraph.svg" width="324" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ad67167136a5f2e68f04622bc4f518b22_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -205,20 +206,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00094">94</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00101">101</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__int_8c_source.html#l00015">app_main()</a>, and <a class="el" href="kest__desktop_8c_source.html#l00048">main_task()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__init_8c_source.html#l00007">kest_init()</a>.</p>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ab26da214ed0f9d143d63e80a7012796b_cgraph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ab26da214ed0f9d143d63e80a7012796b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ab26da214ed0f9d143d63e80a7012796b_icgraph.svg" width="627" height="134"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ab26da214ed0f9d143d63e80a7012796b_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -237,6 +238,39 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae843d6ea4ed9af4c5bc5a66542a13062" name="ae843d6ea4ed9af4c5bc5a66542a13062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae843d6ea4ed9af4c5bc5a66542a13062">&#9670;&#160;</a></span>kest_state_save()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_state_save </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__state.html">kest_state</a></td>          <td class="paramname"><span class="paramname"><em>state</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__state_8c_source.html#l00062">62</a> of file <a class="el" href="kest__state_8c_source.html">kest_state.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__file__task_8c_source.html#l00025">kest_file_task()</a>.</p>
+<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ae843d6ea4ed9af4c5bc5a66542a13062_cgraph.svg" width="527" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__state_8h_ae843d6ea4ed9af4c5bc5a66542a13062_icgraph.svg" width="608" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

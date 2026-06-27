@@ -1,9 +1,13 @@
 <map id="init_parameter_wni" name="init_parameter_wni">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,14,153,42"/>
-<area shape="rect" id="Node000002" href="$kest__parameter_8c.html#a2b94ddb1588d1a5af4311970bb068122" title=" " alt="" coords="201,14,318,42"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,25,185,25,185,30,153,30"/>
-<area shape="rect" id="Node000003" href="$kest__parameter_8c.html#abff5b0dd3ed907207191aa6079c514eb" title=" " alt="" coords="366,5,534,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,25,350,25,350,30,319,30"/>
-<area shape="rect" id="Node000004" href="$kest__effect_8c.html#afdbf79f9f27eac4959dfcf7bbcb324d4" title=" " alt="" coords="582,14,763,42"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="535,25,567,25,567,30,535,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,48,153,76"/>
+<area shape="rect" id="Node000002" href="$kest__parameter_8c.html#a2b94ddb1588d1a5af4311970bb068122" title=" " alt="" coords="201,48,318,76"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,60,185,60,185,65,153,65"/>
+<area shape="rect" id="Node000003" href="$kest__parameter_8c.html#abff5b0dd3ed907207191aa6079c514eb" title=" " alt="" coords="369,5,537,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="318,49,353,43,354,48,319,54"/>
+<area shape="rect" id="Node000006" href="$kest__parameter_8c.html#a548a0b985f671572b9293afa1a1b5d79" title=" " alt="" coords="366,75,540,119"/>
+<area shape="poly" id="edge4_Node000002_Node000006" title=" " alt="" coords="319,70,351,76,350,81,318,75"/>
+<area shape="rect" id="Node000004" href="$kest__effect_8c.html#afdbf79f9f27eac4959dfcf7bbcb324d4" title=" " alt="" coords="595,14,775,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="538,25,580,25,580,30,538,30"/>
+<area shape="rect" id="Node000007" href="$kest__parameter__widget_8c.html#a58d879b4e143133b22d67e3b1306a951" title=" " alt="" coords="588,83,782,111"/>
+<area shape="poly" id="edge5_Node000006_Node000007" title=" " alt="" coords="540,94,573,94,573,100,540,100"/>
 </map>

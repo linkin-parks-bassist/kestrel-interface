@@ -1,7 +1,19 @@
 <map id="enter_menu_page" name="enter_menu_page">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,144,33"/>
-<area shape="rect" id="Node000002" href="$kest__menu_8c.html#a87951b94f1041ed0f61ae67d3f196694" title=" " alt="" coords="192,5,342,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,16,176,16,176,22,144,22"/>
-<area shape="rect" id="Node000003" href="$kest__menu_8c.html#a4277d471346a6104448702ed536224bf" title=" " alt="" coords="390,5,538,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="342,16,374,16,374,22,342,22"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,165,144,193"/>
+<area shape="rect" id="Node000002" href="$kest__parameter__widget_8c.html#a627573f8fb113b0b0beb013cb04ed61c" title=" " alt="" coords="192,126,366,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,166,176,161,177,167,145,171"/>
+<area shape="rect" id="Node000030" href="$kest__menu_8c.html#a87951b94f1041ed0f61ae67d3f196694" title=" " alt="" coords="204,195,354,222"/>
+<area shape="poly" id="edge7_Node000001_Node000030" title=" " alt="" coords="144,186,188,193,188,198,144,192"/>
+<area shape="rect" id="Node000003" href="$kest__parameter__widget_8c.html#abad910124e9bf706a008ab86f8bf70e6" title=" " alt="" coords="414,57,606,102"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="355,123,418,104,420,109,356,128"/>
+<area shape="rect" id="Node000027" href="$kest__parameter__widget_8c.html#af345b51066bd1985326c50809d992fab" title=" " alt="" coords="414,126,606,171"/>
+<area shape="poly" id="edge5_Node000002_Node000027" title=" " alt="" coords="367,146,398,146,398,151,367,151"/>
+<area shape="rect" id="Node000004" href="$kest__parameter_8c.html#add50be1dcdb97eec1d98e3e0564bf8d5" title=" " alt="" coords="656,5,844,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="602,54,676,35,678,40,603,59"/>
+<area shape="rect" id="Node000022" href="$kest__parameter_8c.html#aed9bf2d04b704f1d4119124999a692e0" title=" " alt="" coords="674,57,826,102"/>
+<area shape="poly" id="edge4_Node000003_Node000022" title=" " alt="" coords="607,76,659,76,659,82,607,82"/>
+<area shape="rect" id="Node000028" href="$kest__parameter__widget_8c.html#a9a7e5431ab9599259aa5e2cfa47e6308" title=" " alt="" coords="654,126,846,171"/>
+<area shape="poly" id="edge6_Node000027_Node000028" title=" " alt="" coords="607,146,638,146,638,151,607,151"/>
+<area shape="rect" id="Node000031" href="$kest__menu_8c.html#a4277d471346a6104448702ed536224bf" title=" " alt="" coords="436,195,584,222"/>
+<area shape="poly" id="edge8_Node000030_Node000031" title=" " alt="" coords="354,206,420,206,420,211,354,211"/>
 </map>

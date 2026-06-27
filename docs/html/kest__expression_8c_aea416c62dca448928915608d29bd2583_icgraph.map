@@ -1,9 +1,13 @@
 <map id="kest_expr_create_lpf_coefficients" name="kest_expr_create_lpf_coefficients">
-<area shape="rect" id="Node000001" title=" " alt="" coords="680,5,837,50"/>
-<area shape="rect" id="Node000002" href="$kest__dict__extract_8c.html#ab3a10359fda7bd744b54f0c72f1f497d" title=" " alt="" coords="438,14,632,42"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="665,30,633,30,633,25,665,25"/>
-<area shape="rect" id="Node000003" href="$kest__dict__extract_8c.html#ad78dabb9f962180138c9dfc2bf1731e3" title=" " alt="" coords="226,5,390,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,30,391,30,391,25,423,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="680,36,837,81"/>
+<area shape="rect" id="Node000002" href="$kest__dict__extract_8c.html#a7c043dafd8c1cd4aa7cc2a7126c51561" title=" " alt="" coords="472,16,598,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="665,49,598,41,599,36,666,44"/>
+<area shape="rect" id="Node000019" href="$kest__dict__extract_8c.html#ab3a10359fda7bd744b54f0c72f1f497d" title=" " alt="" coords="438,70,632,98"/>
+<area shape="poly" id="edge4_Node000001_Node000019" title=" " alt="" coords="665,72,633,75,632,70,665,66"/>
+<area shape="rect" id="Node000003" href="$kest__dict__extract_8c.html#a380375dec37f2a914cd428342a6cbfe3" title=" " alt="" coords="226,14,390,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="457,32,390,31,390,26,457,27"/>
 <area shape="rect" id="Node000004" href="$kest__eff__section_8c.html#a55e76cf45dd01c8cc35bf2323f67b931" title=" " alt="" coords="5,5,178,50"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="210,30,178,30,178,25,210,25"/>
+<area shape="rect" id="Node000018" href="$kest__dict__extract_8c.html#ad78dabb9f962180138c9dfc2bf1731e3" title=" " alt="" coords="226,65,390,110"/>
+<area shape="poly" id="edge5_Node000019_Node000018" title=" " alt="" coords="423,88,391,89,391,84,423,83"/>
 </map>

@@ -93,126 +93,307 @@ $(function(){initNavTree('kest__representation_8c_source.html','',''); });
 <div class="contents">
 <a href="kest__representation_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="kest__int_8h.html">kest_int.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifndef PRINTLINES_ALLOWED</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a925207a2b3de0a6f636d1425fcdb1a56">    4</a></span><span class="preprocessor">#define PRINTLINES_ALLOWED 0</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a925207a2b3de0a6f636d1425fcdb1a56">    3</a></span><span class="preprocessor">#define PRINTLINES_ALLOWED 0</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *FNAME = <span class="stringliteral">&quot;kest_representation.c&quot;</span>;</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *FNAME = <span class="stringliteral">&quot;kest_representation.c&quot;</span>;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a596942095352c3ec3eaf8ec84c33382c">    9</a></span><a class="code hl_define" href="kest__linked__list_8h.html#a4e03d75dec28ebd2047937fa415feb1b">IMPLEMENT_LINKED_PTR_LIST</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a>);</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a596942095352c3ec3eaf8ec84c33382c">    7</a></span><a class="code hl_define" href="kest__linked__list_8h.html#a4e03d75dec28ebd2047937fa415feb1b">IMPLEMENT_LINKED_PTR_LIST</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a>);</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#af4867662e80ceddce4c4060ab35db3b2">    8</a></span><a class="code hl_define" href="kest__list_8h.html#a596839f0eea5f0a817a6d6ea97ea1223">IMPLEMENT_PTR_LIST</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a>);</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a72a1b09359d502619e6bb8f7d9a55b89">    9</a></span><a class="code hl_define" href="kest__list_8h.html#aa9871a2036550ce4647485009b96c730">IMPLEMENT_LIST</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a>);</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifdef KEST_USE_FREERTOS</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>QueueHandle_t kest_rep_update_queue;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">int</span> rep_updated_initd = 0;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">   16</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a>(kest_representation_pll *reps)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_pll_update_all\n&quot;</span>);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    kest_representation_pll *current = reps;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">while</span> (current)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">if</span> (current-&gt;data)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;Representation: {.representer = %p, representee = %p, update = %p}\n&quot;</span>,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                current-&gt;data-&gt;representer, current-&gt;data-&gt;representee, current-&gt;data-&gt;update);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordflow">if</span> (current-&gt;data &amp;&amp; current-&gt;data-&gt;update)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            current-&gt;data-&gt;update(current-&gt;data-&gt;representer, current-&gt;data-&gt;representee);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        }</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        current = current-&gt;next;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_pll_update_all done\n&quot;</span>);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>QueueHandle_t kest_rep_update_queue_;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordtype">int</span> rep_updater_initd = 0;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">   17</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a>(kest_representation_pll *reps)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_pll_update_all\n&quot;</span>);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    kest_representation_pll *current = reps;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">while</span> (current)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">if</span> (current-&gt;data)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;Representation: {.representer = %p, representee = %p, update = %p}\n&quot;</span>,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                current-&gt;data-&gt;representer, current-&gt;data-&gt;representee, current-&gt;data-&gt;update);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordflow">if</span> (current-&gt;data &amp;&amp; current-&gt;data-&gt;update)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            current-&gt;data-&gt;update(current-&gt;data-&gt;representer, current-&gt;data-&gt;representee);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        current = current-&gt;next;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_pll_update_all done\n&quot;</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">void</span> update_queued_representations_cb(lv_timer_t *timer)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{   </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    kest_representation_pll *list;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">while</span> (xQueueReceive(kest_rep_update_queue, &amp;list, 0) == pdTRUE)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">if</span> (list) <a class="code hl_function" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a>(list);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keywordtype">int</span> init_representation_updater()</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    kest_rep_update_queue = xQueueCreate(16, <span class="keyword">sizeof</span>(kest_representation_pll*));</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    lv_timer_t * timer = lv_timer_create(update_queued_representations_cb, 1,  NULL);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    rep_updated_initd = 1;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">   60</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">queue_representation_list_update</a>(kest_representation_pll *reps)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">if</span> (!rep_updated_initd)</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (xQueueSend(kest_rep_update_queue, (<span class="keywordtype">void</span>*)&amp;reps, (TickType_t)10) != pdPASS)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">    #endif</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
-</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">   77</a></span>kest_representation_pll *<a class="code hl_function" href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">kest_representation_pll_remove</a>(kest_representation_pll *reps, <a class="code hl_struct" href="structkest__representation.html">kest_representation</a> *rep)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (!reps)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    kest_representation_pll *current = reps;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    kest_representation_pll *prev = NULL;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    kest_representation_pll *head = reps;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keywordtype">void</span> update_queued_representations_cb(lv_timer_t *timer)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{   </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    kest_representation_pll *list;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">while</span> (xQueueReceive(kest_rep_update_queue, &amp;list, 0) == pdTRUE)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">if</span> (list) <a class="code hl_function" href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a>(list);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keywordtype">void</span> update_queued_representations_cb_(lv_timer_t *timer);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">int</span> init_representation_updater()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    kest_rep_update_queue  = xQueueCreate(16, <span class="keyword">sizeof</span>(kest_representation_pll*));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    kest_rep_update_queue_ = xQueueCreate(128, <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a>));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    lv_timer_t *timer  = lv_timer_create(update_queued_representations_cb,  1, NULL);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    lv_timer_t *timer_ = lv_timer_create(update_queued_representations_cb_, 1, NULL);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    rep_updater_initd = 1;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a706bf4b905fd64d9e49d37962570b6d6">   70</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a706bf4b905fd64d9e49d37962570b6d6">kest_representation_queue_update</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a> *rep)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update\n&quot;</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> (!rep) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a">ERR_NULL_PTR</a>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (!rep_updater_initd)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;Aborting; representation updater non initialised\n&quot;</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">while</span> (current)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> (current-&gt;data == rep)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">if</span> (prev)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                prev-&gt;next = current-&gt;next;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                head = current-&gt;next;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <a class="code hl_function" href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a>(current);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">return</span> head;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        prev = current;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        current = current-&gt;next;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordflow">return</span> head;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    kest_representation_pll *node = <a class="code hl_function" href="kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4">kest_alloc</a>(<span class="keyword">sizeof</span>(kest_representation_pll));</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">if</span> (!node)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a058d08ccb1672909ca217f4b0a950669">ERR_ALLOC_FAIL</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    node-&gt;next = NULL;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    node-&gt;data = rep;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update done\n&quot;</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">queue_representation_list_update</a>(node);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update done\n&quot;</span>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update done\n&quot;</span>);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
 </div>
-<div class="ttc" id="akest__alloc_8c_html_a294af5728a94aa316fcf65304d388d48"><div class="ttname"><a href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a></div><div class="ttdeci">void kest_free(void *ptr)</div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8c_source.html#l00032">kest_alloc.c:32</a></div></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">  104</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">queue_representation_list_update</a>(kest_representation_pll *reps)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>{</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update\n&quot;</span>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">if</span> (!rep_updater_initd)</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;Aborting; representation updater non initialised\n&quot;</span>);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a>;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">if</span> (xQueueSend(kest_rep_update_queue, (<span class="keywordtype">void</span>*)&amp;reps, (TickType_t)10) != pdPASS)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update failed\n&quot;</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    }</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update done\n&quot;</span>);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update done\n&quot;</span>);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">  129</a></span>kest_representation_pll *<a class="code hl_function" href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">kest_representation_pll_remove</a>(kest_representation_pll *reps, <a class="code hl_struct" href="structkest__representation.html">kest_representation</a> *rep)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>{</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">if</span> (!reps)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    kest_representation_pll *current = reps;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    kest_representation_pll *prev = NULL;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    kest_representation_pll *head = reps;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">while</span> (current)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">if</span> (current-&gt;data == rep)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordflow">if</span> (prev)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                prev-&gt;next = current-&gt;next;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                head = current-&gt;next;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            <a class="code hl_function" href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a>(current);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keywordflow">return</span> head;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        }</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        prev = current;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        current = current-&gt;next;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">return</span> head;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}</div>
+</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment"> * Re-implementation with local copies and dynamic arrays for better cache locality</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"> * </span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#define PRINTLINES_ALLOWED 0</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a5dd268fbb8deb1ad1c5b18b237f68df5">  172</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a5dd268fbb8deb1ad1c5b18b237f68df5">kest_representation_queue_update_</a>(<a class="code hl_struct" href="structkest__representation.html">kest_representation</a> rep)</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>{</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update_\n&quot;</span>);</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">if</span> (!rep_updater_initd) <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">if</span> (xQueueSend(kest_rep_update_queue_, (<span class="keywordtype">void</span>*)&amp;rep, (TickType_t)10) != pdPASS)</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    {</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update_ failed\n&quot;</span>);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update_ done\n&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update_ done\n&quot;</span>);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_queue_update_ done\n&quot;</span>);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>}</div>
+</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a8f617bce52b07f293048dd4408b89220">  196</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a8f617bce52b07f293048dd4408b89220">kest_representation_list_queue_updates_</a>(kest_representation_list *reps)</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>{</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates\n&quot;</span>);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">if</span> (!reps)                          <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a">ERR_NULL_PTR</a>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">if</span> (reps-&gt;count &amp;&amp; !reps-&gt;entries)  <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keywordflow">if</span> (!rep_updater_initd)             <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; reps-&gt;count; i++)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">if</span> (xQueueSend(kest_rep_update_queue_, (<span class="keywordtype">void</span>*)&amp;reps-&gt;entries[i], (TickType_t)10) != pdPASS)</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        {</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update failed\n&quot;</span>);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        }</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    }</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates done\n&quot;</span>);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates done\n&quot;</span>);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
+</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="kest__representation_8c.html#a29ea5f69fd771bdbdb18230ddac8c7e7">  222</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__representation_8c.html#a29ea5f69fd771bdbdb18230ddac8c7e7">kest_representation_ptr_list_queue_updates_</a>(kest_representation_ptr_list *reps)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>{</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates\n&quot;</span>);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="preprocessor">    #ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="preprocessor">    #ifdef KEST_USE_FREERTOS</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keywordflow">if</span> (!reps)                          <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a">ERR_NULL_PTR</a>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keywordflow">if</span> (reps-&gt;count &amp;&amp; !reps-&gt;entries)  <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordflow">if</span> (!rep_updater_initd)             <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a>;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; reps-&gt;count; i++)</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    {</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        <span class="keywordflow">if</span> (reps-&gt;entries[i])</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            <span class="keywordflow">if</span> (xQueueSend(kest_rep_update_queue_, (<span class="keywordtype">void</span>*)reps-&gt;entries[i], (TickType_t)10) != pdPASS)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;queue_representation_list_update failed\n&quot;</span>);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        }</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    }</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates done\n&quot;</span>);</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">    #endif</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <a class="code hl_define" href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a>(<span class="stringliteral">&quot;kest_representation_list_queue_updates done\n&quot;</span>);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a>;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>}</div>
+</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="preprocessor">#ifdef KEST_ENABLE_REPRESENTATIONS</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="keywordtype">void</span> update_queued_representations_cb_(lv_timer_t *timer)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>{   </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <a class="code hl_struct" href="structkest__representation.html">kest_representation</a> rep;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordflow">while</span> (xQueueReceive(kest_rep_update_queue_, &amp;rep, 0) == pdTRUE)</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keywordflow">if</span> (rep.<a class="code hl_variable" href="structkest__representation.html#ac56b62939bfe6d41f034edbaf0b3e41d">update</a>)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        {</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>            rep.<a class="code hl_variable" href="structkest__representation.html#ac56b62939bfe6d41f034edbaf0b3e41d">update</a>(rep.<a class="code hl_variable" href="structkest__representation.html#a0b5abc8a19485f081383758c8752d781">representer</a>, rep.<a class="code hl_variable" href="structkest__representation.html#ae4dd184b6dc89623cb5d49057d93ea1c">representee</a>);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    }</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>}</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="akest__alloc_8c_html_a294af5728a94aa316fcf65304d388d48"><div class="ttname"><a href="kest__alloc_8c.html#a294af5728a94aa316fcf65304d388d48">kest_free</a></div><div class="ttdeci">void kest_free(void *ptr)</div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8c_source.html#l00029">kest_alloc.c:29</a></div></div>
+<div class="ttc" id="akest__alloc_8c_html_a849755c5dc5b35e712ffcdb602e50fb4"><div class="ttname"><a href="kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4">kest_alloc</a></div><div class="ttdeci">void * kest_alloc(size_t size)</div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8c_source.html#l00009">kest_alloc.c:9</a></div></div>
+<div class="ttc" id="akest__error__codes_8h_html_a058d08ccb1672909ca217f4b0a950669"><div class="ttname"><a href="kest__error__codes_8h.html#a058d08ccb1672909ca217f4b0a950669">ERR_ALLOC_FAIL</a></div><div class="ttdeci">#define ERR_ALLOC_FAIL</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00009">kest_error_codes.h:9</a></div></div>
+<div class="ttc" id="akest__error__codes_8h_html_a06d8bb2050d8b55d2fc4344fc4be0b44"><div class="ttname"><a href="kest__error__codes_8h.html#a06d8bb2050d8b55d2fc4344fc4be0b44">ERR_BAD_ARGS</a></div><div class="ttdeci">#define ERR_BAD_ARGS</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00006">kest_error_codes.h:6</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a258bb72419ef143530a2f8f55e7d57af"><div class="ttname"><a href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a></div><div class="ttdeci">#define NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00004">kest_error_codes.h:4</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a318fe20d58d2c1e29e4c78bb5756a594"><div class="ttname"><a href="kest__error__codes_8h.html#a318fe20d58d2c1e29e4c78bb5756a594">ERR_CURRENTLY_EXHAUSTED</a></div><div class="ttdeci">#define ERR_CURRENTLY_EXHAUSTED</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00058">kest_error_codes.h:58</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_a553f905a7b7a5b9b484212718799c88c"><div class="ttname"><a href="kest__error__codes_8h.html#a553f905a7b7a5b9b484212718799c88c">ERR_FEATURE_DISABLED</a></div><div class="ttdeci">#define ERR_FEATURE_DISABLED</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00060">kest_error_codes.h:60</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_ae6fa9499fc40b310313f037d83e2ccc1"><div class="ttname"><a href="kest__error__codes_8h.html#ae6fa9499fc40b310313f037d83e2ccc1">ERR_QUEUE_SEND_FAILED</a></div><div class="ttdeci">#define ERR_QUEUE_SEND_FAILED</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00029">kest_error_codes.h:29</a></div></div>
+<div class="ttc" id="akest__error__codes_8h_html_aecee95603cb1ec21cab7d76f95fa013a"><div class="ttname"><a href="kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a">ERR_NULL_PTR</a></div><div class="ttdeci">#define ERR_NULL_PTR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00005">kest_error_codes.h:5</a></div></div>
 <div class="ttc" id="akest__int_8h_html"><div class="ttname"><a href="kest__int_8h.html">kest_int.h</a></div></div>
 <div class="ttc" id="akest__linked__list_8h_html_a4e03d75dec28ebd2047937fa415feb1b"><div class="ttname"><a href="kest__linked__list_8h.html#a4e03d75dec28ebd2047937fa415feb1b">IMPLEMENT_LINKED_PTR_LIST</a></div><div class="ttdeci">#define IMPLEMENT_LINKED_PTR_LIST(X)</div><div class="ttdef"><b>Definition</b> <a href="kest__linked__list_8h_source.html#l00234">kest_linked_list.h:234</a></div></div>
+<div class="ttc" id="akest__list_8h_html_a596839f0eea5f0a817a6d6ea97ea1223"><div class="ttname"><a href="kest__list_8h.html#a596839f0eea5f0a817a6d6ea97ea1223">IMPLEMENT_PTR_LIST</a></div><div class="ttdeci">#define IMPLEMENT_PTR_LIST(X)</div><div class="ttdef"><b>Definition</b> <a href="kest__list_8h_source.html#l00363">kest_list.h:363</a></div></div>
+<div class="ttc" id="akest__list_8h_html_aa9871a2036550ce4647485009b96c730"><div class="ttname"><a href="kest__list_8h.html#aa9871a2036550ce4647485009b96c730">IMPLEMENT_LIST</a></div><div class="ttdeci">#define IMPLEMENT_LIST(X)</div><div class="ttdef"><b>Definition</b> <a href="kest__list_8h_source.html#l00036">kest_list.h:36</a></div></div>
 <div class="ttc" id="akest__printf_8h_html_aae8a3ac4bdf8dfa4a639c21aadbbb977"><div class="ttname"><a href="kest__printf_8h.html#aae8a3ac4bdf8dfa4a639c21aadbbb977">KEST_PRINTF</a></div><div class="ttdeci">#define KEST_PRINTF(...)</div><div class="ttdef"><b>Definition</b> <a href="kest__printf_8h_source.html#l00012">kest_printf.h:12</a></div></div>
-<div class="ttc" id="akest__representation_8c_html_a76ac7ef5f6a5768ed3e8ed2e90232c66"><div class="ttname"><a href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a></div><div class="ttdeci">void kest_representation_pll_update_all(kest_representation_pll *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00016">kest_representation.c:16</a></div></div>
-<div class="ttc" id="akest__representation_8c_html_a7a4a0f32b72f47d90e3d0f5932fbe58f"><div class="ttname"><a href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">queue_representation_list_update</a></div><div class="ttdeci">int queue_representation_list_update(kest_representation_pll *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00060">kest_representation.c:60</a></div></div>
-<div class="ttc" id="akest__representation_8c_html_abd827d8f8c61c9d6cdc67428b2a248dd"><div class="ttname"><a href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">kest_representation_pll_remove</a></div><div class="ttdeci">kest_representation_pll * kest_representation_pll_remove(kest_representation_pll *reps, kest_representation *rep)</div><div class="ttdef"><b>Definition</b> <a href="#l00077">kest_representation.c:77</a></div></div>
-<div class="ttc" id="astructkest__representation_html"><div class="ttname"><a href="structkest__representation.html">kest_representation</a></div><div class="ttdef"><b>Definition</b> <a href="kest__representation_8h_source.html#l00004">kest_representation.h:5</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a29ea5f69fd771bdbdb18230ddac8c7e7"><div class="ttname"><a href="kest__representation_8c.html#a29ea5f69fd771bdbdb18230ddac8c7e7">kest_representation_ptr_list_queue_updates_</a></div><div class="ttdeci">int kest_representation_ptr_list_queue_updates_(kest_representation_ptr_list *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00222">kest_representation.c:222</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a5dd268fbb8deb1ad1c5b18b237f68df5"><div class="ttname"><a href="kest__representation_8c.html#a5dd268fbb8deb1ad1c5b18b237f68df5">kest_representation_queue_update_</a></div><div class="ttdeci">int kest_representation_queue_update_(kest_representation rep)</div><div class="ttdef"><b>Definition</b> <a href="#l00172">kest_representation.c:172</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a706bf4b905fd64d9e49d37962570b6d6"><div class="ttname"><a href="kest__representation_8c.html#a706bf4b905fd64d9e49d37962570b6d6">kest_representation_queue_update</a></div><div class="ttdeci">int kest_representation_queue_update(kest_representation *rep)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">kest_representation.c:70</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a76ac7ef5f6a5768ed3e8ed2e90232c66"><div class="ttname"><a href="kest__representation_8c.html#a76ac7ef5f6a5768ed3e8ed2e90232c66">kest_representation_pll_update_all</a></div><div class="ttdeci">void kest_representation_pll_update_all(kest_representation_pll *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00017">kest_representation.c:17</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a7a4a0f32b72f47d90e3d0f5932fbe58f"><div class="ttname"><a href="kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f">queue_representation_list_update</a></div><div class="ttdeci">int queue_representation_list_update(kest_representation_pll *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00104">kest_representation.c:104</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_a8f617bce52b07f293048dd4408b89220"><div class="ttname"><a href="kest__representation_8c.html#a8f617bce52b07f293048dd4408b89220">kest_representation_list_queue_updates_</a></div><div class="ttdeci">int kest_representation_list_queue_updates_(kest_representation_list *reps)</div><div class="ttdef"><b>Definition</b> <a href="#l00196">kest_representation.c:196</a></div></div>
+<div class="ttc" id="akest__representation_8c_html_abd827d8f8c61c9d6cdc67428b2a248dd"><div class="ttname"><a href="kest__representation_8c.html#abd827d8f8c61c9d6cdc67428b2a248dd">kest_representation_pll_remove</a></div><div class="ttdeci">kest_representation_pll * kest_representation_pll_remove(kest_representation_pll *reps, kest_representation *rep)</div><div class="ttdef"><b>Definition</b> <a href="#l00129">kest_representation.c:129</a></div></div>
+<div class="ttc" id="astructkest__representation_html"><div class="ttname"><a href="structkest__representation.html">kest_representation</a></div><div class="ttdoc">A system for delegating calls for thread safety/ownership reasons. Due to be deprecated bc I realised...</div><div class="ttdef"><b>Definition</b> <a href="kest__representation_8h_source.html#l00011">kest_representation.h:12</a></div></div>
+<div class="ttc" id="astructkest__representation_html_a0b5abc8a19485f081383758c8752d781"><div class="ttname"><a href="structkest__representation.html#a0b5abc8a19485f081383758c8752d781">kest_representation::representer</a></div><div class="ttdeci">void * representer</div><div class="ttdef"><b>Definition</b> <a href="kest__representation_8h_source.html#l00015">kest_representation.h:15</a></div></div>
+<div class="ttc" id="astructkest__representation_html_ac56b62939bfe6d41f034edbaf0b3e41d"><div class="ttname"><a href="structkest__representation.html#ac56b62939bfe6d41f034edbaf0b3e41d">kest_representation::update</a></div><div class="ttdeci">void(* update)(void *representer, void *representee)</div><div class="ttdef"><b>Definition</b> <a href="kest__representation_8h_source.html#l00018">kest_representation.h:18</a></div></div>
+<div class="ttc" id="astructkest__representation_html_ae4dd184b6dc89623cb5d49057d93ea1c"><div class="ttname"><a href="structkest__representation.html#ae4dd184b6dc89623cb5d49057d93ea1c">kest_representation::representee</a></div><div class="ttdeci">void * representee</div><div class="ttdef"><b>Definition</b> <a href="kest__representation_8h_source.html#l00016">kest_representation.h:16</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

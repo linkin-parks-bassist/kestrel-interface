@@ -49,7 +49,7 @@
 <script type="application/ecmascript">
 var viewWidth = 597;
 var viewHeight = 146;
-var sectionId = 'dynsection-3';
+var sectionId = 'dynsection-4';
 </script>
 <script type="application/ecmascript" xlink:href="svg.min.js"/>
 <svg id="graph" class="graph">
@@ -103,39 +103,39 @@ var sectionId = 'dynsection-3';
 </a>
 </g>
 </g>
-<!-- Node16 -->
-<g id="Node000016" class="node">
-<title>Node16</title>
-<g id="a_Node000016"><a xlink:href="kest__dict__extract_8c.html#a449de50461a34d20bba301a90a39ec05" target="_top" xlink:title=" ">
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="kest__dict__extract_8c.html#a449de50461a34d20bba301a90a39ec05" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="279.5,-85.5 175,-85.5 175,-52 279.5,-52 279.5,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="183" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_extract_filter</text>
 <text xml:space="preserve" text-anchor="middle" x="227.25" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_from_dict</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node16 -->
-<g id="edge4_Node000002_Node000016" class="edge">
-<title>Node2&#45;&gt;Node16</title>
-<g id="a_edge4_Node000002_Node000016"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node5 -->
+<g id="edge4_Node000002_Node000005" class="edge">
+<title>Node2&#45;&gt;Node5</title>
+<g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M319.71,-68.75C306.48,-68.75 292.67,-68.75 279.91,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="319.62,-72.25 329.62,-68.75 319.62,-65.25 319.62,-72.25"/>
 </a>
 </g>
 </g>
-<!-- Node17 -->
-<g id="Node000017" class="node">
-<title>Node17</title>
-<g id="a_Node000017"><a xlink:href="kest__dict__extract_8c.html#a5cdad622cac403efa9954b47c588ce90" target="_top" xlink:title=" ">
+<!-- Node6 -->
+<g id="Node000006" class="node">
+<title>Node6</title>
+<g id="a_Node000006"><a xlink:href="kest__dict__extract_8c.html#a5cdad622cac403efa9954b47c588ce90" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="295.25,-33.5 159.25,-33.5 159.25,0 295.25,0 295.25,-33.5"/>
 <text xml:space="preserve" text-anchor="start" x="167.25" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_extract_polynomial</text>
 <text xml:space="preserve" text-anchor="middle" x="227.25" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_from_dict</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node17 -->
-<g id="edge6_Node000002_Node000017" class="edge">
-<title>Node2&#45;&gt;Node17</title>
-<g id="a_edge6_Node000002_Node000017"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node6 -->
+<g id="edge6_Node000002_Node000006" class="edge">
+<title>Node2&#45;&gt;Node6</title>
+<g id="a_edge6_Node000002_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M320.74,-47.93C307.03,-43.31 292.63,-38.45 279.39,-33.99"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="319.54,-51.22 330.13,-51.1 321.77,-44.58 319.54,-51.22"/>
 </a>
@@ -145,7 +145,7 @@ var sectionId = 'dynsection-3';
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="kest__dict__extract_8c.html#ad78dabb9f962180138c9dfc2bf1731e3" target="_top" xlink:title=" ">
-<polygon fill="#fff0f0" stroke="red" points="123.25,-85.5 0,-85.5 0,-52 123.25,-52 123.25,-85.5"/>
+<polygon fill="white" stroke="#666666" points="123.25,-85.5 0,-85.5 0,-52 123.25,-52 123.25,-85.5"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">kest_extract_resource</text>
 <text xml:space="preserve" text-anchor="middle" x="61.62" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">_from_dict</text>
 </a>
@@ -160,19 +160,19 @@ var sectionId = 'dynsection-3';
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node4 -->
-<g id="edge5_Node000016_Node000004" class="edge">
-<title>Node16&#45;&gt;Node4</title>
-<g id="a_edge5_Node000016_Node000004"><a xlink:title=" ">
+<!-- Node5&#45;&gt;Node4 -->
+<g id="edge5_Node000005_Node000004" class="edge">
+<title>Node5&#45;&gt;Node4</title>
+<g id="a_edge5_Node000005_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M163.59,-68.75C150.44,-68.75 136.59,-68.75 123.51,-68.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="163.41,-72.25 173.41,-68.75 163.41,-65.25 163.41,-72.25"/>
 </a>
 </g>
 </g>
-<!-- Node17&#45;&gt;Node4 -->
-<g id="edge7_Node000017_Node000004" class="edge">
-<title>Node17&#45;&gt;Node4</title>
-<g id="a_edge7_Node000017_Node000004"><a xlink:title=" ">
+<!-- Node6&#45;&gt;Node4 -->
+<g id="edge7_Node000006_Node000004" class="edge">
+<title>Node6&#45;&gt;Node4</title>
+<g id="a_edge7_Node000006_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M161.6,-37.29C146.79,-42 131.2,-46.96 116.88,-51.51"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="162.31,-40.74 170.78,-34.38 160.19,-34.07 162.31,-40.74"/>
 </a>

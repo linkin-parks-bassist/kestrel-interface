@@ -119,6 +119,7 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a8f53e22436efdc0e494b297ea09db5eb" id="r_a8f53e22436efdc0e494b297ea09db5eb"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f53e22436efdc0e494b297ea09db5eb">kest_effect_name</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:acdf3f62439d012a856ab3125cf6fbb5e" id="r_acdf3f62439d012a856ab3125cf6fbb5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdf3f62439d012a856ab3125cf6fbb5e">DECLARE_LINKED_PTR_LIST</a> (<a class="el" href="structkest__effect.html">kest_effect</a>)</td></tr>
+<tr class="memitem:adf203914669e0ecd95e53a4c9b279ed2" id="r_adf203914669e0ecd95e53a4c9b279ed2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf203914669e0ecd95e53a4c9b279ed2">DECLARE_PTR_LIST</a> (<a class="el" href="structkest__effect.html">kest_effect</a>)</td></tr>
 <tr class="memitem:a6d9927f6d82c964bd07bef5c77879010" id="r_a6d9927f6d82c964bd07bef5c77879010"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d9927f6d82c964bd07bef5c77879010">init_effect</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:ab02fb484e2c851b5088b8ec5e342e2d7" id="r_ab02fb484e2c851b5088b8ec5e342e2d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab02fb484e2c851b5088b8ec5e342e2d7">effect_set_id</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, uint16_t preset_id, uint16_t effect_id)</td></tr>
 <tr class="memitem:a45969080cfeedba828e766c3fe6670ab" id="r_a45969080cfeedba828e766c3fe6670ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45969080cfeedba828e766c3fe6670ab">effect_rectify_param_ids</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
@@ -126,19 +127,43 @@ Functions</h2></td></tr>
 <tr class="memitem:abf12c30daf8ca1ac113eca5f22723cf7" id="r_abf12c30daf8ca1ac113eca5f22723cf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__setting.html">kest_setting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf12c30daf8ca1ac113eca5f22723cf7">effect_add_setting</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:ac9005730adbdd3b019e7ee8a6bc602b4" id="r_ac9005730adbdd3b019e7ee8a6bc602b4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9005730adbdd3b019e7ee8a6bc602b4">init_default_effect_by_type</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, uint16_t type, uint16_t preset_id, uint16_t effect_id)</td></tr>
 <tr class="memitem:a85b25e44e2629962673634f965ffe304" id="r_a85b25e44e2629962673634f965ffe304"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85b25e44e2629962673634f965ffe304">init_effect_from_effect_desc</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, <a class="el" href="structkest__effect__desc.html">kest_effect_desc</a> *eff)</td></tr>
-<tr class="memitem:aab0b3993102f405c4671ee1434a83a1e" id="r_aab0b3993102f405c4671ee1434a83a1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab0b3993102f405c4671ee1434a83a1e">request_append_effect</a> (uint16_t type, <a class="el" href="structkest__effect.html">kest_effect</a> *local)</td></tr>
 <tr class="memitem:a935977843051ad81db1a153f2956658e" id="r_a935977843051ad81db1a153f2956658e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a935977843051ad81db1a153f2956658e">clone_effect</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *dest, <a class="el" href="structkest__effect.html">kest_effect</a> *src)</td></tr>
 <tr class="memitem:a09f04708e6ffd20ecaba2c10460cb1eb" id="r_a09f04708e6ffd20ecaba2c10460cb1eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09f04708e6ffd20ecaba2c10460cb1eb">free_effect</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:af8ad810acfc1010c0c3956922dbe5f16" id="r_af8ad810acfc1010c0c3956922dbe5f16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__parameter.html">kest_parameter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8ad810acfc1010c0c3956922dbe5f16">effect_get_parameter</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, int n)</td></tr>
 <tr class="memitem:aceece5194f228b68bb824012fcf7c1ff" id="r_aceece5194f228b68bb824012fcf7c1ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__setting.html">kest_setting</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aceece5194f228b68bb824012fcf7c1ff">effect_get_setting</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, int n)</td></tr>
-<tr class="memitem:a9aa0cb5d417b51c21d985f13df2fd905" id="r_a9aa0cb5d417b51c21d985f13df2fd905"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aa0cb5d417b51c21d985f13df2fd905">kest_fpga_transfer_batch_append_effect</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, const <a class="el" href="structkest__eff__resource__report.html">kest_eff_resource_report</a> *cxt, <a class="el" href="structkest__eff__resource__report.html">kest_eff_resource_report</a> *report, <a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> *batch)</td></tr>
 <tr class="memitem:a490655823471fa9f081e6252b13da30e" id="r_a490655823471fa9f081e6252b13da30e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a490655823471fa9f081e6252b13da30e">kest_effect_update_fpga</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
-<tr class="memitem:ae445771b304eac294929053417d2d93e" id="r_ae445771b304eac294929053417d2d93e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope.html">kest_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae445771b304eac294929053417d2d93e">kest_effect_create_scope</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a9aa0cb5d417b51c21d985f13df2fd905" id="r_a9aa0cb5d417b51c21d985f13df2fd905"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aa0cb5d417b51c21d985f13df2fd905">kest_fpga_transfer_batch_append_effect</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, const <a class="el" href="structkest__eff__resource__report.html">kest_eff_resource_report</a> *cxt, <a class="el" href="structkest__eff__resource__report.html">kest_eff_resource_report</a> *report, <a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a> *batch)</td></tr>
+<tr class="memitem:a6d26be8c2a59f0c05ae876bf2dba43a1" id="r_a6d26be8c2a59f0c05ae876bf2dba43a1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d26be8c2a59f0c05ae876bf2dba43a1">kest_effect_is_updated</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a487a10984ad42feea8c8e1e97f4cd3a3" id="r_a487a10984ad42feea8c8e1e97f4cd3a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a487a10984ad42feea8c8e1e97f4cd3a3">kest_effect_create_scope</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:a4893b1b89f7d8d88f69c893385c14757" id="r_a4893b1b89f7d8d88f69c893385c14757"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4893b1b89f7d8d88f69c893385c14757">kest_effect_set_parameter</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, const char *name, float value)</td></tr>
 <tr class="memitem:aa3ec480fa794db333cc393bcc880edda" id="r_aa3ec480fa794db333cc393bcc880edda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3ec480fa794db333cc393bcc880edda">kest_effect_set_setting</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, const char *name, int value)</td></tr>
 <tr class="memitem:afdbf79f9f27eac4959dfcf7bbcb324d4" id="r_afdbf79f9f27eac4959dfcf7bbcb324d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdbf79f9f27eac4959dfcf7bbcb324d4">kest_effect_update_reps</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:a2109a1d86293251c21166f2d243d1f84" id="r_a2109a1d86293251c21166f2d243d1f84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2109a1d86293251c21166f2d243d1f84">kest_effect_preset_rep_update</a> (void *representer, void *representee)</td></tr>
+<tr class="memitem:a220bb57e5147880875ff68ee51add0c6" id="r_a220bb57e5147880875ff68ee51add0c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a220bb57e5147880875ff68ee51add0c6">kest_effect_page_rep_update</a> (void *representer, void *representee)</td></tr>
+<tr class="memitem:a843490611207ffb953ce0b5e3b468628" id="r_a843490611207ffb953ce0b5e3b468628"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a843490611207ffb953ce0b5e3b468628">kest_effect_activate_dma</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a475946cb8d325b5f02932ad935b5260d" id="r_a475946cb8d325b5f02932ad935b5260d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a475946cb8d325b5f02932ad935b5260d">kest_effect_deactivate_dma</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:af7ce1133ee8f5a3990d7102ff1219e42" id="r_af7ce1133ee8f5a3990d7102ff1219e42"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7ce1133ee8f5a3990d7102ff1219e42">kest_effect_activate_dma_async</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a92c1c9ee6b6724c5b3546aa2eb9549d6" id="r_a92c1c9ee6b6724c5b3546aa2eb9549d6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92c1c9ee6b6724c5b3546aa2eb9549d6">kest_effect_deactivate_dma_async</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:ab1ec575f4b065ae06dbe60f33407f9be" id="r_ab1ec575f4b065ae06dbe60f33407f9be"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1ec575f4b065ae06dbe60f33407f9be">kest_effect_activate_lfos</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a4f16212343b4a311f9a63370be3df6ba" id="r_a4f16212343b4a311f9a63370be3df6ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f16212343b4a311f9a63370be3df6ba">kest_effect_deactivate_lfos</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:ac5db37be33f69e86d8c6d4fb0b30f700" id="r_ac5db37be33f69e86d8c6d4fb0b30f700"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5db37be33f69e86d8c6d4fb0b30f700">kest_effect_activate_lfos_async</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a71654206f5ac9ebe3d9a9d7e1975a2bd" id="r_a71654206f5ac9ebe3d9a9d7e1975a2bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71654206f5ac9ebe3d9a9d7e1975a2bd">kest_effect_deactivate_lfos_async</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:abbee4d39c67518926ea993b0638cc4ce" id="r_abbee4d39c67518926ea993b0638cc4ce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbee4d39c67518926ea993b0638cc4ce">kest_effect_enable</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:ae20b1647d7d9023fbfe6b7caa50c00a0" id="r_ae20b1647d7d9023fbfe6b7caa50c00a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae20b1647d7d9023fbfe6b7caa50c00a0">kest_effect_disable</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
 <tr class="memitem:a262d6915b50a9a4daf4cd64e3b74b13f" id="r_a262d6915b50a9a4daf4cd64e3b74b13f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a262d6915b50a9a4daf4cd64e3b74b13f">kest_effect_init_view_page</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, struct <a class="el" href="structkest__ui__page.html">kest_ui_page</a> *parent)</td></tr>
+<tr class="memitem:a288d2643ff7af914502102475595ed8f" id="r_a288d2643ff7af914502102475595ed8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a288d2643ff7af914502102475595ed8f">kest_effect_handle_updates</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:ad5745ec5888a0568782154fb4f8adfee" id="r_ad5745ec5888a0568782154fb4f8adfee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5745ec5888a0568782154fb4f8adfee">kest_effect_handle_updates_inc_ui</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:a6388818d6f91e8be07c0bf562b4db182" id="r_a6388818d6f91e8be07c0bf562b4db182"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6388818d6f91e8be07c0bf562b4db182">kest_effect_update_sync</a> (void *effect_)</td></tr>
+<tr class="memitem:acd72b0b8d69b207a12265887b06fc7f9" id="r_acd72b0b8d69b207a12265887b06fc7f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd72b0b8d69b207a12265887b06fc7f9">kest_effect_update_sync_no_pw</a> (void *effect_)</td></tr>
+<tr class="memitem:aaa3210f4367cd577e69d0eccbf639fbf" id="r_aaa3210f4367cd577e69d0eccbf639fbf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa3210f4367cd577e69d0eccbf639fbf">kest_effect_update_pws</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:af0c936cfeb2ef842dc28a9125f6f807d" id="r_af0c936cfeb2ef842dc28a9125f6f807d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0c936cfeb2ef842dc28a9125f6f807d">kest_effect_clear_updates</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect)</td></tr>
+<tr class="memitem:ae00c570b056fa61e63a620c0230e67b4" id="r_ae00c570b056fa61e63a620c0230e67b4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae00c570b056fa61e63a620c0230e67b4">kest_effect_update_position</a> (<a class="el" href="structkest__effect.html">kest_effect</a> *effect, <a class="el" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> pos)</td></tr>
+<tr class="memitem:a254f019f6940bc1242ed341342541a2a" id="r_a254f019f6940bc1242ed341342541a2a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a254f019f6940bc1242ed341342541a2a">DECLARE_POOL</a> (<a class="el" href="structkest__effect.html">kest_effect</a>)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af133b52622b6c37ed55fc7327a951aeb" id="r_af133b52622b6c37ed55fc7327a951aeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__allocator.html">kest_allocator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af133b52622b6c37ed55fc7327a951aeb">kest_effect_allocator</a></td></tr>
+<tr class="memitem:aa52ce2728d72a88a509feb3bc8024769" id="r_aa52ce2728d72a88a509feb3bc8024769"><td class="memItemLeft" align="right" valign="top">kest_effect_pool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa52ce2728d72a88a509feb3bc8024769">kest_effect_mem_pool</a></td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="a7a87b1905240f09cb8688aab753f1a54" name="a7a87b1905240f09cb8688aab753f1a54"></a>
@@ -155,7 +180,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00012">12</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
 
 </div>
 </div>
@@ -173,7 +198,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00011">11</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
 
 </div>
 </div>
@@ -191,7 +216,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00013">13</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
 
 </div>
 </div>
@@ -209,7 +234,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00007">7</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
 
 </div>
 </div>
@@ -227,7 +252,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00004">4</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
 
 </div>
 </div>
@@ -245,7 +270,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00006">6</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
 
 </div>
 </div>
@@ -263,7 +288,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00005">5</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
 
 </div>
 </div>
@@ -281,7 +306,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__effect_8h_source.html#l00009">9</a> of file <a class="el" href="kest__effect_8h_source.html">kest_effect.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
 
 </div>
 </div>
@@ -305,9 +330,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00281">281</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00462">462</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00179">clone_pipeline()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00183">clone_pipeline()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
@@ -340,6 +365,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a254f019f6940bc1242ed341342541a2a" name="a254f019f6940bc1242ed341342541a2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a254f019f6940bc1242ed341342541a2a">&#9670;&#160;</a></span>DECLARE_POOL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_POOL </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adf203914669e0ecd95e53a4c9b279ed2" name="adf203914669e0ecd95e53a4c9b279ed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf203914669e0ecd95e53a4c9b279ed2">&#9670;&#160;</a></span>DECLARE_PTR_LIST()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_PTR_LIST </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a8dc8fceab7f835d960ea95e4f21fe327" name="a8dc8fceab7f835d960ea95e4f21fe327"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8dc8fceab7f835d960ea95e4f21fe327">&#9670;&#160;</a></span>effect_add_parameter()</h2>
 
@@ -355,20 +414,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00204">204</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00385">385</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00281">clone_effect()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00014">init_3_band_eq()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00076">init_amplifier()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00134">init_band_pass_filter()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00180">init_compressor()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00258">init_delay()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00342">init_dirty_octave()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00372">init_distortion()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00484">init_envelope()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00594">init_flanger()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00709">init_high_pass_filter()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00739">init_low_end_compressor()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00881">init_low_pass_filter()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00911">init_noise_suppressor()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00973">init_percussifier()</a>, and <a class="el" href="kest__effect__init_8c_source.html#l01099">init_warbler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00462">clone_effect()</a>.</p>
 <div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8dc8fceab7f835d960ea95e4f21fe327_cgraph.svg" width="100%" height="413"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8dc8fceab7f835d960ea95e4f21fe327_cgraph.svg" width="366" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8dc8fceab7f835d960ea95e4f21fe327_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8dc8fceab7f835d960ea95e4f21fe327_icgraph.svg" width="642" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -388,9 +447,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00231">231</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00412">412</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00281">clone_effect()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00076">init_amplifier()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00258">init_delay()</a>, <a class="el" href="kest__effect__init_8c_source.html#l00372">init_distortion()</a>, and <a class="el" href="kest__effect__init_8c_source.html#l00594">init_flanger()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00462">clone_effect()</a>.</p>
 <div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
@@ -401,7 +460,7 @@ Functions</h2></td></tr>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_abf12c30daf8ca1ac113eca5f22723cf7_icgraph.svg" width="656" height="247"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_abf12c30daf8ca1ac113eca5f22723cf7_icgraph.svg" width="619" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -425,9 +484,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00384">384</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00604">604</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00269">cxt_get_parameter_and_effect_by_id()</a>, and <a class="el" href="kest__context_8c_source.html#l00256">cxt_get_parameter_by_id()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00264">cxt_get_parameter_and_effect_by_id()</a>, and <a class="el" href="kest__context_8c_source.html#l00251">cxt_get_parameter_by_id()</a>.</p>
 <div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
@@ -456,9 +515,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00402">402</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00622">622</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00325">cxt_get_setting_by_id()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__context_8c_source.html#l00320">cxt_get_setting_by_id()</a>.</p>
 <div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
@@ -483,9 +542,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00132">132</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00313">313</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00192">effect_set_id()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00306">kest_pipeline_rectify_ids()</a>, and <a class="el" href="kest__preset_8c_source.html#l00186">kest_preset_append_effect_eff()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00373">effect_set_id()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00312">kest_pipeline_rectify_ids()</a>, and <a class="el" href="kest__preset_8c_source.html#l00244">kest_preset_append_effect_eff()</a>.</p>
 <div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
@@ -519,7 +578,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00192">192</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00373">373</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 <div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
@@ -544,14 +603,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00369">369</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00587">587</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00216">gut_pipeline()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00072">kest_pipeline_remove_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00220">gut_pipeline()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00076">kest_pipeline_remove_effect()</a>.</p>
 <div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a09f04708e6ffd20ecaba2c10460cb1eb_cgraph.svg" width="659" height="343"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a09f04708e6ffd20ecaba2c10460cb1eb_cgraph.svg" width="659" height="223"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
@@ -608,20 +667,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00029">29</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00025">25</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00281">clone_effect()</a>, <a class="el" href="kest__effect_8c_source.html#l00105">init_effect_from_effect_desc()</a>, and <a class="el" href="kest__effect__init_8c_source.html#l01209">init_effect_of_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00462">clone_effect()</a>, and <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
 <div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-13-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d9927f6d82c964bd07bef5c77879010_cgraph.svg" width="100%" height="573"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d9927f6d82c964bd07bef5c77879010_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d9927f6d82c964bd07bef5c77879010_icgraph.svg" width="100%" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d9927f6d82c964bd07bef5c77879010_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -645,9 +704,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00105">105</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00112">112</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00019">kest_pipeline_append_effect_eff()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00023">kest_pipeline_append_effect_eff()</a>.</p>
 <div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
@@ -663,14 +722,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae445771b304eac294929053417d2d93e" name="ae445771b304eac294929053417d2d93e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae445771b304eac294929053417d2d93e">&#9670;&#160;</a></span>kest_effect_create_scope()</h2>
+<a id="a843490611207ffb953ce0b5e3b468628" name="a843490611207ffb953ce0b5e3b468628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a843490611207ffb953ce0b5e3b468628">&#9670;&#160;</a></span>kest_effect_activate_dma()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structkest__scope.html">kest_scope</a> * kest_effect_create_scope </td>
+          <td class="memname">int kest_effect_activate_dma </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
           <td></td>
@@ -678,20 +737,397 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00451">451</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00105">init_effect_from_effect_desc()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00946">946</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 <div id="dynsection-17" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-17-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ae445771b304eac294929053417d2d93e_cgraph.svg" width="623" height="332"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a843490611207ffb953ce0b5e3b468628_cgraph.svg" width="392" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+
+</div>
+</div>
+<a id="af7ce1133ee8f5a3990d7102ff1219e42" name="af7ce1133ee8f5a3990d7102ff1219e42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7ce1133ee8f5a3990d7102ff1219e42">&#9670;&#160;</a></span>kest_effect_activate_dma_async()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_activate_dma_async </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00980">980</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00332">kest_pipeline_activate_dma()</a>.</p>
+<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-18-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ae445771b304eac294929053417d2d93e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_af7ce1133ee8f5a3990d7102ff1219e42_cgraph.svg" width="100%" height="429"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_af7ce1133ee8f5a3990d7102ff1219e42_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab1ec575f4b065ae06dbe60f33407f9be" name="ab1ec575f4b065ae06dbe60f33407f9be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ec575f4b065ae06dbe60f33407f9be">&#9670;&#160;</a></span>kest_effect_activate_lfos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_activate_lfos </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01086">1086</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ab1ec575f4b065ae06dbe60f33407f9be_cgraph.svg" width="628" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ac5db37be33f69e86d8c6d4fb0b30f700" name="ac5db37be33f69e86d8c6d4fb0b30f700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5db37be33f69e86d8c6d4fb0b30f700">&#9670;&#160;</a></span>kest_effect_activate_lfos_async()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_activate_lfos_async </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01121">1121</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00369">kest_pipeline_activate_lfos()</a>.</p>
+<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ac5db37be33f69e86d8c6d4fb0b30f700_cgraph.svg" width="100%" height="407"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ac5db37be33f69e86d8c6d4fb0b30f700_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af0c936cfeb2ef842dc28a9125f6f807d" name="af0c936cfeb2ef842dc28a9125f6f807d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c936cfeb2ef842dc28a9125f6f807d">&#9670;&#160;</a></span>kest_effect_clear_updates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_clear_updates </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01315">1315</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l01261">kest_effect_handle_updates_inc_ui()</a>.</p>
+<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_af0c936cfeb2ef842dc28a9125f6f807d_cgraph.svg" width="626" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_af0c936cfeb2ef842dc28a9125f6f807d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a487a10984ad42feea8c8e1e97f4cd3a3" name="a487a10984ad42feea8c8e1e97f4cd3a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a487a10984ad42feea8c8e1e97f4cd3a3">&#9670;&#160;</a></span>kest_effect_create_scope()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_create_scope </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00693">693</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
+<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a487a10984ad42feea8c8e1e97f4cd3a3_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a487a10984ad42feea8c8e1e97f4cd3a3_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a475946cb8d325b5f02932ad935b5260d" name="a475946cb8d325b5f02932ad935b5260d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a475946cb8d325b5f02932ad935b5260d">&#9670;&#160;</a></span>kest_effect_deactivate_dma()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_deactivate_dma </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01023">1023</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>.</p>
+<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a475946cb8d325b5f02932ad935b5260d_cgraph.svg" width="408" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-28" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a475946cb8d325b5f02932ad935b5260d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a92c1c9ee6b6724c5b3546aa2eb9549d6" name="a92c1c9ee6b6724c5b3546aa2eb9549d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c1c9ee6b6724c5b3546aa2eb9549d6">&#9670;&#160;</a></span>kest_effect_deactivate_dma_async()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_deactivate_dma_async </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01055">1055</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00388">kest_pipeline_deactivate_dma()</a>.</p>
+<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a92c1c9ee6b6724c5b3546aa2eb9549d6_cgraph.svg" width="100%" height="429"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a92c1c9ee6b6724c5b3546aa2eb9549d6_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a4f16212343b4a311f9a63370be3df6ba" name="a4f16212343b4a311f9a63370be3df6ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f16212343b4a311f9a63370be3df6ba">&#9670;&#160;</a></span>kest_effect_deactivate_lfos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_deactivate_lfos </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a71654206f5ac9ebe3d9a9d7e1975a2bd" name="a71654206f5ac9ebe3d9a9d7e1975a2bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71654206f5ac9ebe3d9a9d7e1975a2bd">&#9670;&#160;</a></span>kest_effect_deactivate_lfos_async()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_deactivate_lfos_async </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01158">1158</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00351">kest_pipeline_deactivate_lfos()</a>.</p>
+<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a71654206f5ac9ebe3d9a9d7e1975a2bd_cgraph.svg" width="100%" height="387"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a71654206f5ac9ebe3d9a9d7e1975a2bd_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ae20b1647d7d9023fbfe6b7caa50c00a0" name="ae20b1647d7d9023fbfe6b7caa50c00a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae20b1647d7d9023fbfe6b7caa50c00a0">&#9670;&#160;</a></span>kest_effect_disable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_disable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01395">1395</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00076">kest_pipeline_remove_effect()</a>.</p>
+<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ae20b1647d7d9023fbfe6b7caa50c00a0_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="abbee4d39c67518926ea993b0638cc4ce" name="abbee4d39c67518926ea993b0638cc4ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbee4d39c67518926ea993b0638cc4ce">&#9670;&#160;</a></span>kest_effect_enable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_enable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01390">1390</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+</div>
+</div>
+<a id="a288d2643ff7af914502102475595ed8f" name="a288d2643ff7af914502102475595ed8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a288d2643ff7af914502102475595ed8f">&#9670;&#160;</a></span>kest_effect_handle_updates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_handle_updates </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01208">1208</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__update_8c_source.html#l00036">kest_active_preset_updater_task()</a>, and <a class="el" href="kest__effect_8c_source.html#l01326">kest_effect_update_sync()</a>.</p>
+<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a288d2643ff7af914502102475595ed8f_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a288d2643ff7af914502102475595ed8f_icgraph.svg" width="578" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad5745ec5888a0568782154fb4f8adfee" name="ad5745ec5888a0568782154fb4f8adfee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5745ec5888a0568782154fb4f8adfee">&#9670;&#160;</a></span>kest_effect_handle_updates_inc_ui()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_handle_updates_inc_ui </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01261">1261</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__update_8c_source.html#l00036">kest_active_preset_updater_task()</a>.</p>
+<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ad5745ec5888a0568782154fb4f8adfee_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-37" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ad5745ec5888a0568782154fb4f8adfee_icgraph.svg" width="538" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -715,12 +1151,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="kest__effect__select_8c_source.html#l00085">add_effect_from_menu_eff()</a>, and <a class="el" href="kest__preset__view_8c_source.html#l00337">configure_preset_view()</a>.</p>
-<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect__select_8c_source.html#l00085">add_effect_from_menu_eff()</a>, and <a class="el" href="kest__preset__view_8c_source.html#l00339">configure_preset_view()</a>.</p>
+<div id="dynsection-38" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div id="dynsection-38-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a262d6915b50a9a4daf4cd64e3b74b13f_icgraph.svg" width="100%" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a6d26be8c2a59f0c05ae876bf2dba43a1" name="a6d26be8c2a59f0c05ae876bf2dba43a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d26be8c2a59f0c05ae876bf2dba43a1">&#9670;&#160;</a></span>kest_effect_is_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_is_updated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00639">639</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l01208">kest_effect_handle_updates()</a>, <a class="el" href="kest__effect_8c_source.html#l01261">kest_effect_handle_updates_inc_ui()</a>, <a class="el" href="kest__effect_8c_source.html#l00652">kest_effect_update_fpga()</a>, <a class="el" href="kest__effect_8c_source.html#l01335">kest_effect_update_sync_no_pw()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00413">kest_fpga_transfer_batch_append_effect_updates()</a>.</p>
+<div id="dynsection-39" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-39-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d26be8c2a59f0c05ae876bf2dba43a1_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-40" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-40-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6d26be8c2a59f0c05ae876bf2dba43a1_icgraph.svg" width="100%" height="548"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -740,14 +1209,51 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00017">17</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00014">14</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect__settings_8c_source.html#l00048">configure_effect_settings_page()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00106">configure_effect_view()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00337">configure_preset_view()</a>, <a class="el" href="kest__context_8c_source.html#l00552">context_print_presets()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00200">create_effect_view_ui()</a>, and <a class="el" href="kest__preset__view_8c_source.html#l00490">preset_view_append_effect()</a>.</p>
-<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect__settings_8c_source.html#l00048">configure_effect_settings_page()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00106">configure_effect_view()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00339">configure_preset_view()</a>, <a class="el" href="kest__context_8c_source.html#l00553">context_print_presets()</a>, <a class="el" href="kest__effect__view_8c_source.html#l00204">create_effect_view_ui()</a>, and <a class="el" href="kest__preset__view_8c_source.html#l00498">preset_view_append_effect()</a>.</p>
+<div id="dynsection-41" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8f53e22436efdc0e494b297ea09db5eb_icgraph.svg" width="100%" height="563"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a8f53e22436efdc0e494b297ea09db5eb_icgraph.svg" width="100%" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a220bb57e5147880875ff68ee51add0c6" name="a220bb57e5147880875ff68ee51add0c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a220bb57e5147880875ff68ee51add0c6">&#9670;&#160;</a></span>kest_effect_page_rep_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void kest_effect_page_rep_update </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>representer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>representee</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00896">896</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
+<div id="dynsection-42" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-42-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a220bb57e5147880875ff68ee51add0c6_cgraph.svg" width="582" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-43" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a220bb57e5147880875ff68ee51add0c6_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -771,20 +1277,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00540">540</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00873">873</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00029">init_effect()</a>.</p>
-<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00025">init_effect()</a>.</p>
+<div id="dynsection-44" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div id="dynsection-44-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a2109a1d86293251c21166f2d243d1f84_cgraph.svg" width="499" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-45" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a2109a1d86293251c21166f2d243d1f84_icgraph.svg" width="100%" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-45-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a2109a1d86293251c21166f2d243d1f84_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -813,7 +1319,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00493">493</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00826">826</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
 </div>
 </div>
@@ -841,7 +1347,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00516">516</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00849">849</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
 </div>
 </div>
@@ -860,12 +1366,76 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00419">419</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
-<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00652">652</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<div id="dynsection-46" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div id="dynsection-46-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a490655823471fa9f081e6252b13da30e_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ae00c570b056fa61e63a620c0230e67b4" name="ae00c570b056fa61e63a620c0230e67b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae00c570b056fa61e63a620c0230e67b4">&#9670;&#160;</a></span>kest_effect_update_position()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_update_position </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a></td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01453">1453</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>.</p>
+<div id="dynsection-47" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-47-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-47-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_ae00c570b056fa61e63a620c0230e67b4_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aaa3210f4367cd577e69d0eccbf639fbf" name="aaa3210f4367cd577e69d0eccbf639fbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa3210f4367cd577e69d0eccbf639fbf">&#9670;&#160;</a></span>kest_effect_update_pws()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_update_pws </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>effect</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01189">1189</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l01261">kest_effect_handle_updates_inc_ui()</a>.</p>
+<div id="dynsection-48" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_aaa3210f4367cd577e69d0eccbf639fbf_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-49" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-49-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-49-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_aaa3210f4367cd577e69d0eccbf639fbf_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -885,20 +1455,70 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00563">563</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00933">933</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter_8c_source.html#l00476">kest_parameter_effect_rep_update()</a>, and <a class="el" href="kest__parameter_8c_source.html#l00492">kest_setting_effect_rep_update()</a>.</p>
-<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__parameter_8c_source.html#l00487">kest_parameter_effect_rep_update()</a>, and <a class="el" href="kest__parameter_8c_source.html#l00523">kest_setting_effect_rep_update()</a>.</p>
+<div id="dynsection-50" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-50-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div id="dynsection-50-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_afdbf79f9f27eac4959dfcf7bbcb324d4_cgraph.svg" width="403" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-51" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-51-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div id="dynsection-51-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_afdbf79f9f27eac4959dfcf7bbcb324d4_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a6388818d6f91e8be07c0bf562b4db182" name="a6388818d6f91e8be07c0bf562b4db182"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6388818d6f91e8be07c0bf562b4db182">&#9670;&#160;</a></span>kest_effect_update_sync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void kest_effect_update_sync </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>effect_</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01326">1326</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<div id="dynsection-52" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-52-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-52-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_a6388818d6f91e8be07c0bf562b4db182_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="acd72b0b8d69b207a12265887b06fc7f9" name="acd72b0b8d69b207a12265887b06fc7f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd72b0b8d69b207a12265887b06fc7f9">&#9670;&#160;</a></span>kest_effect_update_sync_no_pw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void kest_effect_update_sync_no_pw </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>effect_</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l01335">1335</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+<div id="dynsection-53" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-53-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-53-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__effect_8h_acd72b0b8d69b207a12265887b06fc7f9_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -934,24 +1554,56 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aab0b3993102f405c4671ee1434a83a1e" name="aab0b3993102f405c4671ee1434a83a1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab0b3993102f405c4671ee1434a83a1e">&#9670;&#160;</a></span>request_append_effect()</h2>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="af133b52622b6c37ed55fc7327a951aeb" name="af133b52622b6c37ed55fc7327a951aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af133b52622b6c37ed55fc7327a951aeb">&#9670;&#160;</a></span>kest_effect_allocator</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int request_append_effect </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structkest__effect.html">kest_effect</a> *</td>          <td class="paramname"><span class="paramname"><em>local</em></span>&#160;)</td>
+          <td class="memname"><a class="el" href="structkest__allocator.html">kest_allocator</a> kest_effect_allocator</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00011">11</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__pipeline_8c_source.html#l00183">clone_pipeline()</a>, <a class="el" href="#a254f019f6940bc1242ed341342541a2a">DECLARE_POOL()</a>, <a class="el" href="kest__effect_8c_source.html#l00587">free_effect()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00023">kest_pipeline_append_effect_eff()</a>.</p>
+
+</div>
+</div>
+<a id="aa52ce2728d72a88a509feb3bc8024769" name="aa52ce2728d72a88a509feb3bc8024769"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa52ce2728d72a88a509feb3bc8024769">&#9670;&#160;</a></span>kest_effect_mem_pool</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">kest_effect_pool kest_effect_mem_pool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel extern">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__effect_8c_source.html#l00012">12</a> of file <a class="el" href="kest__effect_8c_source.html">kest_effect.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a254f019f6940bc1242ed341342541a2a">DECLARE_POOL()</a>.</p>
 
 </div>
 </div>

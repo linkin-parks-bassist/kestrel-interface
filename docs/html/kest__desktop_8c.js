@@ -2,6 +2,7 @@ var kest__desktop_8c =
 [
     [ "PRINTLINES_ALLOWED", "kest__desktop_8c.html#a925207a2b3de0a6f636d1425fcdb1a56", null ],
     [ "init_sd_card", "kest__desktop_8c.html#a3412367a35f21ef470fd3a2d3c628542", null ],
+    [ "kest_desktop_init_sdl", "kest__desktop_8c.html#a665ba15e91f6099738bc8b63cd42f940", null ],
     [ "kest_sd_mode_local", "kest__desktop_8c.html#a062111f9ec26e5dc2f6ef9625805120d", null ],
     [ "kest_sd_mode_msc", "kest__desktop_8c.html#a5b352e1ac18808ffdaf59355b80859fc", null ],
     [ "kest_sd_toggle_msc", "kest__desktop_8c.html#a75b4b8c75ccae759b6c3ebbc6209b5c4", null ],

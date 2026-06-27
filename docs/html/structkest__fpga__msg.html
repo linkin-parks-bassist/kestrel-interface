@@ -95,7 +95,7 @@ $(function(){initNavTree('structkest__fpga__msg.html','',''); });
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__fpga__msg__coll__graph.svg" width="154" height="156"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__fpga__msg__coll__graph.svg" width="334" height="156"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -105,11 +105,13 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a7e36b69da15be8a25d906bc1a5612a96" id="r_a7e36b69da15be8a25d906bc1a5612a96"><td class="memItemLeft anon">&#160;&#160;&#160;float&#160;&#160;&#160;<a class="el" href="#a2df4697b5c1da2549e2b98a9758219e0">level</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memitem:aefa77f1ff30a50180abc15c7dff10e70" id="r_aefa77f1ff30a50180abc15c7dff10e70"><td class="memItemLeft anon">&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<a class="el" href="#a7d2f9bc54745ab4043afb396ae51cb0f">command</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memitem:a4b2927cc8e17f2b6cdbad13c5c8d2484" id="r_a4b2927cc8e17f2b6cdbad13c5c8d2484"><td class="memItemLeft anon">&#160;&#160;&#160;<a class="el" href="structkest__fpga__transfer__batch.html">kest_fpga_transfer_batch</a>&#160;&#160;&#160;<a class="el" href="#aa47912114598a057aadbffa1f33baf45">batch</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a49a459a3a6cd320859a795eb7c81ea8a" id="r_a49a459a3a6cd320859a795eb7c81ea8a"><td class="memItemLeft anon">&#160;&#160;&#160;<a class="el" href="structkest__fpga__read__spec.html">kest_fpga_read_spec</a> *&#160;&#160;&#160;<a class="el" href="#ac4a43ac8ee53a455562e0ce18aa87911">read</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a64673294b6e36fb95c57c73000fe72f1" id="r_a64673294b6e36fb95c57c73000fe72f1"><td class="memItemLeft anon">&#160;&#160;&#160;byte_list *&#160;&#160;&#160;<a class="el" href="#a5a3a07f67058827c8a4aa899e3b600c9">byte_batch</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="memitem:af82a900104b15ae03b83a564ce3659f7" id="r_af82a900104b15ae03b83a564ce3659f7"><td class="memItemLeft anonEnd" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af82a900104b15ae03b83a564ce3659f7">data</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00015">15</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00021">21</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
 <a id="aa47912114598a057aadbffa1f33baf45" name="aa47912114598a057aadbffa1f33baf45"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa47912114598a057aadbffa1f33baf45">&#9670;&#160;</a></span>batch</h2>
@@ -123,9 +125,27 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00021">21</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00027">27</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00219">kest_fpga_queue_program_batch()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00207">kest_fpga_queue_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00285">kest_fpga_queue_program_batch()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00270">kest_fpga_queue_transfer_batch()</a>.</p>
+
+</div>
+</div>
+<a id="a5a3a07f67058827c8a4aa899e3b600c9" name="a5a3a07f67058827c8a4aa899e3b600c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a3a07f67058827c8a4aa899e3b600c9">&#9670;&#160;</a></span>byte_batch</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte_list* kest_fpga_msg::byte_batch</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00029">29</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>.</p>
 
 </div>
 </div>
@@ -141,9 +161,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00020">20</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00026">26</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00252">kest_fpga_queue_register_commit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00318">kest_fpga_queue_register_commit()</a>.</p>
 
 </div>
 </div>
@@ -159,7 +179,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00232">kest_fpga_queue_input_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00242">kest_fpga_queue_output_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00219">kest_fpga_queue_program_batch()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00252">kest_fpga_queue_register_commit()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00207">kest_fpga_queue_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_queue_input_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00308">kest_fpga_queue_output_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00285">kest_fpga_queue_program_batch()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00328">kest_fpga_queue_read()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00318">kest_fpga_queue_register_commit()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00270">kest_fpga_queue_transfer_batch()</a>.</p>
 
 </div>
 </div>
@@ -175,9 +195,27 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00019">19</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00025">25</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00232">kest_fpga_queue_input_gain_set()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00242">kest_fpga_queue_output_gain_set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_queue_input_gain_set()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00308">kest_fpga_queue_output_gain_set()</a>.</p>
+
+</div>
+</div>
+<a id="ac4a43ac8ee53a455562e0ce18aa87911" name="ac4a43ac8ee53a455562e0ce18aa87911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4a43ac8ee53a455562e0ce18aa87911">&#9670;&#160;</a></span>read</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__fpga__read__spec.html">kest_fpga_read_spec</a>* kest_fpga_msg::read</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00028">28</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00328">kest_fpga_queue_read()</a>.</p>
 
 </div>
 </div>
@@ -193,9 +231,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00016">16</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__fpga__comms_8c_source.html#l00022">22</a> of file <a class="el" href="kest__fpga__comms_8c_source.html">kest_fpga_comms.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00034">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00232">kest_fpga_queue_input_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00242">kest_fpga_queue_output_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00219">kest_fpga_queue_program_batch()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00252">kest_fpga_queue_register_commit()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00207">kest_fpga_queue_transfer_batch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__comms_8c_source.html#l00042">kest_fpga_comms_task()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00298">kest_fpga_queue_input_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00308">kest_fpga_queue_output_gain_set()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00285">kest_fpga_queue_program_batch()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00328">kest_fpga_queue_read()</a>, <a class="el" href="kest__fpga__comms_8c_source.html#l00318">kest_fpga_queue_register_commit()</a>, and <a class="el" href="kest__fpga__comms_8c_source.html#l00270">kest_fpga_queue_transfer_batch()</a>.</p>
 
 </div>
 </div>

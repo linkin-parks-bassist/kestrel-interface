@@ -97,7 +97,7 @@ $(function(){initNavTree('structkest__eff__desc__file__section.html','',''); });
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__eff__desc__file__section__coll__graph.svg" width="598" height="258"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__eff__desc__file__section__coll__graph.svg" width="100%" height="568"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -105,6 +105,7 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ac10605ebc8bf5411c5af10ff49d746db" id="r_ac10605ebc8bf5411c5af10ff49d746db"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac10605ebc8bf5411c5af10ff49d746db">name</a></td></tr>
 <tr class="memitem:a247d5f15234f488b038a736a83d0b4d5" id="r_a247d5f15234f488b038a736a83d0b4d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__token__ll.html">kest_token_ll</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a247d5f15234f488b038a736a83d0b4d5">tokens</a></td></tr>
 <tr class="memitem:acdad74aff7429d697b5cdbc39333bc53" id="r_acdad74aff7429d697b5cdbc39333bc53"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structkest__dictionary.html">kest_dictionary</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdad74aff7429d697b5cdbc39333bc53">dict</a></td></tr>
+<tr class="memitem:aa2e0d150c91e5f0ad8711eb1280151b0" id="r_aa2e0d150c91e5f0ad8711eb1280151b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__eff__entry__dict.html">kest_eff_entry_dict</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e0d150c91e5f0ad8711eb1280151b0">dict_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -124,7 +125,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__section_8h_source.html#l00007">7</a> of file <a class="el" href="kest__eff__section_8h_source.html">kest_eff_section.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00237">kest_dictionary_section_lookup_dict()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00225">kest_dictionary_section_lookup_expr()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00201">kest_dictionary_section_lookup_float()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00213">kest_dictionary_section_lookup_int()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00189">kest_dictionary_section_lookup_str()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00041">kest_parameters_section_extract()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00249">kest_parse_dictionary_section()</a>, <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00102">kest_resources_section_extract()</a>, and <a class="el" href="kest__eff__section_8c_source.html#l00070">kest_settings_section_extract()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00275">kest_dictionary_section_lookup_dict()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00263">kest_dictionary_section_lookup_expr()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00239">kest_dictionary_section_lookup_float()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00251">kest_dictionary_section_lookup_int()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00227">kest_dictionary_section_lookup_str()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00287">kest_parse_dictionary_section()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>.</p>
+
+</div>
+</div>
+<a id="aa2e0d150c91e5f0ad8711eb1280151b0" name="aa2e0d150c91e5f0ad8711eb1280151b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e0d150c91e5f0ad8711eb1280151b0">&#9670;&#160;</a></span>dict_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__eff__entry__dict.html">kest_eff_entry_dict</a> kest_eff_desc_file_section::dict_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__eff__section_8h_source.html#l00009">9</a> of file <a class="el" href="kest__eff__section_8h_source.html">kest_eff_section.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00162">kest_defs_section_extract()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00366">kest_eff_section_index()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00379">kest_eff_section_lookup()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00039">kest_parameters_section_extract()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00313">kest_parse_entry_section()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00121">kest_resources_section_extract()</a>, and <a class="el" href="kest__eff__section_8c_source.html#l00080">kest_settings_section_extract()</a>.</p>
 
 </div>
 </div>
@@ -142,7 +161,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__section_8h_source.html#l00005">5</a> of file <a class="el" href="kest__eff__section_8h_source.html">kest_eff_section.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00249">kest_parse_dictionary_section()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00287">kest_parse_dictionary_section()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>.</p>
 
 </div>
 </div>
@@ -160,7 +179,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__eff__section_8h_source.html#l00006">6</a> of file <a class="el" href="kest__eff__section_8h_source.html">kest_eff_section.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00276">kest_parse_code_section()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00249">kest_parse_dictionary_section()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00345">kest_parse_code_section()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00287">kest_parse_dictionary_section()</a>, <a class="el" href="kest__eff__section_8c_source.html#l00313">kest_parse_entry_section()</a>, and <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>.</p>
 
 </div>
 </div>

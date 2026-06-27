@@ -135,21 +135,24 @@ Macros</h2></td></tr>
 <div class="line"><span class="keywordtype">int</span> X##_list_init_reserved_with_allocator(X##_list *list, <span class="keywordtype">size_t</span> n, <span class="keyword">const</span> <a class="code hl_struct" href="structkest__allocator.html">kest_allocator</a> *alloc); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_reserve(X##_list *list, <span class="keywordtype">size_t</span> n); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_append(X##_list *list, X x); \</div>
+<div class="line">X  *X##_list_append_return_ptr(X##_list *list, X x); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_append_ref(X##_list *list, <span class="keyword">const</span> X *x); \</div>
+<div class="line">X  *X##_list_append_ref_return_ptr(X##_list *list, <span class="keyword">const</span> X *x); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_destroy(X##_list *list); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_destroy_all(X##_list *list, <span class="keywordtype">void</span> (*destructor)(X *x)); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_contains(X##_list *list, X x, <span class="keywordtype">int</span> (*cmp)(<span class="keyword">const</span> X*, <span class="keyword">const</span> X*)); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_contains_ref(X##_list *list, <span class="keyword">const</span> X *x, <span class="keywordtype">int</span> (*cmp)(<span class="keyword">const</span> X*, <span class="keyword">const</span> X*)); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_index_of(X##_list *list, X x, <span class="keywordtype">int</span> (*cmp)(<span class="keyword">const</span> X*, <span class="keyword">const</span> X*)); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_index_of_ref(X##_list *list, <span class="keyword">const</span> X *x, <span class="keywordtype">int</span> (*cmp)(<span class="keyword">const</span> X*, <span class="keyword">const</span> X*));\</div>
-<div class="line">X *X##_list_head(X##_list *list);\</div>
-<div class="line">X *X##_list_tail(X##_list *list);\</div>
+<div class="line">X  *X##_list_find(X##_list *list, <span class="keyword">const</span> X *x, <span class="keywordtype">int</span> (*cmp)(<span class="keyword">const</span> X*, <span class="keyword">const</span> X*));\</div>
+<div class="line">X  *X##_list_head(X##_list *list);\</div>
+<div class="line">X  *X##_list_tail(X##_list *list);\</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_pop_tail(X##_list *list);\</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_pop_destroy_tail(X##_list *list, <span class="keywordtype">void</span> (*destructor)(X *x));\</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_append_list(X##_list *list, X##_list *a);\</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_drain_destroy(X##_list *list, <span class="keywordtype">void</span> (*destructor)(X *x));\</div>
 <div class="line"><span class="keywordtype">int</span> X##_list_drain(X##_list *list);</div>
-<div class="ttc" id="astructkest__allocator_html"><div class="ttname"><a href="structkest__allocator.html">kest_allocator</a></div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8h_source.html#l00006">kest_alloc.h:6</a></div></div>
+<div class="ttc" id="astructkest__allocator_html"><div class="ttname"><a href="structkest__allocator.html">kest_allocator</a></div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8h_source.html#l00018">kest_alloc.h:18</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00004">4</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
 
@@ -177,6 +180,7 @@ Macros</h2></td></tr>
 <div class="line">} X##_ptr_list; \</div>
 <div class="line">\</div>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_init(X##_ptr_list *list); \</div>
+<div class="line"><span class="keywordtype">int</span> X##_ptr_list_init_reserved(X##_ptr_list *list, <span class="keywordtype">size_t</span> n); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_init_with_allocator(X##_ptr_list *list, <span class="keyword">const</span> <a class="code hl_struct" href="structkest__allocator.html">kest_allocator</a> *alloc); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_reserve(X##_ptr_list *list, <span class="keywordtype">size_t</span> n); \</div>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_append(X##_ptr_list *list, X *x); \</div>
@@ -191,7 +195,7 @@ Macros</h2></td></tr>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_drain_destroy(X##_ptr_list *list, <span class="keywordtype">void</span> (*destructor)(X *x));\</div>
 <div class="line"><span class="keywordtype">int</span> X##_ptr_list_drain(X##_ptr_list *list);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00315">315</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00338">338</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
 
 </div>
 </div>
@@ -210,7 +214,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00033">33</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00036">36</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
 
 </div>
 </div>
@@ -229,7 +233,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00339">339</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__list_8h_source.html#l00363">363</a> of file <a class="el" href="kest__list_8h_source.html">kest_list.h</a>.</p>
 
 </div>
 </div>

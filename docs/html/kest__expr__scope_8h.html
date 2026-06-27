@@ -102,8 +102,6 @@ $(function(){initNavTree('kest__expr__scope_8h.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:kest_5Fexpr_5Fscope_5Fentry" id="r_kest_5Fexpr_5Fscope_5Fentry"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a></td></tr>
-<tr class="memitem:kest_5Fexpr_5Fscope" id="r_kest_5Fexpr_5Fscope"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a></td></tr>
 <tr class="memitem:kest_5Fscope_5Fentry" id="r_kest_5Fscope_5Fentry"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a></td></tr>
 <tr class="memitem:kest_5Fscope" id="r_kest_5Fscope"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkest__scope.html">kest_scope</a></td></tr>
 </table><table class="memberdecls">
@@ -112,37 +110,47 @@ Macros</h2></td></tr>
 <tr class="memitem:a6101c36fb282d02b7f9729676d23974f" id="r_a6101c36fb282d02b7f9729676d23974f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6101c36fb282d02b7f9729676d23974f">KEST_SCOPE_ENTRY_TYPE_EXPR</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memitem:a04446a3b2d959c7c94216c461797021c" id="r_a04446a3b2d959c7c94216c461797021c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04446a3b2d959c7c94216c461797021c">KEST_SCOPE_ENTRY_TYPE_PARAM</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memitem:a6c47f00dcc876034b21e852df5748ff3" id="r_a6c47f00dcc876034b21e852df5748ff3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c47f00dcc876034b21e852df5748ff3">KEST_SCOPE_ENTRY_TYPE_SETTING</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:a68376068f0834560ddfd49f760b86f13" id="r_a68376068f0834560ddfd49f760b86f13"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68376068f0834560ddfd49f760b86f13">KEST_SCOPE_ENTRY_TYPE_MEM</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:a3a6a0b54d0d8a95835a3db2e89794858" id="r_a3a6a0b54d0d8a95835a3db2e89794858"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6a0b54d0d8a95835a3db2e89794858">KEST_SCOPE_ENTRY_TYPE_LFO</a>&#160;&#160;&#160;4</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1e38199b09f72739edc8026dee1dc888" id="r_a1e38199b09f72739edc8026dee1dc888"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e38199b09f72739edc8026dee1dc888">kest_new_expr_scope_entry_expr</a> (const char *name, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr)</td></tr>
-<tr class="memitem:a2b5b6ff0bf5b75c43de3d10f2e84700e" id="r_a2b5b6ff0bf5b75c43de3d10f2e84700e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b5b6ff0bf5b75c43de3d10f2e84700e">kest_new_expr_scope_entry_param</a> (struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *param)</td></tr>
-<tr class="memitem:a69e4f1f3c645e4b8e721d2262c9c6ed9" id="r_a69e4f1f3c645e4b8e721d2262c9c6ed9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69e4f1f3c645e4b8e721d2262c9c6ed9">kest_new_expr_scope_entry_setting</a> (struct <a class="el" href="structkest__setting.html">kest_setting</a> *setting)</td></tr>
-<tr class="memitem:a0c50f5350a4bda549098d2311dd72b70" id="r_a0c50f5350a4bda549098d2311dd72b70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c50f5350a4bda549098d2311dd72b70">DECLARE_LINKED_PTR_LIST</a> (<a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a>)</td></tr>
-<tr class="memitem:a648ec3dcb81dc6fcc6e8cd53addcd2e5" id="r_a648ec3dcb81dc6fcc6e8cd53addcd2e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a648ec3dcb81dc6fcc6e8cd53addcd2e5">kest_new_expr_scope</a> ()</td></tr>
-<tr class="memitem:a307f46ad638b2b391055d74a4e8c8c3c" id="r_a307f46ad638b2b391055d74a4e8c8c3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a307f46ad638b2b391055d74a4e8c8c3c">kest_expr_scope_init</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope)</td></tr>
-<tr class="memitem:ae63f9dde8aedf61f742ee600c18f4f6a" id="r_ae63f9dde8aedf61f742ee600c18f4f6a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae63f9dde8aedf61f742ee600c18f4f6a">kest_expr_scope_add_expr</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, const char *name, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr)</td></tr>
-<tr class="memitem:adec28f08d4bd3f1f62c6c4d87148f21f" id="r_adec28f08d4bd3f1f62c6c4d87148f21f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adec28f08d4bd3f1f62c6c4d87148f21f">kest_expr_scope_add_param</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *param)</td></tr>
-<tr class="memitem:aaf0a112ecda47d8a2a7a054c28379a97" id="r_aaf0a112ecda47d8a2a7a054c28379a97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf0a112ecda47d8a2a7a054c28379a97">kest_expr_scope_add_setting</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, struct <a class="el" href="structkest__setting.html">kest_setting</a> *setting)</td></tr>
-<tr class="memitem:a2d4ee3482f979f430ffc1d9bacd17950" id="r_a2d4ee3482f979f430ffc1d9bacd17950"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d4ee3482f979f430ffc1d9bacd17950">kest_expr_scope_propagate_updates</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope)</td></tr>
-<tr class="memitem:a8de460e0ea3a816b2b6c836ebe8379d7" id="r_a8de460e0ea3a816b2b6c836ebe8379d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8de460e0ea3a816b2b6c836ebe8379d7">kest_expr_scope_add_params</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, struct kest_parameter_pll *params)</td></tr>
-<tr class="memitem:a8820d3e03450f916373ba6b6a438e659" id="r_a8820d3e03450f916373ba6b6a438e659"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8820d3e03450f916373ba6b6a438e659">kest_expr_scope_add_settings</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, struct kest_setting_pll *settings)</td></tr>
-<tr class="memitem:a8077a19bd328bbd93fcbf80d8591cb5c" id="r_a8077a19bd328bbd93fcbf80d8591cb5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8077a19bd328bbd93fcbf80d8591cb5c">kest_expr_scope_fetch</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope, const char *name)</td></tr>
-<tr class="memitem:a45a176ec7aab0926a624d7a723f6d7b2" id="r_a45a176ec7aab0926a624d7a723f6d7b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45a176ec7aab0926a624d7a723f6d7b2">kest_expr_scope_copy</a> (<a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *scope)</td></tr>
 <tr class="memitem:adbf4ccbd64492cf59403002243f2eecf" id="r_adbf4ccbd64492cf59403002243f2eecf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbf4ccbd64492cf59403002243f2eecf">DECLARE_DICT</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a>)</td></tr>
 <tr class="memitem:ad5a50e098f07b8e6c9bfd941a9682f98" id="r_ad5a50e098f07b8e6c9bfd941a9682f98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope.html">kest_scope</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5a50e098f07b8e6c9bfd941a9682f98">kest_scope_new</a> ()</td></tr>
 <tr class="memitem:a43b6bb1cf362758abfd82e8b4c305938" id="r_a43b6bb1cf362758abfd82e8b4c305938"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43b6bb1cf362758abfd82e8b4c305938">kest_scope_init</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
+<tr class="memitem:ad718b388bfb37161a17882b2aa9d55bf" id="r_ad718b388bfb37161a17882b2aa9d55bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad718b388bfb37161a17882b2aa9d55bf">kest_scope_entry_init_mem</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *mem)</td></tr>
+<tr class="memitem:aec49a70a468687177334c48637161932" id="r_aec49a70a468687177334c48637161932"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec49a70a468687177334c48637161932">kest_scope_entry_init_expr</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr)</td></tr>
+<tr class="memitem:a91b7dc90407b631f251aeded676ffd6b" id="r_a91b7dc90407b631f251aeded676ffd6b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91b7dc90407b631f251aeded676ffd6b">kest_scope_entry_init_param</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *param)</td></tr>
+<tr class="memitem:a8fbc4890bf273d06e7137acf809a3aa8" id="r_a8fbc4890bf273d06e7137acf809a3aa8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fbc4890bf273d06e7137acf809a3aa8">kest_scope_entry_init_setting</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, struct <a class="el" href="structkest__setting.html">kest_setting</a> *setting)</td></tr>
+<tr class="memitem:ab2df2425a9dcbf7ca7f0c3cca1d78c1d" id="r_ab2df2425a9dcbf7ca7f0c3cca1d78c1d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2df2425a9dcbf7ca7f0c3cca1d78c1d">kest_scope_entry_add_dependent_scope_entry</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, const char *key)</td></tr>
+<tr class="memitem:a44be4cdc6bcfdaf52ae97b5b6344a703" id="r_a44be4cdc6bcfdaf52ae97b5b6344a703"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44be4cdc6bcfdaf52ae97b5b6344a703">kest_scope_entry_add_dependent_filter_coef</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, int filter, int coef, int format)</td></tr>
+<tr class="memitem:ab34bbde82086f554bdad9ab7235d8b32" id="r_ab34bbde82086f554bdad9ab7235d8b32"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab34bbde82086f554bdad9ab7235d8b32">kest_scope_entry_add_dependent_block_reg</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, int block, int reg, int format)</td></tr>
+<tr class="memitem:a8599558aef23a41dd9b43bfa790c35ef" id="r_a8599558aef23a41dd9b43bfa790c35ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8599558aef23a41dd9b43bfa790c35ef">kest_scope_entry_add_dependent</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, <a class="el" href="structkest__dependent.html">kest_dependent</a> dep)</td></tr>
+<tr class="memitem:a48331fe35f479beaac7364762a9ce72e" id="r_a48331fe35f479beaac7364762a9ce72e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48331fe35f479beaac7364762a9ce72e">kest_scope_add_mem</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name, struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *mem)</td></tr>
 <tr class="memitem:a0587a5203aa19a14ee56456e508f884c" id="r_a0587a5203aa19a14ee56456e508f884c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0587a5203aa19a14ee56456e508f884c">kest_scope_add_expr</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr)</td></tr>
 <tr class="memitem:aae153a5d0c27a21ded1cbb358c09146c" id="r_aae153a5d0c27a21ded1cbb358c09146c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae153a5d0c27a21ded1cbb358c09146c">kest_scope_add_param</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *param)</td></tr>
 <tr class="memitem:ad3459995b38355c8a1f713d2f65ede61" id="r_ad3459995b38355c8a1f713d2f65ede61"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3459995b38355c8a1f713d2f65ede61">kest_scope_add_setting</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__setting.html">kest_setting</a> *setting)</td></tr>
+<tr class="memitem:a15663939558b745028a78009dabf91f3" id="r_a15663939558b745028a78009dabf91f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15663939558b745028a78009dabf91f3">kest_scope_entry_print</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, <a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> *str)</td></tr>
+<tr class="memitem:a883dda34c94a9b31b1698eaf90c5d645" id="r_a883dda34c94a9b31b1698eaf90c5d645"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a883dda34c94a9b31b1698eaf90c5d645">kest_scope_add_lfo_return_entry</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name, struct <a class="el" href="structkest__lfo.html">kest_lfo</a> *mem)</td></tr>
+<tr class="memitem:a8391ac3b54edcbb571c9c5e91e07c337" id="r_a8391ac3b54edcbb571c9c5e91e07c337"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8391ac3b54edcbb571c9c5e91e07c337">kest_scope_add_mem_return_entry</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name, struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *mem)</td></tr>
+<tr class="memitem:a2bb05021c8fa5ab42f45c508854d8bab" id="r_a2bb05021c8fa5ab42f45c508854d8bab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2bb05021c8fa5ab42f45c508854d8bab">kest_scope_add_expr_return_entry</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr)</td></tr>
+<tr class="memitem:a566323b62a015648d52483e887585436" id="r_a566323b62a015648d52483e887585436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a566323b62a015648d52483e887585436">kest_scope_add_param_return_entry</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *param)</td></tr>
+<tr class="memitem:a0ee1438baa30b2bd626d1a44cb01f73b" id="r_a0ee1438baa30b2bd626d1a44cb01f73b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ee1438baa30b2bd626d1a44cb01f73b">kest_scope_add_setting_return_entry</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__setting.html">kest_setting</a> *setting)</td></tr>
 <tr class="memitem:a38b63c16b3979ad26c30a0dc0b73e96a" id="r_a38b63c16b3979ad26c30a0dc0b73e96a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38b63c16b3979ad26c30a0dc0b73e96a">kest_scope_propagate_updates</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
 <tr class="memitem:a6329eee07be244ac7c7dd045f6aaa0ac" id="r_a6329eee07be244ac7c7dd045f6aaa0ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6329eee07be244ac7c7dd045f6aaa0ac">kest_scope_clear_updates</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
 <tr class="memitem:ae9034d1436bd01327cd7165bb181baf5" id="r_ae9034d1436bd01327cd7165bb181baf5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9034d1436bd01327cd7165bb181baf5">kest_scope_add_params</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct kest_parameter_pll *params)</td></tr>
 <tr class="memitem:af00355515e40173515e8eff60cb5323c" id="r_af00355515e40173515e8eff60cb5323c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af00355515e40173515e8eff60cb5323c">kest_scope_add_settings</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct kest_setting_pll *settings)</td></tr>
+<tr class="memitem:af2fc1f056676d41afa396a8b86be24e6" id="r_af2fc1f056676d41afa396a8b86be24e6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2fc1f056676d41afa396a8b86be24e6">kest_scope_entry_eval</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, <a class="el" href="structkest__scope.html">kest_scope</a> *scope, float *dest)</td></tr>
+<tr class="memitem:ab4b2ce40beae39f7dc02743730a37ec7" id="r_ab4b2ce40beae39f7dc02743730a37ec7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b2ce40beae39f7dc02743730a37ec7">kest_scope_entry_eval_rec</a> (<a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *entry, <a class="el" href="structkest__scope.html">kest_scope</a> *scope, float *dest, int depth)</td></tr>
 <tr class="memitem:a536647952c07049da59284b9f928bd67" id="r_a536647952c07049da59284b9f928bd67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a536647952c07049da59284b9f928bd67">kest_scope_lookup</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name)</td></tr>
 <tr class="memitem:a8a0fbd22e0deccdaee632b2a95d4aee5" id="r_a8a0fbd22e0deccdaee632b2a95d4aee5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a0fbd22e0deccdaee632b2a95d4aee5">kest_scope_fetch</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, const char *name)</td></tr>
 <tr class="memitem:a4b961bc6e7b1010aacc02440ff92a605" id="r_a4b961bc6e7b1010aacc02440ff92a605"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b961bc6e7b1010aacc02440ff92a605">kest_scope_count</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
+<tr class="memitem:afd7862a7cb331b3576d5da3ba80d5e4a" id="r_afd7862a7cb331b3576d5da3ba80d5e4a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd7862a7cb331b3576d5da3ba80d5e4a">kest_scope_index_key</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, size_t n)</td></tr>
 <tr class="memitem:a003d0a831a549dab0e93c2ad5c82d14e" id="r_a003d0a831a549dab0e93c2ad5c82d14e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a003d0a831a549dab0e93c2ad5c82d14e">kest_scope_index</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, size_t n)</td></tr>
+<tr class="memitem:a8042b7711c05856ef5755963535b68f8" id="r_a8042b7711c05856ef5755963535b68f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8042b7711c05856ef5755963535b68f8">kest_scope_detect_dependencies</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
+<tr class="memitem:a0a8e9d1ae75fa540c5bf15db08bf01c6" id="r_a0a8e9d1ae75fa540c5bf15db08bf01c6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a8e9d1ae75fa540c5bf15db08bf01c6">kest_scope_add_block_reg_dependencies</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr, int block, int reg, int format)</td></tr>
+<tr class="memitem:afd386b03b5c0bce3421cc5704ab61cdd" id="r_afd386b03b5c0bce3421cc5704ab61cdd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd386b03b5c0bce3421cc5704ab61cdd">kest_scope_add_filter_coef_dependencies</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope, struct <a class="el" href="structkest__expression.html">kest_expression</a> *expr, int filter, int coef, int format)</td></tr>
+<tr class="memitem:a22d04780c6f58fc94a907b3969a819cc" id="r_a22d04780c6f58fc94a907b3969a819cc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22d04780c6f58fc94a907b3969a819cc">kest_scope_transitivize_updatable_dependents</a> (<a class="el" href="structkest__scope.html">kest_scope</a> *scope)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="a6101c36fb282d02b7f9729676d23974f" name="a6101c36fb282d02b7f9729676d23974f"></a>
@@ -159,7 +167,43 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__expr__scope_8h_source.html#l00004">4</a> of file <a class="el" href="kest__expr__scope_8h_source.html">kest_expr_scope.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l00781">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00011">kest_new_expr_scope_entry_expr()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00255">kest_scope_entry_init_expr()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00646">kest_scope_detect_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00918">kest_scope_entry_eval_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00019">kest_scope_entry_init_expr()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00182">kest_scope_entry_print()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00560">kest_scope_propagate_updates()</a>.</p>
+
+</div>
+</div>
+<a id="a3a6a0b54d0d8a95835a3db2e89794858" name="a3a6a0b54d0d8a95835a3db2e89794858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a6a0b54d0d8a95835a3db2e89794858">&#9670;&#160;</a></span>KEST_SCOPE_ENTRY_TYPE_LFO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define KEST_SCOPE_ENTRY_TYPE_LFO&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8h_source.html#l00008">8</a> of file <a class="el" href="kest__expr__scope_8h_source.html">kest_expr_scope.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00918">kest_scope_entry_eval_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00070">kest_scope_entry_init_lfo()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00182">kest_scope_entry_print()</a>.</p>
+
+</div>
+</div>
+<a id="a68376068f0834560ddfd49f760b86f13" name="a68376068f0834560ddfd49f760b86f13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68376068f0834560ddfd49f760b86f13">&#9670;&#160;</a></span>KEST_SCOPE_ENTRY_TYPE_MEM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define KEST_SCOPE_ENTRY_TYPE_MEM&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8h_source.html#l00007">7</a> of file <a class="el" href="kest__expr__scope_8h_source.html">kest_expr_scope.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00506">kest_scope_detect_env_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00918">kest_scope_entry_eval_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00088">kest_scope_entry_init_mem()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00182">kest_scope_entry_print()</a>.</p>
 
 </div>
 </div>
@@ -177,7 +221,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__expr__scope_8h_source.html#l00005">5</a> of file <a class="el" href="kest__expr__scope_8h_source.html">kest_expr_scope.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l00781">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00030">kest_new_expr_scope_entry_param()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00511">kest_scope_clear_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00270">kest_scope_entry_init_param()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00883">kest_scope_clear_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00506">kest_scope_detect_env_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00918">kest_scope_entry_eval_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00036">kest_scope_entry_init_param()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00182">kest_scope_entry_print()</a>.</p>
 
 </div>
 </div>
@@ -195,7 +239,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__expr__scope_8h_source.html#l00006">6</a> of file <a class="el" href="kest__expr__scope_8h_source.html">kest_expr_scope.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l00781">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00048">kest_new_expr_scope_entry_setting()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00511">kest_scope_clear_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00285">kest_scope_entry_init_setting()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00883">kest_scope_clear_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00506">kest_scope_detect_env_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00918">kest_scope_entry_eval_rec()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00053">kest_scope_entry_init_setting()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00182">kest_scope_entry_print()</a>.</p>
 
 </div>
 </div>
@@ -217,399 +261,54 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0c50f5350a4bda549098d2311dd72b70" name="a0c50f5350a4bda549098d2311dd72b70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c50f5350a4bda549098d2311dd72b70">&#9670;&#160;</a></span>DECLARE_LINKED_PTR_LIST()</h2>
+<a id="a0a8e9d1ae75fa540c5bf15db08bf01c6" name="a0a8e9d1ae75fa540c5bf15db08bf01c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a8e9d1ae75fa540c5bf15db08bf01c6">&#9670;&#160;</a></span>kest_scope_add_block_reg_dependencies()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">DECLARE_LINKED_PTR_LIST </td>
+          <td class="memname">int kest_scope_add_block_reg_dependencies </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae63f9dde8aedf61f742ee600c18f4f6a" name="ae63f9dde8aedf61f742ee600c18f4f6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae63f9dde8aedf61f742ee600c18f4f6a">&#9670;&#160;</a></span>kest_expr_scope_add_expr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_add_expr </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>block</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>reg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>format</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00092">92</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00718">718</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
 <div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ae63f9dde8aedf61f742ee600c18f4f6a_cgraph.svg" width="554" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0a8e9d1ae75fa540c5bf15db08bf01c6_cgraph.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-
-</div>
-</div>
-<a id="adec28f08d4bd3f1f62c6c4d87148f21f" name="adec28f08d4bd3f1f62c6c4d87148f21f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adec28f08d4bd3f1f62c6c4d87148f21f">&#9670;&#160;</a></span>kest_expr_scope_add_param()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_add_param </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *</td>          <td class="paramname"><span class="paramname"><em>param</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00110">110</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00074">kest_eff_desc_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00146">kest_expr_scope_add_params()</a>.</p>
-<div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_adec28f08d4bd3f1f62c6c4d87148f21f_cgraph.svg" width="518" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_adec28f08d4bd3f1f62c6c4d87148f21f_icgraph.svg" width="380" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a8de460e0ea3a816b2b6c836ebe8379d7" name="a8de460e0ea3a816b2b6c836ebe8379d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8de460e0ea3a816b2b6c836ebe8379d7">&#9670;&#160;</a></span>kest_expr_scope_add_params()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_add_params </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct kest_parameter_pll *</td>          <td class="paramname"><span class="paramname"><em>params</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00146">146</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8de460e0ea3a816b2b6c836ebe8379d7_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="aaf0a112ecda47d8a2a7a054c28379a97" name="aaf0a112ecda47d8a2a7a054c28379a97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf0a112ecda47d8a2a7a054c28379a97">&#9670;&#160;</a></span>kest_expr_scope_add_setting()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_add_setting </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structkest__setting.html">kest_setting</a> *</td>          <td class="paramname"><span class="paramname"><em>setting</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00128">128</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00165">kest_expr_scope_add_settings()</a>.</p>
-<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aaf0a112ecda47d8a2a7a054c28379a97_cgraph.svg" width="518" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aaf0a112ecda47d8a2a7a054c28379a97_icgraph.svg" width="380" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a8820d3e03450f916373ba6b6a438e659" name="a8820d3e03450f916373ba6b6a438e659"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8820d3e03450f916373ba6b6a438e659">&#9670;&#160;</a></span>kest_expr_scope_add_settings()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_add_settings </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct kest_setting_pll *</td>          <td class="paramname"><span class="paramname"><em>settings</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00165">165</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8820d3e03450f916373ba6b6a438e659_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="a45a176ec7aab0926a624d7a723f6d7b2" name="a45a176ec7aab0926a624d7a723f6d7b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45a176ec7aab0926a624d7a723f6d7b2">&#9670;&#160;</a></span>kest_expr_scope_copy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> * kest_expr_scope_copy </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8077a19bd328bbd93fcbf80d8591cb5c" name="a8077a19bd328bbd93fcbf80d8591cb5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8077a19bd328bbd93fcbf80d8591cb5c">&#9670;&#160;</a></span>kest_expr_scope_fetch()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> * kest_expr_scope_fetch </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00193">193</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-</div>
-</div>
-<a id="a307f46ad638b2b391055d74a4e8c8c3c" name="a307f46ad638b2b391055d74a4e8c8c3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a307f46ad638b2b391055d74a4e8c8c3c">&#9670;&#160;</a></span>kest_expr_scope_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00070">70</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-</div>
-</div>
-<a id="a2d4ee3482f979f430ffc1d9bacd17950" name="a2d4ee3482f979f430ffc1d9bacd17950"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d4ee3482f979f430ffc1d9bacd17950">&#9670;&#160;</a></span>kest_expr_scope_propagate_updates()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int kest_expr_scope_propagate_updates </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00233">233</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-</div>
-</div>
-<a id="a648ec3dcb81dc6fcc6e8cd53addcd2e5" name="a648ec3dcb81dc6fcc6e8cd53addcd2e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a648ec3dcb81dc6fcc6e8cd53addcd2e5">&#9670;&#160;</a></span>kest_new_expr_scope()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope.html">kest_expr_scope</a> * kest_new_expr_scope </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00080">80</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00074">kest_eff_desc_create_scope()</a>.</p>
-<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a648ec3dcb81dc6fcc6e8cd53addcd2e5_cgraph.svg" width="308" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a648ec3dcb81dc6fcc6e8cd53addcd2e5_icgraph.svg" width="380" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a1e38199b09f72739edc8026dee1dc888" name="a1e38199b09f72739edc8026dee1dc888"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e38199b09f72739edc8026dee1dc888">&#9670;&#160;</a></span>kest_new_expr_scope_entry_expr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> * kest_new_expr_scope_entry_expr </td>
-          <td>(</td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00011">11</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00092">kest_expr_scope_add_expr()</a>.</p>
-<div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a1e38199b09f72739edc8026dee1dc888_cgraph.svg" width="308" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a1e38199b09f72739edc8026dee1dc888_icgraph.svg" width="419" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a2b5b6ff0bf5b75c43de3d10f2e84700e" name="a2b5b6ff0bf5b75c43de3d10f2e84700e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b5b6ff0bf5b75c43de3d10f2e84700e">&#9670;&#160;</a></span>kest_new_expr_scope_entry_param()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> * kest_new_expr_scope_entry_param </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00030">30</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00110">kest_expr_scope_add_param()</a>.</p>
-<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a2b5b6ff0bf5b75c43de3d10f2e84700e_cgraph.svg" width="308" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a2b5b6ff0bf5b75c43de3d10f2e84700e_icgraph.svg" width="591" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a69e4f1f3c645e4b8e721d2262c9c6ed9" name="a69e4f1f3c645e4b8e721d2262c9c6ed9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69e4f1f3c645e4b8e721d2262c9c6ed9">&#9670;&#160;</a></span>kest_new_expr_scope_entry_setting()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structkest__expr__scope__entry.html">kest_expr_scope_entry</a> * kest_new_expr_scope_entry_setting </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structkest__setting.html">kest_setting</a> *</td>          <td class="paramname"><span class="paramname"><em>setting</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00048">48</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00128">kest_expr_scope_add_setting()</a>.</p>
-<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a69e4f1f3c645e4b8e721d2262c9c6ed9_cgraph.svg" width="308" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a69e4f1f3c645e4b8e721d2262c9c6ed9_icgraph.svg" width="591" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0a8e9d1ae75fa540c5bf15db08bf01c6_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -638,20 +337,232 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00328">328</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00288">288</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00137">kest_defs_section_extract()</a>, and <a class="el" href="kest__effect_8c_source.html#l00451">kest_effect_create_scope()</a>.</p>
-<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__section_8c_source.html#l00162">kest_defs_section_extract()</a>, <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00239">kest_scope_init()</a>.</p>
+<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-16-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0587a5203aa19a14ee56456e508f884c_cgraph.svg" width="418" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0587a5203aa19a14ee56456e508f884c_cgraph.svg" width="628" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-17" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0587a5203aa19a14ee56456e508f884c_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0587a5203aa19a14ee56456e508f884c_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2bb05021c8fa5ab42f45c508854d8bab" name="a2bb05021c8fa5ab42f45c508854d8bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bb05021c8fa5ab42f45c508854d8bab">&#9670;&#160;</a></span>kest_scope_add_expr_return_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> * kest_scope_add_expr_return_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00372">372</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a2bb05021c8fa5ab42f45c508854d8bab_cgraph.svg" width="628" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="afd386b03b5c0bce3421cc5704ab61cdd" name="afd386b03b5c0bce3421cc5704ab61cdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd386b03b5c0bce3421cc5704ab61cdd">&#9670;&#160;</a></span>kest_scope_add_filter_coef_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_add_filter_coef_dependencies </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>coef</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>format</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00749">749</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
+<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_afd386b03b5c0bce3421cc5704ab61cdd_cgraph.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_afd386b03b5c0bce3421cc5704ab61cdd_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a883dda34c94a9b31b1698eaf90c5d645" name="a883dda34c94a9b31b1698eaf90c5d645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a883dda34c94a9b31b1698eaf90c5d645">&#9670;&#160;</a></span>kest_scope_add_lfo_return_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> * kest_scope_add_lfo_return_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__lfo.html">kest_lfo</a> *</td>          <td class="paramname"><span class="paramname"><em>mem</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00342">342</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>.</p>
+<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a883dda34c94a9b31b1698eaf90c5d645_cgraph.svg" width="604" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-9" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a883dda34c94a9b31b1698eaf90c5d645_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a48331fe35f479beaac7364762a9ce72e" name="a48331fe35f479beaac7364762a9ce72e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48331fe35f479beaac7364762a9ce72e">&#9670;&#160;</a></span>kest_scope_add_mem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_add_mem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *</td>          <td class="paramname"><span class="paramname"><em>mem</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00273">273</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__dict__extract_8c_source.html#l00631">kest_extract_mem_from_dict()</a>.</p>
+<div id="dynsection-10" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a48331fe35f479beaac7364762a9ce72e_cgraph.svg" width="638" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-11" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a48331fe35f479beaac7364762a9ce72e_icgraph.svg" width="648" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8391ac3b54edcbb571c9c5e91e07c337" name="a8391ac3b54edcbb571c9c5e91e07c337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8391ac3b54edcbb571c9c5e91e07c337">&#9670;&#160;</a></span>kest_scope_add_mem_return_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> * kest_scope_add_mem_return_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *</td>          <td class="paramname"><span class="paramname"><em>mem</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00357">357</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>.</p>
+<div id="dynsection-12" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8391ac3b54edcbb571c9c5e91e07c337_cgraph.svg" width="638" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-13" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8391ac3b54edcbb571c9c5e91e07c337_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -675,20 +586,49 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00342">342</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00303">303</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00451">kest_effect_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00372">kest_scope_add_params()</a>.</p>
-<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00076">kest_eff_desc_create_scope()</a>, <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00417">kest_scope_add_params()</a>.</p>
+<div id="dynsection-14" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-18-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aae153a5d0c27a21ded1cbb358c09146c_cgraph.svg" width="395" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aae153a5d0c27a21ded1cbb358c09146c_cgraph.svg" width="608" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-15" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aae153a5d0c27a21ded1cbb358c09146c_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aae153a5d0c27a21ded1cbb358c09146c_icgraph.svg" width="100%" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a566323b62a015648d52483e887585436" name="a566323b62a015648d52483e887585436"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a566323b62a015648d52483e887585436">&#9670;&#160;</a></span>kest_scope_add_param_return_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> * kest_scope_add_param_return_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *</td>          <td class="paramname"><span class="paramname"><em>param</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00387">387</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<div id="dynsection-16" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a566323b62a015648d52483e887585436_cgraph.svg" width="608" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -712,19 +652,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00372">372</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00417">417</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>.</p>
-<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>.</p>
+<div id="dynsection-17" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ae9034d1436bd01327cd7165bb181baf5_cgraph.svg" width="623" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ae9034d1436bd01327cd7165bb181baf5_cgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-18" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ae9034d1436bd01327cd7165bb181baf5_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -749,20 +689,49 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00357">357</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00318">318</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00451">kest_effect_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00394">kest_scope_add_settings()</a>.</p>
-<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00439">kest_scope_add_settings()</a>.</p>
+<div id="dynsection-19" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad3459995b38355c8a1f713d2f65ede61_cgraph.svg" width="398" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad3459995b38355c8a1f713d2f65ede61_cgraph.svg" width="611" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-20" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad3459995b38355c8a1f713d2f65ede61_icgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a0ee1438baa30b2bd626d1a44cb01f73b" name="a0ee1438baa30b2bd626d1a44cb01f73b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ee1438baa30b2bd626d1a44cb01f73b">&#9670;&#160;</a></span>kest_scope_add_setting_return_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> * kest_scope_add_setting_return_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__setting.html">kest_setting</a> *</td>          <td class="paramname"><span class="paramname"><em>setting</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00402">402</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<div id="dynsection-21" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a0ee1438baa30b2bd626d1a44cb01f73b_cgraph.svg" width="611" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -786,19 +755,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00394">394</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00439">439</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>.</p>
-<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>.</p>
+<div id="dynsection-22" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_af00355515e40173515e8eff60cb5323c_cgraph.svg" width="630" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_af00355515e40173515e8eff60cb5323c_cgraph.svg" width="100%" height="380"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-23" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_af00355515e40173515e8eff60cb5323c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -819,20 +788,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00511">511</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00883">883</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00419">kest_effect_update_fpga()</a>.</p>
-<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l01315">kest_effect_clear_updates()</a>, <a class="el" href="kest__effect_8c_source.html#l01208">kest_effect_handle_updates()</a>, <a class="el" href="kest__effect_8c_source.html#l00652">kest_effect_update_fpga()</a>, <a class="el" href="kest__effect_8c_source.html#l01335">kest_effect_update_sync_no_pw()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00413">kest_fpga_transfer_batch_append_effect_updates()</a>.</p>
+<div id="dynsection-24" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a6329eee07be244ac7c7dd045f6aaa0ac_cgraph.svg" width="387" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-25" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-27-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a6329eee07be244ac7c7dd045f6aaa0ac_icgraph.svg" width="432" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a6329eee07be244ac7c7dd045f6aaa0ac_icgraph.svg" width="100%" height="541"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -852,14 +821,489 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00426">426</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00471">471</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01708">kest_expression_updated_in_scope()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00511">kest_scope_clear_updates()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l02983">kest_expression_updated_in_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00883">kest_scope_clear_updates()</a>.</p>
+<div id="dynsection-26" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a4b961bc6e7b1010aacc02440ff92a605_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a8042b7711c05856ef5755963535b68f8" name="a8042b7711c05856ef5755963535b68f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8042b7711c05856ef5755963535b68f8">&#9670;&#160;</a></span>kest_scope_detect_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_detect_dependencies </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00646">646</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>.</p>
+<div id="dynsection-27" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8042b7711c05856ef5755963535b68f8_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 <div id="dynsection-28" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
 <div id="dynsection-28-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-28-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a4b961bc6e7b1010aacc02440ff92a605_icgraph.svg" width="100%" height="494"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8042b7711c05856ef5755963535b68f8_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a8599558aef23a41dd9b43bfa790c35ef" name="a8599558aef23a41dd9b43bfa790c35ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8599558aef23a41dd9b43bfa790c35ef">&#9670;&#160;</a></span>kest_scope_entry_add_dependent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_add_dependent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__dependent.html">kest_dependent</a></td>          <td class="paramname"><span class="paramname"><em>dep</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00164">164</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00781">kest_scope_transitivize_updatable_dependents_rec()</a>.</p>
+<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8599558aef23a41dd9b43bfa790c35ef_cgraph.svg" width="654" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8599558aef23a41dd9b43bfa790c35ef_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab34bbde82086f554bdad9ab7235d8b32" name="ab34bbde82086f554bdad9ab7235d8b32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab34bbde82086f554bdad9ab7235d8b32">&#9670;&#160;</a></span>kest_scope_entry_add_dependent_block_reg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_add_dependent_block_reg </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>block</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>reg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>format</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00126">126</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00718">kest_scope_add_block_reg_dependencies()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00164">kest_scope_entry_add_dependent()</a>.</p>
+<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab34bbde82086f554bdad9ab7235d8b32_cgraph.svg" width="420" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab34bbde82086f554bdad9ab7235d8b32_icgraph.svg" width="100%" height="412"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a44be4cdc6bcfdaf52ae97b5b6344a703" name="a44be4cdc6bcfdaf52ae97b5b6344a703"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44be4cdc6bcfdaf52ae97b5b6344a703">&#9670;&#160;</a></span>kest_scope_entry_add_dependent_filter_coef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_add_dependent_filter_coef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>coef</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>format</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00145">145</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00749">kest_scope_add_filter_coef_dependencies()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00164">kest_scope_entry_add_dependent()</a>.</p>
+<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-33-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a44be4cdc6bcfdaf52ae97b5b6344a703_cgraph.svg" width="427" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a44be4cdc6bcfdaf52ae97b5b6344a703_icgraph.svg" width="100%" height="412"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab2df2425a9dcbf7ca7f0c3cca1d78c1d" name="ab2df2425a9dcbf7ca7f0c3cca1d78c1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2df2425a9dcbf7ca7f0c3cca1d78c1d">&#9670;&#160;</a></span>kest_scope_entry_add_dependent_scope_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_add_dependent_scope_entry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00105">105</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00646">kest_scope_detect_dependencies()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00164">kest_scope_entry_add_dependent()</a>.</p>
+<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-35-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab2df2425a9dcbf7ca7f0c3cca1d78c1d_cgraph.svg" width="412" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab2df2425a9dcbf7ca7f0c3cca1d78c1d_icgraph.svg" width="100%" height="402"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af2fc1f056676d41afa396a8b86be24e6" name="af2fc1f056676d41afa396a8b86be24e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2fc1f056676d41afa396a8b86be24e6">&#9670;&#160;</a></span>kest_scope_entry_eval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_eval </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>dest</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00986">986</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__driver_8c_source.html#l00042">kest_driver_evaluate()</a>.</p>
+<div id="dynsection-37" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_af2fc1f056676d41afa396a8b86be24e6_cgraph.svg" width="100%" height="505"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-38" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-38-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-38-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_af2fc1f056676d41afa396a8b86be24e6_icgraph.svg" width="100%" height="419"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab4b2ce40beae39f7dc02743730a37ec7" name="ab4b2ce40beae39f7dc02743730a37ec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4b2ce40beae39f7dc02743730a37ec7">&#9670;&#160;</a></span>kest_scope_entry_eval_rec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_eval_rec </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>dest</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>depth</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00918">918</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l00467">kest_expression_evaluate_rec()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00986">kest_scope_entry_eval()</a>.</p>
+<div id="dynsection-39" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-39-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-39-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab4b2ce40beae39f7dc02743730a37ec7_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-40" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-40-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-40-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ab4b2ce40beae39f7dc02743730a37ec7_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aec49a70a468687177334c48637161932" name="aec49a70a468687177334c48637161932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec49a70a468687177334c48637161932">&#9670;&#160;</a></span>kest_scope_entry_init_expr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_init_expr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__expression.html">kest_expression</a> *</td>          <td class="paramname"><span class="paramname"><em>expr</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00019">19</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00288">kest_scope_add_expr()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00372">kest_scope_add_expr_return_entry()</a>.</p>
+<div id="dynsection-41" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-41-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-41-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aec49a70a468687177334c48637161932_cgraph.svg" width="420" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-42" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-42-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-42-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_aec49a70a468687177334c48637161932_icgraph.svg" width="100%" height="399"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad718b388bfb37161a17882b2aa9d55bf" name="ad718b388bfb37161a17882b2aa9d55bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad718b388bfb37161a17882b2aa9d55bf">&#9670;&#160;</a></span>kest_scope_entry_init_mem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_init_mem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__mem__slot.html">kest_mem_slot</a> *</td>          <td class="paramname"><span class="paramname"><em>mem</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00088">88</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00273">kest_scope_add_mem()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00357">kest_scope_add_mem_return_entry()</a>.</p>
+<div id="dynsection-43" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-43-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-43-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad718b388bfb37161a17882b2aa9d55bf_cgraph.svg" width="424" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-44" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-44-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-44-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad718b388bfb37161a17882b2aa9d55bf_icgraph.svg" width="100%" height="387"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a91b7dc90407b631f251aeded676ffd6b" name="a91b7dc90407b631f251aeded676ffd6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91b7dc90407b631f251aeded676ffd6b">&#9670;&#160;</a></span>kest_scope_entry_init_param()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_init_param </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__parameter.html">kest_parameter</a> *</td>          <td class="paramname"><span class="paramname"><em>param</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00036">36</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00303">kest_scope_add_param()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00387">kest_scope_add_param_return_entry()</a>.</p>
+<div id="dynsection-45" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-45-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-45-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a91b7dc90407b631f251aeded676ffd6b_cgraph.svg" width="384" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-46" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-46-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-46-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a91b7dc90407b631f251aeded676ffd6b_icgraph.svg" width="100%" height="439"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a8fbc4890bf273d06e7137acf809a3aa8" name="a8fbc4890bf273d06e7137acf809a3aa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fbc4890bf273d06e7137acf809a3aa8">&#9670;&#160;</a></span>kest_scope_entry_init_setting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_init_setting </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structkest__setting.html">kest_setting</a> *</td>          <td class="paramname"><span class="paramname"><em>setting</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00053">53</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00318">kest_scope_add_setting()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00402">kest_scope_add_setting_return_entry()</a>.</p>
+<div id="dynsection-47" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-47-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-47-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8fbc4890bf273d06e7137acf809a3aa8_cgraph.svg" width="384" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-48" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8fbc4890bf273d06e7137acf809a3aa8_icgraph.svg" width="100%" height="409"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a15663939558b745028a78009dabf91f3" name="a15663939558b745028a78009dabf91f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15663939558b745028a78009dabf91f3">&#9670;&#160;</a></span>kest_scope_entry_print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_entry_print </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope__entry.html">kest_scope_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a">kest_string</a> *</td>          <td class="paramname"><span class="paramname"><em>str</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00182">182</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00781">kest_scope_transitivize_updatable_dependents_rec()</a>.</p>
+<div id="dynsection-49" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-49-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-49-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a15663939558b745028a78009dabf91f3_cgraph.svg" width="100%" height="471"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-50" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-50-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-50-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a15663939558b745028a78009dabf91f3_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -883,14 +1327,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00416">416</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00461">461</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l00781">kest_expression_compute_range_rec()</a>.</p>
-<div id="dynsection-29" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01361">kest_expression_compute_max_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l00777">kest_expression_compute_min_rec()</a>, <a class="el" href="kest__expression_8c_source.html#l01929">kest_expression_compute_range_rec()</a>, and <a class="el" href="kest__expression_8c_source.html#l00467">kest_expression_evaluate_rec()</a>.</p>
+<div id="dynsection-51" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-51-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-29-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8a0fbd22e0deccdaee632b2a95d4aee5_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-51-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a8a0fbd22e0deccdaee632b2a95d4aee5_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -914,14 +1358,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00434">434</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00480">480</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00511">kest_scope_clear_updates()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
-<div id="dynsection-30" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00883">kest_scope_clear_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00646">kest_scope_detect_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00506">kest_scope_detect_env_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00560">kest_scope_propagate_updates()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00864">kest_scope_transitivize_updatable_dependents()</a>.</p>
+<div id="dynsection-52" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-52-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-30-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a003d0a831a549dab0e93c2ad5c82d14e_icgraph.svg" width="616" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-52-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a003d0a831a549dab0e93c2ad5c82d14e_icgraph.svg" width="100%" height="577"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="afd7862a7cb331b3576d5da3ba80d5e4a" name="afd7862a7cb331b3576d5da3ba80d5e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd7862a7cb331b3576d5da3ba80d5e4a">&#9670;&#160;</a></span>kest_scope_index_key()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * kest_scope_index_key </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00488">488</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__expr__scope_8c_source.html#l00646">kest_scope_detect_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00506">kest_scope_detect_env_updates()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00560">kest_scope_propagate_updates()</a>.</p>
+<div id="dynsection-53" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-53-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-53-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_afd7862a7cb331b3576d5da3ba80d5e4a_icgraph.svg" width="100%" height="413"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -941,14 +1416,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00320">320</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00239">239</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00089">kest_parse_tokens()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00302">kest_scope_new()</a>.</p>
-<div id="dynsection-31" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__parser_8c_source.html#l00093">kest_parse_tokens()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00221">kest_scope_new()</a>.</p>
+<div id="dynsection-54" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-54-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-31-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a43b6bb1cf362758abfd82e8b4c305938_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-54-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a43b6bb1cf362758abfd82e8b4c305938_cgraph.svg" width="100%" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-55" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-55-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-55-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a43b6bb1cf362758abfd82e8b4c305938_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -972,14 +1453,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00421">421</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00466">466</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__expression_8c_source.html#l01708">kest_expression_updated_in_scope()</a>, and <a class="el" href="kest__expr__scope_8c_source.html#l00442">kest_scope_propagate_updates()</a>.</p>
-<div id="dynsection-32" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__driver_8c_source.html#l00122">kest_driver_clone_for()</a>, <a class="el" href="kest__driver_8c_source.html#l00042">kest_driver_evaluate()</a>, <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>, <a class="el" href="kest__expression_8c_source.html#l02983">kest_expression_updated_in_scope()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00718">kest_scope_add_block_reg_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00749">kest_scope_add_filter_coef_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00646">kest_scope_detect_dependencies()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00560">kest_scope_propagate_updates()</a>, <a class="el" href="kest__expr__scope_8c_source.html#l00781">kest_scope_transitivize_updatable_dependents_rec()</a>, and <a class="el" href="kest__update_8c_source.html#l00702">kest_updater_handle_update()</a>.</p>
+<div id="dynsection-56" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-56-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-32-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a536647952c07049da59284b9f928bd67_icgraph.svg" width="100%" height="451"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-56-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a536647952c07049da59284b9f928bd67_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -999,20 +1480,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00302">302</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00221">221</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00451">kest_effect_create_scope()</a>.</p>
-<div id="dynsection-33" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-33-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__eff__desc_8c_source.html#l00076">kest_eff_desc_create_scope()</a>, and <a class="el" href="kest__effect_8c_source.html#l00693">kest_effect_create_scope()</a>.</p>
+<div id="dynsection-57" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-57-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-33-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad5a50e098f07b8e6c9bfd941a9682f98_cgraph.svg" width="308" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-57-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad5a50e098f07b8e6c9bfd941a9682f98_cgraph.svg" width="100%" height="426"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-34" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-58" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-58-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-34-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad5a50e098f07b8e6c9bfd941a9682f98_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-58-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_ad5a50e098f07b8e6c9bfd941a9682f98_icgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1032,20 +1513,53 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00442">442</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00560">560</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00419">kest_effect_update_fpga()</a>.</p>
-<div id="dynsection-35" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-35-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00639">kest_effect_is_updated()</a>.</p>
+<div id="dynsection-59" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-59-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-35-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a38b63c16b3979ad26c30a0dc0b73e96a_cgraph.svg" width="100%" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-59-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a38b63c16b3979ad26c30a0dc0b73e96a_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<div id="dynsection-36" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-60" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-60-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-36-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a38b63c16b3979ad26c30a0dc0b73e96a_icgraph.svg" width="407" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-60-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a38b63c16b3979ad26c30a0dc0b73e96a_icgraph.svg" width="100%" height="548"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a22d04780c6f58fc94a907b3969a819cc" name="a22d04780c6f58fc94a907b3969a819cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22d04780c6f58fc94a907b3969a819cc">&#9670;&#160;</a></span>kest_scope_transitivize_updatable_dependents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_scope_transitivize_updatable_dependents </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__scope.html">kest_scope</a> *</td>          <td class="paramname"><span class="paramname"><em>scope</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__expr__scope_8c_source.html#l00864">864</a> of file <a class="el" href="kest__expr__scope_8c_source.html">kest_expr_scope.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
+<div id="dynsection-61" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-61-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-61-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a22d04780c6f58fc94a907b3969a819cc_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-62" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-62-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-62-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__expr__scope_8h_a22d04780c6f58fc94a907b3969a819cc_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

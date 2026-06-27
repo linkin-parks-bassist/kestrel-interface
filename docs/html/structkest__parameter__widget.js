@@ -1,13 +1,17 @@
 var structkest__parameter__widget =
 [
     [ "container", "structkest__parameter__widget.html#aeec6ea3693836f63a09354f87987e3da", null ],
+    [ "driven", "structkest__parameter__widget.html#a76fea1e0d04f83bbda70300500d02bf4", null ],
     [ "id", "structkest__parameter__widget.html#a7b3f9c930f0aa38385d1d3255e53db75", null ],
     [ "name_label", "structkest__parameter__widget.html#ab9461ba947d40791e55194a8c72c3b5f", null ],
+    [ "nominal_value", "structkest__parameter__widget.html#a94e3d160c69c6804a10040b79fce8475", null ],
     [ "obj", "structkest__parameter__widget.html#a4e0fbb8141c47ee2461750d8260ee637", null ],
     [ "param", "structkest__parameter__widget.html#adf8fe6f6484a3e9231c4910c1c499245", null ],
     [ "parent", "structkest__parameter__widget.html#acb348ea675273259d937bb9a042fa92e", null ],
     [ "preset", "structkest__parameter__widget.html#aafd615427ce8cd0b2dabf8c4c0155232", null ],
+    [ "pressed", "structkest__parameter__widget.html#a697173c769068117785a557c3fd0a608", null ],
     [ "rep", "structkest__parameter__widget.html#ae25c55edbdfa8a04510ec8d9ecb935ad", null ],
+    [ "timer", "structkest__parameter__widget.html#a533fac1ec8f5de062d7cfb7cc985e4d1", null ],
     [ "type", "structkest__parameter__widget.html#aab983fc6c598ce09b434e38696cd7b85", null ],
     [ "val_label", "structkest__parameter__widget.html#a8a83ee89468b1e677c073422e04a6cf1", null ],
     [ "val_label_text", "structkest__parameter__widget.html#ab3b85b7d77bb8f582a83ec35276b8954", null ]

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['global_5fbackground_5fcolour_0',['GLOBAL_BACKGROUND_COLOUR',['../kest__ui_8h.html#a23a8a578f8983d9cf9d04deab252b3b1',1,'kest_ui.h']]],
-  ['global_5fmain_5ffont_1',['GLOBAL_MAIN_FONT',['../kest__ui_8h.html#a1130fdf20a1ca91897eca3ea85b15894',1,'kest_ui.h']]],
-  ['global_5fmain_5ftext_5fcolour_2',['GLOBAL_MAIN_TEXT_COLOUR',['../kest__ui_8h.html#ae6a4f31277d2532dc7c3e1a7d4e41adb',1,'kest_ui.h']]],
-  ['global_5fpad_5fwidth_3',['GLOBAL_PAD_WIDTH',['../kest__ui_8h.html#a9079fe2ebf59b0e32caf3122bea1d5b9',1,'kest_ui.h']]]
+  ['fname_5fdigits_0',['FNAME_DIGITS',['../kest__files_8c.html#aff5b7defb63020f1e32a3d15145af034',1,'kest_files.c']]],
+  ['fpga_5fboot_5fms_1',['FPGA_BOOT_MS',['../kest__fpga__defs_8h.html#adcd47903a08db8da8c54bccc79defef5',1,'kest_fpga_defs.h']]]
 ];

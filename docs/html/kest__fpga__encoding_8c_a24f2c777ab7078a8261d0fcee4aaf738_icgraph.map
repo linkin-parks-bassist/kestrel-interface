@@ -1,9 +1,13 @@
 <map id="kest_fpga_batch_append_block" name="kest_fpga_batch_append_block">
-<area shape="rect" id="Node000001" title=" " alt="" coords="696,5,879,50"/>
-<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#aaa459b3fe0bc706c415180f6ac35d7c3" title=" " alt="" coords="466,5,648,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="681,30,649,30,649,25,681,25"/>
-<area shape="rect" id="Node000003" href="$kest__fpga__encoding_8c.html#a443f946c065dedfb5afd510d362a931a" title=" " alt="" coords="236,5,418,50"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="696,40,879,85"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#ab25e66c3a6824f0d7213996ba244f105" title=" " alt="" coords="466,5,648,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="681,49,649,44,649,39,682,44"/>
+<area shape="rect" id="Node000056" href="$kest__fpga__encoding_8c.html#aaa459b3fe0bc706c415180f6ac35d7c3" title=" " alt="" coords="466,75,648,119"/>
+<area shape="poly" id="edge4_Node000001_Node000056" title=" " alt="" coords="682,81,649,86,649,81,681,76"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__encoding_8c.html#a1d36760e33c68c0a5b22c8920f3a5a2b" title=" " alt="" coords="236,5,418,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="451,30,419,30,419,25,451,25"/>
-<area shape="rect" id="Node000004" href="$kest__fpga__encoding_8c.html#a1d36760e33c68c0a5b22c8920f3a5a2b" title=" " alt="" coords="5,5,188,50"/>
+<area shape="rect" id="Node000004" href="$kest__fpga__encoding_8c.html#ad4ae765e4a682cbd9a71e3acceabf81d" title=" " alt="" coords="5,5,188,50"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="220,30,188,30,188,25,220,25"/>
+<area shape="rect" id="Node000057" href="$kest__fpga__encoding_8c.html#a443f946c065dedfb5afd510d362a931a" title=" " alt="" coords="236,75,418,119"/>
+<area shape="poly" id="edge5_Node000056_Node000057" title=" " alt="" coords="451,100,419,100,419,94,451,94"/>
 </map>

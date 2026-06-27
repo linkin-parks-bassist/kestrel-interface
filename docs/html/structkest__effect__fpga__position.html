@@ -97,7 +97,9 @@ $(function(){initNavTree('structkest__effect__fpga__position.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a3733e3d06de2cd10e333092ae10dd8eb" id="r_a3733e3d06de2cd10e333092ae10dd8eb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3733e3d06de2cd10e333092ae10dd8eb">block_start</a></td></tr>
+<tr class="memitem:afdaad1bb4fe147dcd5977d777e01bcbf" id="r_afdaad1bb4fe147dcd5977d777e01bcbf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdaad1bb4fe147dcd5977d777e01bcbf">mem_start</a></td></tr>
 <tr class="memitem:a14da36ed521bcae81214df3a88e9fc55" id="r_a14da36ed521bcae81214df3a88e9fc55"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14da36ed521bcae81214df3a88e9fc55">filter_start</a></td></tr>
+<tr class="memitem:ae44a9c44567f189ee1acac2781156a46" id="r_ae44a9c44567f189ee1acac2781156a46"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae44a9c44567f189ee1acac2781156a46">delay_start</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -117,7 +119,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fpga__position_8h_source.html#l00005">5</a> of file <a class="el" href="kest__fpga__position_8h_source.html">kest_fpga_position.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__position_8c_source.html#l00003">kest_effect_fpga_position_init()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00454">kest_fpga_batch_append_effect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__position_8c_source.html#l00003">kest_effect_fpga_position_init()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00015">kest_effect_fpga_position_resolve_block()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00493">kest_effect_ptr_list_update_positions()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00047">kest_fpga_position_start()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00444">kest_pipeline_update_positions()</a>, and <a class="el" href="kest__update_8c_source.html#l00898">kest_updater_handle_preset_update_add_effect()</a>.</p>
+
+</div>
+</div>
+<a id="ae44a9c44567f189ee1acac2781156a46" name="ae44a9c44567f189ee1acac2781156a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae44a9c44567f189ee1acac2781156a46">&#9670;&#160;</a></span>delay_start</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_fpga_position::delay_start</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__position_8h_source.html#l00008">8</a> of file <a class="el" href="kest__fpga__position_8h_source.html">kest_fpga_position.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00057">kest_block_instr_encode_positional()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00039">kest_effect_fpga_position_resolve_delay()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00493">kest_effect_ptr_list_update_positions()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00047">kest_fpga_position_start()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00444">kest_pipeline_update_positions()</a>.</p>
 
 </div>
 </div>
@@ -135,7 +155,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__fpga__position_8h_source.html#l00007">7</a> of file <a class="el" href="kest__fpga__position_8h_source.html">kest_fpga_position.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__position_8c_source.html#l00003">kest_effect_fpga_position_init()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00454">kest_fpga_batch_append_effect()</a>, and <a class="el" href="kest__fpga__encoding_8c_source.html#l00259">kest_fpga_batch_append_resource_updates()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00057">kest_block_instr_encode_positional()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00003">kest_effect_fpga_position_init()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00031">kest_effect_fpga_position_resolve_filter()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00493">kest_effect_ptr_list_update_positions()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00315">kest_fpga_batch_append_resource_updates()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00047">kest_fpga_position_start()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00444">kest_pipeline_update_positions()</a>, and <a class="el" href="kest__update_8c_source.html#l00898">kest_updater_handle_preset_update_add_effect()</a>.</p>
+
+</div>
+</div>
+<a id="afdaad1bb4fe147dcd5977d777e01bcbf" name="afdaad1bb4fe147dcd5977d777e01bcbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdaad1bb4fe147dcd5977d777e01bcbf">&#9670;&#160;</a></span>mem_start</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_effect_fpga_position::mem_start</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__fpga__position_8h_source.html#l00006">6</a> of file <a class="el" href="kest__fpga__position_8h_source.html">kest_fpga_position.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00057">kest_block_instr_encode_positional()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00023">kest_effect_fpga_position_resolve_mem()</a>, <a class="el" href="kest__pipeline_8c_source.html#l00493">kest_effect_ptr_list_update_positions()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00648">kest_fpga_batch_append_effect()</a>, <a class="el" href="kest__fpga__position_8c_source.html#l00047">kest_fpga_position_start()</a>, and <a class="el" href="kest__pipeline_8c_source.html#l00444">kest_pipeline_update_positions()</a>.</p>
 
 </div>
 </div>

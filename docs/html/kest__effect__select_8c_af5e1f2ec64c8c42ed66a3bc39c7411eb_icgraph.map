@@ -1,11 +1,9 @@
 <map id="create_effect_selector_ui_eff" name="create_effect_selector_ui_eff">
-<area shape="rect" id="Node000001" title=" " alt="" coords="464,24,631,68"/>
-<area shape="rect" id="Node000002" href="$kest__effect__select_8c.html#a4f784340d1e1e332c60be5a095244ba1" title=" " alt="" coords="245,32,416,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="449,48,417,48,417,43,449,43"/>
-<area shape="rect" id="Node000003" href="$kest__int_8c.html#abce06be17fc37d675118a678a8100a36" title=" " alt="" coords="110,5,195,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="229,33,195,28,196,23,230,28"/>
-<area shape="rect" id="Node000004" href="$kest__desktop_8c.html#ab499a4f71ef4cfc807b60d8739750c3e" title=" " alt="" coords="108,57,197,85"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="230,63,198,67,197,62,229,58"/>
-<area shape="rect" id="Node000005" href="$kest__desktop_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,57,60,85"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="92,74,60,74,60,68,92,68"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="540,5,707,50"/>
+<area shape="rect" id="Node000002" href="$kest__effect__select_8c.html#a4f784340d1e1e332c60be5a095244ba1" title=" " alt="" coords="321,14,492,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="525,30,493,30,493,25,525,25"/>
+<area shape="rect" id="Node000003" href="$kest__init_8c.html#ad1373cd24ac2876b2830d1ad2eb92721" title=" " alt="" coords="197,14,273,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="306,30,273,30,273,25,306,25"/>
+<area shape="rect" id="Node000004" href="$kest__event_8c.html#ad7148b990af9fe15dae1b2093872732b" title=" " alt="" coords="5,14,149,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="181,30,149,30,149,25,181,25"/>
 </map>

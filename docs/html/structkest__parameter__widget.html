@@ -97,7 +97,7 @@ $(function(){initNavTree('structkest__parameter__widget.html','',''); });
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__parameter__widget__coll__graph.svg" width="100%" height="572"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="structkest__parameter__widget__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -112,6 +112,10 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ab9461ba947d40791e55194a8c72c3b5f" id="r_ab9461ba947d40791e55194a8c72c3b5f"><td class="memItemLeft" align="right" valign="top">lv_obj_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9461ba947d40791e55194a8c72c3b5f">name_label</a></td></tr>
 <tr class="memitem:aeec6ea3693836f63a09354f87987e3da" id="r_aeec6ea3693836f63a09354f87987e3da"><td class="memItemLeft" align="right" valign="top">lv_obj_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeec6ea3693836f63a09354f87987e3da">container</a></td></tr>
 <tr class="memitem:a4e0fbb8141c47ee2461750d8260ee637" id="r_a4e0fbb8141c47ee2461750d8260ee637"><td class="memItemLeft" align="right" valign="top">lv_obj_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e0fbb8141c47ee2461750d8260ee637">obj</a></td></tr>
+<tr class="memitem:a533fac1ec8f5de062d7cfb7cc985e4d1" id="r_a533fac1ec8f5de062d7cfb7cc985e4d1"><td class="memItemLeft" align="right" valign="top">lv_timer_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a533fac1ec8f5de062d7cfb7cc985e4d1">timer</a></td></tr>
+<tr class="memitem:a94e3d160c69c6804a10040b79fce8475" id="r_a94e3d160c69c6804a10040b79fce8475"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94e3d160c69c6804a10040b79fce8475">nominal_value</a></td></tr>
+<tr class="memitem:a697173c769068117785a557c3fd0a608" id="r_a697173c769068117785a557c3fd0a608"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a697173c769068117785a557c3fd0a608">pressed</a></td></tr>
+<tr class="memitem:a76fea1e0d04f83bbda70300500d02bf4" id="r_a76fea1e0d04f83bbda70300500d02bf4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76fea1e0d04f83bbda70300500d02bf4">driven</a></td></tr>
 <tr class="memitem:ae25c55edbdfa8a04510ec8d9ecb935ad" id="r_ae25c55edbdfa8a04510ec8d9ecb935ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__representation.html">kest_representation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae25c55edbdfa8a04510ec8d9ecb935ad">rep</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
@@ -132,7 +136,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00054">54</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00300">parameter_widget_create_ui_no_callback()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00431">parameter_widget_create_ui_no_callback()</a>, and <a class="el" href="kest__effect__settings_8c_source.html#l00182">refresh_effect_settings_page()</a>.</p>
+
+</div>
+</div>
+<a id="a76fea1e0d04f83bbda70300500d02bf4" name="a76fea1e0d04f83bbda70300500d02bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76fea1e0d04f83bbda70300500d02bf4">&#9670;&#160;</a></span>driven</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_parameter_widget::driven</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00062">62</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00084">parameter_widget_update_value()</a>.</p>
 
 </div>
 </div>
@@ -168,7 +190,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00053">53</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00300">parameter_widget_create_ui_no_callback()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00431">parameter_widget_create_ui_no_callback()</a>.</p>
+
+</div>
+</div>
+<a id="a94e3d160c69c6804a10040b79fce8475" name="a94e3d160c69c6804a10040b79fce8475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94e3d160c69c6804a10040b79fce8475">&#9670;&#160;</a></span>nominal_value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float kest_parameter_widget::nominal_value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00059">59</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00071">format_parameter_widget_value_label()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00550">kest_parameter_widget_align_nominal_value()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00239">kest_parameter_widget_refresh()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00217">kest_parameter_widget_refresh_timer_wrapper()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00299">parameter_widget_change_cb_inner()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00084">parameter_widget_update_value()</a>.</p>
 
 </div>
 </div>
@@ -186,7 +226,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00055">55</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00204">parameter_widget_change_cb_inner()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00286">parameter_widget_create_ui()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00300">parameter_widget_create_ui_no_callback()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00077">parameter_widget_update_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00299">parameter_widget_change_cb_inner()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00414">parameter_widget_create_ui()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00431">parameter_widget_create_ui_no_callback()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00084">parameter_widget_update_value()</a>.</p>
 
 </div>
 </div>
@@ -204,7 +244,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00047">47</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00064">format_parameter_widget_value_label()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00051">format_parameter_widget_value_label_v()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00204">parameter_widget_change_cb_inner()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00300">parameter_widget_create_ui_no_callback()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00077">parameter_widget_update_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00071">format_parameter_widget_value_label()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00058">format_parameter_widget_value_label_v()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00550">kest_parameter_widget_align_nominal_value()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00239">kest_parameter_widget_refresh()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00217">kest_parameter_widget_refresh_timer_wrapper()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00299">parameter_widget_change_cb_inner()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00431">parameter_widget_create_ui_no_callback()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00383">parameter_widget_pressing_cb()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00399">parameter_widget_released_cb()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00084">parameter_widget_update_value()</a>.</p>
 
 </div>
 </div>
@@ -222,7 +262,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00049">49</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>.</p>
 
 </div>
 </div>
@@ -240,7 +280,25 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00048">48</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00204">parameter_widget_change_cb_inner()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__preset__settings_8c_source.html#l00045">configure_preset_settings_page()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00299">parameter_widget_change_cb_inner()</a>.</p>
+
+</div>
+</div>
+<a id="a697173c769068117785a557c3fd0a608" name="a697173c769068117785a557c3fd0a608"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a697173c769068117785a557c3fd0a608">&#9670;&#160;</a></span>pressed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_parameter_widget::pressed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00061">61</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00239">kest_parameter_widget_refresh()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00383">parameter_widget_pressing_cb()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00271">parameter_widget_refresh()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00399">parameter_widget_released_cb()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00084">parameter_widget_update_value()</a>.</p>
 
 </div>
 </div>
@@ -256,9 +314,27 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00064">64</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>.</p>
+
+</div>
+</div>
+<a id="a533fac1ec8f5de062d7cfb7cc985e4d1" name="a533fac1ec8f5de062d7cfb7cc985e4d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a533fac1ec8f5de062d7cfb7cc985e4d1">&#9670;&#160;</a></span>timer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lv_timer_t* kest_parameter_widget::timer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00057">57</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00217">kest_parameter_widget_refresh_timer_wrapper()</a>.</p>
 
 </div>
 </div>
@@ -292,7 +368,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00052">52</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00300">parameter_widget_create_ui_no_callback()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00152">parameter_widget_update_value_label()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00137">parameter_widget_update_value_label_v()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00431">parameter_widget_create_ui_no_callback()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00173">parameter_widget_update_value_label()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00158">parameter_widget_update_value_label_v()</a>.</p>
 
 </div>
 </div>
@@ -310,7 +386,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__parameter__widget_8h_source.html#l00051">51</a> of file <a class="el" href="kest__parameter__widget_8h_source.html">kest_parameter_widget.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00064">format_parameter_widget_value_label()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00051">format_parameter_widget_value_label_v()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00152">parameter_widget_update_value_label()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00137">parameter_widget_update_value_label_v()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00071">format_parameter_widget_value_label()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00058">format_parameter_widget_value_label_v()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00173">parameter_widget_update_value_label()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00158">parameter_widget_update_value_label_v()</a>.</p>
 
 </div>
 </div>

@@ -8,6 +8,7 @@ var structkest__eff__parsing__state =
     [ "current_line", "structkest__eff__parsing__state.html#af345a22c76e2db2f0f147f793963db9b", null ],
     [ "current_token", "structkest__eff__parsing__state.html#a6e4cd0750c43f8b4f959566c98890c72", null ],
     [ "def_exprs", "structkest__eff__parsing__state.html#a70d9d3902fa5818f0146d3ef3e14bc00", null ],
+    [ "drivers", "structkest__eff__parsing__state.html#a5ab9bfd68ee095eff72a1cd8705f5b81", null ],
     [ "errors", "structkest__eff__parsing__state.html#ae2d96fdd5f90fed247135929cc7db4b3", null ],
     [ "file_size", "structkest__eff__parsing__state.html#a7c6ba3ceaa94b1f1db47e96d6b506101", null ],
     [ "fname", "structkest__eff__parsing__state.html#a40afb9792055b8738126d55e3bcb388f", null ],

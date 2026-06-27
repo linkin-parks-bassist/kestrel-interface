@@ -92,6 +92,9 @@ $(function(){initNavTree('structkest__representation.html','',''); });
 </div><!--header-->
 <div class="contents">
 
+<p>A system for delegating calls for thread safety/ownership reasons. Due to be deprecated bc I realised I can just use lv_async_call lol.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -102,8 +105,9 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ac56b62939bfe6d41f034edbaf0b3e41d" id="r_ac56b62939bfe6d41f034edbaf0b3e41d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac56b62939bfe6d41f034edbaf0b3e41d">update</a> )(void *<a class="el" href="#a0b5abc8a19485f081383758c8752d781">representer</a>, void *<a class="el" href="#ae4dd184b6dc89623cb5d49057d93ea1c">representee</a>)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00004">4</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
+<div class="textblock"><p>A system for delegating calls for thread safety/ownership reasons. Due to be deprecated bc I realised I can just use lv_async_call lol. </p>
+
+<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00011">11</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Field Documentation</h2>
 <a id="abc035cd0dcd362cc34a29cd7dbf62bf0" name="abc035cd0dcd362cc34a29cd7dbf62bf0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc035cd0dcd362cc34a29cd7dbf62bf0">&#9670;&#160;</a></span>info</h2>
@@ -117,7 +121,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00006">6</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00013">13</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
 
 </div>
 </div>
@@ -133,9 +137,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00009">9</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00016">16</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00167">configure_parameter_widget()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00337">configure_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00282">configure_sequence_view()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00118">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01057">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00441">nullify_setting_widget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__parameter__widget_8c_source.html#l00188">configure_parameter_widget()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00339">configure_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00285">configure_sequence_view()</a>, <a class="el" href="kest__preset__view_8c_source.html#l00112">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01082">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00585">nullify_setting_widget()</a>.</p>
 
 </div>
 </div>
@@ -151,9 +155,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00008">8</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00015">15</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__preset__view_8c_source.html#l00118">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01057">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00441">nullify_setting_widget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__preset__view_8c_source.html#l00112">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01082">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00585">nullify_setting_widget()</a>.</p>
 
 </div>
 </div>
@@ -169,9 +173,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00011">11</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__representation_8h_source.html#l00018">18</a> of file <a class="el" href="kest__representation_8h_source.html">kest_representation.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__preset__view_8c_source.html#l00118">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01057">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00029">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00441">nullify_setting_widget()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__preset__view_8c_source.html#l00112">init_preset_view()</a>, <a class="el" href="kest__sequence__view_8c_source.html#l00065">init_sequence_view()</a>, <a class="el" href="kest__button_8c_source.html#l01082">kest_active_button_set_representation()</a>, <a class="el" href="kest__parameter__widget_8c_source.html#l00030">nullify_parameter_widget()</a>, and <a class="el" href="kest__parameter__widget_8c_source.html#l00585">nullify_setting_widget()</a>.</p>
 
 </div>
 </div>

@@ -1,13 +1,17 @@
 <map id="save_sequence_as_file" name="save_sequence_as_file">
-<area shape="rect" id="Node000001" title=" " alt="" coords="605,44,777,72"/>
-<area shape="rect" id="Node000002" href="$kest__files_8c.html#af53689e3600e69611b9c05f11971d23e" title=" " alt="" coords="436,44,557,72"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="590,61,557,61,557,56,590,56"/>
-<area shape="rect" id="Node000003" href="$kest__sequence_8c.html#aade8512fa274f7f5aba28d373fd2e6d9" title=" " alt="" coords="243,5,388,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="420,48,388,43,389,37,421,43"/>
-<area shape="rect" id="Node000026" href="$kest__sequence__view_8c.html#a48d14522bbc105d8b61111d5dc6a7c8f" title=" " alt="" coords="263,74,368,102"/>
-<area shape="poly" id="edge4_Node000002_Node000026" title=" " alt="" coords="421,73,368,82,367,77,420,68"/>
-<area shape="rect" id="Node000004" href="$kest__sequence_8c.html#a3d05c5041e825df7868554ff22e0dd80" title=" " alt="" coords="34,14,166,42"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="227,30,166,30,166,25,227,25"/>
-<area shape="rect" id="Node000027" href="$kest__sequence__view_8c.html#ac871b24a7c875a7b6e707a3d2691a2a9" title=" " alt="" coords="5,74,195,102"/>
-<area shape="poly" id="edge5_Node000026_Node000027" title=" " alt="" coords="247,90,195,90,195,85,247,85"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="605,65,777,93"/>
+<area shape="rect" id="Node000002" href="$kest__files_8c.html#af53689e3600e69611b9c05f11971d23e" title=" " alt="" coords="436,65,557,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="590,82,557,82,557,76,590,76"/>
+<area shape="rect" id="Node000003" href="$kest__file__task_8c.html#a5074472478d549dde72467f91683e06f" title=" " alt="" coords="260,5,371,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="437,62,359,36,361,31,439,57"/>
+<area shape="rect" id="Node000024" href="$kest__sequence_8c.html#aade8512fa274f7f5aba28d373fd2e6d9" title=" " alt="" coords="243,57,388,102"/>
+<area shape="poly" id="edge4_Node000002_Node000024" title=" " alt="" coords="420,82,389,82,389,76,420,76"/>
+<area shape="rect" id="Node000037" href="$kest__sequence__view_8c.html#a48d14522bbc105d8b61111d5dc6a7c8f" title=" " alt="" coords="263,125,368,153"/>
+<area shape="poly" id="edge6_Node000002_Node000037" title=" " alt="" coords="439,101,361,127,359,122,437,96"/>
+<area shape="rect" id="Node000004" href="$kest__file__task_8c.html#ab32d670df0ae9250ac6b20fc2dbe577b" title=" " alt="" coords="30,5,170,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="244,22,170,22,170,16,244,16"/>
+<area shape="rect" id="Node000025" href="$kest__sequence_8c.html#a3d05c5041e825df7868554ff22e0dd80" title=" " alt="" coords="34,65,166,93"/>
+<area shape="poly" id="edge5_Node000024_Node000025" title=" " alt="" coords="227,82,166,82,166,76,227,76"/>
+<area shape="rect" id="Node000038" href="$kest__sequence__view_8c.html#ac871b24a7c875a7b6e707a3d2691a2a9" title=" " alt="" coords="5,125,195,153"/>
+<area shape="poly" id="edge7_Node000037_Node000038" title=" " alt="" coords="247,142,195,142,195,136,247,136"/>
 </map>

@@ -1,9 +1,13 @@
 <map id="refresh_menu_page" name="refresh_menu_page">
-<area shape="rect" id="Node000001" title=" " alt="" coords="551,5,702,33"/>
-<area shape="rect" id="Node000002" href="$kest__menu_8c.html#af46174a3713bd90a7920a15efac58b46" title=" " alt="" coords="365,5,503,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="536,22,504,22,504,16,536,16"/>
-<area shape="rect" id="Node000003" href="$kest__menu_8c.html#a9a3dc2a29ebf6ace0a6b54a902530001" title=" " alt="" coords="192,5,317,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="349,22,318,22,318,16,349,16"/>
-<area shape="rect" id="Node000004" href="$kest__sequence__list_8c.html#a0e869118af43741e3d4db628d5c414fe" title=" " alt="" coords="5,5,144,33"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="176,22,144,22,144,16,176,16"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="565,32,716,60"/>
+<area shape="rect" id="Node000002" href="$kest__menu_8c.html#af46174a3713bd90a7920a15efac58b46" title=" " alt="" coords="379,32,517,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="550,48,518,48,518,43,550,43"/>
+<area shape="rect" id="Node000003" href="$kest__menu_8c.html#ad39524fe8d62cff7c8e4c1d041b0dd61" title=" " alt="" coords="192,5,331,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,36,331,32,331,26,364,31"/>
+<area shape="rect" id="Node000025" href="$kest__menu_8c.html#a9a3dc2a29ebf6ace0a6b54a902530001" title=" " alt="" coords="199,57,324,85"/>
+<area shape="poly" id="edge4_Node000002_Node000025" title=" " alt="" coords="364,60,325,65,324,60,364,55"/>
+<area shape="rect" id="Node000004" href="$kest__menu_8c.html#a6aa16fb3d12f098f021ae677605e683e" title=" " alt="" coords="11,5,138,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="176,22,138,22,138,16,176,16"/>
+<area shape="rect" id="Node000026" href="$kest__sequence__list_8c.html#a0e869118af43741e3d4db628d5c414fe" title=" " alt="" coords="5,57,144,85"/>
+<area shape="poly" id="edge5_Node000025_Node000026" title=" " alt="" coords="183,74,144,74,144,68,183,68"/>
 </map>

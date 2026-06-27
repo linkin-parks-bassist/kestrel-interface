@@ -1,10 +1,22 @@
 var searchData=
 [
-  ['ui_5fpage_5ftransition_5fanim_5fms_0',['UI_PAGE_TRANSITION_ANIM_MS',['../kest__ui_8h.html#a6c302c401d95987921ad5140e6b39a22',1,'kest_ui.h']]],
-  ['unary_5fprecedence_1',['UNARY_PRECEDENCE',['../kest__expr__parser_8h.html#a4fe064b178155cf0fe418a470145f252',1,'kest_expr_parser.h']]],
-  ['use_5f5a_2',['USE_5A',['../kest__int_8h.html#aa0935188a1c97e0bea3250258f4a886e',1,'USE_5A:&#160;kest_int.h'],['../kest__desktop_8h.html#aa0935188a1c97e0bea3250258f4a886e',1,'USE_5A:&#160;kest_desktop.h']]],
-  ['use_5fdisplay_3',['USE_DISPLAY',['../kest__int_8h.html#a654c02206a58165042e10bce786362d8',1,'USE_DISPLAY:&#160;kest_int.h'],['../kest__desktop_8h.html#a654c02206a58165042e10bce786362d8',1,'USE_DISPLAY:&#160;kest_desktop.h']]],
-  ['use_5ffpga_4',['USE_FPGA',['../kest__int_8h.html#af641ed08c6fcb81119a059d515a33ac1',1,'USE_FPGA:&#160;kest_int.h'],['../kest__desktop_8h.html#af641ed08c6fcb81119a059d515a33ac1',1,'USE_FPGA:&#160;kest_desktop.h']]],
-  ['use_5fsdcard_5',['USE_SDCARD',['../kest__int_8h.html#ad1b880b20b32f399da65d86c5dd50cee',1,'USE_SDCARD:&#160;kest_int.h'],['../kest__desktop_8h.html#ad1b880b20b32f399da65d86c5dd50cee',1,'USE_SDCARD:&#160;kest_desktop.h']]],
-  ['use_5fsgtl5000_6',['USE_SGTL5000',['../kest__int_8h.html#a0252cce42746c0b1ca0c5dfbe262c4f5',1,'USE_SGTL5000:&#160;kest_int.h'],['../kest__desktop_8h.html#a0252cce42746c0b1ca0c5dfbe262c4f5',1,'USE_SGTL5000:&#160;kest_desktop.h']]]
+  ['tokenizer_5fpolicy_5faccept_0',['TOKENIZER_POLICY_ACCEPT',['../kest__tokenizer_8h.html#a9328ce0d3ea987146a4778d01095c375',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fbegin_1',['TOKENIZER_POLICY_BEGIN',['../kest__tokenizer_8h.html#a9310caa2b243f68741acc7103f08811b',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fcomplain_2',['TOKENIZER_POLICY_COMPLAIN',['../kest__tokenizer_8h.html#a2edf0ad7185a3210fb302f092dc5129d',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fdiscard_3',['TOKENIZER_POLICY_DISCARD',['../kest__tokenizer_8h.html#a085048ef42f063fde582dee791816d6a',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fend_5faccept_4',['TOKENIZER_POLICY_END_ACCEPT',['../kest__tokenizer_8h.html#a4a34ff0088a86b14172bce7abce575fb',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fend_5fdiscard_5',['TOKENIZER_POLICY_END_DISCARD',['../kest__tokenizer_8h.html#aad55c23a95dd24308ba23aefa43ff013',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fpolicy_5fsingular_6',['TOKENIZER_POLICY_SINGULAR',['../kest__tokenizer_8h.html#a5ac89f64360819e0701d7578bc7c2849',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fdone_7',['TOKENIZER_STATE_DONE',['../kest__tokenizer_8h.html#a00402ceedcbe22f877843cf788a9347a',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fidle_8',['TOKENIZER_STATE_IDLE',['../kest__tokenizer_8h.html#a058a4748ce061fc727b2389b1734c2f6',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fleading_5fzero_9',['TOKENIZER_STATE_LEADING_ZERO',['../kest__tokenizer_8h.html#a7b5f7e068af971d383c8574f195a308e',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fname_10',['TOKENIZER_STATE_NAME',['../kest__tokenizer_8h.html#a058a2e7fabba2bac3f88d03b1c39cd8d',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fnumber_11',['TOKENIZER_STATE_NUMBER',['../kest__tokenizer_8h.html#abe4d3d9077828d0f626b5c693ce14775',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fnumber_5fbin_12',['TOKENIZER_STATE_NUMBER_BIN',['../kest__tokenizer_8h.html#a07807fface2ae1bcb950503471aa6137',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fnumber_5fhex_13',['TOKENIZER_STATE_NUMBER_HEX',['../kest__tokenizer_8h.html#af2157209ee25b76208f3634d02b57fa9',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fstresc_14',['TOKENIZER_STATE_STRESC',['../kest__tokenizer_8h.html#a289a86f099ff8c11570dc7bb592890b3',1,'kest_tokenizer.h']]],
+  ['tokenizer_5fstate_5fstring_15',['TOKENIZER_STATE_STRING',['../kest__tokenizer_8h.html#ac3e71ae6148a7fcf8ff1f5e2200a9976',1,'kest_tokenizer.h']]],
+  ['top_5fpanel_5fcolour_16',['TOP_PANEL_COLOUR',['../kest__ui_8h.html#a567e7a748827cbee13d91be2ff97da26',1,'kest_ui.h']]],
+  ['top_5fpanel_5fflag_5frw_5ftitle_17',['TOP_PANEL_FLAG_RW_TITLE',['../kest__ui_8h.html#a5a18f769c2803e40702ced35b2278493',1,'kest_ui.h']]],
+  ['top_5fpanel_5fheight_18',['TOP_PANEL_HEIGHT',['../kest__ui_8h.html#a4b17beb98cb72ad3e2726ec7c4e83626',1,'kest_ui.h']]]
 ];

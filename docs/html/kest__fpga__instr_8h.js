@@ -5,6 +5,7 @@ var kest__fpga__instr_8h =
     [ "KEST_ARG_POS_NONE", "kest__fpga__instr_8h.html#ade36461fe2ba2e225b4834e294885e26", null ],
     [ "SHIFT_POLICY_0", "kest__fpga__instr_8h.html#a97596a8ac1829890c3995c170185c882", null ],
     [ "SHIFT_POLICY_1", "kest__fpga__instr_8h.html#a8294c4af8d92e72aba04038ed42b4fbd", null ],
+    [ "SHIFT_POLICY_F0", "kest__fpga__instr_8h.html#aee28fa4540a6597c7033e0d0d8cb28cc", null ],
     [ "SHIFT_POLICY_FA", "kest__fpga__instr_8h.html#ac13e92b71474fb7f382fbea5d68cae3f", null ],
     [ "SHIFT_POLICY_FB", "kest__fpga__instr_8h.html#a957b0440a1e810ec473af49fcbc0c421", null ],
     [ "SHIFT_POLICY_FC", "kest__fpga__instr_8h.html#a40489d9be2c96250550d898cc1b2b0fb", null ],

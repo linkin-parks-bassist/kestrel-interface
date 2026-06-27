@@ -8,7 +8,6 @@ var kest__preset__view_8c =
     [ "free_preset_view", "kest__preset__view_8c.html#a58eda1cec9e655ae816503dc7dd9616c", null ],
     [ "init_preset_view", "kest__preset__view_8c.html#a7aa469a400baf1fdf82d314a2ad5ddbb", null ],
     [ "preset_view_append_effect", "kest__preset__view_8c.html#aed5789e6285a903942736fef4408ce40", null ],
-    [ "preset_view_change_name", "kest__preset__view_8c.html#ac2582f71255ed9c1fcda9d13a8df20ab", null ],
     [ "preset_view_effect_click_cb", "kest__preset__view_8c.html#aa520b487e8647229d753148ac01febc3", null ],
     [ "preset_view_effect_delete_cb", "kest__preset__view_8c.html#ae342f0eada18cee3f3c03ae3252a2950", null ],
     [ "preset_view_effect_moved_cb", "kest__preset__view_8c.html#a008a1eea3d0cdeafc0934391a6801fa8", null ],

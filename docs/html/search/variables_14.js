@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['warn_5fcolour_0',['warn_colour',['../kest__eff__parser_8c.html#ae03cf0f19f835b54dc49bb418f3c77a2',1,'kest_eff_parser.c']]],
-  ['wet_5fmix_1',['wet_mix',['../structkest__effect.html#a509a23d0859cb660dba9cb92c148c1d3',1,'kest_effect']]],
-  ['widget_5ftype_2',['widget_type',['../structkest__parameter.html#afc42f5b0d8559424944d08ed7a87c009',1,'kest_parameter::widget_type'],['../structkest__setting.html#a340e5b73967c85a868402e9888ec7a23',1,'kest_setting::widget_type']]],
-  ['width_3',['width',['../structkest__button.html#ac2ca914ee4f03f1915174f03ffd3e7ef',1,'kest_button']]],
-  ['working_5fpreset_4',['working_preset',['../structkest__context.html#a83bb47b0872d84f7dd15cf42ba656b27',1,'kest_context']]]
+  ['val_0',['val',['../structkest__scope__entry.html#a9c8a527a1c137ab4b177f0050f32a4b7',1,'kest_scope_entry::val'],['../structkest__expression.html#a00506d168bea3c8ed52c34fbbf491f33',1,'kest_expression::val'],['../structkest__fpga__command.html#a26cc509925df8a7ef72b02cf537b01f9',1,'kest_fpga_command::val'],['../structkest__asm__operand.html#ab50d5bc91738a27b0f626b3fb00e3bd7',1,'kest_asm_operand::val']]],
+  ['val_5fdict_1',['val_dict',['../structkest__dictionary__entry.html#a42b9dfe2ad5f84414b3789505a876833',1,'kest_dictionary_entry::val_dict'],['../structkest__eff__entry.html#a00b9da3838a0777e521b5c38791a6482',1,'kest_eff_entry::val_dict']]],
+  ['val_5fexpr_2',['val_expr',['../structkest__dictionary__entry.html#ac332896746fe09265864f29b86271f2f',1,'kest_dictionary_entry::val_expr'],['../structkest__eff__entry.html#a958d0c3dff2a5fba7545b83dbfbf181b',1,'kest_eff_entry::val_expr']]],
+  ['val_5ff_3',['val_f',['../structkest__event.html#a2d4012d4fd948f9b4bd442cf2ba47f95',1,'kest_event']]],
+  ['val_5ffloat_4',['val_float',['../structkest__expression.html#a610faacc6c198ec4963796b306a24a08',1,'kest_expression::val_float'],['../structkest__dictionary__entry.html#aa4df5b1398eef283a1c9a5b5b6ba59b0',1,'kest_dictionary_entry::val_float']]],
+  ['val_5fi_5',['val_i',['../structkest__event.html#a3f8105666557d2d1d01deb7f487e2539',1,'kest_event']]],
+  ['val_5fint_6',['val_int',['../structkest__dictionary__entry.html#a8849b8423244fa0907c54f976928ac42',1,'kest_dictionary_entry']]],
+  ['val_5flabel_7',['val_label',['../structkest__parameter__widget.html#a8a83ee89468b1e677c073422e04a6cf1',1,'kest_parameter_widget']]],
+  ['val_5flabel_5ftext_8',['val_label_text',['../structkest__parameter__widget.html#ab3b85b7d77bb8f582a83ec35276b8954',1,'kest_parameter_widget']]],
+  ['val_5flist_9',['val_list',['../structkest__dictionary__entry.html#a6c3a237d5bddcde394159605810811e4',1,'kest_dictionary_entry::val_list'],['../structkest__eff__entry.html#a613eb644b1b895aa4528c2289153e5fd',1,'kest_eff_entry::val_list']]],
+  ['val_5fptr_10',['val_ptr',['../structkest__event.html#a1b2c8918b243450bda867f5cde77db75',1,'kest_event']]],
+  ['val_5fstring_11',['val_string',['../structkest__dictionary__entry.html#ad788ffcdba34b0c63b39fc0f4a59562c',1,'kest_dictionary_entry::val_string'],['../structkest__eff__entry.html#ab5400babe509a002eb2eb7f7f3ad737f',1,'kest_eff_entry::val_string']]],
+  ['value_12',['value',['../structkest__setting__option.html#a96560ee391b1ea03349f4e2195e05189',1,'kest_setting_option::value'],['../structkest__setting.html#a87db407bbce695421636d92935088092',1,'kest_setting::value'],['../structkest__mem__slot.html#abb470935424dea591b3a1174a136b89f',1,'kest_mem_slot::value'],['../structkest__dictionary__entry.html#a04c626e04674d40e7e1db9a7db94b7f4',1,'kest_dictionary_entry::value'],['../structkest__eff__entry.html#afd2910d227df4a50f3fd4ece5fecf8ef',1,'kest_eff_entry::value']]],
+  ['ver_5fstr_13',['ver_str',['../kest__eff__parser_8c.html#af5f2f378d4daadebf4ee9ed3257402cf',1,'ver_str:&#160;kest_eff_parser.c'],['../kest__eff__parser_8h.html#af5f2f378d4daadebf4ee9ed3257402cf',1,'ver_str:&#160;kest_eff_parser.c']]],
+  ['version_5fstring_14',['version_string',['../structkest__eff__parsing__state.html#a1526a72b4854689c1c273859a12a03d5',1,'kest_eff_parsing_state']]],
+  ['volume_15',['volume',['../structkest__preset.html#a09b7902a1516cf47259bdb34a2f4e05e',1,'kest_preset']]],
+  ['volume_5fwidget_16',['volume_widget',['../structkest__preset__settings__str.html#ac1cfd2ceb42035c0057ec84ae7c5382c',1,'kest_preset_settings_str']]]
 ];

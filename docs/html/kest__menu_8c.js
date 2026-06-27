@@ -38,5 +38,7 @@ var kest__menu_8c =
     [ "preset_listing_menu_item_change_name", "kest__menu_8c.html#af4495da42a8ff523c3a9bf6f3966eadc", null ],
     [ "preset_listing_menu_item_refresh_active", "kest__menu_8c.html#a68cbc9775c6d1353fde737a22c50cd4f", null ],
     [ "refresh_menu_item", "kest__menu_8c.html#a4277d471346a6104448702ed536224bf", null ],
-    [ "refresh_menu_page", "kest__menu_8c.html#a87951b94f1041ed0f61ae67d3f196694", null ]
+    [ "refresh_menu_page", "kest__menu_8c.html#a87951b94f1041ed0f61ae67d3f196694", null ],
+    [ "input_gain_widget", "kest__menu_8c.html#ae51da06ad67f52b9c5ca84eb3e88d48e", null ],
+    [ "output_gain_widget", "kest__menu_8c.html#a379dc0c0ca4c526dd53527261fb64902", null ]
 ];

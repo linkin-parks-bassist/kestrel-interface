@@ -1,6 +1,7 @@
 var structkest__sequence__view__str =
 [
     [ "array", "structkest__sequence__view__str.html#a94c7750df21268a2b1b04c1b5d6bb742", null ],
+    [ "menu_item", "structkest__sequence__view__str.html#a3fb2e2511145800baaf5ef74410172d3", null ],
     [ "play", "structkest__sequence__view__str.html#ae622910aed5ddcfd54d98b73ca9fe2e4", null ],
     [ "plus", "structkest__sequence__view__str.html#ae5ef503915372c410a3e1cd500c1c1f8", null ],
     [ "rep", "structkest__sequence__view__str.html#aae38cedb675d926bdd0b220b5f96d3d3", null ],

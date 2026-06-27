@@ -130,7 +130,7 @@ Macros</h2></td></tr>
 <div class="line">DECLARE_LIST(X##_dict_entry);\</div>
 <div class="line"><span class="keyword">typedef</span> X##_dict_entry_list X##_dict_bucket;\</div>
 <div class="line">\</div>
-<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{\</div>
+<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>X##_dict {\</div>
 <div class="line">    X##_dict_bucket *buckets;\</div>
 <div class="line">    <span class="keywordtype">size_t</span> n_buckets;\</div>
 <div class="line">    <a class="code hl_struct" href="structkest__allocator.html">kest_allocator</a> alloc;\</div>
@@ -139,11 +139,16 @@ Macros</h2></td></tr>
 <div class="line"><span class="keywordtype">int</span> X##_dict_init(X##_dict *dict, <span class="keywordtype">size_t</span> n_buckets);\</div>
 <div class="line"><span class="keywordtype">int</span> X##_dict_init_with_allocator(X##_dict *dict, <span class="keywordtype">size_t</span> n_buckets, kest_allocator *alloc);\</div>
 <div class="line"><span class="keywordtype">int</span> X##_dict_insert(X##_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key, X x);\</div>
+<div class="line">X *X##_dict_insert_return_ptr(X##_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key, X x);\</div>
+<div class="line">X##_dict_entry *X##_dict_insert_return_entry_ptr(X##_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key, X x);\</div>
 <div class="line">X *X##_dict_lookup(X##_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key);\</div>
+<div class="line">X##_dict_entry *X##_dict_lookup_entry(X##_dict *dict, <span class="keyword">const</span> <span class="keywordtype">char</span> *key);\</div>
 <div class="line"><span class="keywordtype">size_t</span> X##_dict_count(X##_dict *dict);\</div>
 <div class="line">X *X##_dict_index(X##_dict *dict, <span class="keywordtype">size_t</span> n);\</div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *X##_dict_index_key(X##_dict *dict, <span class="keywordtype">size_t</span> n);\</div>
+<div class="line">X##_dict_entry *X##_dict_index_entry(X##_dict *dict, <span class="keywordtype">size_t</span> n);\</div>
 <div class="line"><span class="keywordtype">void</span> X##_dict_destroy(X##_dict *dict, <span class="keywordtype">void</span> (*destructor)(X *x));</div>
-<div class="ttc" id="astructkest__allocator_html"><div class="ttname"><a href="structkest__allocator.html">kest_allocator</a></div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8h_source.html#l00006">kest_alloc.h:6</a></div></div>
+<div class="ttc" id="astructkest__allocator_html"><div class="ttname"><a href="structkest__allocator.html">kest_allocator</a></div><div class="ttdef"><b>Definition</b> <a href="kest__alloc_8h_source.html#l00018">kest_alloc.h:18</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00004">4</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
 
@@ -185,7 +190,7 @@ Macros</h2></td></tr>
 <div class="line">X *X##_ptr_dict_index(X##_ptr_dict *dict, <span class="keywordtype">size_t</span> n);\</div>
 <div class="line"><span class="keywordtype">void</span> X##_ptr_dict_destroy(X##_ptr_dict *dict, <span class="keywordtype">void</span> (*destructor)(X *x));</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00167">167</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00272">272</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
 
 </div>
 </div>
@@ -204,7 +209,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00027">27</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00032">32</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
 
 </div>
 </div>
@@ -223,7 +228,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00190">190</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__dict_8h_source.html#l00295">295</a> of file <a class="el" href="kest__dict_8h_source.html">kest_dict.h</a>.</p>
 
 </div>
 </div>

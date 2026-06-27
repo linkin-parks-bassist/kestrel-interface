@@ -1,9 +1,17 @@
 <map id="kest_encode_dsp_block_instr_type_a" name="kest_encode_dsp_block_instr_type_a">
-<area shape="rect" id="Node000001" title=" " alt="" coords="694,5,869,50"/>
-<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#a2e8aa45bdd1fc75e8d054d63628dea8a" title=" " alt="" coords="466,5,646,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="679,30,647,30,647,25,679,25"/>
-<area shape="rect" id="Node000003" href="$kest__fpga__encoding_8c.html#a1e92fe0ff4b72e00fa5d840ec96508c7" title=" " alt="" coords="236,5,418,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="451,30,418,30,418,25,451,25"/>
-<area shape="rect" id="Node000004" href="$kest__fpga__encoding_8c.html#a24f2c777ab7078a8261d0fcee4aaf738" title=" " alt="" coords="5,5,188,50"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="220,30,188,30,188,25,220,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="719,109,894,154"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__encoding_8c.html#a244f0ffb708f9e911850c5b246373a4e" title=" " alt="" coords="491,75,671,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="704,119,671,114,672,108,704,113"/>
+<area shape="rect" id="Node000028" href="$kest__fpga__encoding_8c.html#a2e8aa45bdd1fc75e8d054d63628dea8a" title=" " alt="" coords="491,144,671,189"/>
+<area shape="poly" id="edge5_Node000001_Node000028" title=" " alt="" coords="704,150,672,155,671,150,704,145"/>
+<area shape="rect" id="Node000003" href="$kest__update_8c.html#a2e25879813de10ebe8314928185f107c" title=" " alt="" coords="246,75,443,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="475,100,444,100,444,94,475,94"/>
+<area shape="rect" id="Node000004" href="$kest__update_8c.html#a4f1604e33014c73e389e8a28b96941e0" title=" " alt="" coords="5,5,198,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="248,72,182,53,183,48,250,67"/>
+<area shape="rect" id="Node000005" href="$kest__update_8c.html#a82c2c2393f3299111a1216c59d1edd79" title=" " alt="" coords="23,75,180,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="230,100,180,100,180,94,230,94"/>
+<area shape="rect" id="Node000029" href="$kest__fpga__encoding_8c.html#a1e92fe0ff4b72e00fa5d840ec96508c7" title=" " alt="" coords="253,144,436,189"/>
+<area shape="poly" id="edge6_Node000028_Node000029" title=" " alt="" coords="475,169,436,169,436,164,475,164"/>
+<area shape="rect" id="Node000030" href="$kest__fpga__encoding_8c.html#a24f2c777ab7078a8261d0fcee4aaf738" title=" " alt="" coords="10,144,193,189"/>
+<area shape="poly" id="edge7_Node000029_Node000030" title=" " alt="" coords="237,169,193,169,193,164,237,164"/>
 </map>

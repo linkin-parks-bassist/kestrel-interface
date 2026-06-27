@@ -1,5 +1,7 @@
 <map id="kest_new_fpga_transfer_batch" name="kest_new_fpga_transfer_batch">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,182,50"/>
-<area shape="rect" id="Node000002" href="$kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4" title=" " alt="" coords="230,14,316,42"/>
+<area shape="rect" id="Node000002" href="$kest__fpga__io_8c.html#a97edca592b9ffe88eb99eb1466f915a8" title=" " alt="" coords="230,5,372,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,25,214,25,214,30,182,30"/>
+<area shape="rect" id="Node000003" href="$kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4" title=" " alt="" coords="420,14,506,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,25,405,25,405,30,373,30"/>
 </map>

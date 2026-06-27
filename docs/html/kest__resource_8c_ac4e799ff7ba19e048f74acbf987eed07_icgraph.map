@@ -1,0 +1,11 @@
+<map id="kest_dsp_resource_make_clone" name="kest_dsp_resource_make_clone">
+<area shape="rect" id="Node000001" title=" " alt="" coords="703,28,888,72"/>
+<area shape="rect" id="Node000002" href="$kest__block_8c.html#a4c8583c46d84f07df6eb2c886dbfdb1b" title=" " alt="" coords="497,5,629,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="687,38,629,31,630,25,688,33"/>
+<area shape="rect" id="Node000003" href="$kest__resource_8c.html#aae0c2105bbc588fd039daebe272cd5eb" title=" " alt="" coords="471,57,655,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="688,66,656,70,656,65,687,61"/>
+<area shape="rect" id="Node000004" href="$kest__effect_8c.html#a85b25e44e2629962673634f965ffe304" title=" " alt="" coords="216,65,423,93"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="456,82,423,82,423,76,456,76"/>
+<area shape="rect" id="Node000005" href="$kest__pipeline_8c.html#a0eff55a4103a090993bbac228a981af6" title=" " alt="" coords="5,57,168,102"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,82,168,82,168,76,200,76"/>
+</map>

@@ -148,8 +148,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a0abe86a6e458577f0b06c8567db06e90" id="r_a0abe86a6e458577f0b06c8567db06e90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__block__operand.html">kest_block_operand</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0abe86a6e458577f0b06c8567db06e90">operand_const_one</a> ()</td></tr>
 <tr class="memitem:acf843c33332a666018bf6982d4a3f424" id="r_acf843c33332a666018bf6982d4a3f424"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structkest__block__operand.html">kest_block_operand</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf843c33332a666018bf6982d4a3f424">operand_const_minus_one</a> ()</td></tr>
 <tr class="memitem:ac188c9af63619f854810339874b170d7" id="r_ac188c9af63619f854810339874b170d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac188c9af63619f854810339874b170d7">kest_init_block</a> (<a class="el" href="structkest__block.html">kest_block</a> *block)</td></tr>
+<tr class="memitem:a4c8583c46d84f07df6eb2c886dbfdb1b" id="r_a4c8583c46d84f07df6eb2c886dbfdb1b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c8583c46d84f07df6eb2c886dbfdb1b">kest_block_clone</a> (<a class="el" href="structkest__block.html">kest_block</a> *dest, <a class="el" href="structkest__block.html">kest_block</a> *src)</td></tr>
+<tr class="memitem:a4216638d56b112fb88e9728298780e3f" id="r_a4216638d56b112fb88e9728298780e3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4216638d56b112fb88e9728298780e3f">kest_block_clone_no_res</a> (<a class="el" href="structkest__block.html">kest_block</a> *dest, <a class="el" href="structkest__block.html">kest_block</a> *src)</td></tr>
 <tr class="memitem:abc7094c2fd44d645a339c6e92aa4223e" id="r_abc7094c2fd44d645a339c6e92aa4223e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc7094c2fd44d645a339c6e92aa4223e">kest_init_block_from_instr_desc</a> (<a class="el" href="structkest__block.html">kest_block</a> *block, struct <a class="el" href="structkest__asm__instr__desc.html">kest_asm_instr_desc</a> *desc)</td></tr>
 <tr class="memitem:ad650ddfea2959d87cff946e16755bf1e" id="r_ad650ddfea2959d87cff946e16755bf1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad650ddfea2959d87cff946e16755bf1e">DECLARE_LINKED_PTR_LIST</a> (<a class="el" href="structkest__block.html">kest_block</a>)</td></tr>
+<tr class="memitem:a0e506a4afcbb4494f57dacd4ec58471a" id="r_a0e506a4afcbb4494f57dacd4ec58471a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e506a4afcbb4494f57dacd4ec58471a">DECLARE_PTR_LIST</a> (<a class="el" href="structkest__block.html">kest_block</a>)</td></tr>
+<tr class="memitem:a7cf446f4f293329cb9ca76c0de95357b" id="r_a7cf446f4f293329cb9ca76c0de95357b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cf446f4f293329cb9ca76c0de95357b">DECLARE_LIST</a> (<a class="el" href="structkest__block.html">kest_block</a>)</td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="a9df91dd87ae9a8f7496d595be1b112e1" name="a9df91dd87ae9a8f7496d595be1b112e1"></a>
@@ -166,7 +170,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00009">9</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -184,7 +188,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00006">6</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -202,7 +206,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00012">12</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -220,7 +224,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00021">21</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -238,7 +242,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00022">22</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -256,7 +260,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00026">26</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -274,7 +278,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00025">25</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -292,7 +296,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00007">7</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -310,7 +314,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00020">20</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>, <a class="el" href="kest__block_8c_source.html#l00110">kest_block_clone_no_res()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -328,7 +332,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00018">18</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -346,7 +350,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00016">16</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -364,7 +368,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00005">5</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -382,7 +386,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00011">11</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -400,7 +404,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00023">23</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -418,7 +422,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00024">24</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -436,7 +440,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00010">10</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -454,7 +458,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00013">13</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -472,7 +476,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00014">14</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -490,7 +494,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00015">15</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -508,7 +512,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00004">4</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__block_8c_source.html#l00037">kest_init_block()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__block_8c_source.html#l00039">kest_init_block()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -526,7 +530,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00031">31</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00021">kest_fpga_block_opcode_format()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00011">kest_fpga_block_opcode_format()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -544,7 +548,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00008">8</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00526">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00496">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__encoding_8c_source.html#l00731">kest_block_opcode_to_name()</a>, <a class="el" href="kest__fpga__encoding_8c_source.html#l00701">kest_block_opcode_to_string()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -562,7 +566,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00027">27</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -580,7 +584,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00030">30</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -598,7 +602,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00029">29</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -616,7 +620,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00028">28</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -634,7 +638,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00019">19</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -652,7 +656,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00017">17</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00223">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00463">kest_instr_opcode_to_desc()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00232">kest_instr_opcode()</a>, and <a class="el" href="kest__fpga__instr_8c_source.html#l00481">kest_instr_opcode_to_desc()</a>.</p>
 
 </div>
 </div>
@@ -670,7 +674,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00035">35</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00037">kest_init_block()</a>, and <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00039">kest_init_block()</a>, and <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>.</p>
 
 </div>
 </div>
@@ -688,7 +692,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00036">36</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>, <a class="el" href="kest__block_8c_source.html#l00029">operand_const_minus_one()</a>, <a class="el" href="kest__block_8c_source.html#l00021">operand_const_one()</a>, and <a class="el" href="kest__block_8c_source.html#l00013">operand_const_zero()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__reg__format_8c_source.html#l00027">kest_compute_register_formats()</a>, <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>, <a class="el" href="kest__block_8c_source.html#l00031">operand_const_minus_one()</a>, <a class="el" href="kest__block_8c_source.html#l00023">operand_const_one()</a>, and <a class="el" href="kest__block_8c_source.html#l00015">operand_const_zero()</a>.</p>
 
 </div>
 </div>
@@ -706,7 +710,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00045">45</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00029">operand_const_minus_one()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00031">operand_const_minus_one()</a>.</p>
 
 </div>
 </div>
@@ -724,7 +728,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00044">44</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00021">operand_const_one()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00023">operand_const_one()</a>.</p>
 
 </div>
 </div>
@@ -742,7 +746,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="kest__block_8h_source.html#l00043">43</a> of file <a class="el" href="kest__block_8h_source.html">kest_block.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00013">operand_const_zero()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00015">operand_const_zero()</a>.</p>
 
 </div>
 </div>
@@ -764,6 +768,100 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a7cf446f4f293329cb9ca76c0de95357b" name="a7cf446f4f293329cb9ca76c0de95357b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf446f4f293329cb9ca76c0de95357b">&#9670;&#160;</a></span>DECLARE_LIST()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_LIST </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e506a4afcbb4494f57dacd4ec58471a" name="a0e506a4afcbb4494f57dacd4ec58471a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e506a4afcbb4494f57dacd4ec58471a">&#9670;&#160;</a></span>DECLARE_PTR_LIST()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_PTR_LIST </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4c8583c46d84f07df6eb2c886dbfdb1b" name="a4c8583c46d84f07df6eb2c886dbfdb1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c8583c46d84f07df6eb2c886dbfdb1b">&#9670;&#160;</a></span>kest_block_clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_block_clone </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a> *</td>          <td class="paramname"><span class="paramname"><em>dest</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a> *</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00090">90</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_a4c8583c46d84f07df6eb2c886dbfdb1b_cgraph.svg" width="100%" height="569"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a4216638d56b112fb88e9728298780e3f" name="a4216638d56b112fb88e9728298780e3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4216638d56b112fb88e9728298780e3f">&#9670;&#160;</a></span>kest_block_clone_no_res()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kest_block_clone_no_res </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a> *</td>          <td class="paramname"><span class="paramname"><em>dest</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structkest__block.html">kest_block</a> *</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00110">110</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="kest__effect_8c_source.html#l00112">init_effect_from_effect_desc()</a>.</p>
+<div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_a4216638d56b112fb88e9728298780e3f_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
 <a id="ac188c9af63619f854810339874b170d7" name="ac188c9af63619f854810339874b170d7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac188c9af63619f854810339874b170d7">&#9670;&#160;</a></span>kest_init_block()</h2>
 
@@ -779,13 +877,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00037">37</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00039">39</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00072">kest_init_block_from_instr_desc()</a>.</p>
-<div id="dynsection-1" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__block_8c_source.html#l00074">kest_init_block_from_instr_desc()</a>.</p>
+<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_ac188c9af63619f854810339874b170d7_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -810,19 +908,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00072">72</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00074">74</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>.</p>
-<div id="dynsection-2" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>.</p>
+<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_abc7094c2fd44d645a339c6e92aa4223e_cgraph.svg" width="334" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-3" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_abc7094c2fd44d645a339c6e92aa4223e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -843,13 +941,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00029">29</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00031">31</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>.</p>
-<div id="dynsection-4" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>.</p>
+<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_acf843c33332a666018bf6982d4a3f424_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -870,13 +968,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00021">21</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00023">23</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>.</p>
-<div id="dynsection-5" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>.</p>
+<div id="dynsection-7" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_a0abe86a6e458577f0b06c8567db06e90_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -897,13 +995,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00013">13</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kest__block_8c_source.html#l00015">15</a> of file <a class="el" href="kest__block_8c_source.html">kest_block.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00755">kest_process_asm_line()</a>.</p>
-<div id="dynsection-6" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="kest__asm__parser_8c_source.html#l00769">kest_process_asm_line()</a>.</p>
+<div id="dynsection-8" onclick="return dynsection.toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;"><span class="dynarrow"><span class="arrowhead closed"></span></span>Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="kest__block_8h_af0864eedf184e1c9cadd6c7322a4fa59_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 

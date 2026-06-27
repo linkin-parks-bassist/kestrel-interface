@@ -1,0 +1,11 @@
+<map id="kest_pipeline_deactivate_dma" name="kest_pipeline_deactivate_dma">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,225,85"/>
+<area shape="rect" id="Node000002" href="$kest__effect_8c.html#a92c1c9ee6b6724c5b3546aa2eb9549d6" title=" " alt="" coords="273,48,442,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,68,257,68,257,74,225,74"/>
+<area shape="rect" id="Node000003" href="$kest__fpga__dma_8c.html#a4af427e853b9c72a314b649c0ecf003e" title=" " alt="" coords="490,48,668,93"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="442,68,474,68,474,74,442,74"/>
+<area shape="rect" id="Node000004" href="$kest__fpga__dma_8c.html#a5200af5bcaf64fa08b1a7e567e56060c" title=" " alt="" coords="716,5,895,67"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="668,54,700,50,701,55,669,60"/>
+<area shape="rect" id="Node000006" href="$kest__ui_8c.html#abb436cbf4403efe8fe122cdfbcaa3a76" title=" " alt="" coords="734,92,877,119"/>
+<area shape="poly" id="edge4_Node000003_Node000006" title=" " alt="" coords="669,82,720,90,719,95,668,87"/>
+</map>

@@ -105,13 +105,75 @@ $(function(){initNavTree('kest__fpga__position_8c_source.html','',''); });
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">return</span> <a class="code hl_define" href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a>;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
 </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="kest__fpga__position_8c.html#ae9bbc4e562f45802b963ba44ace4002e">   15</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__fpga__position_8c.html#ae9bbc4e562f45802b963ba44ace4002e">kest_effect_fpga_position_resolve_block</a>(<a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> *pos, <span class="keywordtype">int</span> block)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (!pos)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">return</span> block;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">return</span> pos-&gt;<a class="code hl_variable" href="structkest__effect__fpga__position.html#a3733e3d06de2cd10e333092ae10dd8eb">block_start</a> + block;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="kest__fpga__position_8c.html#a40292f22ff0b22af748118fa501a98ec">   23</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__fpga__position_8c.html#a40292f22ff0b22af748118fa501a98ec">kest_effect_fpga_position_resolve_mem</a>(<a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> *pos, <span class="keywordtype">int</span> addr)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordflow">if</span> (!pos)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">return</span> addr;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordflow">return</span> pos-&gt;<a class="code hl_variable" href="structkest__effect__fpga__position.html#afdaad1bb4fe147dcd5977d777e01bcbf">mem_start</a> + addr;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="kest__fpga__position_8c.html#a61f526cdce5ae2b8c0abfd02e83cf968">   31</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__fpga__position_8c.html#a61f526cdce5ae2b8c0abfd02e83cf968">kest_effect_fpga_position_resolve_filter</a>(<a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> *pos, <span class="keywordtype">int</span> handle)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">if</span> (!pos)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">return</span> handle;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> pos-&gt;<a class="code hl_variable" href="structkest__effect__fpga__position.html#a14da36ed521bcae81214df3a88e9fc55">filter_start</a> + handle;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="kest__fpga__position_8c.html#ada47024a9d3edbd1e6c2ff9a550076d3">   39</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="kest__fpga__position_8c.html#ada47024a9d3edbd1e6c2ff9a550076d3">kest_effect_fpga_position_resolve_delay</a>(<a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> *pos, <span class="keywordtype">int</span> handle)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (!pos)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> handle;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> pos-&gt;<a class="code hl_variable" href="structkest__effect__fpga__position.html#ae44a9c44567f189ee1acac2781156a46">delay_start</a> + handle;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="kest__fpga__position_8c.html#a7b43de42d5968003427414fcc005de37">   47</a></span><a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> <a class="code hl_function" href="kest__fpga__position_8c.html#a7b43de42d5968003427414fcc005de37">kest_fpga_position_start</a>()</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_struct" href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a> start;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    start.<a class="code hl_variable" href="structkest__effect__fpga__position.html#a3733e3d06de2cd10e333092ae10dd8eb">block_start</a>    = 0;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    start.<a class="code hl_variable" href="structkest__effect__fpga__position.html#a14da36ed521bcae81214df3a88e9fc55">filter_start</a>  = 0;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    start.<a class="code hl_variable" href="structkest__effect__fpga__position.html#afdaad1bb4fe147dcd5977d777e01bcbf">mem_start</a>    = 0;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    start.<a class="code hl_variable" href="structkest__effect__fpga__position.html#ae44a9c44567f189ee1acac2781156a46">delay_start</a>    = 0;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> start;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
+</div>
 <div class="ttc" id="akest__error__codes_8h_html_a258bb72419ef143530a2f8f55e7d57af"><div class="ttname"><a href="kest__error__codes_8h.html#a258bb72419ef143530a2f8f55e7d57af">NO_ERROR</a></div><div class="ttdeci">#define NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00004">kest_error_codes.h:4</a></div></div>
 <div class="ttc" id="akest__error__codes_8h_html_aecee95603cb1ec21cab7d76f95fa013a"><div class="ttname"><a href="kest__error__codes_8h.html#aecee95603cb1ec21cab7d76f95fa013a">ERR_NULL_PTR</a></div><div class="ttdeci">#define ERR_NULL_PTR</div><div class="ttdef"><b>Definition</b> <a href="kest__error__codes_8h_source.html#l00005">kest_error_codes.h:5</a></div></div>
+<div class="ttc" id="akest__fpga__position_8c_html_a40292f22ff0b22af748118fa501a98ec"><div class="ttname"><a href="kest__fpga__position_8c.html#a40292f22ff0b22af748118fa501a98ec">kest_effect_fpga_position_resolve_mem</a></div><div class="ttdeci">int kest_effect_fpga_position_resolve_mem(kest_effect_fpga_position *pos, int addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00023">kest_fpga_position.c:23</a></div></div>
+<div class="ttc" id="akest__fpga__position_8c_html_a61f526cdce5ae2b8c0abfd02e83cf968"><div class="ttname"><a href="kest__fpga__position_8c.html#a61f526cdce5ae2b8c0abfd02e83cf968">kest_effect_fpga_position_resolve_filter</a></div><div class="ttdeci">int kest_effect_fpga_position_resolve_filter(kest_effect_fpga_position *pos, int handle)</div><div class="ttdef"><b>Definition</b> <a href="#l00031">kest_fpga_position.c:31</a></div></div>
+<div class="ttc" id="akest__fpga__position_8c_html_a7b43de42d5968003427414fcc005de37"><div class="ttname"><a href="kest__fpga__position_8c.html#a7b43de42d5968003427414fcc005de37">kest_fpga_position_start</a></div><div class="ttdeci">kest_effect_fpga_position kest_fpga_position_start()</div><div class="ttdef"><b>Definition</b> <a href="#l00047">kest_fpga_position.c:47</a></div></div>
+<div class="ttc" id="akest__fpga__position_8c_html_ada47024a9d3edbd1e6c2ff9a550076d3"><div class="ttname"><a href="kest__fpga__position_8c.html#ada47024a9d3edbd1e6c2ff9a550076d3">kest_effect_fpga_position_resolve_delay</a></div><div class="ttdeci">int kest_effect_fpga_position_resolve_delay(kest_effect_fpga_position *pos, int handle)</div><div class="ttdef"><b>Definition</b> <a href="#l00039">kest_fpga_position.c:39</a></div></div>
+<div class="ttc" id="akest__fpga__position_8c_html_ae9bbc4e562f45802b963ba44ace4002e"><div class="ttname"><a href="kest__fpga__position_8c.html#ae9bbc4e562f45802b963ba44ace4002e">kest_effect_fpga_position_resolve_block</a></div><div class="ttdeci">int kest_effect_fpga_position_resolve_block(kest_effect_fpga_position *pos, int block)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">kest_fpga_position.c:15</a></div></div>
 <div class="ttc" id="akest__fpga__position_8c_html_aedf87d214193b5e04bc8f87ad24fca83"><div class="ttname"><a href="kest__fpga__position_8c.html#aedf87d214193b5e04bc8f87ad24fca83">kest_effect_fpga_position_init</a></div><div class="ttdeci">int kest_effect_fpga_position_init(kest_effect_fpga_position *pos)</div><div class="ttdef"><b>Definition</b> <a href="#l00003">kest_fpga_position.c:3</a></div></div>
 <div class="ttc" id="akest__int_8h_html"><div class="ttname"><a href="kest__int_8h.html">kest_int.h</a></div></div>
 <div class="ttc" id="astructkest__effect__fpga__position_html"><div class="ttname"><a href="structkest__effect__fpga__position.html">kest_effect_fpga_position</a></div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__position_8h_source.html#l00004">kest_fpga_position.h:4</a></div></div>
 <div class="ttc" id="astructkest__effect__fpga__position_html_a14da36ed521bcae81214df3a88e9fc55"><div class="ttname"><a href="structkest__effect__fpga__position.html#a14da36ed521bcae81214df3a88e9fc55">kest_effect_fpga_position::filter_start</a></div><div class="ttdeci">int filter_start</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__position_8h_source.html#l00007">kest_fpga_position.h:7</a></div></div>
 <div class="ttc" id="astructkest__effect__fpga__position_html_a3733e3d06de2cd10e333092ae10dd8eb"><div class="ttname"><a href="structkest__effect__fpga__position.html#a3733e3d06de2cd10e333092ae10dd8eb">kest_effect_fpga_position::block_start</a></div><div class="ttdeci">int block_start</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__position_8h_source.html#l00005">kest_fpga_position.h:5</a></div></div>
+<div class="ttc" id="astructkest__effect__fpga__position_html_ae44a9c44567f189ee1acac2781156a46"><div class="ttname"><a href="structkest__effect__fpga__position.html#ae44a9c44567f189ee1acac2781156a46">kest_effect_fpga_position::delay_start</a></div><div class="ttdeci">int delay_start</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__position_8h_source.html#l00008">kest_fpga_position.h:8</a></div></div>
+<div class="ttc" id="astructkest__effect__fpga__position_html_afdaad1bb4fe147dcd5977d777e01bcbf"><div class="ttname"><a href="structkest__effect__fpga__position.html#afdaad1bb4fe147dcd5977d777e01bcbf">kest_effect_fpga_position::mem_start</a></div><div class="ttdeci">int mem_start</div><div class="ttdef"><b>Definition</b> <a href="kest__fpga__position_8h_source.html#l00006">kest_fpga_position.h:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

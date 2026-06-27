@@ -1,7 +1,10 @@
 <map id="kest_allocator_strndup" name="kest_allocator_strndup">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,174,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,32,174,60"/>
 <area shape="rect" id="Node000002" href="$kest__alloc_8c.html#a4bb52284828149d9a740bac0c9706ecd" title=" " alt="" coords="222,5,372,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,16,206,16,206,22,174,22"/>
-<area shape="rect" id="Node000003" href="$kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4" title=" " alt="" coords="420,5,506,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,16,404,16,404,22,372,22"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,32,206,28,207,33,174,38"/>
+<area shape="rect" id="Node000004" href="$kest__alloc_8c.html#aed9ede1276c1ab3b4042c264ce64a3d2" title=" " alt="" coords="245,57,349,85"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,53,229,60,229,66,174,59"/>
+<area shape="rect" id="Node000003" href="$kest__alloc_8c.html#a849755c5dc5b35e712ffcdb602e50fb4" title=" " alt="" coords="420,32,506,60"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,29,405,34,404,39,372,34"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="349,61,404,52,405,57,350,66"/>
 </map>

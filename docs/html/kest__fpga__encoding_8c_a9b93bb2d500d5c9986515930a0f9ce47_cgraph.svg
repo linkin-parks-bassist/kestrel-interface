@@ -49,7 +49,7 @@
 <script type="application/ecmascript">
 var viewWidth = 618;
 var viewHeight = 42;
-var sectionId = 'dynsection-11';
+var sectionId = 'dynsection-15';
 </script>
 <script type="application/ecmascript" xlink:href="svg.min.js"/>
 <svg id="graph" class="graph">
@@ -86,9 +86,10 @@ var sectionId = 'dynsection-11';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="kest__fpga__io_8c.html#a6900c9b759f1dccf1b3535cc76ad83e3" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="499.5,-27.12 362.75,-27.12 362.75,-6.38 499.5,-6.38 499.5,-27.12"/>
-<text xml:space="preserve" text-anchor="middle" x="431.12" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
+<g id="a_Node000003"><a xlink:href="kest__fpga__io_8c.html#ac4570962996cb50a17f816b060c7df8e" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="499.5,-33.5 362.75,-33.5 362.75,0 499.5,0 499.5,-33.5"/>
+<text xml:space="preserve" text-anchor="start" x="370.75" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">kest_fpga_batch_append</text>
+<text xml:space="preserve" text-anchor="middle" x="431.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_bytes</text>
 </a>
 </g>
 </g>

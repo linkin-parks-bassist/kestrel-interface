@@ -1,6 +1,9 @@
 var structkest__parameter =
 [
-    [ "factor", "structkest__parameter.html#a64147ae5b74fa848d91c8654dfb73e2f", null ],
+    [ "KEST_ATOMIC", "structkest__parameter.html#a187f9f72a0c9fd2d45c5e9be870372ad", null ],
+    [ "driver_index", "structkest__parameter.html#ac03844b209c8c99d5ba1084798a07f2f", null ],
+    [ "driver_override", "structkest__parameter.html#a1ec9df924d85644d30efad84023631f6", null ],
+    [ "effect", "structkest__parameter.html#af1f46b46bbc584c61923af4d888a5966", null ],
     [ "group", "structkest__parameter.html#a535747355cc0ba98a2c1fea8f5b2d181", null ],
     [ "id", "structkest__parameter.html#ae94af5aff76a36d717b93ad49f6d6494", null ],
     [ "max", "structkest__parameter.html#afdbf4b9af141c2059e316873501df339", null ],
@@ -15,6 +18,5 @@ var structkest__parameter =
     [ "scale", "structkest__parameter.html#afbeeca06f35d437ada516cf7ca57e098", null ],
     [ "units", "structkest__parameter.html#ae33b5fb8190a1e155b7f5ee488427960", null ],
     [ "updated", "structkest__parameter.html#af7d44b9696bd3d348abe3e89e8b7bc63", null ],
-    [ "value", "structkest__parameter.html#a4220575f907279f8a9369140f48d3d7d", null ],
     [ "widget_type", "structkest__parameter.html#afc42f5b0d8559424944d08ed7a87c009", null ]
 ];

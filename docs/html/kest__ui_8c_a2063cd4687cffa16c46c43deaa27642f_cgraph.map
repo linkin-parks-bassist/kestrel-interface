@@ -1,7 +1,15 @@
 <map id="enter_ui_page_forwards" name="enter_ui_page_forwards">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,14,183,42"/>
-<area shape="rect" id="Node000002" href="$kest__context_8c.html#a6292c7a2d7f0502ea5a59bbe9b552791" title=" " alt="" coords="231,5,391,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,25,215,25,215,30,183,30"/>
-<area shape="rect" id="Node000003" href="$kest__representation_8c.html#a7a4a0f32b72f47d90e3d0f5932fbe58f" title=" " alt="" coords="439,5,602,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="391,25,423,25,423,30,391,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,84,183,112"/>
+<area shape="rect" id="Node000002" href="$kest__file__task_8c.html#adfaf58014af5199e2822cba19b1d778c" title=" " alt="" coords="231,84,404,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,95,215,95,215,100,183,100"/>
+<area shape="rect" id="Node000003" href="$kest__state_8c.html#a816d674320b40283e9c91ed95b9282a1" title=" " alt="" coords="457,57,614,85"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="404,85,441,80,442,85,405,90"/>
+<area shape="rect" id="Node000007" href="$kest__global_8c.html#a8fac0ce734ee513c822edfd74bb2d69d" title=" " alt="" coords="452,109,619,137"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="405,105,437,109,436,114,404,111"/>
+<area shape="rect" id="Node000004" href="$kest__context_8c.html#a415a69f679e71fe9b3299473a5f9ca3f" title=" " alt="" coords="671,5,843,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="597,54,680,35,681,40,599,59"/>
+<area shape="rect" id="Node000005" href="$kest__context_8c.html#a410e575fde196bc72aea204d0a0817b7" title=" " alt="" coords="667,57,847,85"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="615,68,652,68,652,74,615,74"/>
+<area shape="rect" id="Node000006" href="$kest__page__id_8c.html#a81e4d167056e9a8237d1b6beccc9ac4d" title=" " alt="" coords="680,109,834,154"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="590,83,665,104,664,109,589,88"/>
 </map>

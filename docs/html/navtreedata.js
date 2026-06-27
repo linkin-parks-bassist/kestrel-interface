@@ -43,6 +43,7 @@ var NAVTREE =
       [ "Data Structure Index", "classes.html", null ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", "functions_vars" ]
       ] ]
     ] ],
@@ -53,8 +54,6 @@ var NAVTREE =
         [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", "globals_defs" ]
       ] ]
     ] ]
@@ -64,20 +63,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "FreeRTOSConfig_8h.html",
-"kest__block_8h.html#a25dc11cfb4dc69d55433f84766c14b33",
-"kest__context_8h.html#a410e575fde196bc72aea204d0a0817b7",
-"kest__eff__parser_8h.html#aae3fbdeba250be8f6dd3dfa686eb24a8",
-"kest__error__codes_8h.html#a3269674e11271fcb1ca419412f5c2697",
-"kest__expression_8h.html#a9719f453473548cf5b6330d8ad4527dc",
-"kest__fpga__io_8c.html#a61cbd714b51619a08e508a5970def9af",
-"kest__lv__log_8c_source.html",
-"kest__parameter__widget_8h.html#ae7f1006518ada8eda0fc00294ba43fa0",
+"kest__block_8c.html#a925207a2b3de0a6f636d1425fcdb1a56",
+"kest__context_8c.html#ab67ff484aaa334c1425d4a580d645027",
+"kest__dictionary_8h.html#a787c27b0521db0f35f0d80d8e61f4b54",
+"kest__effect_8h.html#a9aa0cb5d417b51c21d985f13df2fd905",
+"kest__expr__scope_8h.html#a68376068f0834560ddfd49f760b86f13",
+"kest__files_8c.html#ab79d861306c25eab9284239e73d0cc07",
+"kest__fpga__encoding_8c.html#a6222c2f39b97c1de272be1508b1077a2",
+"kest__home__view_8h.html",
+"kest__parameter_8h.html#a378094aed182ae8589762a3dfe6c4337",
+"kest__preset_8h.html#a5d6e6973fa269cccc78dedbdb304443c",
 "kest__sd_8c.html#ad85cb86f6cbc94b88b09c3315c9028f1",
-"kest__string_8h.html#aa024f83c34d684c3f857f898f9f6191a",
-"lv__conf_8h.html#a0bdcce2e772bfb5bce7817b9369d8f5d",
-"lv__conf_8h.html#ae81f6cbaeb77762434128b1dd53250c6",
-"structkest__effect.html#a08090bd562394086917c6416f5f8c152",
-"structkest__sequence__view__str.html#a94c7750df21268a2b1b04c1b5d6bb742"
+"kest__string_8h.html#a2f2e64515d872efab6ae1974554b5d5c",
+"kest__ui_8h.html#ae6790450fef1809caaa97bb1cb0984a5",
+"lv__conf_8h.html#a9da533281688948e346f5afa9c6dd2b6",
+"structkest__button.html#a66b841b7c132c818bc4424a5f06a3b48",
+"structkest__fpga__periodic__read.html#a923f5a940b64aeee2f349691945d0581",
+"structkest__setting__id.html#aba84381d7e64bd9cc1390c6d0de7bc0c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

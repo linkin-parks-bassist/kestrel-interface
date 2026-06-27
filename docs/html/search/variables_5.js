@@ -1,15 +1,19 @@
 var searchData=
 [
-  ['factor_0',['factor',['../structkest__parameter.html#a64147ae5b74fa848d91c8654dfb73e2f',1,'kest_parameter']]],
-  ['feed_5fback_1',['feed_back',['../structkest__filter.html#ab4d4b3026ae1ba09b79165f0808751fa',1,'kest_filter']]],
-  ['feed_5fforward_2',['feed_forward',['../structkest__filter.html#a0c7161c0c7d51facc193c3537e0465c8',1,'kest_filter']]],
+  ['feed_5fback_0',['feed_back',['../structkest__filter.html#ab4d4b3026ae1ba09b79165f0808751fa',1,'kest_filter']]],
+  ['feed_5fforward_1',['feed_forward',['../structkest__filter.html#a0c7161c0c7d51facc193c3537e0465c8',1,'kest_filter']]],
+  ['file_5fjob_5fqueue_2',['file_job_queue',['../kest__file__task_8c.html#a08d6c6ac07faf9a7a72a9b0bbc614530',1,'kest_file_task.c']]],
   ['file_5fsize_3',['file_size',['../structkest__eff__parsing__state.html#a7c6ba3ceaa94b1f1db47e96d6b506101',1,'kest_eff_parsing_state']]],
-  ['filter_5fstart_4',['filter_start',['../structkest__effect__fpga__position.html#a14da36ed521bcae81214df3a88e9fc55',1,'kest_effect_fpga_position']]],
-  ['filters_5',['filters',['../structkest__eff__resource__report.html#aaf19802944bf5325cc8c0b668e3956c6',1,'kest_eff_resource_report']]],
-  ['flags_6',['flags',['../structkest__button.html#a04a9d130240ed46eff60cb5978f04029',1,'kest_button::flags'],['../structkest__active__button__array.html#a9ac3e996ca8d5f8a2311ebe8e39167fb',1,'kest_active_button_array::flags'],['../structkest__ui__page__panel.html#a7c2cd7f7f5e4cfed812f07406c222413',1,'kest_ui_page_panel::flags']]],
-  ['fname_7',['fname',['../structkest__preset.html#a8e3c482b4d38a9112bf792524d001438',1,'kest_preset::fname'],['../structkest__sequence.html#aab00717b7404dec776507b8d9157ed08',1,'kest_sequence::fname'],['../structkest__eff__parsing__state.html#a40afb9792055b8738126d55e3bcb388f',1,'kest_eff_parsing_state::fname'],['../structkest__page__identifier.html#a8ebc1c7296cf3923330c8a2a165d92e1',1,'kest_page_identifier::fname']]],
-  ['format_8',['format',['../structkest__block__reg__val.html#acc776f3b8bbd1d53e9ec6a92cf8e5f6b',1,'kest_block_reg_val::format'],['../structkest__filter.html#a236671d8c73bf182089211b9a8af9dd7',1,'kest_filter::format']]],
-  ['free_9',['free',['../structkest__allocator.html#af64228e04221ed9d59ec253d4ae8e116',1,'kest_allocator']]],
-  ['free_5fall_10',['free_all',['../structkest__ui__page.html#ae42901471ccdf7e190001d80442be67f',1,'kest_ui_page']]],
-  ['free_5fui_11',['free_ui',['../structkest__ui__page.html#a1e14117a73ba50f46632faefc3581347',1,'kest_ui_page']]]
+  ['filter_4',['filter',['../structkest__dependent.html#a178d09cf0e36979df132518933186150',1,'kest_dependent']]],
+  ['filter_5fcoef_5',['filter_coef',['../structkest__dependent.html#a94080081a1074c753541588e3a69552d',1,'kest_dependent']]],
+  ['filter_5fstart_6',['filter_start',['../structkest__effect__fpga__position.html#a14da36ed521bcae81214df3a88e9fc55',1,'kest_effect_fpga_position']]],
+  ['filter_5fwrites_7',['filter_writes',['../structkest__updater__state.html#a945b7b139090f1cde553635b105f102c',1,'kest_updater_state']]],
+  ['filters_8',['filters',['../structkest__eff__resource__report.html#aaf19802944bf5325cc8c0b668e3956c6',1,'kest_eff_resource_report']]],
+  ['flags_9',['flags',['../structkest__allocator.html#a50f96c37b46a883c5a10d88b297cda55',1,'kest_allocator::flags'],['../structkest__button.html#a04a9d130240ed46eff60cb5978f04029',1,'kest_button::flags'],['../structkest__active__button__array.html#a9ac3e996ca8d5f8a2311ebe8e39167fb',1,'kest_active_button_array::flags'],['../structkest__ui__page__panel.html#a7c2cd7f7f5e4cfed812f07406c222413',1,'kest_ui_page_panel::flags']]],
+  ['fname_10',['fname',['../structkest__preset.html#a8e3c482b4d38a9112bf792524d001438',1,'kest_preset::fname'],['../structkest__sequence.html#aab00717b7404dec776507b8d9157ed08',1,'kest_sequence::fname'],['../structkest__eff__parsing__state.html#a40afb9792055b8738126d55e3bcb388f',1,'kest_eff_parsing_state::fname'],['../structkest__page__identifier.html#a8ebc1c7296cf3923330c8a2a165d92e1',1,'kest_page_identifier::fname']]],
+  ['format_11',['format',['../structkest__block__reg__val.html#acc776f3b8bbd1d53e9ec6a92cf8e5f6b',1,'kest_block_reg_val::format'],['../structkest__dependent.html#a70fe5c2caae588e13555d4b4b316b335',1,'kest_dependent::format'],['../structkest__filter.html#a236671d8c73bf182089211b9a8af9dd7',1,'kest_filter::format'],['../structkest__fpga__write.html#a65f298bdd028cd621addad6b9c8af4ec',1,'kest_fpga_write::format'],['../structkest__fpga__alloc.html#a2c64804225d9972e03033d849f221004',1,'kest_fpga_alloc::format'],['../structkest__fpga__command.html#af2a4303992a8be37b8c4af7506763b6e',1,'kest_fpga_command::format']]],
+  ['free_12',['free',['../structkest__allocator.html#af64228e04221ed9d59ec253d4ae8e116',1,'kest_allocator']]],
+  ['free_5fall_13',['free_all',['../structkest__ui__page.html#ae42901471ccdf7e190001d80442be67f',1,'kest_ui_page']]],
+  ['free_5fui_14',['free_ui',['../structkest__ui__page.html#a1e14117a73ba50f46632faefc3581347',1,'kest_ui_page']]],
+  ['frequency_15',['frequency',['../structkest__lfo.html#a9d1eb63559323a4bb6e22f5faa317950',1,'kest_lfo']]]
 ];

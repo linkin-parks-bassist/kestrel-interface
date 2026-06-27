@@ -102,37 +102,37 @@ var sectionId = 'dynsection-18';
 </a>
 </g>
 </g>
-<!-- Node32 -->
-<g id="Node000032" class="node">
-<title>Node32</title>
-<g id="a_Node000032"><a xlink:href="kest__sequence__view_8c.html#aca115eba822b7486dc289cc9150562a7" target="_top" xlink:title=" ">
+<!-- Node38 -->
+<g id="Node000038" class="node">
+<title>Node38</title>
+<g id="a_Node000038"><a xlink:href="kest__sequence__view_8c.html#aca115eba822b7486dc289cc9150562a7" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="278,-59.75 166,-59.75 166,-39 278,-39 278,-59.75"/>
 <text xml:space="preserve" text-anchor="middle" x="222" y="-46.25" font-family="Helvetica,sans-Serif" font-size="10.00">init_sequence_view</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node32 -->
-<g id="edge4_Node000002_Node000032" class="edge">
-<title>Node2&#45;&gt;Node32</title>
-<g id="a_edge4_Node000002_Node000032"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node38 -->
+<g id="edge4_Node000002_Node000038" class="edge">
+<title>Node2&#45;&gt;Node38</title>
+<g id="a_edge4_Node000002_Node000038"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M302.6,-49.38C294.54,-49.38 286.36,-49.38 278.45,-49.38"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="302.35,-52.88 312.35,-49.38 302.35,-45.88 302.35,-52.88"/>
 </a>
 </g>
 </g>
-<!-- Node33 -->
-<g id="Node000033" class="node">
-<title>Node33</title>
-<g id="a_Node000033"><a xlink:href="kest__ui_8c.html#a54f79f277b7d97da20f192e3bec8f3ec" target="_top" xlink:title=" ">
+<!-- Node41 -->
+<g id="Node000041" class="node">
+<title>Node41</title>
+<g id="a_Node000041"><a xlink:href="kest__ui_8c.html#a54f79f277b7d97da20f192e3bec8f3ec" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="264.5,-20.75 179.5,-20.75 179.5,0 264.5,0 264.5,-20.75"/>
 <text xml:space="preserve" text-anchor="middle" x="222" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">init_test_page</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node33 -->
-<g id="edge5_Node000002_Node000033" class="edge">
-<title>Node2&#45;&gt;Node33</title>
-<g id="a_edge5_Node000002_Node000033"><a xlink:title=" ">
+<!-- Node2&#45;&gt;Node41 -->
+<g id="edge5_Node000002_Node000041" class="edge">
+<title>Node2&#45;&gt;Node41</title>
+<g id="a_edge5_Node000002_Node000041"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M303.05,-32.04C289.42,-28.35 275.4,-24.55 262.97,-21.19"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="301.84,-35.33 312.41,-34.57 303.67,-28.58 301.84,-35.33"/>
 </a>

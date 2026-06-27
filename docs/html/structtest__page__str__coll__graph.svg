@@ -149,7 +149,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structkest__representation.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="structkest__representation.html" target="_top" xlink:title="A system for delegating calls for thread safety/ownership reasons. Due to be deprecated bc I realised...">
 <polygon fill="white" stroke="#666666" points="273.38,-102.62 160.62,-102.62 160.62,-81.88 273.38,-81.88 273.38,-102.62"/>
 <text xml:space="preserve" text-anchor="middle" x="217" y="-89.12" font-family="Helvetica,sans-Serif" font-size="10.00">kest_representation</text>
 </a>

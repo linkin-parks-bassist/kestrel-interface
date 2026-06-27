@@ -1,5 +1,6 @@
 var kest__lib__cmph_8h =
 [
+    [ "EFFECT_VIEW_MAX_GROUPS", "kest__lib__cmph_8h.html#a91d8ecf4e7094138e5f2c609d72b7240", null ],
     [ "KEST_FPGA_SIMULATED", "kest__lib__cmph_8h.html#ad02fc74bbff99f5f609fea69ff30cc8d", null ],
     [ "PARAM_WIDGET_HSLIDER", "kest__lib__cmph_8h.html#ad15638597007273c9d52962f7629c0e7", null ],
     [ "PARAM_WIDGET_VIRTUAL_POT", "kest__lib__cmph_8h.html#a1ce613e6eff2e6735d36025fbb0f973c", null ],
