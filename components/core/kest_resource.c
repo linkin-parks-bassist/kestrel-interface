@@ -135,6 +135,7 @@ int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr)
 	if (!mem) return ERR_NULL_PTR;
 	
 	mem->effective_addr = addr;
+	
 	mem->read.spec.addr[0] = (addr & 0xFF00) >> 8;
 	mem->read.spec.addr[1] = (addr & 0x00FF) >> 0;
 	

@@ -6,11 +6,13 @@
 //#define PRINT_REG_WRITES
 //#define PRINT_FILTER_WRITES
 //#define PRINT_COMMAND_LIST
+//#define PRINT_UPDATES
 
-#define KEST_UPDATE_NONE 	0
-#define KEST_UPDATE_PARAM	1
-#define KEST_UPDATE_PRESET	2
-#define KEST_UPDATE_MEM		3
+#define KEST_UPDATE_NONE 		0
+#define KEST_UPDATE_PARAM		1
+#define KEST_UPDATE_PRESET		2
+#define KEST_UPDATE_MEM			3
+#define KEST_UPDATE_SCOPE_ENTRY	4
 
 typedef struct {
 	int type;
@@ -18,8 +20,15 @@ typedef struct {
 	union {
 		kest_parameter *param;
 		kest_preset *preset;
+		
+		struct {
+			kest_effect *effect;
+			const char *key;
+		} scope_entry;
 	} data;
 } kest_update;
+
+DECLARE_LIST(kest_update);
 
 #define KEST_UPDATER_STATE_READY 		0
 #define KEST_UPDATER_STATE_REPROGRAM 	1
@@ -66,6 +75,8 @@ DECLARE_LIST(kest_fpga_mem_read);
 typedef struct {
 	int state;
 	
+	kest_update_list updates;
+	
 	kest_preset *active_preset;
 	
 	kest_fpga_alloc_list allocs;
@@ -86,13 +97,21 @@ typedef struct {
 } kest_updater_state;
 
 int kest_update_task_start();
+void kest_update_task(void *arg);
 
 int kest_update_queue(kest_update update);
 
 int kest_updater_notify_param(kest_parameter *param);
 int kest_updater_notify_preset(kest_preset *preset);
+int kest_updater_notify_scope_entry(kest_effect *effect, const char *key);
 
 int kest_updater_drain_lists(kest_updater_state *state);
+
+int kest_updater_generate_command_list(kest_updater_state *state);
+int kest_updater_generate_tx_batch(kest_updater_state *state);
+int kest_updater_send(kest_updater_state *state);
+
+int kest_updater_handle_resource_updates(kest_updater_state *state);
 int kest_updater_handle_update(kest_updater_state *state, kest_update update);
 int kest_updater_handle_preset_update(kest_updater_state *state, kest_preset *preset);
 int kest_updater_handle_scope_entry_update(kest_updater_state *state, kest_scope_entry *entry, kest_effect *effect);
@@ -104,5 +123,10 @@ int kest_active_preset_updater_notify_effect_by_id(int preset_id, int effect_id)
 int kest_active_preset_updater_notify_param (int preset_id, int effect_id, int parameter_id);
 
 kest_fpga_transfer_batch kest_standalone_generate_program_batch(kest_effect_ptr_list *effects);
+
+
+void kest_updater_print_reg_writes(kest_updater_state *state);
+void kest_updater_print_filter_writes(kest_updater_state *state);
+void kest_updater_print_command_list(kest_updater_state *state);
 
 #endif

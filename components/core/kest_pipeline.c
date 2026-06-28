@@ -501,6 +501,8 @@ int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects)
 	
 	kest_dsp_resource *res = NULL;
 	
+	int mem_increment = 0;
+	
 	for (size_t i = 0; i < effects->count; i++)
 	{
 		effect = effects->entries[i];
@@ -508,6 +510,8 @@ int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects)
 		effect->position_ = pos;
 		
 		pos.block_start += effect->blocks.count;
+		
+		mem_increment = 0;
 		
 		for (size_t j = 0; j < effect->resources.count; j++)
 		{
@@ -519,7 +523,8 @@ int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects)
 			switch (res->type)
 			{
 				case KEST_DSP_RESOURCE_MEM:
-					pos.mem_start += res->mem_size;
+					mem_increment += res->mem_size;
+					kest_mem_slot_set_effective_addr(res->data, res->handle + pos.mem_start);
 					break;
 
 				case KEST_DSP_RESOURCE_DELAY:
@@ -531,6 +536,8 @@ int kest_effect_ptr_list_update_positions(kest_effect_ptr_list *effects)
 					break;
 			}
 		}
+		
+		pos.mem_start += mem_increment;
 	}
 	
 	return NO_ERROR;

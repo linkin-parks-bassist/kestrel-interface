@@ -292,9 +292,6 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 		}
 	}
 	
-	/* Transitivize the dependents */
-	kest_scope_transitivize_updatable_dependents(effect->scope);
-	
 	/* Finally, set up drivers */
 	
 	for (size_t i = 0; i < eff->drivers.count; i++)
@@ -329,6 +326,9 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 			current_param = current_param->next;
 		}
 	}
+	
+	/* Transitivize the dependents */
+	kest_scope_transitivize_updatable_dependents(effect->scope);
 	
 	KEST_PRINTF("init_effect_from_effect_desc done\n");
 	return NO_ERROR;

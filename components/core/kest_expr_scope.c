@@ -218,6 +218,8 @@ int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep)
 			return kest_scope_entry_add_dependent_filter_coef(entry, dep.data.filter_coef.filter, dep.data.filter_coef.coef, dep.format);
 		case KEST_DEPENDENT_BOUND_PARAMETER:
 			return kest_scope_entry_add_bound_dependent_parameter(entry, dep.data.param);
+		case KEST_DEPENDENT_DRIVEN_PARAMETER:
+			return kest_scope_entry_add_driven_parameter(entry, dep.data.param);
 	}
 	
 	return ERR_BAD_ARGS;
@@ -687,6 +689,8 @@ int kest_scope_propagate_updates(kest_scope *scope)
 	return any_updates;
 }
 
+#define PRINTLINES_ALLOWED 1
+
 int kest_scope_detect_dependencies(kest_scope *scope)
 {
 	KEST_PRINTF("kest_scope_detect_dependencies(scope = %p)\n", scope);
@@ -870,6 +874,8 @@ int kest_scope_add_filter_coef_dependencies(kest_scope *scope, kest_expression *
 	return ret_val;
 }
 
+
+
 int kest_scope_transitivize_updatable_dependents_rec(kest_scope *scope, kest_scope_entry *entry, int depth)
 {
 	if (!scope || !entry)
@@ -901,33 +907,39 @@ int kest_scope_transitivize_updatable_dependents_rec(kest_scope *scope, kest_sco
 	
 	for (size_t i = 0; i < entry->dependents.count; i++)
 	{
+		ref_entry = NULL;
 		if (entry->dependents.entries[i].type == KEST_DEPENDENT_SCOPE_ENTRY)
 		{
 			ref_entry = kest_scope_lookup(scope, entry->dependents.entries[i].data.entry_key);
-			
-			if (!ref_entry) continue;
-			
-			kest_scope_transitivize_updatable_dependents_rec(scope, ref_entry, depth + 1);
-			
-			for (size_t j = 0; j < ref_entry->dependents.count; j++)
+		}
+		else if (entry->dependents.entries[i].type == KEST_DEPENDENT_DRIVEN_PARAMETER)
+		{
+			if (entry->dependents.entries[i].data.param)
+				ref_entry = kest_scope_lookup(scope, entry->dependents.entries[i].data.param->name_internal);
+		}
+		
+		if (!ref_entry) continue;
+		
+		kest_scope_transitivize_updatable_dependents_rec(scope, ref_entry, depth + 1);
+		
+		for (size_t j = 0; j < ref_entry->dependents.count; j++)
+		{
+			KEST_PRINTF("[Depth %d] Consider adding dependent ", depth);
+			kest_string_append_dependent(&str, ref_entry->dependents.entries[j]);
+			KEST_PUTS_(str);
+			kest_string_drain(&str);
+			KEST_PRINTF_(" to scope entry ");
+			kest_scope_entry_print(entry, &str);
+			KEST_PUTS_(str);
+			kest_string_drain(&str);
+			if (kest_dependent_is_updatable(ref_entry->dependents.entries[j].type))
 			{
-				KEST_PRINTF("[Depth %d] Consider adding dependent ", depth);
-				kest_string_append_dependent(&str, ref_entry->dependents.entries[j]);
-				KEST_PUTS_(str);
-				kest_string_drain(&str);
-				KEST_PRINTF_(" to scope entry ");
-				kest_scope_entry_print(entry, &str);
-				KEST_PUTS_(str);
-				kest_string_drain(&str);
-				if (kest_dependent_is_updatable(ref_entry->dependents.entries[j].type))
-				{
-					KEST_PRINTF_(". Do it.\n");
-					kest_scope_entry_add_dependent(entry, ref_entry->dependents.entries[j]);
-				}
-				else
-				{
-					KEST_PRINTF_(". Nevermind..\n");
-				}
+				KEST_PRINTF_(". Do it.\n");
+				kest_scope_entry_add_dependent(entry, ref_entry->dependents.entries[j]);
+			}
+			else
+			{
+				KEST_PRINTF_(". Nevermind..\n");
 			}
 		}
 	}
@@ -971,6 +983,8 @@ int kest_scope_transitivize_updatable_dependents(kest_scope *scope)
 	
 	return NO_ERROR;
 }
+
+#define PRINTLINES_ALLOWED 0
 
 int kest_scope_clear_updates(kest_scope *scope)
 {

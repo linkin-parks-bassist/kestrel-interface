@@ -1,0 +1,47 @@
+v1.0
+
+.INFO
+
+name: "Auto-Wah"
+
+.PARAMETERS
+
+f_min: (name: "Min Center", default: 100, min: 100, max: 2000, scale: "logarithmic", group: 0)
+ratio: (name: "Ratio", default: 10, min: 1, max: 5, units: "x", group: 0)
+
+attack: (name: "Attack", default: 200, min: 1, 			max: 400,   	  units: "ms", scale: "logarithmic", group: 1)
+decay:  (name: "Decay",  default: 80,  min: 1, 			max: 400,   	  units: "ms", scale: "logarithmic", group: 1)
+
+sens:	(name: "Sensitivity", default: 1.0, min: 0, max: 15.0)
+
+centery: (name: "Center", default: 100, min: f_min, max: ratio * f_min, scale: "logarithmic", units: "Hz", driver: center)
+Q: (name: "Q", default: sqrt(2)/2, min: 0.1, max: 2) 
+
+.DEFS
+
+beta_a: exp(-(1000 / (attack * sample_rate)))
+alpha_a: 1 - beta_a
+
+beta_d: exp(-(1000 / (decay * sample_rate)))
+alpha_d: 1 - beta_d
+
+center: f_min * 10^(log10(ratio) * tanh(sens * abs(envelope)))
+
+.RESOURCES
+
+envelope: (type: "mem")
+filter: (type: "bpf", center: center, Q: Q)
+
+.CODE
+
+abs c0 c1
+
+mem_read  $envelope c2
+mul 	  c2 [beta_a] c3
+madd  	  c1 [alpha_a] c3 c3
+mul 	  c2 [beta_d] c4
+madd  	  c1 [alpha_d] c4 c4
+max c3 c4 c1
+mem_write c1 $envelope
+
+filter c0 $filter c0

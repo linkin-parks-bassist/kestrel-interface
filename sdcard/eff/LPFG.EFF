@@ -1,0 +1,17 @@
+v1.0
+
+.INFO
+
+name: "Gain"
+
+.PARAMETERS
+
+gain: (name: "Gain", default: 5.0, min: -24.0, max: 24.0, units: "dB", driver: lfo)
+
+.RESOURCES
+
+lfo: (type: "lfo", min: 0, max: 1, freq: 2)
+
+.CODE
+
+mul c0 [lfo] c0

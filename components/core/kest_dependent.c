@@ -84,6 +84,8 @@ int kest_dependent_is_updatable(int type)
 	{
 		case KEST_DEPENDENT_BLOCK_REG:
 		case KEST_DEPENDENT_FILTER_COEF:
+		case KEST_DEPENDENT_DRIVEN_PARAMETER:
+		case KEST_DEPENDENT_BOUND_PARAMETER:
 			return 1;
 	}
 	return 0;

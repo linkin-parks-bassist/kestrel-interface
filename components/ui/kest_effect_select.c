@@ -82,6 +82,8 @@ int refresh_effect_selector(kest_ui_page *page)
 	return ERR_UNIMPLEMENTED;
 }
 
+#define PRINTLINES_ALLOWED 1
+
 void add_effect_from_menu_eff(lv_event_t *e)
 {
 	kest_effect_selector_button *button = lv_event_get_user_data(e);
@@ -114,12 +116,12 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	
 	effect = kest_preset_append_effect_eff(preset, eff);
 	if (pv) preset_view_append_effect(pv, effect);
-	preset->unsaved_changes = 1;
-	kest_preset_update_representations(preset);
-	kest_preset_if_active_reprogram_fpga(preset);
+	
 	kest_effect_init_view_page(effect, preset->view_page);
 	create_effect_view_ui(effect->view_page);
 }
+
+#define PRINTLINES_ALLOWED 0
 
 int init_effect_selector_button_from_effect(kest_effect_selector_button *button, kest_effect_desc *eff)
 {

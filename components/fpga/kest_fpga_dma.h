@@ -18,6 +18,12 @@
 #define DATA_REQ_MEM			 15
 #define DATA_REQ_COMMAND_LOG	 33
 
+typedef struct {
+	int addr;
+	void (*callback)(kest_fpga_sample_t result, void *arg);
+	void *cb_arg;
+} kest_fpga_mem_read_spec;
+
 typedef struct kest_fpga_read_spec {
 	int type;
 	int id;

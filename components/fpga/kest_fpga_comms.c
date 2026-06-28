@@ -10,26 +10,6 @@ int kest_init_fpga_comms()
 	return NO_ERROR;
 }
 
-#define KEST_FPGA_MSG_TYPE_BATCH 			0
-#define KEST_FPGA_MSG_TYPE_PROGRAM_BATCH 	1
-#define KEST_FPGA_MSG_TYPE_SET_INPUT_GAIN 	2
-#define KEST_FPGA_MSG_TYPE_SET_OUTPUT_GAIN  3
-#define KEST_FPGA_MSG_TYPE_COMMAND			4
-#define KEST_FPGA_MSG_TYPE_READ				5
-#define KEST_FPGA_MSG_TYPE_BYTE_BATCH 		6
-
-typedef struct {
-	int type;
-	
-	union {
-		float level;
-		uint8_t command;
-		kest_fpga_transfer_batch batch;
-		kest_fpga_read_spec *read;
-		byte_list *byte_batch;
-	} data;
-} kest_fpga_msg;
-
 static QueueHandle_t fpga_msg_queue;
 static int initialised = 0;
 
@@ -80,6 +60,9 @@ void kest_fpga_comms_task(void *param)
 	uint64_t last_scan_ms = kest_system_time_ms();
 	uint64_t current_time_ms = last_scan_ms;
 	#endif
+	
+	uint8_t addr_buf[KEST_FPGA_MEM_ADDR_BYTES];
+	kest_fpga_sample_t read_result;
 	
 	while (1)
 	{
@@ -189,17 +172,6 @@ void kest_fpga_comms_task(void *param)
 				kest_free_fpga_transfer_batch(msg.data.batch);
 				break;
 			
-			case KEST_FPGA_MSG_TYPE_BYTE_BATCH:
-				if (!msg.data.byte_batch)
-				{
-					KEST_PRINTF_FORCE("Error: NULL byte batch\n");
-					break;
-				}
-				KEST_PRINTF("Sending byte batch (length %d)\n", msg.data.byte_batch->count);
-				kest_fpga_txrx(msg.data.byte_batch->entries, NULL, msg.data.byte_batch->count);
-				KEST_PRINTF("Done\n");
-				break;
-			
 			case KEST_FPGA_MSG_TYPE_BATCH:
 				#ifdef PRINT_TRANSFER_BATCHES
 				kest_fpga_batch_print(msg.data.batch);
@@ -249,6 +221,24 @@ void kest_fpga_comms_task(void *param)
 					if (msg.data.read->callback)
 						msg.data.read->callback(msg.data.read);
 				}
+				break;
+				
+			case KEST_FPGA_MSG_TYPE_MEM_READ:
+				
+				addr_buf[0] = (msg.data.mem_read.addr & 0xFF00) >> 8;
+				addr_buf[1] = (msg.data.mem_read.addr & 0x00FF) >> 0;
+				
+				read_result = kest_fpga_req_data_p(DATA_REQ_MEM, addr_buf, 2, 2, &status);
+				
+				#ifdef PRINT_READS
+				float s = (float)read_result * pow(2.0f, -15.0f);
+				KEST_PRINTF_FORCE("Probed FPGA memory at address 0x%04x, with result 0x%04x = %s%.05f\n",
+					msg.data.mem_read.addr, read_result & 0xFFFF, s < 0 ? "" : " ", s);
+				#endif
+					
+				if (msg.data.mem_read.callback)
+					msg.data.mem_read.callback(read_result, msg.data.mem_read.cb_arg);
+				
 				break;
 		}
 	}
@@ -321,6 +311,18 @@ int kest_fpga_queue_register_commit()
 	
 	msg.type = KEST_FPGA_MSG_TYPE_COMMAND;
 	msg.data.command = COMMAND_COMMIT_REG_UPDATES;
+	
+	return kest_fpga_queue_msg(msg);
+}
+
+int kest_fpga_queue_mem_read(int addr, void (*callback)(kest_fpga_sample_t, void*), void *cb_arg)
+{
+	kest_fpga_msg msg;
+	
+	msg.type = KEST_FPGA_MSG_TYPE_MEM_READ;
+	msg.data.mem_read.addr = addr;
+	msg.data.mem_read.callback = callback;
+	msg.data.mem_read.cb_arg = cb_arg;
 	
 	return kest_fpga_queue_msg(msg);
 }

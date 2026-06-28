@@ -52,13 +52,6 @@ int preset_view_effect_click_cb(kest_active_button *button)
 	
 	kest_effect *effect = (kest_effect*)button->data;
 	
-	/*
-	if (!effect->view_page)
-	{
-		KEST_PRINTF("Trnasformer's view page existn't; creating now\n");
-		kest_effect_init_view_page(effect);
-	}
-	*/
 	enter_ui_page_forwards(((kest_effect*)button->data)->view_page);
 	
 	return NO_ERROR;
@@ -102,16 +95,12 @@ int preset_view_effect_delete_cb(kest_active_button *button)
 	if (ret_val != NO_ERROR)
 		return ret_val;
 	
-	#ifdef USE_FPGA
-	ret_val = kest_preset_if_active_update_fpga(preset);
-	#endif
 	KEST_PRINTF("preset_view_effect_delete_cb done\n");
 	return ret_val;
 }
 
 int init_preset_view(kest_ui_page *page)
 {
-	//kest_printf("init_preset_view...\n");
 	if (!page)
 		return ERR_NULL_PTR;
 	

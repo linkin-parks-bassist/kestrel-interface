@@ -126,6 +126,14 @@ int kest_preset_deactivate_lfos(kest_preset *preset)
 	return kest_pipeline_deactivate_lfos(&preset->pipeline);
 }
 
+int kest_preset_update_positions(kest_preset *preset)
+{
+	if (preset)
+		return kest_pipeline_update_positions(&preset->pipeline);
+	else
+		return ERR_NULL_PTR;
+}
+
 int kest_preset_set_active(kest_preset *preset)
 {
 	if (!preset)
@@ -134,7 +142,6 @@ int kest_preset_set_active(kest_preset *preset)
 	preset->active = 1;
 	preset->pending = 1;
 	
-	kest_pipeline_update_positions(&preset->pipeline);
 	kest_updater_notify_preset(preset);
 	
 	//kest_preset_program_fpga(preset);
@@ -262,6 +269,9 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 	kest_queue_preset_save(preset);
 #endif
 	
+	if (preset->active)
+		kest_updater_notify_preset(preset);
+	
 	KEST_PRINTF("kest_preset_append_effect_eff done\n");
 	return effect;
 }
@@ -274,7 +284,8 @@ int kest_preset_remove_effect(kest_preset *preset, uint16_t id)
 	
 	int ret_val = kest_pipeline_remove_effect(&preset->pipeline, id);
 	
-	kest_updater_notify_preset(preset);
+	if (preset->active)
+		kest_updater_notify_preset(preset);
 	
 #ifndef KEST_LIBRARY
 	kest_queue_preset_save(preset);
@@ -293,7 +304,8 @@ int kest_preset_move_effect(kest_preset *preset, int new_pos, int old_pos)
 		if ((ret_val = kest_pipeline_move_effect(&preset->pipeline, new_pos, old_pos)) != NO_ERROR)
 			return ret_val;
 		
-		ret_val = kest_preset_if_active_reprogram_fpga(preset);
+		if (preset->active)
+			kest_updater_notify_preset(preset);
 	}
 	else
 	{
