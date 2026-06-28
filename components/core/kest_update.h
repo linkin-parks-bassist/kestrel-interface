@@ -5,7 +5,7 @@
 //#define PRINT_INSTR_WRITES
 //#define PRINT_REG_WRITES
 //#define PRINT_FILTER_WRITES
-#define PRINT_COMMAND_LIST
+//#define PRINT_COMMAND_LIST
 
 #define KEST_UPDATE_NONE 	0
 #define KEST_UPDATE_PARAM	1
@@ -79,6 +79,8 @@ typedef struct {
 	
 	kest_fpga_mem_read_list reads;
 	
+	kest_dsp_resource_ptr_list resources;
+	
 	int tick_ctr;
 	
 } kest_updater_state;
@@ -89,6 +91,11 @@ int kest_update_queue(kest_update update);
 
 int kest_updater_notify_param(kest_parameter *param);
 int kest_updater_notify_preset(kest_preset *preset);
+
+int kest_updater_drain_lists(kest_updater_state *state);
+int kest_updater_handle_update(kest_updater_state *state, kest_update update);
+int kest_updater_handle_preset_update(kest_updater_state *state, kest_preset *preset);
+int kest_updater_handle_scope_entry_update(kest_updater_state *state, kest_scope_entry *entry, kest_effect *effect);
 
 void kest_active_preset_updater_start();
 

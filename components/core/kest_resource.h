@@ -16,6 +16,7 @@ typedef struct kest_dsp_resource {
 	int type;
 	int handle;
 	int mem_size;
+	struct kest_effect *effect;
 	struct kest_expression *size;
 	struct kest_expression *delay;
 	void *data;
@@ -114,6 +115,8 @@ typedef struct kest_lfo {
 	float prev_t;
 	int64_t prev_ms;
 } kest_lfo;
+
+DECLARE_PTR_LIST(kest_lfo);
 
 int kest_lfo_init(kest_lfo *lfo);
 kest_lfo *kest_lfo_create(kest_allocator *alloc);

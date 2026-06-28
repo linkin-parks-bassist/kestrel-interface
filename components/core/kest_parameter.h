@@ -80,6 +80,7 @@ int kest_parameter_if_driven_refresh(kest_parameter *param);
 int kest_parameter_set(kest_parameter *param, float v);
 int kest_parameter_driver_set(kest_parameter *param, float v);
 
+void kest_parameter_refresh_pw_async(void *param_);
 void kest_parameter_if_updated_refresh_pw_async(void *param_);
 
 int kest_parameter_clear_update(kest_parameter *param);

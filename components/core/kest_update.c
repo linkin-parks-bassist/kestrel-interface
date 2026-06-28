@@ -25,16 +25,21 @@ typedef struct kest_update_ {
 	uint8_t data[UPDATE_DATA_SIZE];
 } kest_update_;
 
+#ifdef KEST_USE_FREERTOS
 QueueHandle_t update_queue = NULL;
+#endif
 static int initialised = 0;
 
 #define UPDATE_RATE_HZ 50
 #define UPDATE_PERIOD_MS (1000.0f / (float)UPDATE_RATE_HZ)
 
+#ifdef KEST_USE_FREERTOS
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
+#endif
 
 void kest_active_preset_updater_task(void *arg)
 {
+	#ifdef KEST_USE_FREERTOS
 	if (!update_queue)
 	{
 		KEST_PRINTF("Update queue failed to initialise. Aborting\n");
@@ -198,18 +203,22 @@ void kest_active_preset_updater_task(void *arg)
 		active_preset_prev = active_preset;
 		xTaskDelayUntil(&last_wake, update_period_ticks);
 	}
+	#endif
 }
 
 void kest_active_preset_updater_start()
 {
+	#ifdef KEST_USE_FREERTOS
 	return;
 	
 	update_queue = xQueueCreate(16, sizeof(kest_update_));
 	xTaskCreate(kest_active_preset_updater_task, "kest_update_task", 4096, NULL, 8, NULL);
+	#endif
 }
 
 int kest_active_preset_updater_notify_effect_by_id(int preset_id, int effect_id)
 {
+	#ifdef KEST_USE_FREERTOS
 	if (!initialised)
 		return ERR_UNINITIALISED;
 	
@@ -228,10 +237,14 @@ int kest_active_preset_updater_notify_effect_by_id(int preset_id, int effect_id)
 		return ERR_CURRENTLY_EXHAUSTED;
 	
 	return NO_ERROR;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 }
 
 int kest_active_preset_updater_notify_effect_by_ptr(kest_effect *effect)
 {
+	#ifdef KEST_USE_FREERTOS
 	if (!initialised)
 		return ERR_UNINITIALISED;
 	
@@ -252,6 +265,9 @@ int kest_active_preset_updater_notify_effect_by_ptr(kest_effect *effect)
 		return ERR_CURRENTLY_EXHAUSTED;
 	
 	return NO_ERROR;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 }
 
 /********************************************************************
@@ -268,7 +284,9 @@ int kest_active_preset_updater_notify_effect_by_ptr(kest_effect *effect)
  ********************************************************************
  ********************************************************************/
 
+#ifdef KEST_USE_FREERTOS
 QueueHandle_t update_queue_ = NULL;
+#endif
 
 void kest_update_task(void *arg);
 
@@ -282,7 +300,12 @@ int kest_updater_state_init(kest_updater_state *state)
 		return ERR_NULL_PTR;
 	
 	state->state = KEST_UPDATER_STATE_READY;
+	
+	#ifdef KEST_LIBRARY
+	state->active_preset = NULL;
+	#else
 	state->active_preset = global_cxt.active_preset;
+	#endif
 	kest_fpga_command_list_init(&state->cmds);
 	
 	kest_fpga_alloc_list_init(&state->allocs);
@@ -293,10 +316,26 @@ int kest_updater_state_init(kest_updater_state *state)
 	
 	kest_fpga_mem_read_list_init(&state->reads);
 	
+	kest_dsp_resource_ptr_list_init(&state->resources);
+	
 	kest_fpga_transfer_batch_init(&state->batch);
 	state->batch.buffer_owned = 1;
 	
 	state->tick_ctr = 0;
+	
+	return NO_ERROR;
+}
+
+
+int kest_updater_clear(kest_updater_state *state)
+{
+	if (!state)
+		return ERR_NULL_PTR;
+	
+	kest_updater_drain_lists(state);
+	kest_fpga_mem_read_list_drain(&state->reads);
+	
+	kest_dsp_resource_ptr_list_drain(&state->resources);
 	
 	return NO_ERROR;
 }
@@ -313,8 +352,6 @@ void kest_updater_state_destroy(kest_updater_state *state)
 	kest_fpga_write_list_destroy(&state->instr_writes);
 	kest_fpga_write_list_destroy(&state->reg_writes);
 	kest_fpga_write_list_destroy(&state->filter_writes);
-	
-	return;
 }
 
 int kest_fpga_write_generate_update(kest_fpga_write *write, kest_dependent *dep, kest_effect *effect)
@@ -425,6 +462,7 @@ int kest_fpga_write_generate_update(kest_fpga_write *write, kest_dependent *dep,
 
 int kest_update_task_start()
 {
+	#ifdef KEST_USE_FREERTOS
 	KEST_PRINTF("kest_update_task_start\n");
 	update_queue_ = xQueueCreate(16, sizeof(kest_update));
 	
@@ -434,9 +472,10 @@ int kest_update_task_start()
 	xTaskCreate(kest_update_task, "kest_update_task", 4096, NULL, 8, NULL);
 	
 	return NO_ERROR;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 }
-
-int kest_updater_handle_update(kest_updater_state *state, kest_update update);
 
 int kest_updater_add_reg_update(kest_updater_state *state, kest_dependent *dep, kest_effect *effect)
 {
@@ -621,6 +660,40 @@ int kest_updater_drain_lists(kest_updater_state *state)
 	return NO_ERROR;
 }
 
+int kest_updater_handle_resource_update(kest_updater_state *state, kest_dsp_resource *res)
+{
+	KEST_PRINTF("kest_updater_handle_resource_update\n");
+	if (!state || !res)
+		return ERR_NULL_PTR;
+	
+	kest_scope_entry *entry = NULL;
+	kest_effect *effect = res->effect;
+	
+	switch (res->type)
+	{
+		case KEST_DSP_RESOURCE_LFO:
+			KEST_PRINTF("It is an LFO\n");
+			entry = kest_scope_lookup(effect->scope, res->name);
+			kest_updater_handle_scope_entry_update(state, entry, effect);
+			break;
+	}
+	
+	return NO_ERROR;
+}
+
+int kest_updater_handle_resource_updates(kest_updater_state *state)
+{
+	if (!state)
+		return ERR_NULL_PTR;
+	
+	for (size_t i = 0; i < state->resources.count; i++)
+	{
+		kest_updater_handle_resource_update(state, state->resources.entries[i]);
+	}
+	
+	return NO_ERROR;
+}
+
 int kest_updater_generate_command_list(kest_updater_state *state);
 int kest_updater_generate_tx_batch(kest_updater_state *state);
 int kest_updater_send(kest_updater_state *state);
@@ -628,15 +701,22 @@ int kest_updater_send(kest_updater_state *state);
 void kest_update_task(void *arg)
 {
 	kest_update update;
+	
+	#ifdef KEST_USE_FREERTOS
 	TickType_t last_wake = xTaskGetTickCount();
+	#endif
 	
 	kest_updater_state state;
 	kest_updater_state_init(&state);
 	
 	while (1)
 	{
+		#ifdef KEST_USE_FREERTOS
 		while (xQueueReceive(update_queue_, &update, 0) == pdPASS)
 			kest_updater_handle_update(&state, update);
+		#endif
+		
+		kest_updater_handle_resource_updates(&state);
 		
 		#ifdef PRINT_ALLOCS
 		kest_updater_print_allocs(&state);
@@ -664,13 +744,32 @@ void kest_update_task(void *arg)
 		
 		state.tick_ctr++;
 		
+		#ifndef KEST_LIBRARY
 		for (size_t i = 0; i < state.reads.count; i++)
 			kest_fpga_queue_read(&state.reads.entries[i].read);
+		#endif
 		
+		#ifdef KEST_USE_FREERTOS
 		xTaskDelayUntil(&last_wake, update_period_ticks);
+		#endif
 	}
 	
+	#ifdef KEST_USE_FREERTOS
 	vTaskDelete(NULL);
+	#endif
+}
+
+int kest_update_queue(kest_update update)
+{
+	KEST_PRINTF("kest_update_queue\n");
+	#ifdef KEST_USE_FREERTOS
+	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
+		return ERR_CURRENTLY_EXHAUSTED;
+	
+	return NO_ERROR;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 }
 
 int kest_updater_notify_param(kest_parameter *param)
@@ -683,10 +782,7 @@ int kest_updater_notify_param(kest_parameter *param)
 	update.type = KEST_UPDATE_PARAM;
 	update.data.param = param;
 	
-	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
-		return ERR_CURRENTLY_EXHAUSTED;
-	
-	return NO_ERROR;
+	return kest_update_queue(update);
 }
 
 int kest_updater_notify_mem(kest_parameter *param)
@@ -699,10 +795,7 @@ int kest_updater_notify_mem(kest_parameter *param)
 	update.type = KEST_UPDATE_PARAM;
 	update.data.param = param;
 	
-	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
-		return ERR_CURRENTLY_EXHAUSTED;
-	
-	return NO_ERROR;
+	return kest_update_queue(update);
 }
 
 int kest_updater_notify_preset(kest_preset *preset)
@@ -715,24 +808,69 @@ int kest_updater_notify_preset(kest_preset *preset)
 	update.type = KEST_UPDATE_PRESET;
 	update.data.preset = preset;
 	
-	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
-		return ERR_CURRENTLY_EXHAUSTED;
-	
-	return NO_ERROR;
+	return kest_update_queue(update);
 }
 
-int kest_update_queue(kest_update update)
+int kest_updater_handle_scope_entry_update(kest_updater_state *state, kest_scope_entry *entry, kest_effect *effect)
 {
-	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
-		return ERR_CURRENTLY_EXHAUSTED;
+	KEST_PRINTF("kest_updater_handle_scope_entry_update\n");
+	
+	if (!state || !entry || !effect)
+		return ERR_NULL_PTR;
+	
+	kest_dependent *dep = NULL;
+	
+	#ifdef PRINTLINES_ALLOWED
+	kest_string str;
+	kest_string_init(&str);
+	#endif
+	
+	KEST_PRINTF("Entry %p has %d dependents\n", entry, entry->dependents.count);
+	
+	if (entry->dependents.count && PRINTLINES_ALLOWED)
+	{
+		KEST_PRINTF("Dependents:\n");
+	}
+	
+	for (size_t i = 0; i < entry->dependents.count; i++)
+	{
+		dep = &entry->dependents.entries[i];
+		
+		#ifdef PRINTLINES_ALLOWED
+		KEST_PRINTF_("\t");
+		kest_string_append_dependent(&str, entry->dependents.entries[i]);
+		#endif
+		
+		switch (dep->type)
+		{
+			case KEST_DEPENDENT_BLOCK_REG:
+				kest_updater_add_reg_update(state, dep, effect);
+				break;
+			case KEST_DEPENDENT_FILTER_COEF:
+				kest_updater_add_filter_coef_update(state, dep, effect);
+				break;
+			case KEST_DEPENDENT_BOUND_PARAMETER:
+				kest_parameter_refresh_pw_async(dep->data.param);
+				break;
+			case KEST_DEPENDENT_DRIVEN_PARAMETER:
+				kest_parameter_refresh_pw_async(dep->data.param);
+				KEST_PRINTF("dep->data.param = %p, dep->data.param->effect = %p, dep->data.param->pw = %p\n", dep->data.param, dep->data.param->effect, dep->data.param->pw);
+				break;
+		}
+		
+		#ifdef PRINTLINES_ALLOWED
+		KEST_PUTS_(str);
+		KEST_PRINTF_("\n");
+		kest_string_drain(&str);
+		#endif
+	}
 	
 	return NO_ERROR;
 }
-
-int kest_updater_handle_preset_update(kest_updater_state *state, kest_preset *preset);
 
 int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 {
+	KEST_PRINTF("kest_updater_handle_update\n");
 	if (!state)
 		return ERR_NULL_PTR;
 	
@@ -769,33 +907,7 @@ int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 			if (!entry)
 				break;
 			
-			KEST_PRINTF("Parameter has scope entry %p, with %d dependents\n", entry, entry->dependents.count);
-			
-			if (entry->dependents.count && PRINTLINES_ALLOWED)
-			{
-				KEST_PRINTF("Dependents:\n");
-			}
-			
-			for (size_t i = 0; i < entry->dependents.count; i++)
-			{
-				dep = &entry->dependents.entries[i];
-				
-				#ifdef PRINTLINES_ALLOWED
-				KEST_PRINTF_("\t");
-				kest_string_append_dependent(&str, entry->dependents.entries[i]);
-				#endif
-				
-				if (dep->type == KEST_DEPENDENT_BLOCK_REG)
-					kest_updater_add_reg_update(state, dep, effect);
-				else if (dep->type == KEST_DEPENDENT_FILTER_COEF)
-					kest_updater_add_filter_coef_update(state, dep, effect);
-				
-				#ifdef PRINTLINES_ALLOWED
-				KEST_PUTS_(str);
-				KEST_PRINTF_("\n");
-				kest_string_drain(&str);
-				#endif
-			}
+			kest_updater_handle_scope_entry_update(state, entry, effect);
 			
 			break;
 		
@@ -807,6 +919,8 @@ int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 	
 	return NO_ERROR;
 }
+
+#define PRINTLINES_ALLOWED 0
 
 int kest_alloc_for_filter(kest_fpga_alloc *alloc, kest_dsp_resource *res)
 {
@@ -975,7 +1089,6 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 					effect->position_.filter_start + res->handle, (kest_filter*)res->data, effect->scope);
 				break;
 				
-				
 			case KEST_DSP_RESOURCE_MEM:
 				mem = (kest_mem_slot*)res->data;
 				
@@ -988,9 +1101,14 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 					read.period_ms = mem->read.period_ms;
 					read.last_t = 0;
 					read.read = mem->read.spec;
+					
+					kest_fpga_mem_read_list_append(&state->reads, read);
 				}
 				
-				kest_fpga_mem_read_list_append(&state->reads, read);
+				break;
+				
+			case KEST_DSP_RESOURCE_LFO:
+				kest_dsp_resource_ptr_list_append(&state->resources, res);
 				break;
 		}
 	}
@@ -1028,17 +1146,6 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 	}
 	
 	return ret_val;
-}
-
-int kest_updater_clear(kest_updater_state *state)
-{
-	if (!state)
-		return ERR_NULL_PTR;
-	
-	kest_updater_drain_lists(state);
-	kest_fpga_mem_read_list_drain(&state->reads);
-	
-	return NO_ERROR;
 }
 
 int kest_updater_handle_preset_update(kest_updater_state *state, kest_preset *preset)
@@ -1203,11 +1310,12 @@ int kest_updater_generate_command_list(kest_updater_state *state)
 		}
 	}
 	
-	if (any_reg_updates)
-		kest_fpga_command_list_append(&state->cmds, kest_fpga_command_commit_reg_updates());
 	
 	for (size_t i = 0; i < filter_updates.count; i++)
 		kest_fpga_command_list_append(&state->cmds, kest_fpga_command_commit_filter_coefs(filter_updates.entries[i]));
+	
+	if (any_reg_updates)
+		kest_fpga_command_list_append(&state->cmds, kest_fpga_command_commit_reg_updates());
 	
 	return ret_val;
 }
@@ -1219,8 +1327,6 @@ int kest_updater_generate_tx_batch(kest_updater_state *state)
 	
 	int ret_val = NO_ERROR;
 	
-	kest_fpga_batch_drain(&state->batch);
-	
 	kest_fpga_command_list_append_encoded(&state->cmds, &state->batch);
 	
 	return ret_val;
@@ -1229,6 +1335,7 @@ int kest_updater_generate_tx_batch(kest_updater_state *state)
 
 int kest_updater_send(kest_updater_state *state)
 {
+	#ifndef KEST_LIBRARY
 	if (!state)
 		return ERR_NULL_PTR;
 	
@@ -1262,6 +1369,9 @@ int kest_updater_send(kest_updater_state *state)
 	}
 	
 	return ret_val;
+	#else
+	return ERR_FEATURE_DISABLED;
+	#endif
 }
 
 kest_fpga_transfer_batch kest_standalone_generate_program_batch(kest_effect_ptr_list *effects)
@@ -1282,7 +1392,10 @@ kest_fpga_transfer_batch kest_standalone_generate_program_batch(kest_effect_ptr_
 		kest_updater_handle_preset_update_add_effect(&state, effects->entries[i]);
 		
 	kest_updater_generate_command_list(&state);
+	
+	kest_fpga_batch_append(&state.batch, COMMAND_BEGIN_PROGRAM);
 	kest_updater_generate_tx_batch(&state);
+	kest_fpga_batch_append(&state.batch, COMMAND_END_PROGRAM);
 	
 standalone_generate_finish:
 	

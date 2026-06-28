@@ -126,6 +126,9 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	kest_setting_pll *current_setting = NULL;
 	kest_parameter_pll *current_param = NULL;
 	
+	kest_scope_entry *entry = NULL;
+	kest_dependent dep;
+	kest_parameter *param = NULL;
 	kest_setting *setting = NULL;
 	kest_driver driver;
 	
@@ -298,6 +301,33 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	{
 		ret_val = kest_driver_clone_for(&driver, &eff->drivers.entries[i], effect);
 		ret_val = kest_driver_list_append(&effect->drivers, driver);
+		
+		current_param = effect->parameters;
+	
+		while (current_param)
+		{
+			param = current_param->data;
+			
+			if (param)
+			{
+				if (param->driver_index == i)
+				{
+					if (driver.data)
+					{
+						switch (driver.type)
+						{
+							case KEST_DRIVER_SCOPE_ENTRY:
+								entry = kest_scope_lookup(effect->scope, ((kest_driver_scope_entry*)driver.data)->key);
+								if (entry)
+									kest_scope_entry_add_driven_parameter(entry, param);
+								break;
+						}
+					}
+				}
+			}
+			
+			current_param = current_param->next;
+		}
 	}
 	
 	KEST_PRINTF("init_effect_from_effect_desc done\n");

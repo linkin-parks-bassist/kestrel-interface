@@ -46,6 +46,8 @@ int kest_scope_entry_init_param(kest_scope_entry *entry, struct kest_parameter *
 int kest_scope_entry_init_setting(kest_scope_entry *entry, struct kest_setting *setting);
 
 int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, const char *key);
+int kest_scope_entry_add_driven_parameter(kest_scope_entry *entry, struct kest_parameter *param);
+int kest_scope_entry_add_bound_dependent_parameter(kest_scope_entry *entry, struct kest_parameter *param);
 int kest_scope_entry_add_dependent_filter_coef(kest_scope_entry *entry, int filter, int coef, int format);
 int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg, int format);
 int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep);

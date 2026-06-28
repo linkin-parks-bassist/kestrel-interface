@@ -229,7 +229,7 @@ kest_parameter *kest_parameter_make_clone(kest_parameter *src)
 
 kest_parameter *kest_parameter_make_clone_for_effect(kest_parameter *src, kest_effect *effect)
 {
-	KEST_PRINTF("\n");
+	KEST_PRINTF("kest_parameter_make_clone_for_effect");
 	if (!src)
 		return NULL;
 	
@@ -242,6 +242,7 @@ kest_parameter *kest_parameter_make_clone_for_effect(kest_parameter *src, kest_e
 	clone_parameter(param, src);
 	
 	param->effect = effect;
+	KEST_PRINTF("param->effect = %p\n", param->effect);
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	KEST_PRINTF("\n");
@@ -706,6 +707,62 @@ void kest_parameter_if_updated_refresh_pw(void *param_)
 	if (param->pw && param->updated)
 	{
 		kest_parameter_widget_refresh(param->pw);
+	}
+#else
+	(void)param_;
+#endif
+}
+void kest_parameter_refresh_pw_async(void *param_)
+{
+#ifdef KEST_ENABLE_UI
+	kest_parameter *param = param_;
+	
+	if (!param)
+		return;
+	
+	KEST_PRINTF("kest_parameter_refresh_pw_async(param = %s)\n", param->name);
+	
+	KEST_PRINTF("param->pw = %p, param->updated = %d, param->driver_index = %d, param->driver_override = %d\n",
+		param->pw, param->updated, param->driver_index, param->driver_override);
+	
+	kest_parameter_widget_pll *current_pw = NULL;
+	kest_effect_view_str *view_page_str = NULL;
+	
+	if (!param->pw)
+	{
+		KEST_PRINTF("Param has no pw...? param->effect = %p\n", param->effect);
+		if (param->effect)
+		{
+			if (param->effect->view_page)
+			{
+				view_page_str = param->effect->view_page->data_struct;
+				
+				if (view_page_str)
+				{
+					current_pw = view_page_str->parameter_widgets;
+					
+					while (current_pw)
+					{
+						if (current_pw->data)
+						{
+							if (current_pw->data->param == param)
+							{
+								param->pw = current_pw->data;
+								KEST_PRINTF("nvm found it\n");
+								break;
+							}
+						}
+						
+						current_pw = current_pw->next;
+					}
+				}
+			}
+		}
+	}
+	
+	if (param->pw)
+	{
+		kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, param->pw);
 	}
 #else
 	(void)param_;

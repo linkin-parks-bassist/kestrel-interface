@@ -187,7 +187,7 @@ void parameter_widget_update_value_label(kest_parameter_widget *pw)
 
 int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param, kest_preset *preset, kest_ui_page *parent)
 {
-	KEST_PRINTF("configure_parameter_widget(pw = %p, param = %p, preset = %p, parent = %p)\n", pw, param, preset, parent);
+	KEST_PRINTF("configure_parameter_widget(pw = %p, param = %p = \"%s\", preset = %p, parent = %p)\n", pw, param, param->name, preset, parent);
 	if (!pw || !param)
 		return ERR_NULL_PTR;
 	
@@ -199,6 +199,8 @@ int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param,
 	pw->parent = parent;
 	
 	param->pw = pw;
+	
+	KEST_PRINTF("param->pw = %p\n", param->pw);
 	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	pw->rep.representee = param;
@@ -267,6 +269,7 @@ int kest_parameter_widget_refresh(kest_parameter_widget *pw)
 	
 	return ret_val;
 }
+#define PRINTLINES_ALLOWED 0
 
 void parameter_widget_refresh(kest_parameter_widget *pw)
 {

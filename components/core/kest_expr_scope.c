@@ -123,6 +123,48 @@ int kest_scope_entry_add_dependent_scope_entry(kest_scope_entry *entry, const ch
 	return kest_dependent_list_append(&entry->dependents, kest_dependent_scope_entry(key));
 }
 
+int kest_scope_entry_add_driven_parameter(kest_scope_entry *entry, kest_parameter *param)
+{
+	if (!entry)
+		return ERR_NULL_PTR;
+	
+	if (!param)
+		return ERR_BAD_ARGS;
+	
+	if (!entry->dependents.entries)
+		return kest_dependent_list_append(&entry->dependents, kest_dependent_driven_parameter(param));
+	
+	for (size_t i = 0; i < entry->dependents.count; i++)
+	{
+		if (entry->dependents.entries[i].type == KEST_DEPENDENT_DRIVEN_PARAMETER
+		 && entry->dependents.entries[i].data.param == param)
+			return NO_ERROR;
+	}
+	
+	return kest_dependent_list_append(&entry->dependents, kest_dependent_driven_parameter(param));
+}
+
+int kest_scope_entry_add_bound_dependent_parameter(kest_scope_entry *entry, kest_parameter *param)
+{
+	if (!entry)
+		return ERR_NULL_PTR;
+	
+	if (!param)
+		return ERR_BAD_ARGS;
+	
+	if (!entry->dependents.entries)
+		return kest_dependent_list_append(&entry->dependents, kest_dependent_bound_parameter(param));
+	
+	for (size_t i = 0; i < entry->dependents.count; i++)
+	{
+		if (entry->dependents.entries[i].type == KEST_DEPENDENT_BOUND_PARAMETER
+		 && entry->dependents.entries[i].data.param == param)
+			return NO_ERROR;
+	}
+	
+	return kest_dependent_list_append(&entry->dependents, kest_dependent_bound_parameter(param));
+}
+
 int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg, int format)
 {
 	if (!entry)
@@ -174,6 +216,8 @@ int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep)
 			return kest_scope_entry_add_dependent_block_reg(entry, dep.data.block_reg.block, dep.data.block_reg.reg, dep.format);
 		case KEST_DEPENDENT_FILTER_COEF:
 			return kest_scope_entry_add_dependent_filter_coef(entry, dep.data.filter_coef.filter, dep.data.filter_coef.coef, dep.format);
+		case KEST_DEPENDENT_BOUND_PARAMETER:
+			return kest_scope_entry_add_bound_dependent_parameter(entry, dep.data.param);
 	}
 	
 	return ERR_BAD_ARGS;
@@ -654,6 +698,8 @@ int kest_scope_detect_dependencies(kest_scope *scope)
 	
 	kest_scope_entry *entry = NULL;
 	kest_scope_entry *ref_entry = NULL;
+	kest_parameter *param = NULL;
+	
 	const char *current_key;
 	int ret_val;
 	
@@ -677,27 +723,27 @@ int kest_scope_detect_dependencies(kest_scope *scope)
 		
 		if (entry->type == KEST_SCOPE_ENTRY_TYPE_EXPR)
 		{
-			KEST_PRINTF("... Which is an expression. Specifically, \"%s\".\n", kest_expression_to_string(entry->val.expr));
+			//KEST_PRINTF("... Which is an expression. Specifically, \"%s\".\n", kest_expression_to_string(entry->val.expr));
 			
 			ret_val = kest_expression_get_references(entry->val.expr, &names);
 			
 			if (ret_val != NO_ERROR)
 			{
-				KEST_PRINTF("Hmm, I tried to list out its expressions, but something went wrong: %s\n", kest_error_code_to_string(ret_val));
+				//KEST_PRINTF("Hmm, I tried to list out its expressions, but something went wrong: %s\n", kest_error_code_to_string(ret_val));
 				char_ptr_list_drain(&names);
 				break;
 			}
 			
-			KEST_PRINTF("It refers to: %s\n", (names.count == 0) ? "nothing" : "");
+			//KEST_PRINTF("It refers to: %s\n", (names.count == 0) ? "nothing" : "");
 			
 			for (int j = 0; j < names.count; j++)
 			{
-				KEST_PRINTF_("\t\"%s\",\n", names.entries[j]);
+				//KEST_PRINTF_("\t\"%s\",\n", names.entries[j]);
 				ref_entry = kest_scope_lookup(scope, names.entries[j]);
 				
 				if (!ref_entry)
 				{
-					KEST_PRINTF_("which is not found in scope !\n");
+					//KEST_PRINTF_("which is not found in scope !\n");
 					continue;
 				}
 				
@@ -706,13 +752,59 @@ int kest_scope_detect_dependencies(kest_scope *scope)
 			
 			char_ptr_list_drain(&names);
 		}
-		
-		any_updates |= entry->updated;
+		else if (entry->type == KEST_SCOPE_ENTRY_TYPE_PARAM)
+		{
+			KEST_PRINTF("... Which is a parameter.\n");
+			
+			param = entry->val.param;
+			
+			if (!param)
+				continue;
+			
+			if (param->max_expr)
+			{
+				KEST_PRINTF("Its upper bound is given by %s\n", kest_expression_to_string(param->max_expr));
+				kest_expression_get_references(param->max_expr, &names);
+				
+				KEST_PRINTF("Which refers to: %s\n", (names.count == 0) ? "nothing" : "");
+				for (int j = 0; j < names.count; j++)
+				{
+					KEST_PRINTF_("\t\"%s\",\n", names.entries[j]);
+					ref_entry = kest_scope_lookup(scope, names.entries[j]);
+					
+					if (!ref_entry)
+						continue;
+					
+					kest_scope_entry_add_bound_dependent_parameter(ref_entry, param);
+				}
+				
+				char_ptr_list_drain(&names);
+			}
+			
+			if (param->min_expr)
+			{
+				KEST_PRINTF("Its lower bound is given by %s\n", kest_expression_to_string(param->min_expr));
+				kest_expression_get_references(param->min_expr, &names);
+				KEST_PRINTF("Which refers to: %s\n", (names.count == 0) ? "nothing" : "");
+				
+				for (int j = 0; j < names.count; j++)
+				{
+					ref_entry = kest_scope_lookup(scope, names.entries[j]);
+					
+					if (!ref_entry)
+						continue;
+					
+					kest_scope_entry_add_bound_dependent_parameter(ref_entry, param);
+				}
+				
+				char_ptr_list_drain(&names);
+			}
+		}
 	}
 	
 	char_ptr_list_destroy(&names);
 	
-	return any_updates;
+	return NO_ERROR;
 }
 
 int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *expr, int block, int reg, int format)

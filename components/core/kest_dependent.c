@@ -18,6 +18,22 @@ kest_dependent kest_dependent_scope_entry(const char *key)
 	return dep;
 }
 
+kest_dependent kest_dependent_bound_parameter(kest_parameter *param)
+{
+	kest_dependent dep = {0};
+	dep.type = KEST_DEPENDENT_BOUND_PARAMETER;
+	dep.data.param = param;
+	return dep;
+}
+
+kest_dependent kest_dependent_driven_parameter(kest_parameter *param)
+{
+	kest_dependent dep = {0};
+	dep.type = KEST_DEPENDENT_DRIVEN_PARAMETER;
+	dep.data.param = param;
+	return dep;
+}
+
 kest_dependent kest_dependent_block_reg(int block, int reg, int format)
 {
 	kest_dependent dep = {0};
@@ -46,14 +62,15 @@ int kest_string_append_dependent(kest_string *str, kest_dependent dep)
 	switch (dep.type)
 	{
 		case KEST_DEPENDENT_SCOPE_ENTRY:
-			kest_string_appendf(str, "Scope entry \"%s\"", dep.data.entry_key);
-			break;
+			return kest_string_appendf(str, "Scope entry \"%s\"", dep.data.entry_key);
 		case KEST_DEPENDENT_BLOCK_REG:
 			return kest_string_appendf(str, "block %d reg %d", dep.data.block_reg.block, dep.data.block_reg.reg);
-			break;
 		case KEST_DEPENDENT_FILTER_COEF:
 			return kest_string_appendf(str, "filter %d coef %d", dep.data.filter_coef.filter, dep.data.filter_coef.coef);
-			break;
+		case KEST_DEPENDENT_BOUND_PARAMETER:
+			return kest_string_appendf(str, "bounded parameter \"%s\"", dep.data.param ? dep.data.param->name_internal : "(NULL)");
+		case KEST_DEPENDENT_DRIVEN_PARAMETER:
+			return kest_string_appendf(str, "driven parameter \"%s\"", dep.data.param ? dep.data.param->name_internal : "(NULL)");
 		default:
 			return kest_string_appendf(str, "unknown");
 	}

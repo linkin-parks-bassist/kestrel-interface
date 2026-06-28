@@ -16,6 +16,8 @@ IMPLEMENT_LINKED_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_PTR_LIST(kest_dsp_resource);
 IMPLEMENT_LIST(kest_dsp_resource);
 
+IMPLEMENT_PTR_LIST(kest_lfo);
+
 #ifdef KEST_ENABLE_UI
 void kest_lfo_update(lv_timer_t *timer);
 #endif
@@ -357,9 +359,6 @@ void kest_lfo_update(lv_timer_t *timer)
 	if (!lfo)
 		return;
 	
-	if (lfo->scope_entry)
-		lfo->scope_entry->updated = 1;
-	
 	if (lfo->effect)
 		kest_ui_async_call(kest_effect_update_sync, lfo->effect);
 }
@@ -526,6 +525,7 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 	
 	memcpy(dest, src, sizeof(kest_dsp_resource));
 	
+	dest->effect = NULL;
 	dest->data = NULL;
 	
 	KEST_PRINTF("dest->type = %d\n", dest->type);
@@ -609,6 +609,8 @@ kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src)
 kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *src, kest_effect *effect)
 {
 	kest_dsp_resource *result = kest_dsp_resource_make_clone(src);
+	
+	result->effect = effect;
 	
 	if (result && result->data)
 	{
