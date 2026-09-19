@@ -41,6 +41,7 @@ kest_dependent kest_dependent_filter_coef(int block, int reg, int format);
 
 int kest_string_append_dependent(kest_string *str, kest_dependent dep);
 
-int kest_dependent_is_updatable(int type);
+int kest_dependent_type_is_updatable(int type);
+int kest_dependent_is_updatable(kest_dependent dep);
 
 #endif

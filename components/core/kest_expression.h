@@ -34,8 +34,10 @@
 #define KEST_EXPR_ERF		23
 #define KEST_EXPR_MIN		24
 #define KEST_EXPR_MAX		25
+#define KEST_EXPR_ACC		26
+#define KEST_EXPR_DIFF		27
 
-#define KEST_EXPR_TYPE_MAX_VAL KEST_EXPR_MAX
+#define KEST_EXPR_TYPE_MAX_VAL KEST_EXPR_DIFF
 #define KEST_EXPR_MAX_ARITY 2
 
 #define KEST_EXPR_REC_MAX_DEPTH 128
@@ -125,6 +127,7 @@ extern kest_expression kest_expression_freq_max;
 extern kest_expression kest_expression_nyquist;
 extern kest_expression kest_expression_2pi_over_fs;
 extern kest_expression kest_expression_root_2_over_2;
+extern kest_expression kest_expression_t;
 
 int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);
 int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *cutoff, kest_expression *Q);

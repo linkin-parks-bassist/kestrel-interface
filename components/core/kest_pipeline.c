@@ -309,6 +309,25 @@ kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id)
 	return NULL;
 }
 
+kest_effect *kest_pipeline_get_effect_by_index(kest_pipeline *pipeline, int n)
+{
+	if (!pipeline)
+		return NULL;
+	
+	kest_effect_pll *current = pipeline->effects;
+	
+	while (n && current)
+	{
+		current = current->next;
+		n--;
+	}
+	
+	if (n || !current)
+		return NULL;
+	
+	return current->data;
+}
+
 int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int preset_id)
 {
 	if (!pipeline)

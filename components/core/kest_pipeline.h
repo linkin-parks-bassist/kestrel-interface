@@ -20,6 +20,7 @@ int kest_pipeline_remove_effect(kest_pipeline *pipeline, uint16_t id);
 int kest_pipeline_get_n_effects(kest_pipeline *pipeline);
 
 kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id);
+kest_effect *kest_pipeline_get_effect_by_index(kest_pipeline *pipeline, int n);
 
 int clone_pipeline(kest_pipeline *dest, kest_pipeline *src);
 void gut_pipeline(kest_pipeline *pipeline);

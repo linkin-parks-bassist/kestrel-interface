@@ -34,6 +34,11 @@ typedef struct kest_context
 	kest_parameter input_gain;
 	kest_parameter output_gain;
 	
+	int epoch;
+	int64_t epoch_start_ms;
+	
+	kest_scope global_scope;
+	
 	#ifdef KEST_ENABLE_REPRESENTATIONS
 	kest_representation_pll state_rep_lstub;
 	kest_representation state_rep;
@@ -105,6 +110,8 @@ int kest_cxt_set_input_gain(kest_context *cxt, float gain);
 int kest_cxt_set_output_gain(kest_context *cxt, float gain);
 
 int kest_cxt_get_sequence_count(kest_context *cxt);
+
+int kest_cxt_new_epoch(kest_context *cxt);
 
 kest_effect_desc *kest_cxt_get_effect_desc_from_cname(kest_context *cxt, const char *cname);
 

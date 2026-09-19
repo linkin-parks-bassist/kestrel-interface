@@ -78,15 +78,19 @@ int kest_string_append_dependent(kest_string *str, kest_dependent dep)
 	return NO_ERROR;
 }
 
-int kest_dependent_is_updatable(int type)
+int kest_dependent_is_updatable(kest_dependent dep)
 {
-	switch (type)
+	switch (dep.type)
 	{
 		case KEST_DEPENDENT_BLOCK_REG:
 		case KEST_DEPENDENT_FILTER_COEF:
 		case KEST_DEPENDENT_DRIVEN_PARAMETER:
 		case KEST_DEPENDENT_BOUND_PARAMETER:
 			return 1;
+		case KEST_DEPENDENT_SCOPE_ENTRY:
+			return (dep.data.entry_key &&
+					dep.data.entry_key[0] == 't' &&
+					dep.data.entry_key[1] == 0);
 	}
 	return 0;
 }

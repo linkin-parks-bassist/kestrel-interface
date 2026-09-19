@@ -299,6 +299,7 @@ int kest_scope_init(kest_scope *scope)
 	kest_scope_add_expr(scope, "e", &kest_expression_e);
 	kest_scope_add_expr(scope, "sample_rate", &kest_expression_sample_rate);
 	kest_scope_add_expr(scope, "data_width", &kest_expression_data_width);
+	kest_scope_add_expr(scope, "t", &kest_expression_t);
 	
 	return NO_ERROR;
 }
@@ -932,7 +933,7 @@ int kest_scope_transitivize_updatable_dependents_rec(kest_scope *scope, kest_sco
 			kest_scope_entry_print(entry, &str);
 			KEST_PUTS_(str);
 			kest_string_drain(&str);
-			if (kest_dependent_is_updatable(ref_entry->dependents.entries[j].type))
+			if (kest_dependent_is_updatable(ref_entry->dependents.entries[j]))
 			{
 				KEST_PRINTF_(". Do it.\n");
 				kest_scope_entry_add_dependent(entry, ref_entry->dependents.entries[j]);
@@ -1037,14 +1038,21 @@ int kest_scope_entry_eval_rec(kest_scope_entry *entry, kest_scope *scope, float 
 	float freq;
 	float amp;
 	float t;
-	
-	int64_t time_ms;
 
 	switch (entry->type)
 	{
 		case KEST_SCOPE_ENTRY_TYPE_EXPR:
 			KEST_PRINTF("Eval expression %s\n", kest_expression_to_string(entry->val.expr));
-			*dest = kest_expression_evaluate_rec(entry->val.expr, scope, depth);
+			
+			if (entry->val.expr->type == KEST_EXPR_REF  && entry->val.expr->val.ref_name && 
+				entry->val.expr->val.ref_name[0] == 't' && entry->val.expr->val.ref_name[1] == '\0')
+			{
+				*dest = kest_expression_evaluate_rec(&kest_expression_t, scope, depth);
+			}
+			else
+			{
+				*dest = kest_expression_evaluate_rec(entry->val.expr, scope, depth);
+			}
 			break;
 			
 		case KEST_SCOPE_ENTRY_TYPE_PARAM:

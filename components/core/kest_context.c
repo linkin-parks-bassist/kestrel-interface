@@ -9,6 +9,8 @@ int kest_init_context(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
+	memset(cxt, 0, sizeof(kest_context));
+	
 	cxt->n_presets = 0;
 	
 	cxt->active_preset  = NULL;
@@ -47,6 +49,15 @@ int kest_init_context(kest_context *cxt)
 	#ifdef KEST_USE_FREERTOS
 	cxt->mutex = xSemaphoreCreateMutex();
 	#endif
+	
+	kest_scope_init(&cxt->global_scope);
+	
+	kest_scope_add_expr(&cxt->global_scope, "pi", &kest_expression_pi);
+	kest_scope_add_expr(&cxt->global_scope, "tau", &kest_expression_2pi);
+	kest_scope_add_expr(&cxt->global_scope, "e", &kest_expression_e);
+	kest_scope_add_expr(&cxt->global_scope, "sample_rate", &kest_expression_sample_rate);
+	kest_scope_add_expr(&cxt->global_scope, "data_width", &kest_expression_data_width);
+	kest_scope_add_expr(&cxt->global_scope, "t", &kest_expression_t);
 	
 	return NO_ERROR;
 }
@@ -837,4 +848,15 @@ int kest_cxt_get_sequence_count(kest_context *cxt)
 	}
 	
 	return i;
+}
+
+int kest_cxt_new_epoch(kest_context *cxt)
+{
+	if (!cxt)
+		return ERR_NULL_PTR;
+	
+	cxt->epoch++;
+	cxt->epoch_start_ms = kest_system_time_ms();
+	
+	return NO_ERROR;
 }

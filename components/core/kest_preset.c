@@ -562,6 +562,16 @@ kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id)
 	return result;
 }
 
+kest_effect *kest_preset_get_effect_by_index(kest_preset *preset, int n)
+{
+	if (!preset)
+		return NULL;
+	
+	kest_effect *result = kest_pipeline_get_effect_by_index(&preset->pipeline, n);
+	
+	return result;
+}
+
 #ifdef KEST_ENABLE_UI
 int kest_preset_handle_name_change_in_ui(kest_preset *preset)
 {

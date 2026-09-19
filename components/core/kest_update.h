@@ -13,6 +13,7 @@
 #define KEST_UPDATE_PRESET		2
 #define KEST_UPDATE_MEM			3
 #define KEST_UPDATE_SCOPE_ENTRY	4
+#define KEST_UPDATE_TIME_UPDATE	5
 
 typedef struct {
 	int type;
@@ -113,6 +114,7 @@ int kest_updater_generate_command_list(kest_updater_state *state);
 int kest_updater_generate_tx_batch(kest_updater_state *state);
 int kest_updater_send(kest_updater_state *state);
 
+int kest_updater_handle_time_dependents(kest_updater_state *state);
 int kest_updater_handle_resource_updates(kest_updater_state *state);
 int kest_updater_handle_update(kest_updater_state *state, kest_update update);
 int kest_updater_handle_preset_update(kest_updater_state *state, kest_preset *preset);

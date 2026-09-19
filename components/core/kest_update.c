@@ -174,6 +174,8 @@ void kest_update_task(void *arg)
 		for (size_t i = 0; i < state.updates.count; i++)
 			kest_updater_handle_update(&state, state.updates.entries[i]);
 		
+		kest_updater_handle_time_dependents(&state);
+		
 		kest_updater_handle_resource_updates(&state);
 		
 		#ifdef PRINT_ALLOCS
@@ -705,6 +707,31 @@ int kest_updater_handle_scope_entry_update(kest_updater_state *state, kest_scope
 	return NO_ERROR;
 }
 
+int kest_updater_handle_time_dependents(kest_updater_state *state)
+{
+	KEST_PRINTF("kest_updater_handle_time_dependents\n");
+	
+	if (!state || !state->active_preset)
+		return ERR_NULL_PTR;
+	
+	kest_scope_entry *time_entry = NULL;
+	
+	int i = 0;
+	kest_effect *effect = kest_preset_get_effect_by_index(state->active_preset, i++);
+	
+	while (effect)
+	{
+		KEST_PRINTF("Effect %d: %p\n", i, effect);
+		time_entry = kest_scope_lookup(effect->scope, "t");
+		
+		kest_updater_handle_scope_entry_update(state, time_entry, effect);
+		
+		effect = kest_preset_get_effect_by_index(state->active_preset, i++);
+	}
+	
+	return NO_ERROR;
+}
+
 #define PRINTLINES_ALLOWED 0
 
 int kest_updater_handle_update(kest_updater_state *state, kest_update update)
@@ -731,6 +758,8 @@ int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 		KEST_PRINTF("Aborting; we are in reprogram state\n");
 		return NO_ERROR;
 	}
+	
+	int i = 0;
 	
 	switch (update.type)
 	{
@@ -1228,6 +1257,9 @@ int kest_updater_send(kest_updater_state *state)
 		case KEST_UPDATER_STATE_REPROGRAM:
 			KEST_PRINTF("Programming...\n");
 			kest_fpga_queue_program_batch(send_batch);
+			
+			kest_cxt_new_epoch(&global_cxt);
+			
 			state->state = KEST_UPDATER_STATE_READY;
 			break;
 	}

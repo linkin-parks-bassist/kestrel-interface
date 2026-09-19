@@ -35,6 +35,8 @@ DECLARE_DICT(kest_scope_entry);
 typedef struct kest_scope {
 	kest_scope_entry_dict dict;
 	size_t count;
+	
+	kest_dependent_list time_dependents;
 } kest_scope;
 
 kest_scope *kest_scope_new();

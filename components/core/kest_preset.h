@@ -99,6 +99,7 @@ int kest_preset_update_positions(kest_preset *preset);
 void kest_preset_file_rep_update(void *representer, void *representee);
 
 kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id);
+kest_effect *kest_preset_get_effect_by_index(kest_preset *preset, int n);
 
 int kest_preset_activate_dma(kest_preset *preset);
 int kest_preset_deactivate_dma(kest_preset *preset);
