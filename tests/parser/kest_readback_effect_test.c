@@ -63,3 +63,25 @@ KEST_TEST(kest_test_parsed_explicit_shift_fields)
     }
     assert(!node);
 }
+
+KEST_TEST(kest_test_polynomial_resources_have_programmable_filter_payloads)
+{
+    kest_effect_desc *desc = kest_read_eff_desc_from_file("tests/fixtures/polynomial-state.eff");
+    assert(desc && desc->resources && desc->resources->next);
+    const int counts[] = {3, 1};
+    kest_dsp_resource_pll *node = desc->resources;
+    for (int i = 0; i < 2; i++, node = node->next)
+    {
+        assert(node && node->data->type == KEST_DSP_RESOURCE_FILTER);
+        kest_filter *poly = node->data->data;
+        assert(poly && poly->feed_forward == counts[i] && poly->feed_back == 0);
+        assert(poly->coefs.count == counts[i]);
+    }
+    assert(!node);
+    assert(desc->blocks->data->instr == BLOCK_INSTR_POLY);
+}
+
+KEST_TEST(kest_test_malformed_polynomial_reports_error_without_crashing)
+{
+    assert(kest_read_eff_desc_from_file("tests/fixtures/polynomial-invalid.eff") == NULL);
+}

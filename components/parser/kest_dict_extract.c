@@ -2573,6 +2573,7 @@ kest_dsp_resource *kest_extract_polynomial(kest_eff_parsing_state *ps, kest_eff_
 		return NULL;
 	
 	kest_init_dsp_resource(resource);
+	resource->type = KEST_DSP_RESOURCE_FILTER;
 	resource->name = kest_strndup(name, 128);
 	
 	if (!resource->name)

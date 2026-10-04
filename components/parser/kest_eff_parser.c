@@ -718,7 +718,8 @@ void kest_parser_print_info_at(kest_eff_parsing_state *ps, kest_token_ll *token,
 	KEST_PRINTF_FORCE_("%sINFO%s%s: %s\n", info_colour, loc_string, reset_colour, buf);
 	
 	int ret_val;
-	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
+	if (token && token->data && token->line > 0 && token->line <= ps->n_lines
+		&& ps->lines && ps->lines[token->line - 1])
 	{
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, info_colour);
 		
@@ -746,7 +747,8 @@ void kest_parser_warn_at(kest_eff_parsing_state *ps, kest_token_ll *token, const
 	KEST_PRINTF_FORCE_("\e[01;32mWARNING%s\e[0m: %s\n", loc_string, buf);
 	
 	int ret_val;
-	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
+	if (token && token->data && token->line > 0 && token->line <= ps->n_lines
+		&& ps->lines && ps->lines[token->line - 1])
 	{
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, warn_colour);
 		
@@ -780,7 +782,8 @@ void kest_parser_error_at(kest_eff_parsing_state *ps, kest_token_ll *token, cons
 	KEST_PRINTF_FORCE_("%sERROR%s%s: %s\n", err_colour, loc_string, reset_colour, buf);
 	
 	int ret_val;
-	if (token && token->line < ps->n_lines && ps->lines && ps->lines[token->line])
+	if (token && token->data && token->line > 0 && token->line <= ps->n_lines
+		&& ps->lines && ps->lines[token->line - 1])
 	{
 		ret_val = kest_parser_format_offending_section(ps->lines[token->line - 1], token->index, strlen(token->data), buf, KEST_PARSER_PRINT_BUFLEN, err_colour);
 		
