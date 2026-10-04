@@ -1,6 +1,6 @@
 ---
 status: green
-revised_at: "2026-10-04T11:59:44+11:00"
+revised_at: "2026-10-04T12:20:31+11:00"
 ---
 
 The intended firmware work is governed by what/is/the/spec.md. David prioritizes deprecated-code cleanup/allocation integration, then USB UART control/diagnostics, followed by the remaining work in its existing order. Acceptance details remain partial. Add focused regression coverage alongside changes even where broader test-suite expansion is staged later.
@@ -10,7 +10,7 @@ The intended firmware work is governed by what/is/the/spec.md. David prioritizes
 2. Extend useful USB UART controls and diagnostics: filesystem operations for .effs, ordinary UI input for full-system HIL, and practical device-driving utilities. Add focused checks for the behavior being delivered; broad failure-path qualification is not a prerequisite for capability work.
 3. Extend C regression coverage beyond the current suite, prioritizing parser/compiler and allocation contracts needed by cleanup/loading work. Extend truncated/malformed preset and sequence input coverage and repair their decoder bounds; extend populated-preset and sequence round trips. Retain the pinned embedded SDK baseline.
 4. Implement background .eff discovery/loading at startup with a reusable flush/repopulate operation for SD swaps or clears. Reuse the existing loading and UI machinery, and discuss any necessary architectural change with David.
-5. Extend the working host-compiler/sample-model/actual-core loop beyond arithmetic/SVF/built-in-LUT/scratchpad to delay, polynomial and remaining allocated resource programming and full one-pipeline transport/controller coverage. Extend verified USB descriptor transfer and startup discovery to automated UI activation and physical numerical/audio checks under the superproject specification.
+5. Extend the working host-compiler/sample-model/actual-core loop beyond arithmetic/SVF/built-in-LUT/scratchpad/delay to polynomial and remaining allocated LUT/resource programming and full one-pipeline transport/controller coverage. Extend verified USB descriptor transfer and startup discovery to automated UI activation and physical numerical/audio checks under the superproject specification.
 6. Carry out the existing integrated-board firmware requirements: display/touch initialization, footswitch behaviour, controlled SPI enable, backlight PWM, processor revision configuration and audio-backend migration, with circuit-specific qualification.
 
 Capability-aware instruction acceptance is planned alongside the active RTL work: define automatic partner probing and unsupported-instruction rejection or applicable classic-biquad lowering with David. The shared protocol and Core filter owners govern the address map, bit assignments and finite SVF conversion limits. This does not reorder the prior firmware priorities.

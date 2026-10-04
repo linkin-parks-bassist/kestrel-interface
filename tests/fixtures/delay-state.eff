@@ -1,0 +1,16 @@
+v1.0
+
+.INFO
+name: "Delay State Fixture"
+
+.PARAMETERS
+mod_a: (name: "A", default: 0, min: -1, max: 1)
+mod_b: (name: "B", default: 0, min: -1, max: 1)
+
+.RESOURCES
+line: (type: "delay", delay_samples: 8, size: 32)
+
+.CODE
+delay_mread $line [mod_a] [mod_b] c1
+delay_write c0 $line
+mov c1 c0

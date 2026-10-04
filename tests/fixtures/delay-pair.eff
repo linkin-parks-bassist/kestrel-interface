@@ -1,0 +1,15 @@
+v1.0
+
+.INFO
+name: "Delay Pair Fixture"
+
+.RESOURCES
+one: (type: "delay", delay_samples: 8, size: 32)
+two: (type: "delay", delay_samples: 3, size: 16)
+
+.CODE
+delay_read $one c1
+delay_write c0 $one
+delay_read $two c2
+delay_write c0 $two
+add c1 c2 c0

@@ -1,0 +1,13 @@
+v1.0
+
+.INFO
+name: "Delay Feedback Fixture"
+
+.RESOURCES
+line: (type: "delay", delay_samples: 8, size: 32)
+
+.CODE
+delay_read $line c1
+madd c1 [0.5] c0 c2
+delay_write c2 $line
+mov c1 c0
