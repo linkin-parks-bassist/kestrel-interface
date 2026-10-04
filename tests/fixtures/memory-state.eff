@@ -1,0 +1,14 @@
+v1.0
+
+.INFO
+name: "Memory State Test"
+
+.RESOURCES
+state: (type: "mem")
+
+.CODE
+mem_read $state c1
+madd c1 [0.5] c0 c2
+mem_write c2 $state
+mem_read $state c3
+mov c3 c0

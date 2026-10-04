@@ -1,0 +1,7 @@
+v1.0
+
+.INFO
+name: "Sine LUT Test"
+
+.CODE
+sin2pi c0 c0

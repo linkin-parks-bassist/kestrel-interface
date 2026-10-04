@@ -1,0 +1,7 @@
+v1.0
+
+.INFO
+name: "Tanh LUT Test"
+
+.CODE
+tanh4 c0 c0
