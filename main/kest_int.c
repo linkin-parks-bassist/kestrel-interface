@@ -9,6 +9,7 @@ static const char *FNAME = "kest_int.c";
 #include "esp_task_wdt.h"
 
 #include "kest_int.h"
+#include "kest_console.h"
 
 kest_context global_cxt;
 
@@ -38,6 +39,10 @@ void app_main()
 	startup_event.type = KEST_EVENT_STARTUP;
 	
 	kest_event_log(startup_event);
+
+	esp_err_t console_rc = kest_console_start();
+	if (console_rc != ESP_OK)
+		ESP_LOGE("kest_console", "Console startup failed: %s", esp_err_to_name(console_rc));
 	
 	#ifdef KEST_SIMULATED
 	#ifdef USE_DISPLAY

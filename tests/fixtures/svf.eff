@@ -1,0 +1,14 @@
+v1.0
+
+.INFO
+name: "SVF Numeric Policy"
+
+.PARAMETERS
+cutoff: (name: "Cutoff", default: 0.25, min: -1, max: 2)
+damping: (name: "Damping", default: 1.25, min: 0, max: 2)
+
+.CODE
+svf c0 [cutoff] [damping]
+svf_low c1
+svf c0 c1 [damping]
+svf_low c2

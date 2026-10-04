@@ -17,6 +17,8 @@ int init_effect_settings_page(kest_ui_page *page)
 	
 	page->configure = configure_effect_settings_page;
 	page->create_ui = create_effect_settings_page_ui;
+	page->free_ui = free_effect_settings_page_ui;
+	page->free_all = effect_settings_page_free_all;
 	
 	page->panel = new_panel();
 	
@@ -33,7 +35,7 @@ int init_effect_settings_page(kest_ui_page *page)
 		return ERR_ALLOC_FAIL;
 	
 	effect_settings_page_str *str = (effect_settings_page_str*)page->data_struct;
-	
+	memset(str, 0, sizeof(*str));
 	str->text = NULL;
 	
 	nullify_parameter_widget(&str->band_lp_cutoff);
@@ -61,7 +63,9 @@ int configure_effect_settings_page(kest_ui_page *page, void *data)
 	
 	snprintf(title_buf, 128, "%s Settings", kest_effect_name(effect));
 	
-	char *title =  kest_strndup(title_buf, 128);
+	char *title = kest_strndup(title_buf, 128);
+	if (!title) return ERR_ALLOC_FAIL;
+	kest_free((void*)page->panel->text);
 	page->panel->text = title;
 	
 	effect_settings_page_str *str = (effect_settings_page_str*)page->data_struct;
@@ -264,21 +268,30 @@ int refresh_effect_settings_page(kest_ui_page *page)
 
 int free_effect_settings_page_ui(kest_ui_page *page)
 {
-	return ERR_UNIMPLEMENTED;
-	
-	if (!page)
-		return ERR_NULL_PTR;
-		
+	if (!page) return ERR_NULL_PTR;
+	kest_ui_page_cancel_async(page);
+	effect_settings_page_str *str = page->data_struct;
+	if (str)
+	{
+		// These widgets are embedded; their containers may be on backstage.
+		gut_parameter_widget(&str->band_lp_cutoff);
+		gut_parameter_widget(&str->band_hp_cutoff);
+		gut_setting_widget(&str->band_mode);
+		str->band_control_cont = str->text = NULL;
+	}
+	if (page->screen) lv_obj_del(page->screen);
+	page->screen = page->container = NULL;
+	page->ui_created = 0;
 	return NO_ERROR;
 }
 
-
 int effect_settings_page_free_all(kest_ui_page *page)
 {
-	return ERR_UNIMPLEMENTED;
-	
-	if (!page)
-		return ERR_NULL_PTR;
-		
+	if (!page) return ERR_NULL_PTR;
+	free_effect_settings_page_ui(page);
+	if (page->panel) kest_free((void*)page->panel->text);
+	kest_free(page->panel);
+	kest_free(page->data_struct);
+	kest_free(page);
 	return NO_ERROR;
 }

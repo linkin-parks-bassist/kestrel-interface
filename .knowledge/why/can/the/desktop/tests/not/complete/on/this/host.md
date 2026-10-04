@@ -1,9 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-20T00:09:53+10:00"
-scope: "local"
-source: "observed make tests output; Makefile; command -v sdl2-config"
+status: green
+revised_at: "2026-10-04T09:34:51+11:00"
 ---
-Status: Green
 
-On 2026-09-20, `make tests` began compiling Interface C tests and application objects, but `sdl2-config` was absent from PATH. The Makefile invokes it for desktop app/LVGL compile flags, so a complete test link/run could not be established. The run was interrupted after this environmental prerequisite was clear; compiled objects in ignored bin/ are disposable. Install/provide SDL2 development tooling before treating this as a code failure. Source: observed make tests output; Makefile compile rules; command -v sdl2-config.
+Desktop tests complete on this host: make tests builds kest_tests, and ./kest_tests reports 152 tests passed. SDL2 development tooling is available: libsdl2-dev and pkg-config are installed, with sdl2-config on PATH. No current SDL2 prerequisite blocker remains.
+
+The suite's coverage is owned by what/do/interface/unit/tests/cover.md; successful execution does not establish full UI flows or physical hardware. The separate library/compiler build also passes; linkage and standalone compiler qualification belong to how/to/build/and/run/the/interface.md.
+
+Sources: successful make tests and kest_tests execution, installed package and sdl2-config checks.

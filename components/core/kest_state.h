@@ -23,10 +23,5 @@ int kest_state_save(kest_state state);
 extern SemaphoreHandle_t state_mutex;
 #endif
 
-#ifdef KEST_ENABLE_REPRESENTATIONS
-extern kest_representation state_representation;
-void kest_state_representation_update(void *representer, void *representee);
-#endif
-
 
 #endif

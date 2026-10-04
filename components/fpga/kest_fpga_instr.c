@@ -80,7 +80,7 @@ static const kest_instr_arg_fmt arg_format_std_3 = {
 };
 
 static const kest_instr_arg_fmt arg_format_shift = {
-	.n_args = 3,
+	.n_args = 4,
 	
 	.arg_a_pos = 0,
 	.arg_b_pos = 1,
@@ -178,11 +178,71 @@ static const kest_instr_arg_fmt arg_format_res_rw = {
 	.shift_pos = KEST_ARG_POS_NONE
 };
 
+/* Format sets describe the words the execution units actually consume. */
+#define Q15_FORMAT (UINT32_C(1) << (KEST_FPGA_DATA_WIDTH - 1))
+#define SIGNED_VARIABLE_FORMATS (((UINT32_C(1) << KEST_FPGA_DATA_WIDTH) - 1) & ~((UINT32_C(1) << (KEST_FPGA_DATA_WIDTH - 9)) - 1))
+#define FIXED_AUDIO { .signed_formats = Q15_FORMAT }
+#define VARIABLE_SIGNED { .signed_formats = SIGNED_VARIABLE_FORMATS }
+#define VARIABLE_UNSIGNED { .unsigned_formats = SIGNED_VARIABLE_FORMATS }
+
+static int field_zero(const kest_block *block, const kest_numeric_format formats[3], int *field)
+{
+	*field = 0;
+	return NO_ERROR;
+}
+
+static int field_product(const kest_block *block, const kest_numeric_format formats[3], int *field)
+{
+	*field = 2 * (KEST_FPGA_DATA_WIDTH - 1) - formats[0].fractional_bits - formats[1].fractional_bits;
+	/* The multiply path consumes four shift bits. */
+	return *field <= 15 ? NO_ERROR : ERR_VALUE_OUT_OF_BOUNDS;
+}
+
+static int field_explicit(const kest_block *block, const kest_numeric_format formats[3], int *field)
+{
+	*field = block->shift;
+	return *field <= 15 ? NO_ERROR : ERR_VALUE_OUT_OF_BOUNDS;
+}
+
+static int field_damping(const kest_block *block, const kest_numeric_format formats[3], int *field)
+{
+	*field = KEST_FPGA_DATA_WIDTH - 1 - formats[2].fractional_bits;
+	return *field <= 15 ? NO_ERROR : ERR_VALUE_OUT_OF_BOUNDS;
+}
+
+static kest_expression *send_nonnegative(kest_expression *value)
+{
+	return kest_expr_new_binary(KEST_EXPR_MAX, value, &kest_expression_zero);
+}
+
+static const kest_instr_numeric_policy numeric_audio = {
+	.args = {FIXED_AUDIO, FIXED_AUDIO, FIXED_AUDIO},
+	.resolve_field = field_zero
+};
+static const kest_instr_numeric_policy numeric_product = {
+	.args = {VARIABLE_SIGNED, VARIABLE_SIGNED, FIXED_AUDIO},
+	.resolve_field = field_product
+};
+static const kest_instr_numeric_policy numeric_unsigned_product = {
+	.args = {VARIABLE_UNSIGNED, VARIABLE_UNSIGNED, FIXED_AUDIO},
+	.resolve_field = field_product
+};
+static const kest_instr_numeric_policy numeric_shift = {
+	.args = {FIXED_AUDIO, FIXED_AUDIO, FIXED_AUDIO},
+	.resolve_field = field_explicit
+};
+static const kest_instr_numeric_policy numeric_svf = {
+	.args = {FIXED_AUDIO,
+		{.signed_formats = Q15_FORMAT, .send_expression = send_nonnegative},
+		VARIABLE_SIGNED},
+	.resolve_field = field_damping
+};
+
 static const kest_asm_instr_desc kest_instr_desc_nop = {
 	.name = "nop",
 	.opcode = BLOCK_INSTR_NOP,
 	.arg_fmt = arg_format_std_0,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -190,7 +250,7 @@ static const kest_asm_instr_desc kest_instr_desc_mov = {
 	.name = "mov",
 	.opcode = BLOCK_INSTR_MADD,
 	.arg_fmt = arg_format_std_1,
-	.shift_policy = SHIFT_POLICY_1
+	.numeric = &numeric_product
 };
 
 
@@ -198,7 +258,7 @@ static const kest_asm_instr_desc kest_instr_desc_add = {
 	.name = "add",
 	.opcode = BLOCK_INSTR_MADD,
 	.arg_fmt = arg_format_add,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_product
 };
 
 
@@ -206,7 +266,7 @@ static const kest_asm_instr_desc kest_instr_desc_sub = {
 	.name = "sub",
 	.opcode = BLOCK_INSTR_MADD,
 	.arg_fmt = arg_format_sub,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_product
 };
 
 
@@ -214,7 +274,7 @@ static const kest_asm_instr_desc kest_instr_desc_mul = {
 	.name = "mul",
 	.opcode = BLOCK_INSTR_MADD,
 	.arg_fmt = arg_format_std_2,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_product
 };
 
 
@@ -222,7 +282,7 @@ static const kest_asm_instr_desc kest_instr_desc_madd = {
 	.name = "madd",
 	.opcode = BLOCK_INSTR_MADD,
 	.arg_fmt = arg_format_std_3,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_product
 };
 
 
@@ -230,7 +290,7 @@ static const kest_asm_instr_desc kest_instr_desc_arsh = {
 	.name = "arsh",
 	.opcode = BLOCK_INSTR_ARSH,
 	.arg_fmt = arg_format_shift,
-	.shift_policy = SHIFT_POLICY_SET
+	.numeric = &numeric_shift
 };
 
 
@@ -238,7 +298,7 @@ static const kest_asm_instr_desc kest_instr_desc_lsh = {
 	.name = "lsh",
 	.opcode = BLOCK_INSTR_LSH,
 	.arg_fmt = arg_format_shift,
-	.shift_policy = SHIFT_POLICY_SET
+	.numeric = &numeric_shift
 };
 
 
@@ -246,7 +306,7 @@ static const kest_asm_instr_desc kest_instr_desc_rsh = {
 	.name = "rsh",
 	.opcode = BLOCK_INSTR_RSH,
 	.arg_fmt = arg_format_shift,
-	.shift_policy = SHIFT_POLICY_SET
+	.numeric = &numeric_shift
 };
 
 
@@ -254,7 +314,7 @@ static const kest_asm_instr_desc kest_instr_desc_abs = {
 	.name = "abs",
 	.opcode = BLOCK_INSTR_ABS,
 	.arg_fmt = arg_format_std_1,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -262,7 +322,7 @@ static const kest_asm_instr_desc kest_instr_desc_min = {
 	.name = "min",
 	.opcode = BLOCK_INSTR_MIN,
 	.arg_fmt = arg_format_std_2,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -270,7 +330,7 @@ static const kest_asm_instr_desc kest_instr_desc_max = {
 	.name = "max",
 	.opcode = BLOCK_INSTR_MAX,
 	.arg_fmt = arg_format_std_2,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -278,7 +338,7 @@ static const kest_asm_instr_desc kest_instr_desc_clamp = {
 	.name = "clamp",
 	.opcode = BLOCK_INSTR_CLAMP,
 	.arg_fmt = arg_format_std_3,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -286,7 +346,7 @@ static const kest_asm_instr_desc kest_instr_desc_mov_acc = {
 	.name = "mov_acc",
 	.opcode = BLOCK_INSTR_MOV_ACC,
 	.arg_fmt = arg_format_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -294,7 +354,7 @@ static const kest_asm_instr_desc kest_instr_desc_mov_uacc = {
 	.name = "mov_uacc",
 	.opcode = BLOCK_INSTR_MOV_UACC,
 	.arg_fmt = arg_format_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -302,7 +362,7 @@ static const kest_asm_instr_desc kest_instr_desc_mov_lacc = {
 	.name = "mov_lacc",
 	.opcode = BLOCK_INSTR_MOV_LACC,
 	.arg_fmt = arg_format_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -310,7 +370,7 @@ static const kest_asm_instr_desc kest_instr_desc_macz = {
 	.name = "macz",
 	.opcode = BLOCK_INSTR_MACZ,
 	.arg_fmt = arg_format_mac,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_product
 };
 
 
@@ -318,7 +378,7 @@ static const kest_asm_instr_desc kest_instr_desc_umacz = {
 	.name = "umacz",
 	.opcode = BLOCK_INSTR_UMACZ,
 	.arg_fmt = arg_format_mac,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_unsigned_product
 };
 
 
@@ -326,7 +386,7 @@ static const kest_asm_instr_desc kest_instr_desc_mac = {
 	.name = "mac",
 	.opcode = BLOCK_INSTR_MAC,
 	.arg_fmt = arg_format_mac,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_product
 };
 
 
@@ -334,7 +394,7 @@ static const kest_asm_instr_desc kest_instr_desc_umac = {
 	.name = "umac",
 	.opcode = BLOCK_INSTR_UMAC,
 	.arg_fmt = arg_format_mac,
-	.shift_policy = SHIFT_POLICY_SFAB
+	.numeric = &numeric_unsigned_product
 };
 
 
@@ -342,21 +402,21 @@ static const kest_asm_instr_desc kest_instr_desc_delay_read = {
 	.name = "delay_read",
 	.opcode = BLOCK_INSTR_DELAY_READ,
 	.arg_fmt = arg_format_res_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_delay_mread = {
 	.name = "delay_mread",
 	.opcode = BLOCK_INSTR_DELAY_READ,
 	.arg_fmt = arg_format_res_read_3,
-	.shift_policy = SHIFT_POLICY_F0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_delay_write = {
 	.name = "delay_write",
 	.opcode = BLOCK_INSTR_DELAY_WRITE,
 	.arg_fmt = arg_format_res_write,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -364,7 +424,7 @@ static const kest_asm_instr_desc kest_instr_desc_mem_read = {
 	.name = "mem_read",
 	.opcode = BLOCK_INSTR_MEM_READ,
 	.arg_fmt = arg_format_res_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -372,7 +432,7 @@ static const kest_asm_instr_desc kest_instr_desc_mem_write = {
 	.name = "mem_write",
 	.opcode = BLOCK_INSTR_MEM_WRITE,
 	.arg_fmt = arg_format_res_write,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 
@@ -380,73 +440,73 @@ static const kest_asm_instr_desc kest_instr_desc_filter = {
 	.name = "filter",
 	.opcode = BLOCK_INSTR_FILTER,
 	.arg_fmt = arg_format_res_rw,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_fcasc = {
 	.name = "fcasc",
 	.opcode = BLOCK_INSTR_FCASC,
 	.arg_fmt = arg_format_res_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_svf = {
 	.name = "svf",
 	.opcode = BLOCK_INSTR_SVF,
 	.arg_fmt = arg_format_write_svf_write,
-	.shift_policy = SHIFT_POLICY_FC
+	.numeric = &numeric_svf
 };
 
 static const kest_asm_instr_desc kest_instr_desc_svf_low = {
 	.name = "svf_low",
 	.opcode = BLOCK_INSTR_SVF_LOW,
 	.arg_fmt = arg_format_write_svf_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_svf_high = {
 	.name = "svf_high",
 	.opcode = BLOCK_INSTR_SVF_HIGH,
 	.arg_fmt = arg_format_write_svf_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_svf_band = {
 	.name = "svf_band",
 	.opcode = BLOCK_INSTR_SVF_BAND,
 	.arg_fmt = arg_format_write_svf_read,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_lut_read = {
 	.name = "lut_read",
 	.opcode = BLOCK_INSTR_LUT_READ,
 	.arg_fmt = arg_format_res_read_2,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_tanh4 = {
 	.name = "tanh4",
 	.opcode = BLOCK_INSTR_LUT_READ,
 	.arg_fmt = arg_format_std_1,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_sin2pi = {
 	.name = "sin2pi",
 	.opcode = BLOCK_INSTR_LUT_READ,
 	.arg_fmt = arg_format_std_1,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
 static const kest_asm_instr_desc kest_instr_desc_poly = {
 	.name = "poly",
 	.opcode = BLOCK_INSTR_POLY,
 	.arg_fmt = arg_format_res_rw,
-	.shift_policy = SHIFT_POLICY_0
+	.numeric = &numeric_audio
 };
 
-const kest_asm_instr_desc *kest_instr_name_to_desc(char *name)
+const kest_asm_instr_desc *kest_instr_name_to_desc(const char *name)
 {
 	if (!name)
 		return NULL;

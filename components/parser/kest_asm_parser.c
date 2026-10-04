@@ -774,7 +774,7 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	int ret_val = NO_ERROR;
 	int line_number = line->line_number;
 	
-	kest_asm_instr_desc *desc = kest_instr_name_to_desc(line->instr);
+	const kest_asm_instr_desc *desc = kest_instr_name_to_desc(line->instr);
 	
 	KEST_PRINTF_("Processing instruction %s online %d\n", line->instr ? line->instr : "(NULL)", line_number);
 	
@@ -868,7 +868,7 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 				case KEST_DSP_RESOURCE_MEM:
 						KEST_PRINTF("\tresource->mem_size: \"%d\"\n", resource->mem_size);
 						KEST_PRINTF("\t((kest_mem_slot*)resource->data)->read_enable: \"%d\"\n", ((kest_mem_slot*)resource->data)->read_enable);
-						KEST_PRINTF("\t((kest_mem_slot*)resource->data)->read.period_ms: \"%d\"\n", ((kest_mem_slot*)resource->data)->read.period_ms);
+						KEST_PRINTF("\t((kest_mem_slot*)resource->data)->read_period_ms: \"%d\"\n", ((kest_mem_slot*)resource->data)->read_period_ms);
 					break;
 				
 				default:
@@ -920,6 +920,20 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 					break;
 				
 				case KEST_ASM_ARG_EXPR:
+					if (block->reg_0.active && block->reg_1.active)
+					{
+						kest_parser_error_at_line(ps, line_number, "Instruction \"%s\" has only two expression registers", line->instr);
+						return ERR_BAD_ARGS;
+					}
+					if (desc->numeric)
+					{
+						int index = op == &block->arg_a ? 0 : (op == &block->arg_b ? 1 : 2);
+						if (desc->numeric->args[index].send_expression)
+						{
+							arg.expr = desc->numeric->args[index].send_expression(arg.expr);
+							if (!arg.expr) return ERR_ALLOC_FAIL;
+						}
+					}
 					op->type = BLOCK_OPERAND_TYPE_R;
 					
 					if (!reg_0_taken)
@@ -953,14 +967,10 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 	{
 		block->arg_b = operand_const_one();
 		block->arg_c = operand_const_zero();
-		block->shift = 1;
-		block->shift_set = 1;
 	}
 	else if (strcmp(line->instr, "add") == 0)
 	{
 		block->arg_b = operand_const_one();
-		block->shift = 1;
-		block->shift_set = 1;
 	}
 	else if (strcmp(line->instr, "sub") == 0)
 	{

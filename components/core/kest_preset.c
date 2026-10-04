@@ -55,13 +55,6 @@ int init_m_preset(kest_preset *preset)
 	preset->volume.units = " dB";
 	preset->volume.id = (kest_parameter_id){.preset_id = 0, .effect_id = 0xFFFF, .parameter_id = 0};
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	preset->file_rep.representee = preset;
-	preset->file_rep.representer = NULL;
-	preset->file_rep.update = kest_preset_file_rep_update;
-	preset->representations = NULL;
-	kest_representation_pll_safe_append(&preset->representations, &preset->file_rep);
-	#endif
 	
 	preset->alive = 1;
 	
@@ -91,23 +84,6 @@ int kest_preset_rectify_ids(kest_preset *preset)
 	kest_pipeline_rectify_ids(&preset->pipeline, id);
 	
 	return NO_ERROR;
-}
-
-int kest_preset_activate_dma(kest_preset *preset)
-{
-	KEST_PRINTF("kest_preset_activate_dma_async\n");
-	if (!preset)
-		return ERR_NULL_PTR;
-	
-	return kest_pipeline_activate_dma(&preset->pipeline);
-}
-
-int kest_preset_deactivate_dma(kest_preset *preset)
-{
-	if (!preset)
-		return ERR_NULL_PTR;
-	
-	return kest_pipeline_deactivate_dma(&preset->pipeline);
 }
 
 int kest_preset_activate_lfos(kest_preset *preset)
@@ -177,51 +153,6 @@ int kest_preset_set_inactive(kest_preset *preset)
 	return NO_ERROR;
 }
 
-int kest_preset_add_representation(kest_preset *preset, kest_representation *rep)
-{
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	if (!preset || !rep)
-		return ERR_NULL_PTR;
-	
-	kest_representation_pll *nl = kest_representation_pll_append(preset->representations, rep);
-	
-	if (nl)
-		preset->representations = nl;
-	else
-		return ERR_ALLOC_FAIL;
-	
-	KEST_PRINTF("preset->representations = %p\n", preset->representations);
-	
-	return NO_ERROR;
-	#else
-	return ERR_FEATURE_DISABLED;
-	#endif
-}
-
-int kest_preset_update_representations(kest_preset *preset)
-{
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	if (!preset)
-		return ERR_NULL_PTR;
-	
-	if (preset->representations)
-		queue_representation_list_update(preset->representations);
-	
-	#endif
-	return NO_ERROR;
-}
-
-int kest_preset_remove_representation(kest_preset *preset, kest_representation *rep)
-{
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	if (!preset)
-		return ERR_NULL_PTR;
-	
-	preset->representations = kest_representation_pll_remove(preset->representations, rep);
-	
-	#endif
-	return NO_ERROR;
-}
 
 int kest_preset_set_default_name_from_id(kest_preset *preset)
 {
@@ -265,9 +196,6 @@ kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc
 		return NULL;
 	
 	effect->preset = preset;
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	effect->preset_rep.representer = preset;
-	#endif
 	effect_rectify_param_ids(effect);
 	
 #ifndef KEST_LIBRARY
@@ -421,9 +349,6 @@ int kest_preset_save(kest_preset *preset)
 	if (ret_val == NO_ERROR)
 	{
 		preset->unsaved_changes = 0;
-		#ifdef KEST_ENABLE_REPRESENTATIONS
-		kest_preset_update_representations(preset);
-		#endif
 	}
 	
 	return NO_ERROR;
@@ -539,21 +464,6 @@ int kest_preset_if_active_update_fpga(kest_preset *preset)
 	return ret_val;
 }
 
-void kest_preset_file_rep_update(void *representer, void *representee)
-{
-	KEST_PRINTF("kest_preset_file_rep_update\n");
-	#if defined(KEST_ENABLE_REPRESENTATIONS) && !defined(KEST_LIBRARY)
-	if (!representee)
-		return;
-	
-	kest_preset *preset = (kest_preset*)representee;
-	
-	save_preset(preset);
-	#endif
-	KEST_PRINTF("kest_preset_file_rep_update done\n");
-	return;
-}
-
 
 kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id)
 {
@@ -617,8 +527,10 @@ int kest_preset_handle_name_change(kest_preset *preset)
 	kest_ui_async_call(kest_preset_handle_name_change_in_ui_async_wrapper, (void*)preset);
 	#endif
 	
+	#ifndef KEST_LIBRARY
 	kest_queue_preset_save(preset);
 	kest_queue_sequence_save(preset->sequence);
+	#endif
 	
 	return NO_ERROR;
 }

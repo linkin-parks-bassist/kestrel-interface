@@ -15,16 +15,40 @@
 #define KEST_FPGA_MSG_TYPE_COMMAND			4
 #define KEST_FPGA_MSG_TYPE_READ				5
 #define KEST_FPGA_MSG_TYPE_MEM_READ			6
+#define KEST_FPGA_MSG_TYPE_STATUS			7
+#define KEST_FPGA_MSG_TYPE_CALLBACK		8
+
+typedef struct {
+	int addr;
+	void *data;
+	void (*callback)(void *data, int64_t result);
+} kest_fpga_mem_read_spec;
+
+#define KEST_FPGA_READ32 256 // Host read kind; the SPI command is COMMAND_READ32.
+
+typedef struct kest_fpga_read_spec {
+	int type;
+	int id;
+	uint8_t addr[6];
+	size_t addr_size;
+	size_t ret_size;
+	int64_t result;
+	void *data;
+
+	int (*callback)(struct kest_fpga_read_spec*);
+} kest_fpga_read_spec;
 
 typedef struct {
 	int type;
-	
+
 	union {
 		float level;
 		uint8_t command;
 		kest_fpga_transfer_batch batch;
 		kest_fpga_read_spec *read;
 		kest_fpga_mem_read_spec mem_read;
+		struct { void (*call)(void *); void *data; } callback;
+		void (*status_callback)(int result, uint8_t flags);
 	} data;
 } kest_fpga_msg;
 
@@ -38,9 +62,14 @@ int kest_fpga_queue_program_batch(kest_fpga_transfer_batch batch);
 int kest_fpga_queue_input_gain_set(float gain_db);
 int kest_fpga_queue_output_gain_set(float gain_db);
 
+// Runs on the SPI task after all earlier messages/callbacks have finished.
+int kest_fpga_queue_callback(void (*callback)(void *), void *data);
+
 int kest_fpga_queue_register_commit();
 int kest_fpga_queue_read(kest_fpga_read_spec *spec);
+int kest_fpga_queue_status(void (*callback)(int result, uint8_t flags));
 
-int kest_fpga_queue_mem_read(int addr, void (*callback)(kest_fpga_sample_t, void*), void *cb_arg);
+// data must remain alive until SPI invokes callback; the request itself is copied.
+int kest_fpga_queue_mem_read(int addr, void *data, void (*callback)(void*, int64_t));
 
 #endif

@@ -83,9 +83,7 @@ int init_effect_view(kest_ui_page *page)
 	if (!str->settings_page)
 		return ERR_ALLOC_FAIL;
 	
-	init_effect_settings_page(str->settings_page);
-	
-	return NO_ERROR;
+	return init_effect_settings_page(str->settings_page);
 }
 
 void effect_view_enter_settings_cb(lv_event_t *e)
@@ -196,9 +194,6 @@ int configure_effect_view(kest_ui_page *page, void *data)
 	
 	page->configured = 1;
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	effect->page_rep.representer = page;
-	#endif
 	
 	return NO_ERROR;
 }
@@ -358,14 +353,21 @@ int free_effect_view(kest_ui_page *page)
 	if (!page)
 		return ERR_NULL_PTR;
 	
+	kest_ui_page_cancel_async(page);
 	kest_effect_view_str *str = (kest_effect_view_str*)page->data_struct;
 	
 	if (str)
+	{
 		kest_parameter_widget_pll_destroy(str->parameter_widgets, free_parameter_widget);
+		kest_setting_widget_pll_destroy(str->setting_widgets, free_setting_widget);
+		effect_settings_page_free_all(str->settings_page);
+		kest_free(str);
+	}
 	
 	if (page->screen)
 		lv_obj_del(page->screen);
 	
+	kest_free(page->panel);
 	kest_free(page);
 	
 	return NO_ERROR;

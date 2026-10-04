@@ -1,9 +1,22 @@
 ---
-status: "unverified"
-created_at: "2026-09-20T00:04:02+10:00"
-scope: "local"
-source: "components/fpga/kest_fixed_point.c:7-92; components/fpga/kest_reg_format.c:11-113"
+status: green
+revised_at: "2026-10-04T09:03:33+11:00"
 ---
-Status: Green
 
-`kest_expression_compute_format` gets an expression min/max and chooses the first q format up to fmax whose signed range contains them. `kest_compute_register_formats` assigns formats to active per-block registers and computes a shift from operand formats and instruction shift policy. `float_to_q_nminus1` and the filter-width variant clamp to representable range before rounding. Source: components/fpga/kest_fixed_point.c:7-92; components/fpga/kest_reg_format.c:11-113
+Instruction descriptors carry kest_instr_numeric_policy. Each of three arguments has signed/unsigned permissible fractional-bit sets, saturation/rejection and an optional send-expression builder. The descriptor callback resolves the instruction field from the concrete block and candidate tuple. Blocks retain their authored descriptor because MOV/ADD/SUB share MADD's opcode. shift_pos locates an explicitly authored field; numeric conversion and field resolution are separate from syntax.
+
+kest_resolve_block_formats enumerates permitted tuples rather than choosing each argument independently. Expression candidates use their transformed min/max estimates; channels have the existing fixed word scale. POS_ONE is raw 2^(width-2), while NEG_ONE is raw -2^(width-1), so their real scales differ. Repeated references to one expression register must have identical encodings. Rejection eliminates candidates whose ranges do not fit; saturation permits them. Each tuple must satisfy the descriptor field callback and wire-field bound. Selection first minimizes clipped arguments, then prefers wider ranges for clipped arguments, then maximizes total fractional precision. Failed resolution preserves the previous result and propagates an error from effect parsing.
+
+Current product policies permit signed formats with zero through eight integer compensation bits; unsigned MAC variants permit the corresponding unsigned encodings. Product fields account jointly for A/B scaling and reject values above 15 because the hardware consumes only four shift bits. C is fixed audio scale. MOV/ADD/SUB use the actual implicit constant scale. Raw audio/limiting, delay/memory, LUT, normal-filter and polynomial argument policies use fixed audio scale; their resource coefficient configuration is separate. arsh/lsh/rsh preserve an explicit field 0 through 15, use fixed argument scale and accept their four authored operands.
+
+kest_numeric_format records fractional bits, signedness and saturation/rejection. kest_encode_numeric computes representable bounds, rejects NaN, clamps or rejects out-of-range values, rounds the scaled value with llrintf and returns the masked wire word. Register encodings survive block cloning, scope dependencies, queued writes and command construction. Initial and scope-driven register batches share the command encoder, including the configured wire width. Command lists and program builders propagate conversion errors; updater generation clears a rejected batch and the control loop does not send it. Filter coefficients retain the legacy integer-shift converter and its separate strict positive-endpoint format estimate.
+
+Send transforms compose into the existing expression AST once during parsing. Evaluation, range estimation and dependency discovery see that same transformed expression for initial and subsequent updates. The mechanism supports existing expression compositions such as 2*erf(x)-1 without instruction branches in the evaluator or wire writer. It transforms register expressions; channels already contain DSP words and require the stated producer/consumer scale.
+
+David selected signed Q15 SVF cutoff. In the 16-bit build, A is signed Q15; B has 15 fractional bits and composes max(expression,0), with generic saturation limiting its upper endpoint to 1-2^-15. C has an independent signed format and determines damping compensation. Cutoff .25 therefore always encodes 8192, independent of the estimated maximum. RTL clamps negative channel cutoff words to zero, widens nonnegative B without an extra shift and sign-extends C. Private state selection and the Chamberlin recurrence remain intact. No replacement filter architecture has been selected.
+
+MEM scope values are interpreted as signed16/32768; this does not discover a differently scaled producer's intended value. Scratchpad words carry no automatic format metadata. The legacy filter format chooser still excludes its exact positive endpoint; this register-policy repair does not change that separate coefficient path.
+
+Validation includes numeric endpoint/rejection tests, joint and shared-register constraints, alias scales, transformed ranges/dependencies, initial/live bytes, saturation fallback, explicit fields, error propagation and real parser fixtures. The C suite passes; desktop app/library/compiler and pinned ESP-IDF builds pass. tools/test_eff_svf.sh verifies 256 compiled SVF update/read pairs in the actual core/filter master, including expression and channel cutoff. The unit SVF target compares 3,840 samples with an integer reference; all nine Core Verilator targets pass. These checks do not qualify every .eff/resource combination, physical audio or FPGA timing.
+
+Sources: components/fpga/kest_numeric_format.h, kest_fixed_point.c, kest_reg_format.c, kest_fpga_instr.c, kest_fpga_cmd.c, kest_fpga_encoding.c and kest_fpga_io.c; parser/core metadata paths and tests; Core src/core.v, operand_fetch.v, madd.v, misc.v and filter.v. Test owners describe exact coverage.

@@ -314,149 +314,51 @@ int save_state_to_file(kest_state *state, const char *fname)
 	return NO_ERROR;
 }
 
+static int read_state_filename(FILE *file, char *dest, size_t capacity)
+{
+	for (size_t i = 0; i < capacity; i++)
+	{
+		int c = fgetc(file);
+		if (c == EOF) return 0;
+		dest[i] = (char)c;
+		if (c == 0) return 1;
+	}
+	return 0;
+}
+
 int load_state_from_file(kest_state *state, const char *fname)
 {
 	if (!state || !fname)
 		return ERR_NULL_PTR;
-	
+
 	KEST_PRINTF("load state from file %s...\n", fname);
-	
 	#ifdef DUMP_STATE_READ
 	dump_file_contents(fname);
 	#endif
-	
+
 	FILE *file = fopen(fname, "rb");
-	
-	char string_read_buffer[IO_BUFFER_SIZE];
-	int ret_val = NO_ERROR;
-	uint8_t byte;
-	void *ptr;
-	float f;
-	int i;
-	int j;
-	
 	if (!file)
-	{
-		KEST_PRINTF("Failed to open file %s\n", fname);
 		return ERR_FOPEN_FAIL;
-	}
-	
-	fseek(file, 0, SEEK_END);
-	int file_size = ftell(file);
-	fseek(file, 0, SEEK_SET);
-	
-	uint8_t *content = kest_alloc(file_size * sizeof(uint8_t));
-	
-	if (!content)
-		return ERR_ALLOC_FAIL;
-	
-	fread(content, 1, file_size, file);
-	fclose(file);
-	
-	byte = content[0];
-	
-	if (byte != KEST_STATE_MAGIC_BYTE)
-	{
-		ret_val = ERR_MANGLED_FILE;
-		goto read_settings_exit;
-	}
-	
-	byte = content[1];
-	
-	if (byte != KEST_WRITE_FINISHED_BYTE)
-	{
-		ret_val = ERR_MANGLED_FILE;
-		goto read_settings_exit;
-	}
-	
-	ptr = (void*)&content[2];
-	
-	state->input_gain  = *((float*)(&content[2]));
-	KEST_PRINTF("Obtained input gain as %f = 0x%08x\n", state->input_gain, *((int*)(&content[2])));
-	state->output_gain = *((float*)(&content[6]));
-	KEST_PRINTF("Obtained output gain as %f = 0x%08x\n", state->output_gain, *((int*)(&content[6])));
-	
-	i = 10;
-	KEST_PRINTF("Reading active preset fname from position %d\n", i);
-	if (content[i])
-	{
-		j = 10;
-		while (content[i] && i - j < 31)
-		{
-			KEST_PRINTF("\t0x%02x = '%c'\n", content[i], content[i]);
-			state->active_preset_fname[i - j] = (char)content[i];
-			i++;
-		}
-		state->active_preset_fname[i - j] = 0;
-		
-		i++;
-	}
-	else
-	{
-		state->active_preset_fname[0] = 0;
-		i++;
-	}
-	
-	KEST_PRINTF("Reading active sequence fname from position %d\n", i);
-	if (content[i])
-	{
-		j = i;
-		
-		while (content[i] && i - j  < 31)
-		{
-			state->active_sequence_fname[i - j] = (char)content[i];
-			i++;
-		}
-		state->active_sequence_fname[i - j] = 0;
-		
-		i++;
-	}
-	else
-	{
-		state->active_sequence_fname[0] = 0;
-		i++;
-	}
-	
-	KEST_PRINTF("Reading current page identifier struct, starting at position %d\n", i);
-	
-	state->current_page.type = *((int32_t*)(&content[i]));
-	KEST_PRINTF("Obtained current_page.type as %d = 0x%08x\n", state->current_page.type, *((int*)(&content[i])));
-	i += sizeof(int32_t);
-	state->current_page.id = *((int32_t*)(&content[i]));
-	KEST_PRINTF("Obtained current_page.type as %d = 0x%08x\n", state->current_page.id, *((int*)(&content[i])));
-	i += sizeof(int32_t);
 
-	KEST_PRINTF("Reading state->current_page.fname from position %d\n", i);
-	if (content[i])
-	{
-		j = i;
-		
-		while (content[i] && i - j < 32)
-		{
-			KEST_PRINTF("\t0x%02x = '%c'\n", content[i], content[i]);
-			state->current_page.fname[i - j] = (char)content[i];
-			i++;
-		}
-		state->current_page.fname[i - j] = 0;
-	}
-	else
-	{
-		state->current_page.fname[0] = 0;
-		i++;
-	}
-	
-	i++;
+	kest_state decoded = {0};
+	int32_t page_type, page_id;
+	int valid = fgetc(file) == KEST_STATE_MAGIC_BYTE
+		&& fgetc(file) == KEST_WRITE_FINISHED_BYTE
+		&& fread(&decoded.input_gain, sizeof(float), 1, file) == 1
+		&& fread(&decoded.output_gain, sizeof(float), 1, file) == 1
+		&& read_state_filename(file, decoded.active_preset_fname, sizeof(decoded.active_preset_fname))
+		&& read_state_filename(file, decoded.active_sequence_fname, sizeof(decoded.active_sequence_fname))
+		&& fread(&page_type, sizeof(page_type), 1, file) == 1
+		&& fread(&page_id, sizeof(page_id), 1, file) == 1
+		&& read_state_filename(file, decoded.current_page.fname, sizeof(decoded.current_page.fname));
+	if (fclose(file) != 0) valid = 0;
+	if (!valid)
+		return ERR_MANGLED_FILE;
 
-	KEST_PRINTF("read input gain: %f\n",  state->input_gain);
-	KEST_PRINTF("read output gain: %f\n", state->output_gain);
-	KEST_PRINTF("read active preset fname: %s\n", state->active_preset_fname);
-	KEST_PRINTF("read active sequence fname: %s\n", state->active_sequence_fname);
-	KEST_PRINTF("read current page: {type = %d, id = %d, fname = \"%s\"}\n", state->current_page.type, state->current_page.id,
-		state->current_page.fname);
-	
-read_settings_exit:
-	
-	return ret_val;
+	decoded.current_page.type = page_type;
+	decoded.current_page.id = page_id;
+	*state = decoded;
+	return NO_ERROR;
 }
 
 int read_preset_from_file(kest_preset *preset, const char *fname)
@@ -915,15 +817,15 @@ void generate_filename(char *prefix, char *suffix, char *dest)
 
 int save_preset(kest_preset *preset)
 {
+	if (!preset)
+		return ERR_NULL_PTR;
+
 	if (!preset->has_fname)
 	{
 		FILE *test = NULL;
 		
 		do {
 			generate_filename(KEST_PRESETS_DIR, PRESET_EXTENSION, preset->fname);
-			
-			if (!preset)
-				return ERR_ALLOC_FAIL;
 			
 			test = fopen(preset->fname, "r");
 			
@@ -1025,7 +927,7 @@ int load_saved_presets(kest_context *cxt)
 	while (current_file)
 	{
 		KEST_PRINTF("Loading preset %s...\n", current_file->data);
-		preset = kest_allocator_alloc(&kest_preset_allocator, 1);
+		preset = kest_allocator_alloc(&kest_preset_allocator, sizeof(kest_preset));
 		
 		if (!preset)
 			return ERR_ALLOC_FAIL;
@@ -1075,7 +977,7 @@ int load_saved_sequences(kest_context *cxt)
 	
 	while (current_file)
 	{
-		sequence = kest_allocator_alloc(&kest_sequence_allocator, 1);
+		sequence = kest_allocator_alloc(&kest_sequence_allocator, sizeof(kest_sequence));
 		
 		if (!sequence)
 			return ERR_ALLOC_FAIL;

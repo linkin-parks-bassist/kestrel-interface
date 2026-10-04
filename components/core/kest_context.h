@@ -34,10 +34,6 @@ typedef struct kest_context
 	kest_parameter input_gain;
 	kest_parameter output_gain;
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll state_rep_lstub;
-	kest_representation state_rep;
-	#endif
 	
 	#ifdef KEST_USE_FREERTOS
 	SemaphoreHandle_t mutex;
@@ -79,7 +75,6 @@ int set_active_preset(kest_preset *preset);
 int set_active_preset_from_sequence(kest_preset *preset);
 int set_working_preset(kest_preset *preset);
 
-int activate_active_preset_dma();
 int activate_active_preset_lfos();
 
 int context_no_default_preset(kest_context *cxt);
@@ -99,7 +94,6 @@ kest_preset *cxt_find_preset(kest_context *cxt, const char *fname);
 int kest_cxt_obtain_mutex(kest_context *cxt);
 int kest_cxt_release_mutex(kest_context *cxt);
 
-int kest_cxt_queue_save_state(kest_context *cxt);
 
 int kest_cxt_set_input_gain(kest_context *cxt, float gain);
 int kest_cxt_set_output_gain(kest_context *cxt, float gain);

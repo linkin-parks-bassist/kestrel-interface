@@ -13,7 +13,6 @@
 #define KEST_ALLOCATOR_FLAG_DISALLOW_FREE 	 0b0000001
 #define KEST_ALLOCATOR_FLAG_DISALLOW_REALLOC 0b0000010
 #define KEST_ALLOCATOR_FLAG_DISALLOW_STRNDUP 0b0000100
-#define KEST_ALLOCATOR_FLAG_SINGULAR		 0b0001000
 
 typedef struct {
     void *(*alloc)(void *data, size_t);
@@ -31,6 +30,7 @@ void  kest_free(void *ptr);
 
 int kest_allocator_init(kest_allocator *a);
 
+/* Allocation and reallocation sizes are always bytes, including typed pools. */
 void *kest_allocator_alloc(kest_allocator *a, size_t n);
 void *kest_allocator_realloc(kest_allocator *a, void *p, size_t n);
 void *kest_allocator_strndup(kest_allocator *a, const char *str, int n);

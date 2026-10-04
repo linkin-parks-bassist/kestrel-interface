@@ -62,7 +62,7 @@ void kest_fpga_comms_task(void *param)
 	#endif
 	
 	uint8_t addr_buf[KEST_FPGA_MEM_ADDR_BYTES];
-	kest_fpga_sample_t read_result;
+	int64_t read_result;
 	
 	while (1)
 	{
@@ -157,14 +157,12 @@ void kest_fpga_comms_task(void *param)
 					{
 						KEST_PRINTF("FPGA accepted the new pipeline :)\n");
 						vTaskDelay(pdMS_TO_TICKS(50));
-						//activate_active_preset_dma();
 						//activate_active_preset_lfos();
 						kest_preset_clear_pending(global_cxt.active_preset);
 						break;
 					}
 				}
 				#else
-				//activate_active_preset_dma();
 				//activate_active_preset_lfos();
 				kest_preset_clear_pending(global_cxt.active_preset);
 				#endif
@@ -204,7 +202,14 @@ void kest_fpga_comms_task(void *param)
 			case KEST_FPGA_MSG_TYPE_READ:
 				if (msg.data.read)
 				{
-					msg.data.read->result = kest_fpga_req_data_p(msg.data.read->type, msg.data.read->addr, msg.data.read->addr_size, msg.data.read->ret_size, &status);
+					if (msg.data.read->type == KEST_FPGA_READ32)
+                    {
+                        uint32_t address = ((uint32_t)msg.data.read->addr[0] << 16) |
+                            ((uint32_t)msg.data.read->addr[1] << 8) | msg.data.read->addr[2];
+                        msg.data.read->result = kest_fpga_read32(address, &status);
+                    }
+                    else
+                        msg.data.read->result = kest_fpga_req_data_p(msg.data.read->type, msg.data.read->addr, msg.data.read->addr_size, msg.data.read->ret_size, &status);
 					
 					#ifdef PRINT_READS
 					if (msg.data.read->type == DATA_REQ_MEM)
@@ -223,6 +228,17 @@ void kest_fpga_comms_task(void *param)
 				}
 				break;
 				
+			case KEST_FPGA_MSG_TYPE_CALLBACK:
+				msg.data.callback.call(msg.data.callback.data);
+				break;
+			case KEST_FPGA_MSG_TYPE_STATUS:
+			{
+				uint8_t tx = 0xFF, flags = 0;
+				int result = kest_fpga_txrx(&tx, &flags, 1);
+				if (msg.data.status_callback)
+					msg.data.status_callback(result, flags);
+				break;
+			}
 			case KEST_FPGA_MSG_TYPE_MEM_READ:
 				
 				addr_buf[0] = (msg.data.mem_read.addr & 0xFF00) >> 8;
@@ -237,7 +253,7 @@ void kest_fpga_comms_task(void *param)
 				#endif
 					
 				if (msg.data.mem_read.callback)
-					msg.data.mem_read.callback(read_result, msg.data.mem_read.cb_arg);
+					msg.data.mem_read.callback(msg.data.mem_read.data, read_result);
 				
 				break;
 		}
@@ -248,7 +264,8 @@ void kest_fpga_comms_task(void *param)
 
 int kest_fpga_queue_msg(kest_fpga_msg msg)
 {
-	while (!initialised);
+	if (!initialised || !fpga_msg_queue)
+		return ERR_QUEUE_SEND_FAILED;
 	
 	if (xQueueSend(fpga_msg_queue, (void*)&msg, (TickType_t)1) != pdPASS)
 	{
@@ -315,16 +332,18 @@ int kest_fpga_queue_register_commit()
 	return kest_fpga_queue_msg(msg);
 }
 
-int kest_fpga_queue_mem_read(int addr, void (*callback)(kest_fpga_sample_t, void*), void *cb_arg)
+int kest_fpga_queue_mem_read(int addr, void *data, void (*callback)(void*, int64_t))
 {
+	if (!initialised || !fpga_msg_queue)
+		return ERR_QUEUE_SEND_FAILED;
 	kest_fpga_msg msg;
 	
 	msg.type = KEST_FPGA_MSG_TYPE_MEM_READ;
 	msg.data.mem_read.addr = addr;
+	msg.data.mem_read.data = data;
 	msg.data.mem_read.callback = callback;
-	msg.data.mem_read.cb_arg = cb_arg;
 	
-	return kest_fpga_queue_msg(msg);
+	return xQueueSend(fpga_msg_queue, &msg, 0) == pdPASS ? NO_ERROR : ERR_QUEUE_SEND_FAILED;
 }
 
 int kest_fpga_queue_read(kest_fpga_read_spec *spec)
@@ -526,4 +545,21 @@ void kest_command_log_test()
 	kest_fpga_send_byte(0);
 	
 	kest_fpga_print_command_log();
+}
+
+int kest_fpga_queue_status(void (*callback)(int result, uint8_t flags))
+{
+	if (!callback) return ERR_NULL_PTR;
+	kest_fpga_msg msg = { .type = KEST_FPGA_MSG_TYPE_STATUS };
+	msg.data.status_callback = callback;
+	return kest_fpga_queue_msg(msg);
+}
+
+int kest_fpga_queue_callback(void (*callback)(void *), void *data)
+{
+	if (!callback) return ERR_NULL_PTR;
+	kest_fpga_msg msg = { .type = KEST_FPGA_MSG_TYPE_CALLBACK };
+	msg.data.callback.call = callback;
+	msg.data.callback.data = data;
+	return kest_fpga_queue_msg(msg);
 }

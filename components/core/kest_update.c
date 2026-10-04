@@ -12,10 +12,11 @@ QueueHandle_t update_queue_ = NULL;
 static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 0) ? 1 : pdMS_TO_TICKS((int)UPDATE_PERIOD_MS);
 #endif
 
+static _Atomic(kest_effect*) retired_effects;
+
 IMPLEMENT_LIST(kest_update);
 IMPLEMENT_LIST(kest_fpga_write);
 IMPLEMENT_LIST(kest_fpga_alloc);
-IMPLEMENT_LIST(kest_fpga_mem_read);
 
 int kest_updater_state_init(kest_updater_state *state)
 {
@@ -40,13 +41,12 @@ int kest_updater_state_init(kest_updater_state *state)
 	kest_fpga_write_list_init(&state->reg_writes);
 	kest_fpga_write_list_init(&state->filter_writes);
 	
-	kest_fpga_mem_read_list_init(&state->reads);
-	
 	kest_dsp_resource_ptr_list_init(&state->resources);
 	
 	kest_fpga_transfer_batch_init(&state->batch);
 	state->batch.buffer_owned = 1;
 	
+	state->retiring_effects = NULL;
 	state->tick_ctr = 0;
 	
 	return NO_ERROR;
@@ -76,7 +76,6 @@ int kest_updater_clear(kest_updater_state *state)
 		return ERR_NULL_PTR;
 	
 	kest_updater_drain_lists(state);
-	kest_fpga_mem_read_list_drain(&state->reads);
 	
 	kest_dsp_resource_ptr_list_drain(&state->resources);
 	
@@ -96,6 +95,9 @@ void kest_updater_state_destroy(kest_updater_state *state)
 	kest_fpga_write_list_destroy(&state->instr_writes);
 	kest_fpga_write_list_destroy(&state->reg_writes);
 	kest_fpga_write_list_destroy(&state->filter_writes);
+	kest_dsp_resource_ptr_list_destroy(&state->resources);
+	kest_free(state->batch.buf);
+	memset(&state->batch, 0, sizeof(state->batch));
 }
 
 int kest_update_task_start()
@@ -134,10 +136,6 @@ void kest_update_print(kest_update update)
 			KEST_PRINTF_FORCE_("KEST_UPDATE_PRESET(preset = %p)\n", update.data.preset);
 			break;
 		
-		case KEST_UPDATE_MEM:
-			KEST_PRINTF_FORCE_("KEST_UPDATE_MEM\n");
-			break;
-		
 		case KEST_UPDATE_SCOPE_ENTRY:
 			KEST_PRINTF_FORCE_("KEST_UPDATE_SCOPE_ENTRY \"%s\" in %p\n", update.data.scope_entry.key, update.data.scope_entry.effect->scope);
 			break;
@@ -157,6 +155,25 @@ void kest_update_task(void *arg)
 	
 	while (1)
 	{
+		#ifdef KEST_ENABLE_UI
+		kest_ui_lock();
+		#endif
+		kest_updater_collect_retired_effects(&state);
+		/* Keep a rejected program intact until the SPI queue accepts it. */
+		if (state.state == KEST_UPDATER_STATE_REPROGRAM)
+		{
+			if (kest_updater_send(&state) != NO_ERROR)
+			{
+				#ifdef KEST_ENABLE_UI
+				kest_ui_unlock();
+				#endif
+				#ifdef KEST_USE_FREERTOS
+				xTaskDelayUntil(&last_wake, update_period_ticks);
+				#endif
+				continue;
+			}
+			kest_updater_drain_lists(&state);
+		}
 		#ifdef KEST_USE_FREERTOS
 		while (xQueueReceive(update_queue_, &update, 0) == pdPASS)
 		{
@@ -195,12 +212,19 @@ void kest_update_task(void *arg)
 		kest_updater_print_command_list(&state);
 		#endif
 		
-		kest_updater_generate_tx_batch(&state);
-		kest_updater_send(&state);
+		if (kest_updater_generate_tx_batch(&state) == NO_ERROR)
+			kest_updater_send(&state);
 		
-		kest_updater_drain_lists(&state);
+		if (state.state == KEST_UPDATER_STATE_READY)
+		{
+			kest_updater_drain_lists(&state);
+			kest_updater_reap_effects(&state);
+		}
 		
 		state.tick_ctr++;
+		#ifdef KEST_ENABLE_UI
+		kest_ui_unlock();
+		#endif
 		
 		#ifdef KEST_USE_FREERTOS
 		xTaskDelayUntil(&last_wake, update_period_ticks);
@@ -250,7 +274,7 @@ int kest_fpga_write_generate_update(kest_fpga_write *write, kest_dependent *dep,
 		
 		write->addr_1 = kest_effect_fpga_position_resolve_block(&effect->position_, addr_1_local);
 		write->addr_2 = dep->data.block_reg.reg;
-		write->format = reg_val->format;
+		write->encoding = reg_val->format;
 		write->expr = reg_val->expr;
 		write->scope = scope;
 		
@@ -381,7 +405,7 @@ void kest_updater_print_reg_writes(kest_updater_state *state)
 	kest_fpga_write_list *writes = &state->reg_writes;
 	kest_fpga_write write;
 	
-	KEST_PRINTF_FORCE("Updater tick %d register writes (n = %d):\n", state->tick_ctr, state->reg_writes.count);
+	KEST_PRINTF_FORCE("Updater tick %u register writes (n = %d):\n", state->tick_ctr, state->reg_writes.count);
 	
 	float val;
 	
@@ -390,7 +414,7 @@ void kest_updater_print_reg_writes(kest_updater_state *state)
 		write = writes->entries[i];
 		
 		val = kest_expression_evaluate(write.expr, write.scope);
-		KEST_PRINTF_FORCE_("\tBlock %d reg %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.format,
+		KEST_PRINTF_FORCE_("\tBlock %d reg %d, format %d, scope %p, value %s%.04f = %s\n", write.addr_1, write.addr_2, write.encoding.fractional_bits,
 			write.scope, val < 0 ? "" : " ", val, kest_expression_to_string(write.expr));
 	}
 }
@@ -406,7 +430,7 @@ void kest_updater_print_filter_writes(kest_updater_state *state)
 	kest_fpga_write_list *writes = &state->filter_writes;
 	kest_fpga_write write;
 	
-	KEST_PRINTF_FORCE("Updater tick %d filter writes (n = %d):\n", state->tick_ctr, state->filter_writes.count);
+	KEST_PRINTF_FORCE("Updater tick %u filter writes (n = %d):\n", state->tick_ctr, state->filter_writes.count);
 	
 	float val;
 	
@@ -433,7 +457,7 @@ void kest_updater_print_command_list(kest_updater_state *state)
 	kest_string str;
 	kest_string_init(&str);
 	
-	KEST_PRINTF_FORCE("Updater tick %d commands (n = %d):\n", state->tick_ctr, state->cmds.count);
+	KEST_PRINTF_FORCE("Updater tick %u commands (n = %d):\n", state->tick_ctr, state->cmds.count);
 	
 	for (size_t i = 0; i < state->cmds.count; i++)
 	{
@@ -462,7 +486,7 @@ void kest_updater_print_allocs(kest_updater_state *state)
 	
 	kest_fpga_alloc alloc;
 	
-	KEST_PRINTF("Updater tick %d commands (n = %d):\n", state->tick_ctr, state->allocs.count);
+	KEST_PRINTF("Updater tick %u commands (n = %d):\n", state->tick_ctr, state->allocs.count);
 	
 	for (size_t i = 0; i < state->allocs.count; i++)
 	{
@@ -487,63 +511,38 @@ void kest_updater_print_allocs(kest_updater_state *state)
 
 #define PRINTLINES_ALLOWED 0
 
-void mem_read_callback(kest_fpga_sample_t result, void *arg)
+static int kest_updater_dispatch_mem_read(kest_updater_state *state, kest_dsp_resource *res)
 {
-	kest_dsp_resource *res = (kest_dsp_resource*)arg;
-	if (!res)
+	if (!res || !res->effect || !res->data) return ERR_BAD_ARGS;
+	kest_mem_slot *mem = res->data;
+
+	// Coalesce arrivals: dependencies always use the latest available sample.
+	if (atomic_exchange_explicit(&mem->updated, 0, memory_order_acquire))
 	{
-		KEST_PRINTF_FORCE("=/\n");
-		return;
-	}
-	
-	kest_mem_slot *mem = (kest_mem_slot*)res->data;
-	if (!mem)
-	{
-		KEST_PRINTF_FORCE(":0\n");
-		return;
-	}
-	
-	mem->value = result;
-	
-	kest_effect *effect = res->effect;
-	if (!effect)
-	{
-		KEST_PRINTF_FORCE(":(\n");
-		return;
+		kest_scope_entry *entry = kest_scope_lookup(res->effect->scope, res->name);
+		if (entry) kest_updater_handle_scope_entry_update(state, entry, res->effect);
 	}
 
-	kest_updater_notify_scope_entry(effect, res->name);
-}
-
-int kest_updater_dispatch_mem_read(kest_updater_state *state, kest_dsp_resource *res)
-{
-	KEST_PRINTF("kest_updater_dispatch_mem_read\n");
-	if (!res)
-		return ERR_NULL_PTR;
-	
-	kest_effect *effect = res->effect;
-	
-	if (!effect)
-	{
-		KEST_PRINTF("Error: resource has no effect\n");
-		return ERR_BAD_ARGS;
-	}
-	
-	#ifndef KEST_LIBRARY
-	kest_fpga_queue_mem_read(effect->position_.mem_start + res->handle, mem_read_callback, res);
-	#endif
-	
+	if (!mem->read_enable || mem->read_period_ms <= 0) return NO_ERROR;
+	uint32_t period = ((uint32_t)mem->read_period_ms + (uint32_t)UPDATE_PERIOD_MS - 1) / (uint32_t)UPDATE_PERIOD_MS;
+	if (state->tick_ctr % period) return NO_ERROR;
+#ifndef KEST_LIBRARY
+	return kest_fpga_queue_mem_read(res->effect->position_.mem_start + res->handle, mem, kest_mem_slot_read_cb);
+#else
 	return NO_ERROR;
+#endif
 }
 
 #define PRINTLINES_ALLOWED 0
 
-int kest_updater_handle_resource_update(kest_updater_state *state, kest_dsp_resource *res)
+static int kest_updater_handle_resource_update(kest_updater_state *state, kest_dsp_resource *res)
 {
 	KEST_PRINTF("kest_updater_handle_resource_update\n");
 	if (!state || !res)
 		return ERR_NULL_PTR;
 	
+	if (kest_dsp_resource_delete_requested(res) ||
+		(res->effect && !atomic_load(&res->effect->alive))) return NO_ERROR;
 	kest_scope_entry *entry = NULL;
 	kest_effect *effect = res->effect;
 	
@@ -556,8 +555,7 @@ int kest_updater_handle_resource_update(kest_updater_state *state, kest_dsp_reso
 			break;
 			
 		case KEST_DSP_RESOURCE_MEM:
-			kest_updater_dispatch_mem_read(state, res);
-			break;
+			return kest_updater_dispatch_mem_read(state, res);
 	}
 	
 	return NO_ERROR;
@@ -567,19 +565,30 @@ int kest_updater_handle_resource_updates(kest_updater_state *state)
 {
 	if (!state)
 		return ERR_NULL_PTR;
+	if (state->state != KEST_UPDATER_STATE_READY)
+		return NO_ERROR;
 	
+	int ret_val = NO_ERROR;
 	for (size_t i = 0; i < state->resources.count; i++)
 	{
-		kest_updater_handle_resource_update(state, state->resources.entries[i]);
+		int rc = kest_updater_handle_resource_update(state, state->resources.entries[i]);
+		if (ret_val == NO_ERROR) ret_val = rc;
 	}
-	
-	return NO_ERROR;
+	return ret_val;
 }
 
 int kest_update_queue(kest_update update)
 {
 	KEST_PRINTF("kest_update_queue\n");
+	kest_effect *effect = NULL;
+	if (update.type == KEST_UPDATE_PARAM && update.data.param)
+		effect = update.data.param->effect;
+	else if (update.type == KEST_UPDATE_SCOPE_ENTRY)
+		effect = update.data.scope_entry.effect;
+	if (effect && !atomic_load(&effect->alive)) return NO_ERROR;
 	#ifdef KEST_USE_FREERTOS
+	if (!update_queue_)
+		return ERR_CURRENTLY_EXHAUSTED;
 	if (xQueueSend(update_queue_, &update, pdMS_TO_TICKS(1)) != pdPASS)
 		return ERR_CURRENTLY_EXHAUSTED;
 	
@@ -742,7 +751,7 @@ int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 			
 			effect = param->effect;
 			
-			if (!effect || !effect->scope) break;
+			if (!effect || !atomic_load(&effect->alive) || !effect->scope) break;
 			entry = kest_scope_lookup(effect->scope, param->name_internal);
 			
 			if (!entry) break;
@@ -751,7 +760,7 @@ int kest_updater_handle_update(kest_updater_state *state, kest_update update)
 		
 		case KEST_UPDATE_SCOPE_ENTRY:
 			effect = update.data.scope_entry.effect;
-			if (!effect || !effect->scope) break;
+			if (!effect || !atomic_load(&effect->alive) || !effect->scope) break;
 			entry = kest_scope_lookup(effect->scope, update.data.scope_entry.key);
 			if (!entry) break;
 			kest_updater_handle_scope_entry_update(state, entry, effect);
@@ -901,7 +910,6 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 	
 	kest_fpga_alloc alloc;
 	kest_fpga_write write;
-	kest_fpga_mem_read read;
 	kest_block *block;
 	
 	kest_mem_slot *mem = NULL;
@@ -963,7 +971,7 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 			write.addr_2 = 0;
 			
 			write.expr = block->reg_0.expr;
-			write.format = block->reg_0.format;
+			write.encoding = block->reg_0.format;
 			kest_fpga_write_list_append(&state->reg_writes, write);
 		}
 		
@@ -972,7 +980,7 @@ int kest_updater_handle_preset_update_add_effect(kest_updater_state *state, kest
 			write.addr_2 = 1;
 			
 			write.expr = block->reg_1.expr;
-			write.format = block->reg_1.format;
+			write.encoding = block->reg_1.format;
 			kest_fpga_write_list_append(&state->reg_writes, write);
 		}
 	}
@@ -1041,18 +1049,18 @@ int kest_fpga_write_to_command(kest_fpga_command *dest, kest_fpga_write *src)
 			
 		case KEST_BLOCK_REG_WRITE:
 			if (src->addr_2 == 0)
-				*dest = kest_fpga_command_write_block_reg_0(src->addr_1, val, src->format);
+				*dest = kest_fpga_command_write_block_reg_0(src->addr_1, val, src->encoding);
 			else if (src->addr_2 == 1)
-				*dest = kest_fpga_command_write_block_reg_1(src->addr_1, val, src->format);
+				*dest = kest_fpga_command_write_block_reg_1(src->addr_1, val, src->encoding);
 			else
 				return ERR_BAD_ARGS;
 			break;
 
 		case KEST_BLOCK_REG_UPDATE:
 			if (src->addr_2 == 0)
-				*dest = kest_fpga_command_update_block_reg_0(src->addr_1, val, src->format);
+				*dest = kest_fpga_command_update_block_reg_0(src->addr_1, val, src->encoding);
 			else if (src->addr_2 == 1)
-				*dest = kest_fpga_command_update_block_reg_1(src->addr_1, val, src->format);
+				*dest = kest_fpga_command_update_block_reg_1(src->addr_1, val, src->encoding);
 			else
 				return ERR_BAD_ARGS;
 			break;
@@ -1175,11 +1183,10 @@ int kest_updater_generate_tx_batch(kest_updater_state *state)
 	if (!state)
 		return ERR_NULL_PTR;
 	
-	int ret_val = NO_ERROR;
-	
-	kest_fpga_command_list_append_encoded(&state->cmds, &state->batch);
-	
-	return ret_val;
+	int result = kest_fpga_command_list_append_encoded(&state->cmds, &state->batch);
+	if (result != NO_ERROR)
+		state->batch.len = 0;
+	return result;
 }
 
 int kest_updater_send(kest_updater_state *state)
@@ -1222,16 +1229,19 @@ int kest_updater_send(kest_updater_state *state)
 	{
 		case KEST_UPDATER_STATE_READY:
 			KEST_PRINTF("Sending batch...\n");
-			kest_fpga_queue_transfer_batch(send_batch);
+			ret_val = kest_fpga_queue_transfer_batch(send_batch);
 			break;
 		
 		case KEST_UPDATER_STATE_REPROGRAM:
 			KEST_PRINTF("Programming...\n");
-			kest_fpga_queue_program_batch(send_batch);
-			state->state = KEST_UPDATER_STATE_READY;
+			ret_val = kest_fpga_queue_program_batch(send_batch);
+			if (ret_val == NO_ERROR)
+				state->state = KEST_UPDATER_STATE_READY;
 			break;
 	}
 	
+	if (ret_val != NO_ERROR)
+		kest_free(send_batch.buf);
 	return ret_val;
 	#endif
 }
@@ -1259,7 +1269,8 @@ kest_fpga_transfer_batch kest_standalone_generate_program_batch(kest_effect_ptr_
 	kest_updater_generate_command_list(&state);
 	
 	kest_fpga_batch_append(&state.batch, COMMAND_BEGIN_PROGRAM);
-	kest_updater_generate_tx_batch(&state);
+	if (kest_updater_generate_tx_batch(&state) != NO_ERROR)
+		goto standalone_generate_finish;
 	kest_fpga_batch_append(&state.batch, COMMAND_END_PROGRAM);
 	
 standalone_generate_finish:
@@ -1268,4 +1279,78 @@ standalone_generate_finish:
 	kest_updater_state_destroy(&state);
 	batch.buffer_owned = 0;
 	return batch;
+}
+
+// Intrusive handoff needs no allocation and also covers inactive effects.
+void kest_updater_retire_effect(kest_effect *effect)
+{
+	kest_effect *head = atomic_load(&retired_effects);
+	do { effect->retire_next = head; }
+	while (!atomic_compare_exchange_weak(&retired_effects, &head, effect));
+}
+
+void kest_updater_collect_retired_effects(kest_updater_state *state)
+{
+	kest_effect *effect = atomic_exchange(&retired_effects, NULL);
+	while (effect)
+	{
+		kest_effect *next = effect->retire_next;
+		effect->retire_next = state->retiring_effects;
+		state->retiring_effects = effect;
+		effect = next;
+	}
+}
+
+static void kest_updater_effect_reads_finished(void *data)
+{
+	kest_effect *effect = data;
+	atomic_store(&effect->spi_retirement, 2);
+}
+
+// Call after draining updates and rendering their borrowed scopes into the batch.
+void kest_updater_reap_effects(kest_updater_state *state)
+{
+	if (state->state != KEST_UPDATER_STATE_READY) return;
+	kest_effect **link = &state->retiring_effects;
+	while (*link)
+	{
+		kest_effect *effect = *link;
+		// Remove cached borrowers before releasing their owning effect.
+		for (int i = 0; i < state->resources.count; )
+		{
+			if (state->resources.entries[i]->effect == effect)
+			{
+				memmove(&state->resources.entries[i], &state->resources.entries[i + 1],
+					(--state->resources.count - i) * sizeof(*state->resources.entries));
+			}
+			else i++;
+		}
+		if (atomic_load(&effect->spi_retirement) == 2)
+		{
+			kest_effect *next = effect->retire_next;
+#ifdef KEST_ENABLE_UI
+			// Keep the view and its callbacks alive until control/SPI stop borrowing.
+			if (kest_ui_async_call(kest_effect_free_retired, effect) != NO_ERROR)
+			{
+				link = &effect->retire_next;
+				continue;
+			}
+#else
+			kest_effect_free_retired(effect);
+#endif
+			*link = next;
+			continue;
+		}
+		if (atomic_load(&effect->spi_retirement) == 0)
+		{
+			atomic_store(&effect->spi_retirement, 1);
+#ifndef KEST_LIBRARY
+			if (kest_fpga_queue_callback(kest_updater_effect_reads_finished, effect) != NO_ERROR)
+				atomic_store(&effect->spi_retirement, 0);
+#else
+			kest_updater_effect_reads_finished(effect);
+#endif
+		}
+		link = &effect->retire_next;
+	}
 }

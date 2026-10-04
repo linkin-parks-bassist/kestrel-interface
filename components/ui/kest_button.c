@@ -600,11 +600,15 @@ void kest_danger_button_activate_popup_cb(lv_event_t *e)
 	btn = lv_msgbox_add_footer_button(button->popup, DANGER_BUTTON_CONFIRM_TEXT);
 	lv_obj_add_event_cb(btn, kest_danger_button_confirm_cb, LV_EVENT_CLICKED, button);
 	lv_obj_set_size(btn, DANGER_BUTTON_POPUP_BUTTON_WIDTH, DANGER_BUTTON_POPUP_BUTTON_HEIGHT);
-	lv_obj_align_to(btn, button->popup, LV_ALIGN_BOTTOM_LEFT, 0, -GLOBAL_PAD_WIDTH);
 	btn = lv_msgbox_add_footer_button(button->popup, DANGER_BUTTON_CANCEL_TEXT);
 	lv_obj_add_event_cb(btn, kest_danger_button_cancel_cb, LV_EVENT_CLICKED, button);
 	lv_obj_set_size(btn, DANGER_BUTTON_POPUP_BUTTON_WIDTH, DANGER_BUTTON_POPUP_BUTTON_HEIGHT);
-	lv_obj_align_to(btn, button->popup, LV_ALIGN_CENTER, 0, -GLOBAL_PAD_WIDTH);
+
+	// Footer buttons use flex layout; leave breathing room below the row.
+	lv_obj_t *footer = lv_msgbox_get_footer(button->popup);
+	lv_obj_set_height(footer, DANGER_BUTTON_POPUP_BUTTON_HEIGHT + 2 * GLOBAL_PAD_WIDTH);
+	lv_obj_set_style_pad_top(footer, GLOBAL_PAD_WIDTH, LV_PART_MAIN);
+	lv_obj_set_style_pad_bottom(footer, GLOBAL_PAD_WIDTH, LV_PART_MAIN);
 	
 	lv_obj_set_size(button->popup, DANGER_BUTTON_POPUP_WIDTH, DANGER_BUTTON_POPUP_HEIGHT);
 	
@@ -1100,15 +1104,6 @@ int kest_active_button_add_del_button(kest_active_button *button)
 	return NO_ERROR;
 }
 
-void kest_active_button_set_representation(kest_active_button *button, void *representer, void *representee, void (*update)(void*, void*))
-{
-	if (button)
-	{
-		button->rep.representer = representer;
-		button->rep.representee = representee;
-		button->rep.update		= update;
-	}
-}
 
 int kest_active_button_create_ui(kest_active_button *button, lv_obj_t *parent)
 {
@@ -1124,9 +1119,8 @@ int kest_active_button_create_ui(kest_active_button *button, lv_obj_t *parent)
 	button->button.obj = lv_btn_create(parent);
 	
     lv_obj_set_size(button->button.obj, KEST_BUTTON_WIDTH, KEST_BUTTON_HEIGHT);
-    
-	
-	
+
+
 	lv_obj_align(button->button.obj, LV_ALIGN_TOP_MID, 0, button->pos_y);
 	
 	button->button.label = lv_label_create(button->button.obj);
@@ -1316,7 +1310,6 @@ int kest_active_button_reset_del_button(kest_active_button *button)
 	//kest_printf("kest_active_button_reset_del_button done\n");
 	return NO_ERROR;
 }
-
 
 
 int kest_active_button_reset_del_button_async(kest_active_button *button)

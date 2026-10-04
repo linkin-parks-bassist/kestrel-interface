@@ -1,0 +1,14 @@
+# Current desktop geometry is 600 x 1024.
+wait 1000
+click 48 40
+wait 300
+screenshot menu.bmp
+click 300 660
+wait 300
+tree
+screenshot danger.bmp
+click 380 600
+wait 300
+tree
+screenshot cancelled.bmp
+quit

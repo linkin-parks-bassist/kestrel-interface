@@ -23,8 +23,6 @@ int kest_init()
 	
 	kest_mem_init();
 	
-	kest_update_task_start();
-	
 	#ifdef USE_DISPLAY
 	kest_ui_lock();
 	kest_init_context(&global_cxt);
@@ -37,6 +35,8 @@ int kest_init()
 	kest_init_parameter_updater();
 	#endif
 	
+	kest_update_task_start();
+
 	#ifdef USE_SDCARD
 	init_sd_card();
 	#endif
@@ -61,8 +61,10 @@ int kest_init()
 	
 	if (ret_val == NO_ERROR)
 	{
+		kest_ui_lock();
 		ret_val = kest_cxt_restore_state(&global_cxt, &state);
 		kest_cxt_enter_previous_current_page(&global_cxt, &state);
+		kest_ui_unlock();
 		
 		KEST_PRINTF("Restored state from disk with error code \"%s\"\n", kest_error_code_to_string(ret_val));
 	}

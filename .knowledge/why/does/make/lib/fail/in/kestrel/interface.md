@@ -1,9 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-20T00:10:12+10:00"
-scope: "local"
-source: "observed make lib output; components/core/kest_preset.c:611-626; Makefile"
+status: green
+revised_at: "2026-10-04T06:24:26+11:00"
 ---
-Status: Green
 
-A `make lib` attempt on 2026-09-20 compiled multiple objects, then failed in components/core/kest_preset.c:621: `kest_preset_handle_name_change` references `preset->sequence`, but `kest_preset` has no `sequence` member in the KEST_LIBRARY configuration. The same branch calls queue-save functions without declarations, producing warnings. This is a source build failure, distinct from the host SDL2 prerequisite for desktop tests. Repair the library guards or provide a library-safe name-change path, then rerun make lib. Source: observed make lib output; components/core/kest_preset.c:611-626; KEST_LIBRARY build configuration.
+make lib succeeds. kest_preset_handle_name_change excludes firmware-only preset/sequence queue-save calls under KEST_LIBRARY, matching other preset operations; the library has no sequence member or persistence task. Firmware/desktop behavior is preserved by that guard.
+
+The shared object explicitly links libm and uses -Wl,-z,defs, rejecting unresolved project symbols rather than leaving a seemingly successful but unusable library. Library objects depend on their production headers. A forced rebuild of the library passes; the standalone C compile_eff executable links to it through an $ORIGIN runpath and compiles the readback fixture into the expected 20-byte programming body. This establishes C compilation/linking and one fixture's command emission, not the older C++ full-top simulation or complete DSP verification. Existing parser const/escape warnings remain.
+
+Sources: Makefile, components/core/kest_preset.c, main/kest_lib.h, tools/compile_eff.c, /tmp/kestrel-lib-check.log, /tmp/kestrel-lib-fresh-build.log, readelf dynamic dependencies and standalone compiler checks.

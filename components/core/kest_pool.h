@@ -208,14 +208,14 @@ int X##_pool_init_allocator(X##_pool *pool, kest_allocator *a)\
 	a->realloc 	= X##_pool_realloc;\
 	a->free 	= X##_pool_free;\
 	\
-	a->flags = KEST_ALLOCATOR_FLAG_SINGULAR | KEST_ALLOCATOR_FLAG_DISALLOW_STRNDUP;\
+	a->flags = KEST_ALLOCATOR_FLAG_DISALLOW_STRNDUP;\
 	\
 	return NO_ERROR;\
 }\
 \
 void *X##_pool_alloc(void *p, size_t n)\
 {\
-	if (!p || n != 1) return NULL;\
+	if (!p || n != sizeof(X)) return NULL;\
 	\
 	return (void*)X##_pool_obtain((X##_pool*)p);\
 }\
@@ -224,7 +224,7 @@ void *X##_pool_realloc(void *p, void *x, size_t n)\
 {\
 	X##_pool *pool = p;\
 	\
-	if (!x || !p || n != 1) return NULL;\
+	if (!x || !p || n != sizeof(X)) return NULL;\
 	\
 	X *y = (X*)X##_pool_obtain(pool);\
 	\

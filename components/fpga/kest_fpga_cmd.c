@@ -25,43 +25,43 @@ kest_fpga_command kest_fpga_command_write_block_instr(int block, uint32_t instr)
 	return cmd;
 }
 
-kest_fpga_command kest_fpga_command_write_block_reg_0(int block, float val, int format)
+kest_fpga_command kest_fpga_command_write_block_reg_0(int block, float val, kest_numeric_format format)
 {
 	kest_fpga_command cmd = {0};
 	cmd.type = COMMAND_WRITE_BLOCK_REG_0;
 	cmd.data_1.block = block;
 	cmd.val = val;
-	cmd.format = format;
+	cmd.encoding = format;
 	return cmd;
 }
 
-kest_fpga_command kest_fpga_command_write_block_reg_1(int block, float val, int format)
+kest_fpga_command kest_fpga_command_write_block_reg_1(int block, float val, kest_numeric_format format)
 {
 	kest_fpga_command cmd = {0};
 	cmd.type = COMMAND_WRITE_BLOCK_REG_1;
 	cmd.data_1.block = block;
 	cmd.val = val;
-	cmd.format = format;
+	cmd.encoding = format;
 	return cmd;
 }
 
-kest_fpga_command kest_fpga_command_update_block_reg_0(int block, float val, int format)
+kest_fpga_command kest_fpga_command_update_block_reg_0(int block, float val, kest_numeric_format format)
 {
 	kest_fpga_command cmd = {0};
 	cmd.type = COMMAND_UPDATE_BLOCK_REG_0;
 	cmd.data_1.block = block;
 	cmd.val = val;
-	cmd.format = format;
+	cmd.encoding = format;
 	return cmd;
 }
 
-kest_fpga_command kest_fpga_command_update_block_reg_1(int block, float val, int format)
+kest_fpga_command kest_fpga_command_update_block_reg_1(int block, float val, kest_numeric_format format)
 {
 	kest_fpga_command cmd = {0};
 	cmd.type = COMMAND_UPDATE_BLOCK_REG_1;
 	cmd.data_1.block = block;
 	cmd.val = val;
-	cmd.format = format;
+	cmd.encoding = format;
 	return cmd;
 }
 
@@ -154,51 +154,51 @@ int kest_fpga_command_append_encoded(kest_fpga_command cmd, kest_fpga_transfer_b
 	switch (cmd.type)
 	{
 		case COMMAND_WRITE_BLOCK_INSTR:
-			if ((ret_val = kest_fpga_batch_append_block_number(batch, cmd.data_1.block) != NO_ERROR)) break;
-			if ((ret_val = kest_fpga_batch_append_32          (batch, cmd.data_2.instr) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_block_number(batch, cmd.data_1.block)) != NO_ERROR) break;
+			if ((ret_val = kest_fpga_batch_append_32          (batch, cmd.data_2.instr)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_WRITE_BLOCK_REG_0:
 		case COMMAND_WRITE_BLOCK_REG_1:
 		case COMMAND_UPDATE_BLOCK_REG_0:
 		case COMMAND_UPDATE_BLOCK_REG_1:
-			if ((ret_val = kest_fpga_batch_append_block_number(batch, cmd.data_1.block   ) != NO_ERROR)) break;
-			if ((ret_val = kest_fpga_batch_append_float       (batch, cmd.val, cmd.format) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_block_number(batch, cmd.data_1.block   )) != NO_ERROR) break;
+			if ((ret_val = kest_fpga_batch_append_numeric(batch, cmd.val, cmd.encoding)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_ALLOC_DELAY:
 			
-			if ((ret_val = kest_fpga_batch_append_24(batch, cmd.data_1.size ) != NO_ERROR)) break;
-			if ((ret_val = kest_fpga_batch_append_24(batch, cmd.data_2.delay) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_24(batch, cmd.data_1.size )) != NO_ERROR) break;
+			if ((ret_val = kest_fpga_batch_append_24(batch, cmd.data_2.delay)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_SET_INPUT_GAIN:
-			if ((ret_val = kest_fpga_batch_append_float(batch, powf(10, cmd.val / 20.0), KEST_FPGA_GAIN_FORMAT) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_float(batch, powf(10, cmd.val / 20.0), KEST_FPGA_GAIN_FORMAT)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_SET_OUTPUT_GAIN:
-			if ((ret_val = kest_fpga_batch_append_float(batch, powf(10, cmd.val / 20.0), KEST_FPGA_GAIN_FORMAT) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_float(batch, powf(10, cmd.val / 20.0), KEST_FPGA_GAIN_FORMAT)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_ALLOC_FILTER:
-			if ((ret_val = kest_fpga_batch_append(batch, cmd.format & 0xFF         ) != NO_ERROR)) break;
-			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_1.order_ff & 0xFF) != NO_ERROR)) break;
-			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_2.order_fb & 0xFF) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append(batch, cmd.format & 0xFF         )) != NO_ERROR) break;
+			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_1.order_ff & 0xFF)) != NO_ERROR) break;
+			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_2.order_fb & 0xFF)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_WRITE_FILTER_COEF:
 		case COMMAND_UPDATE_FILTER_COEF:
-			if ((ret_val = kest_fpga_batch_append   (batch, cmd.data_1.handle & 0xFF) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append   (batch, cmd.data_1.handle & 0xFF)) != NO_ERROR) break;
 			#if   KEST_FPGA_FILTER_COEF_INDEX_BYTES == 1
-			if ((ret_val = kest_fpga_batch_append   (batch, cmd.data_2.coef   & 0xFF) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append   (batch, cmd.data_2.coef   & 0xFF)) != NO_ERROR) break;
 			#elif KEST_FPGA_FILTER_COEF_INDEX_BYTES == 2
-			if ((ret_val = kest_fpga_batch_append_16(batch, cmd.data_2.coef   & 0xFFFF) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_16(batch, cmd.data_2.coef   & 0xFFFF)) != NO_ERROR) break;
 			#endif
-			if ((ret_val = kest_fpga_batch_append_float_filter_width(batch, cmd.val, cmd.format) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append_float_filter_width(batch, cmd.val, cmd.format)) != NO_ERROR) break;
 			break;
 			
 		case COMMAND_COMMIT_FILTER_COEF:
-			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_1.handle & 0xFF) != NO_ERROR)) break;
+			if ((ret_val = kest_fpga_batch_append(batch, cmd.data_1.handle & 0xFF)) != NO_ERROR) break;
 			break;
 	}
 	

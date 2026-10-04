@@ -26,7 +26,7 @@ kest_effect *kest_pipeline_append_effect_eff(kest_pipeline *pipeline, kest_effec
 	if (!pipeline || !eff)
 		return NULL;
 	
-	kest_effect *effect = kest_allocator_alloc(&kest_effect_allocator, 1);
+	kest_effect *effect = kest_allocator_alloc(&kest_effect_allocator, sizeof(kest_effect));
 	
 	if (!effect)
 		return NULL;
@@ -197,7 +197,7 @@ int clone_pipeline(kest_pipeline *dest, kest_pipeline *src)
 		KEST_PRINTF("Cloning effect %d... current = %p, current->next = %p\n", i, current, current->next);
 		if (current->data)
 		{
-			effect = kest_allocator_alloc(&kest_effect_allocator, 1);
+			effect = kest_allocator_alloc(&kest_effect_allocator, sizeof(kest_effect));
 			
 			if (!effect)
 				return ERR_ALLOC_FAIL;
@@ -329,25 +329,6 @@ int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int preset_id)
 	return NO_ERROR;
 }
 
-int kest_pipeline_activate_dma(kest_pipeline *pipeline)
-{
-	KEST_PRINTF("kest_pipeline_activate_dma_async\n");
-	if (!pipeline)
-		return ERR_NULL_PTR;
-	
-	kest_effect_pll *current = pipeline->effects;
-	
-	while (current)
-	{
-		if (current->data)
-			kest_effect_activate_dma_async(current->data);
-		
-		current = current->next;
-	}
-	
-	return NO_ERROR;
-}
-
 int kest_pipeline_deactivate_lfos(kest_pipeline *pipeline)
 {
 	if (!pipeline)
@@ -378,24 +359,6 @@ int kest_pipeline_activate_lfos(kest_pipeline *pipeline)
 	{
 		if (current->data)
 			kest_effect_activate_lfos_async(current->data);
-		
-		current = current->next;
-	}
-	
-	return NO_ERROR;
-}
-
-int kest_pipeline_deactivate_dma(kest_pipeline *pipeline)
-{
-	if (!pipeline)
-		return ERR_NULL_PTR;
-	
-	kest_effect_pll *current = pipeline->effects;
-	
-	while (current)
-	{
-		if (current->data)
-			kest_effect_deactivate_dma_async(current->data);
 		
 		current = current->next;
 	}

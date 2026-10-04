@@ -161,9 +161,6 @@ int init_preset_view(kest_ui_page *page)
 	str->array->moved_cb      = preset_view_effect_moved_cb;
 	str->array->del_button_cb = preset_view_effect_delete_cb;
 	
-	str->rep.representee = NULL;
-	str->rep.representer = page;
-	str->rep.update = preset_view_rep_update;
 	
 	return NO_ERROR;
 }
@@ -390,9 +387,7 @@ int configure_preset_view(kest_ui_page *page, void *data)
 	ui_page_add_left_panel_button(page, LV_SYMBOL_LIST, menu_button_cb);
 	ui_page_add_right_panel_button(page, LV_SYMBOL_SETTINGS, preset_view_enter_settings_page_cb);
 	
-	str->rep.representee = preset;
 	
-	kest_preset_add_representation(preset, &str->rep);
 	
 	ret_val = NO_ERROR;
 	if (alloc_fail)	ret_val = ERR_ALLOC_FAIL;
@@ -502,9 +497,8 @@ int preset_view_recalculate_indices(kest_ui_page *page)
 {
 	if (!page)
 		return ERR_NULL_PTR;
-	
-	
-	
+
+
 	return NO_ERROR;
 }
 
@@ -525,9 +519,8 @@ int preset_view_refresh_play_button(kest_ui_page *page)
 {
 	if (!page)
 		return ERR_NULL_PTR;
-	
-	
-	
+
+
 	return NO_ERROR;
 }
 
@@ -546,48 +539,7 @@ int preset_view_set_left_button_mode(kest_ui_page *page, int mode)
 		return ERR_NULL_PTR;
 	
 	kest_preset_view_str *str = (kest_preset_view_str*)page->data_struct;
-	
-	
-	
-	return NO_ERROR;
-}
 
-void preset_view_rep_update(void *representer, void *representee)
-{
-	KEST_PRINTF("preset_view_rep_update. representer = %p, representee = %p\n", representer, representee);
-	
-	kest_ui_page *page = (kest_ui_page*)representer;
-	kest_preset *preset = (kest_preset*)representee;
-	
-	if (!page || !preset)
-		return;
-	
-	ui_page_set_title(page, preset->name);
-	
-	kest_preset_view_str *str = (kest_preset_view_str*)page->data_struct;
-	KEST_PRINTF("preset->active = %d,  str = %p, \n", preset->active, str);
-	if (!str)
-		return;
-	
-	if (preset->active)
-	{
-		//kest_button_disable(str->play);
-	}
-	else
-	{
-		kest_button_enable(str->play);
-	}
-	
-	#ifdef USE_SDCARD
-	if (preset->unsaved_changes)
-	{
-		kest_button_enable(str->save);
-	}
-	else
-	{
-		kest_button_disable(str->save);
-	}
-	#endif
-	
-	KEST_PRINTF("preset_view_rep_update done\n");
+
+	return NO_ERROR;
 }

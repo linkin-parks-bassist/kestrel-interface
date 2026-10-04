@@ -54,13 +54,10 @@ typedef struct kest_effect
 	SemaphoreHandle_t mutex;
 	#endif
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll *reps;
-	kest_representation page_rep;
-	kest_representation preset_rep;
-	#endif
 	
-	int alive;
+	atomic_int alive;
+	struct kest_effect *retire_next;
+	atomic_int spi_retirement; // 0: awaiting queue space, 1: queued, 2: callbacks finished.
 } kest_effect;
 
 const char *kest_effect_name(kest_effect *effect);
@@ -87,6 +84,7 @@ void add_effect_from_menu(lv_event_t *e);
 
 int clone_effect(kest_effect *dest, kest_effect *src);
 void free_effect(kest_effect *effect);
+void kest_effect_free_retired(void *effect);
 
 kest_parameter *effect_get_parameter(kest_effect *effect, int n);
 kest_setting *effect_get_setting(kest_effect *effect, int n);
@@ -108,14 +106,6 @@ int kest_effect_create_scope(kest_effect *effect);
 int kest_effect_set_parameter(kest_effect *effect, const char *name, float value);
 int kest_effect_set_setting(kest_effect *effect, const char *name, int value);
 
-int kest_effect_update_reps(kest_effect *effect);
-void kest_effect_preset_rep_update(void *representer, void *representee);
-void kest_effect_page_rep_update(void *representer, void *representee);
-
-int kest_effect_activate_dma(kest_effect *effect);
-int kest_effect_deactivate_dma(kest_effect *effect);
-int kest_effect_activate_dma_async(kest_effect *effect);
-int kest_effect_deactivate_dma_async(kest_effect *effect);
 
 int kest_effect_activate_lfos(kest_effect *effect);
 int kest_effect_deactivate_lfos(kest_effect *effect);

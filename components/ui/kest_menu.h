@@ -41,7 +41,6 @@ typedef struct kest_menu_item
 	int long_pressed;
 	void *lp_configure_arg;
 	
-	kest_representation rep;
 } kest_menu_item;
 
 DECLARE_LINKED_PTR_LIST(kest_menu_item);

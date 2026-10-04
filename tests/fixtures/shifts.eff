@@ -1,0 +1,9 @@
+v1.0
+
+.INFO
+name: "Explicit Fields"
+
+.CODE
+arsh c0 [0.5] 1 c1
+lsh c1 [0] 2 c2
+rsh c2 [0] 3 c0

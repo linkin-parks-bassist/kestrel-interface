@@ -1,7 +1,6 @@
 #ifndef KEST_INT_M_BUTTON_H_
 #define KEST_INT_M_BUTTON_H_
 
-#include "kest_representation.h"
 
 #define STANDARD_DEL_BTN_REMAIN_MS 	1000
 
@@ -169,7 +168,6 @@ typedef struct kest_active_button
 	
 	int long_pressed;
 	
-	kest_representation rep;
 	
 	struct kest_active_button_array *array;
 } kest_active_button;
@@ -191,8 +189,6 @@ int kest_active_button_create_ui(kest_active_button *button, lv_obj_t *parent);
 
 void kest_active_button_free(kest_active_button *button);
 
-void kest_active_button_set_representation(kest_active_button *button,
-	void *representer, void *representee, void (*update)(void*, void*));
 
 #define KEST_ACTIVE_BUTTON_ARRAY_FLAG_DELETEABLE 0b0001
 #define KEST_ACTIVE_BUTTON_ARRAY_FLAG_MOVEABLE   0b0010

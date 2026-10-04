@@ -45,9 +45,6 @@ KEST_TEST(kest_test_nullify_parameter_widget_basic)
 
     assert(pw.val_label_text[0] == 0);
 
-    assert(pw.rep.representer == &pw);
-    assert(pw.rep.representee == NULL);
-    assert(pw.rep.update == param_widget_rep_update);
 }
 
 
@@ -129,6 +126,7 @@ KEST_TEST(kest_test_nullify_setting_widget_null)
 KEST_TEST(kest_test_nullify_setting_widget_basic)
 {
     kest_setting_widget sw;
+    memset(&sw, 0xa5, sizeof(sw));
 
     int rc = nullify_setting_widget(&sw);
 
@@ -139,10 +137,8 @@ KEST_TEST(kest_test_nullify_setting_widget_basic)
     assert(sw.type == SETTING_WIDGET_DROPDOWN);
     assert(sw.saved_field_text == NULL);
     assert(sw.parent == NULL);
+    assert(sw.container == NULL && sw.label == NULL && sw.pad == NULL);
 
-    assert(sw.rep.representer == &sw);
-    assert(sw.rep.representee == NULL);
-    assert(sw.rep.update == setting_widget_rep_update);
 }
 
 
@@ -172,4 +168,53 @@ KEST_TEST(kest_test_configure_setting_widget_basic)
 
     assert(sw.setting == &setting);
     assert(sw.type == SETTING_WIDGET_DROPDOWN);
+}
+
+KEST_TEST(test_widget_free_cancels_queued_refresh_and_animation)
+{
+    kest_parameter param = {0};
+    kest_parameter_widget *pw = kest_alloc(sizeof(*pw));
+    assert(pw);
+    memset(pw, 0, sizeof(*pw));
+    pw->param = &param;
+    param.pw = pw;
+    pw->timer = lv_timer_create(NULL, 100, pw);
+    assert(pw->timer);
+    assert(kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, pw) == NO_ERROR);
+    free_parameter_widget(pw);
+    assert(param.pw == NULL);
+    assert(lv_async_call_cancel(kest_parameter_widget_refresh_async_wrapper, pw) == LV_RESULT_INVALID);
+    for (lv_timer_t *timer = lv_timer_get_next(NULL); timer; timer = lv_timer_get_next(timer))
+        assert(lv_timer_get_user_data(timer) != pw);
+}
+
+KEST_TEST(test_effect_settings_teardown_releases_backstage_widgets)
+{
+    kest_effect effect;
+    assert(init_effect(&effect) == NO_ERROR);
+    kest_ui_page *page = kest_alloc(sizeof(*page));
+    assert(page && init_effect_settings_page(page) == NO_ERROR);
+    assert(configure_effect_settings_page(page, &effect) == NO_ERROR);
+    effect_settings_page_str *str = page->data_struct;
+    lv_obj_t *backstage = lv_obj_create(NULL);
+    page->screen = lv_obj_create(NULL);
+    str->band_lp_cutoff.container = lv_obj_create(backstage);
+    str->band_hp_cutoff.container = lv_obj_create(backstage);
+    str->band_mode.container = lv_obj_create(page->screen);
+    str->band_lp_cutoff.timer = lv_timer_create(NULL, 100, &str->band_lp_cutoff);
+    assert(kest_ui_async_call(kest_parameter_widget_refresh_async_wrapper, &str->band_lp_cutoff) == NO_ERROR);
+    assert(free_effect_settings_page_ui(page) == NO_ERROR);
+    assert(lv_obj_get_child_count(backstage) == 0);
+    assert(page->screen == NULL && page->ui_created == 0);
+    assert(effect.band_lp_cutoff.pw == NULL && effect.band_hp_cutoff.pw == NULL);
+    assert(str->band_lp_cutoff.timer == NULL);
+    assert(lv_async_call_cancel(kest_parameter_widget_refresh_async_wrapper, &str->band_lp_cutoff) == LV_RESULT_INVALID);
+    assert(free_effect_settings_page_ui(page) == NO_ERROR); // Safe before full release too.
+    assert(effect_settings_page_free_all(page) == NO_ERROR);
+    lv_obj_del(backstage);
+    kest_free(effect.band_mode.options);
+    vSemaphoreDelete(effect.mutex);
+    kest_block_list_destroy(&effect.blocks);
+    kest_driver_list_destroy(&effect.drivers);
+    kest_dsp_resource_ptr_list_destroy(&effect.resources);
 }

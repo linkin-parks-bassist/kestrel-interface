@@ -165,7 +165,7 @@ int kest_scope_entry_add_bound_dependent_parameter(kest_scope_entry *entry, kest
 	return kest_dependent_list_append(&entry->dependents, kest_dependent_bound_parameter(param));
 }
 
-int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg, int format)
+int kest_scope_entry_add_dependent_block_reg(kest_scope_entry *entry, int block, int reg, kest_numeric_format format)
 {
 	if (!entry)
 		return ERR_NULL_PTR;
@@ -213,7 +213,7 @@ int kest_scope_entry_add_dependent(kest_scope_entry *entry, kest_dependent dep)
 		case KEST_DEPENDENT_SCOPE_ENTRY:
 			return kest_scope_entry_add_dependent_scope_entry(entry, dep.data.entry_key);
 		case KEST_DEPENDENT_BLOCK_REG:
-			return kest_scope_entry_add_dependent_block_reg(entry, dep.data.block_reg.block, dep.data.block_reg.reg, dep.format);
+			return kest_scope_entry_add_dependent_block_reg(entry, dep.data.block_reg.block, dep.data.block_reg.reg, dep.encoding);
 		case KEST_DEPENDENT_FILTER_COEF:
 			return kest_scope_entry_add_dependent_filter_coef(entry, dep.data.filter_coef.filter, dep.data.filter_coef.coef, dep.format);
 		case KEST_DEPENDENT_BOUND_PARAMETER:
@@ -811,7 +811,7 @@ int kest_scope_detect_dependencies(kest_scope *scope)
 	return NO_ERROR;
 }
 
-int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *expr, int block, int reg, int format)
+int kest_scope_add_block_reg_dependencies(kest_scope *scope, kest_expression *expr, int block, int reg, kest_numeric_format format)
 {
 	KEST_PRINTF("Adding block %d register %d dependencies to scope %p...\n", block, reg, scope);
 	if (!scope || !expr)
@@ -1070,7 +1070,7 @@ int kest_scope_entry_eval_rec(kest_scope_entry *entry, kest_scope *scope, float 
 			if (!mem_slot)
 				return ERR_BAD_ARGS;
 			
-			*dest = kest_fpga_sample_to_float(mem_slot->value);
+			*dest = kest_fpga_sample_to_float(atomic_load_explicit(&mem_slot->value, memory_order_relaxed));
 			break;
 		
 		case KEST_SCOPE_ENTRY_TYPE_LFO:

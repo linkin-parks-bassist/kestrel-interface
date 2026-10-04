@@ -1,13 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:31+10:00"
-scope: "local"
-source: "components/ui/kest_parameter_widget.h"
+status: green
+revised_at: "2026-10-04T05:18:37+11:00"
 ---
-Status: Green
 
-`components/ui/kest_parameter_widget.h` declares API names: `kest_parameter_widget_refresh`, `kest_parameter_widget_refresh_async_wrapper`, `kest_parameter_widget_align_nominal_value`, `kest_parameter_widget_refresh_async`; named types: `kest_parameter_widget`; configuration symbols: `KEST_INT_PARAMETER_WIDGET_H_`, `KEST_PARAM_WIDGET_MAX_REFRESH_HZ`, `KEST_PARAM_WIDGET_MIN_REFRESH_MS`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/ui/kest_parameter_widget.h declares parameter/setting widget types, configuration, creation, refresh and value editing APIs, including kest_parameter_widget_refresh_async and its wrapper. KEST_PARAM_WIDGET_MAX_REFRESH_HZ and KEST_PARAM_WIDGET_MIN_REFRESH_MS govern refresh timing.
 
-Source: components/ui/kest_parameter_widget.h
+gut_parameter_widget and gut_setting_widget release UI-owned contents while preserving embedded widget storage; free_parameter_widget and free_setting_widget additionally release heap widget storage. The change/value owner describes cancellation, container ownership and parameter backlinks.
 
-Source: components/ui/kest_parameter_widget.h
+Source: components/ui/kest_parameter_widget.h.

@@ -1,0 +1,14 @@
+v1.0
+
+.INFO
+name: "Readback Test"
+
+.PARAMETERS
+level: (name: "Level", default: 0.25, min: -0.5, max: 0.5)
+
+.RESOURCES
+probe: (type: "mem")
+
+.CODE
+mov [level] c1
+mem_write c1 $probe

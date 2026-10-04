@@ -1,6 +1,8 @@
 #ifndef KEST_INT_FPGA_H_
 #define KEST_INT_FPGA_H_
 
+#include "kest_numeric_format.h"
+
 //#define PRINT_SPI_BYTES
 
 typedef struct {
@@ -67,6 +69,7 @@ int kest_fpga_get_status_flags(kest_fpga_status_flags *flags);
 int kest_fpga_status_flags_print(kest_fpga_status_flags *flags);
 int kest_fpga_status_flags_sprint(kest_string *str, kest_fpga_status_flags *flags);
 
+int64_t kest_fpga_read32(uint32_t address, kest_fpga_status_flags *flags);
 int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_status_flags *flags);
 
 int kest_fpga_get_n_blocks(kest_fpga_status_flags *flags);
@@ -90,5 +93,7 @@ uint64_t kest_fpga_get_sdram_write_count(kest_fpga_status_flags *flags);
 uint32_t kest_fpga_get_stuck_flags(kest_fpga_status_flags *flags);
 
 int kest_fpga_read_command_log(uint8_t *buf);
+
+int kest_fpga_batch_append_numeric(kest_fpga_transfer_batch *batch, float value, kest_numeric_format format);
 
 #endif

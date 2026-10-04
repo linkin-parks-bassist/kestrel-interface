@@ -1,0 +1,7 @@
+v1.0
+
+.INFO
+name: "Three Expressions"
+
+.CODE
+madd [0.25] [0.5] [0.125] c1

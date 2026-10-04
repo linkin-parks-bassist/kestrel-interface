@@ -11,7 +11,6 @@
 #define KEST_UPDATE_NONE 		0
 #define KEST_UPDATE_PARAM		1
 #define KEST_UPDATE_PRESET		2
-#define KEST_UPDATE_MEM			3
 #define KEST_UPDATE_SCOPE_ENTRY	4
 
 typedef struct {
@@ -43,7 +42,10 @@ typedef struct {
 	int type;
 	int addr_1;
 	int addr_2;
-	int format;
+	union {
+		int format; /* filter coefficients */
+		kest_numeric_format encoding; /* expression registers */
+	};
 	uint32_t instr;
 	kest_scope *scope;
 	kest_expression *expr;
@@ -62,17 +64,8 @@ typedef struct {
 } kest_fpga_alloc;
 
 
-typedef struct {
-	int addr;
-	uint64_t period_ms;
-	uint64_t last_t;
-	
-	kest_fpga_read_spec read;
-} kest_fpga_mem_read;
-
 DECLARE_LIST(kest_fpga_write);
 DECLARE_LIST(kest_fpga_alloc);
-DECLARE_LIST(kest_fpga_mem_read);
 
 typedef struct {
 	int state;
@@ -90,13 +83,16 @@ typedef struct {
 	kest_fpga_command_list cmds;
 	kest_fpga_transfer_batch batch;
 	
-	kest_fpga_mem_read_list reads;
-	
 	kest_dsp_resource_ptr_list resources;
 	
-	int tick_ctr;
+	kest_effect *retiring_effects;
+	uint32_t tick_ctr;
 	
 } kest_updater_state;
+
+void kest_updater_retire_effect(kest_effect *effect);
+void kest_updater_collect_retired_effects(kest_updater_state *state);
+void kest_updater_reap_effects(kest_updater_state *state);
 
 int kest_update_task_start();
 void kest_update_task(void *arg);
@@ -105,6 +101,11 @@ int kest_update_queue(kest_update update);
 
 int kest_updater_notify_param(kest_parameter *param);
 int kest_updater_notify_preset(kest_preset *preset);
+
+int kest_updater_state_init(kest_updater_state *state);
+void kest_updater_state_destroy(kest_updater_state *state);
+int kest_updater_clear(kest_updater_state *state);
+
 int kest_updater_notify_scope_entry(kest_effect *effect, const char *key);
 
 int kest_updater_drain_lists(kest_updater_state *state);

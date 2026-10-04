@@ -26,10 +26,6 @@ typedef struct kest_preset
 	int pending;
 	int unsaved_changes;
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll *representations;
-	kest_representation file_rep;
-	#endif
 	
 	#ifdef KEST_ENABLE_UI
 	struct kest_ui_page *view_page;
@@ -70,14 +66,6 @@ int kest_preset_clear_pending(kest_preset *preset);
 
 struct kest_menu_item;
 
-int kest_preset_add_representation(kest_preset *preset, kest_representation *rep);
-int kest_preset_remove_representation(kest_preset *preset, kest_representation *rep);
-
-int kest_preset_add_name_representation(kest_preset *preset, kest_representation *rep);
-int kest_preset_remove_name_representation(kest_preset *preset, kest_representation *rep);
-
-int kest_preset_add_id_representation(kest_preset *preset, kest_representation *rep);
-int kest_preset_remove_id_representation(kest_preset *preset, kest_representation *rep);
 
 #ifdef KEST_ENABLE_GLOBAL_CONTEXT
 kest_preset *create_new_preset();
@@ -85,9 +73,6 @@ kest_preset *create_new_preset();
 
 int kest_preset_save(kest_preset *preset);
 
-int kest_preset_update_representations		(kest_preset *preset);
-int kest_preset_update_name_representations	(kest_preset *preset);
-int kest_preset_update_id_representations		(kest_preset *preset);
 
 int kest_preset_create_fpga_transfer_batch(kest_preset *preset, kest_fpga_transfer_batch *batch);
 int kest_preset_if_active_update_fpga(kest_preset *preset);
@@ -96,12 +81,9 @@ int kest_preset_program_fpga(kest_preset *preset);
 
 int kest_preset_update_positions(kest_preset *preset);
 
-void kest_preset_file_rep_update(void *representer, void *representee);
 
 kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id);
 
-int kest_preset_activate_dma(kest_preset *preset);
-int kest_preset_deactivate_dma(kest_preset *preset);
 
 int kest_preset_activate_lfos(kest_preset *preset);
 int kest_preset_deactivate_lfos(kest_preset *preset);

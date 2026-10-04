@@ -11,21 +11,6 @@ IMPLEMENT_LINKED_PTR_LIST(kest_setting_widget);
 
 int parameter_widget_update_value(kest_parameter_widget *pw);
 
-void param_widget_rep_update(void *representer, void *representee)
-{
-	KEST_PRINTF("param_widget_rep_update\n");
-	kest_parameter_widget *pw = representer;
-	kest_parameter *param = representee;
-	
-	if (!pw || !param)
-		return;
-	
-	parameter_widget_update_value(pw);
-	parameter_widget_update_value_label(pw);
-	
-	KEST_PRINTF("param_widget_rep_update done\n");
-	return;
-}
 
 int nullify_parameter_widget(kest_parameter_widget *pw)
 {
@@ -44,9 +29,6 @@ int nullify_parameter_widget(kest_parameter_widget *pw)
 	
 	pw->val_label_text[0] = 0;
 	
-	pw->rep.representer = pw;
-	pw->rep.representee = NULL;
-	pw->rep.update = param_widget_rep_update;
 	
 	pw->nominal_value = 0.0f;
 	pw->pressed = 0;
@@ -202,11 +184,6 @@ int configure_parameter_widget(kest_parameter_widget *pw, kest_parameter *param,
 	
 	KEST_PRINTF("param->pw = %p\n", param->pw);
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	pw->rep.representee = param;
-	param->widget_rep.representer = pw;
-	kest_representation_ptr_list_append(&param->reps, &pw->rep);
-	#endif
 	
 	pw->driven = param->driver_index != KEST_PARAMETER_UNDRIVEN;
 	
@@ -493,6 +470,7 @@ int parameter_widget_create_ui_ncbsf(kest_parameter_widget *pw, lv_obj_t *parent
 	KEST_PRINTF("parameter_widget_create_ui_no_callback(pw = %p, parent = %p)\n", pw, parent);
 	if (!pw || !pw->param || !parent)
 		return ERR_NULL_PTR;
+	pw->param->pw = pw;
 	
 	pw->container = lv_obj_create(parent);
 	KEST_PRINTF("pw->container = %p\n", pw->container);
@@ -612,13 +590,21 @@ int parameter_widget_create_ui_ncbsf(kest_parameter_widget *pw, lv_obj_t *parent
 	return NO_ERROR;
 }
 
+void gut_parameter_widget(kest_parameter_widget *pw)
+{
+	if (!pw) return;
+	lv_async_call_cancel(kest_parameter_widget_refresh_async_wrapper, pw);
+	if (pw->timer) lv_timer_del(pw->timer);
+	pw->timer = NULL;
+	if (pw->param && pw->param->pw == pw) pw->param->pw = NULL;
+	if (pw->container) lv_obj_del(pw->container);
+	pw->container = pw->obj = pw->val_label = pw->name_label = NULL;
+}
+
 void free_parameter_widget(kest_parameter_widget *pw)
 {
-	if (!pw)
-		return;
-	
-	// Currently the kest_parameter_widget struct contains nothing that
-	// it owns itself. This may change !
+	if (!pw) return;
+	gut_parameter_widget(pw);
 	kest_free(pw);
 }
 
@@ -647,22 +633,13 @@ int kest_parameter_widget_align_nominal_value(kest_parameter_widget *pw)
 
 int setting_widget_update_value(kest_setting_widget *sw);
 
-void setting_widget_rep_update(void *representer, void *representee)
-{
-	kest_setting_widget *sw = representer;
-	kest_setting *setting = representee;
-	
-	if (!sw || !setting)
-		return;
-	
-	setting_widget_update_value(sw);
-}
 
 int nullify_setting_widget(kest_setting_widget *sw)
 {
 	if (!sw)
 		return ERR_NULL_PTR;
 	
+	memset(sw, 0, sizeof(*sw));
 	sw->setting = NULL;
 	
 	sw->obj = NULL;
@@ -672,9 +649,6 @@ int nullify_setting_widget(kest_setting_widget *sw)
 	
 	sw->parent = NULL;
 	
-	sw->rep.representer = sw;
-	sw->rep.representee = NULL;
-	sw->rep.update = setting_widget_rep_update;
 	
 	return NO_ERROR;
 }
@@ -777,11 +751,8 @@ int configure_setting_widget(kest_setting_widget *sw, kest_setting *setting, kes
 	sw->parent  = parent;
 	
 	sw->type = sw->setting->widget_type;
-	
-	//kest_representation_pll_safe_append(&setting->reps, &sw->rep);
-	
-	//sw->rep.representee = setting;
-	
+
+
 	return NO_ERROR;
 }
 
@@ -1140,12 +1111,18 @@ int setting_widget_create_ui_no_callback(kest_setting_widget *sw, lv_obj_t *pare
 	return NO_ERROR;
 }
 
+void gut_setting_widget(kest_setting_widget *sw)
+{
+	if (!sw) return;
+	kest_free(sw->saved_field_text);
+	sw->saved_field_text = NULL;
+	if (sw->container) lv_obj_del(sw->container);
+	sw->container = sw->obj = sw->label = sw->pad = NULL;
+}
+
 void free_setting_widget(kest_setting_widget *sw)
 {
-	if (!sw)
-		return;
-	
-	// Currently the kest_setting_widget struct contains nothing that
-	// it owns itself. This may change !
+	if (!sw) return;
+	gut_setting_widget(sw);
 	kest_free(sw);
 }

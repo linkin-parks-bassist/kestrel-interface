@@ -1,13 +1,6 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:28+10:00"
-scope: "local"
-source: "components/fpga/kest_reg_format.h"
+status: green
+revised_at: "2026-10-04T08:59:14+11:00"
 ---
-Status: Green
 
-`components/fpga/kest_reg_format.h` declares API names: `kest_compute_register_formats`; configuration symbols: `KEST_REG_FORMAT_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
-
-Source: components/fpga/kest_reg_format.h
-
-Source: components/fpga/kest_reg_format.h
+components/fpga/kest_reg_format.h declares kest_resolve_block_formats for one block and kest_compute_register_formats for a linked block list, with KEST_REG_FORMAT_H_ as its include guard. Both return error codes. The fixed-point-format owner describes joint tuple selection and persisted encodings; consult kest_reg_format.c for behavior.

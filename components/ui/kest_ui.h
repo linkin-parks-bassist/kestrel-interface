@@ -44,7 +44,6 @@ DECLARE_LINKED_PTR_LIST(lv_obj_t);
 #define TOP_PANEL_FLAG_RW_TITLE 0b1
 
 
-#define ASYNC_NEEDS_LOCK 0
 
 typedef struct
 {
@@ -220,7 +219,8 @@ extern lv_obj_t *keyboard;
 
 int kest_ui_lock();
 void kest_ui_unlock();
-void kest_ui_async_call(void (*f)(void*), void *arg);
+int kest_ui_async_call(void (*f)(void*), void *arg);
+void kest_ui_page_cancel_async(kest_ui_page *page);
 void kest_ui_async_call_void(void (*f)(void));
 
 #endif

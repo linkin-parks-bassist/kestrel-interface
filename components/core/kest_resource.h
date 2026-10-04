@@ -1,6 +1,8 @@
 #ifndef KEST_RESOURCES_H_
 #define KEST_RESOURCES_H_
 
+#include <stdatomic.h>
+
 #define KEST_DSP_RESOURCE_NOTHING	0
 #define KEST_DSP_RESOURCE_LUT		1
 #define KEST_DSP_RESOURCE_MEM		2
@@ -28,6 +30,10 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src);
 kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src);
 kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *src, struct kest_effect *effect);
 
+void kest_dsp_resource_mark_for_deletion(kest_dsp_resource *res);
+int kest_dsp_resource_delete_requested(kest_dsp_resource *res);
+void kest_dsp_resource_free(kest_dsp_resource *res);
+
 int string_to_resource_type(const char *type_str);
 char *kest_dsp_resource_type_to_string(int type);
 
@@ -38,6 +44,7 @@ DECLARE_LIST(kest_dsp_resource);
 struct kest_expression_ptr_list;
 
 typedef struct kest_filter {
+	atomic_int delete_requested;
 	int feed_forward;
 	int feed_back;
 	int format;
@@ -56,17 +63,20 @@ kest_filter *kest_filter_make_clone(kest_filter *src);
 int kest_resources_assign_handles(kest_dsp_resource_pll *list);
 
 typedef struct kest_mem_slot {
+	atomic_int delete_requested;
 	int addr;
 	int effective_addr;
-	kest_fpga_sample_t value;
+	atomic_int value;
+	atomic_int updated;
 	
 	int read_enable;
-	kest_fpga_periodic_read read;
+	int read_period_ms; // Best-effort cadence, rounded up to control-loop ticks.
 	
 	struct kest_effect *effect;
 } kest_mem_slot;
 
 kest_mem_slot *kest_mem_slot_create(kest_allocator *alloc);
+void kest_mem_slot_read_cb(void *data, int64_t result);
 
 int kest_mem_slot_set_addr(kest_mem_slot *mem, int addr);
 int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr);
@@ -76,6 +86,7 @@ int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr);
 #define KEST_DELAY_UNITS_SAMPLES 	2
 
 typedef struct kest_delay {
+	atomic_int delete_requested;
 	int units;
 	
 	struct kest_expression *size;
@@ -91,6 +102,7 @@ kest_delay *kest_delay_create(kest_allocator *alloc);
 #define KEST_LFO_SCALE_LOG		1
 
 typedef struct kest_lfo {
+	atomic_int delete_requested;
 	int mode;
 	int scale;
 	

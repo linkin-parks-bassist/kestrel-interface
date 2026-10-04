@@ -1,13 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:32+10:00"
-scope: "local"
-source: "components/ui/kest_ui.h"
+status: green
+revised_at: "2026-10-04T05:19:49+11:00"
 ---
-Status: Green
 
-`components/ui/kest_ui.h` declares API names: `kest_create_ui`, `kest_create_ui_async`, `kest_ui_page_enter_forwards_async`, `kest_ui_page_enter_backwards_async`, `kest_ui_page_return_to_parent`, `kest_ui_page_set_background_default`, `kest_ui_page_add_child`, `kest_init_global_pages`, `kest_ui_lock`, `kest_ui_unlock`, `kest_ui_async_call`, `kest_ui_async_call_void`; named types: `kest_ui_page`; configuration symbols: `KEST_ESP_UI_H_`, `KEST_UI_PAGE_GENERIC`, `KEST_UI_PAGE_MAIN_MENU`, `KEST_UI_PAGE_SEQ_LIST`, `KEST_UI_PAGE_MSV`, `KEST_UI_PAGE_SEQ_VIEW`, `KEST_UI_PAGE_PRESET_VIEW`, `KEST_UI_PAGE_EFFECT_VIEW`, `KEST_UI_PAGE_EFFECT_SETTINGS`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/ui/kest_ui.h declares page creation/configuration/navigation, panels, global pages, UI locking and asynchronous calls. kest_ui_async_call(callback, data) always takes the existing recursive UI lock around LVGL enqueue, then releases it. Its void-function variant delegates to the same helper. It returns NO_ERROR only when LVGL accepts the callback; a UI-lock refusal or allocation failure returns an error. Existing callers can ignore that result; retirement uses it to retain an owner until cleanup is actually scheduled. kest_ui_async_call_void retains its existing void interface.
 
-Source: components/ui/kest_ui.h
+kest_ui_page_cancel_async(page) cancels queued direct/forward/backward page-entry callbacks on the UI task before destroying an effect page. It does not establish general page ownership or cancel unrelated callbacks.
 
-Source: components/ui/kest_ui.h
+Sources: components/ui/kest_ui.[ch]; how/does/the/ui/page/lifecycle/work.md owns page behavior.

@@ -109,22 +109,65 @@ Additionally, there are hooks for the UI framework in the .eff parser. For insta
 
 ### ESP32
 
-The display subsystem uses the Waveshare board support package for ESP32-P4-nano (also works for ESP32-P4-pico) and the Waveshare touch-LCD-5A. Aside from the display driver, LVGL port, pin assignment, and driver for FPGA control, the rest of the system is largely platform independent. Additionally, 
+The current carrier firmware uses the Waveshare ESP32-P4-nano board support package, touch-LCD-5A and SGTL5000 audio codec. Its verified build baseline is **ESP-IDF v5.3.3**. The manifest pins the SDK and direct components; retain `dependencies.lock` to preserve transitive versions. The integrated Rev-B board requires a separate SDK, silicon-revision and driver migration.
 
-To build for the ESP32-P4, simply run, in the repo root directory
-
-```bash
-# idf.py build
-```
-and, to flash,
+Install the exact SDK release and its ESP32-P4 tools:
 
 ```bash
-# idf.py flash
+git clone --branch v5.3.3 --depth 1 --shallow-submodules --recursive https://github.com/espressif/esp-idf.git /path/to/esp-idf-v5.3.3
+cd /path/to/esp-idf-v5.3.3
+./install.sh esp32p4
 ```
+
+Use Bash, source that checkout's environment, then build from this repository's root. CMake and Ninja must be available; if they are absent, install `cmake==3.30.9` and `ninja==1.11.1.4` into the SDK Python environment after exporting it.
+
+```bash
+source /path/to/esp-idf-v5.3.3/export.sh
+idf.py --version  # ESP-IDF v5.3.3
+cd /path/to/kestrel_interface
+idf.py build
+```
+
+The application image is `build/kestrel-interface.bin`; a successful build does not verify device operation. To flash a connected carrier:
+
+```bash
+idf.py -p PORT flash
+```
+
+The firmware starts a UART0 diagnostic console at 115200 baud. Keep one connection
+open during a test session; connection-state changes can reboot the carrier:
+
+```bash
+python3 tools/uart_console.py --port PORT --log /path/to/new-capture.log
+```
+
+Use `help`, `info`, `heap`, `uptime` and `ui-tree` for inspection. `tap X Y` and
+`touch down X Y`, `touch move X Y`, `touch up` feed a separate LVGL pointer through
+normal UI input handling. `fpga-read ADDRESS` queues an asynchronous memory read.
+`fpga-read32 ADDRESS` reads a word-aligned 24-bit byte address and prints four bytes
+as a hexadecimal word. With the matching FPGA image, address 0 is `0x4b455354`
+("KEST") and address 4 is the build mask: filter/polynomial/SVF in bits 0/1/2.
+`fpga-status` reads and decodes the status byte through the SPI task.
+`dsp` lists the active preset's effects and DSP resource addresses.
+`eff-file list`, `eff-file read NAME.eff`, `eff-file move OLD.eff NEW.eff` and
+`eff-file delete NAME.eff` operate in the SD effect directory. Upload with
+`eff-file write NAME.eff OFFSET HEX`: start at offset 0, then append consecutive
+chunks (up to 128 decoded bytes each, within the 256-character command limit).
+Wait for each command's result before sending the next chunk; rapid batches can
+overrun the UART input buffer during SD writes. Verify the published bytes with
+`eff-file read`.
+Use 8.3 filenames (up to eight characters before `.eff`); extension matching is
+case-insensitive. Writes go to `tmp/NAME.tmp` inside the effect directory; startup
+skips that subdirectory. `eff-file publish NAME.eff` renames the completed
+file into place. FAT refuses an existing destination; delete an old file explicitly
+before replacing it. Reads return hex chunks. Commands require local SD ownership
+and reject paths outside that directory. Existing loaded effects are unchanged;
+live discovery/refresh remains planned. The host utility requires pyserial.
 
 ### Desktop 
 
-The repo includes an interface demo which will run on any POSIX system. To build this, run GNU Make
+The repo includes a POSIX desktop interface demo. Install SDL2 development tooling
+(`libsdl2-dev` and `pkg-config` on Ubuntu), then build with GNU Make:
 
 ```bash
 # make
@@ -135,11 +178,44 @@ in the repo root directory. To run it, run
 ```bash
 # ./kest
 ```
+
+For repeatable UI inspection using a temporary copy of `sdcard`:
+
+```bash
+python3 tools/desktop_ui.py --headless --script tools/ui_scripts/danger_button.txt --output /tmp/kestrel-ui-inspection
+```
+
+Choose a fresh output directory. The runner writes `control.log` and BMP screenshots,
+plus PNG copies when Pillow is available. Omit `--headless` for a visible window.
+Scripts accept `wait MS`, `click X Y`, `tree`, `screenshot NAME.bmp` and `quit`;
+the current desktop coordinates are 600×1024. `tree` reports visible LVGL objects,
+labels and bounds so subsequent clicks can be chosen from the actual UI.
+The sample opens the erase confirmation without confirming it. This exercises UI
+code with simulated FPGA communications; it does not simulate DSP audio.
+
+Run the C suite with `make tests && ./kest_tests`.
+
 There is an additional makefile target to compile the non-GUI/hardware components (preset library, .eff assembler) as a shared object library. To build the library,
 
 ```bash
 # make lib
 ```
+
+To compile a single effect into a binary SPI programming body without installing
+the library:
+
+```bash
+make compile-eff
+bin/lib/compile_eff tests/fixtures/readback.eff /tmp/readback.bin
+# Optional parameter overrides use the descriptor's internal names:
+bin/lib/compile_eff ../effects/SVFHP.EFF /tmp/highpass.bin cutoff=2000 Q=0.7
+```
+
+The executable finds `libkest.so` beside itself. It uses the production parser,
+effect constructor and pipeline encoder. The output includes the tail-enable
+command but excludes the begin/end-program framing supplied by the transport.
+Compilation alone does not verify DSP execution or audio results.
+
 and to install the libkest.so to /usr/lib/ and the headers to /usr/include/libkest, run 
 
 ```bash

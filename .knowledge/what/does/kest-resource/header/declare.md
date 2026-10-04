@@ -1,13 +1,12 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:25+10:00"
-scope: "local"
-source: "components/core/kest_resource.h"
+status: green
+revised_at: "2026-10-04T04:52:14+11:00"
 ---
-Status: Green
 
-`components/core/kest_resource.h` declares API names: `kest_init_dsp_resource`, `kest_dsp_resource_clone`, `kest_filter_init`, `kest_filter_clone`, `kest_resources_assign_handles`, `kest_mem_slot_set_addr`, `kest_mem_slot_set_effective_addr`, `kest_lfo_init`, `kest_lfo_activate_sync`, `kest_lfo_deactivate_sync`, `kest_lfo_activate_async`, `kest_lfo_deactivate_async`, `kest_lfo_evaluate`, `kest_lfo_evaluate_rec`, `kest_resource_report_integrate`; named types: `kest_dsp_resource`, `kest_filter`, `kest_mem_slot`, `kest_delay`, `kest_lfo`; configuration symbols: `KEST_RESOURCES_H_`, `KEST_DSP_RESOURCE_NOTHING`, `KEST_DSP_RESOURCE_LUT`, `KEST_DSP_RESOURCE_MEM`, `KEST_DSP_RESOURCE_DELAY`, `KEST_DSP_RESOURCE_FILTER`, `KEST_DSP_RESOURCE_LFO`, `KEST_DELAY_UNITS_MS`, `KEST_DELAY_UNITS_SECONDS`, `KEST_DELAY_UNITS_SAMPLES`, `KEST_LFO_MODE_CENTER_AMP`, `KEST_LFO_MODE_MIN_MAX`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/core/kest_resource.h declares resource initialization/cloning/type mapping/handle assignment, deletion marking/query and instance-clone release, filter creation/cloning, memory-slot creation/address setters/completion callback, delay types, LFO initialization/activation/evaluation and resource reporting. Resource types are LUT, MEM, DELAY, FILTER and LFO; delay units are milliseconds, seconds and samples.
 
-Source: components/core/kest_resource.h
+MEM, LFO, DELAY and FILTER payloads contain atomic delete_requested markers, explicitly initialized clear by constructors and clones. Marking does not free anything; the existing control loop owns retirement. kest_dsp_resource_free releases an instance clone's payload and wrapper, including a filter's coefficient pointer container, while preserving borrowed descriptor names/expressions. It must run only after task borrowers have finished; how/does/a/preset/pipeline/manage/effects.md owns that ordering.
 
-Source: components/core/kest_resource.h
+kest_mem_slot stores addresses, atomic integer sample and arrival flag, read_enable/read_period_ms and an effect pointer. kest_mem_slot_read_cb publishes a signed sample and marks arrival; a negative transport error or deletion marker leaves both untouched. Creation initializes the atomics and defaults read_period_ms to 10. Cloning copies the sample and metadata but starts with no pending arrival or deletion request. LFO clones do not inherit a timer. There is no polling timer, request token or outstanding-read record.
+
+Sources: components/core/kest_resource.[ch].

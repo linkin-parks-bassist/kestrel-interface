@@ -60,17 +60,16 @@ KEST_TEST(kest_test_init_block_defaults)
     assert(block.dest == 0);
 
     /* register values */
-    assert(block.reg_0.format == 0);
+    assert(block.reg_0.format.fractional_bits == KEST_FPGA_DATA_WIDTH - 1);
     assert(block.reg_0.active == 0);
     assert(block.reg_0.expr == NULL);
 
-    assert(block.reg_1.format == 0);
+    assert(block.reg_1.format.fractional_bits == KEST_FPGA_DATA_WIDTH - 1);
     assert(block.reg_1.active == 0);
     assert(block.reg_1.expr == NULL);
 
     /* shift configuration */
     assert(block.shift == 0);
-    assert(block.shift_set == 0);
 
     /* saturation */
     assert(block.saturate_disable == 0);
@@ -107,7 +106,6 @@ KEST_TEST(kest_test_init_block_overwrites_existing_values)
     assert(block.reg_1.active == 0);
 
     assert(block.shift == 0);
-    assert(block.shift_set == 0);
 
     assert(block.res == NULL);
 }

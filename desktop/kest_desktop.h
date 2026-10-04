@@ -26,7 +26,6 @@
 //#define USE_TEENSY
 //#define PRINT_MEMORY_USAGE
 
-#define KEST_ENABLE_REPRESENTATIONS
 #define KEST_ENABLE_GLOBAL_CONTEXT
 #define KEST_ENABLE_SEQUENCES
 
@@ -74,10 +73,8 @@
 #include "kest_fpga_instr.h"
 #include "kest_fpga_io.h"
 #include "kest_fpga_cmd.h"
-#include "kest_fpga_dma.h"
 #include "kest_fpga_position.h"
 #include "kest_fpga_update.h"
-#include "kest_representation.h"
 #include "kest_driver.h"
 #include "kest_dependent.h"
 #include "kest_expr_scope.h"

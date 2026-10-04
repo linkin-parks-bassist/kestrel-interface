@@ -1,6 +1,8 @@
 #ifndef KEST_DEPENDER_H_
 #define KEST_DEPENDER_H_
 
+#include "kest_numeric_format.h"
+
 #define KEST_DEPENDENT_NONE				0
 #define KEST_DEPENDENT_SCOPE_ENTRY 		1
 #define KEST_DEPENDENT_BLOCK_REG		2
@@ -28,7 +30,10 @@ typedef struct {
 		} filter_coef;
 	} data;
 	
-	int format;
+	union {
+		int format;
+		kest_numeric_format encoding;
+	};
 } kest_dependent;
 
 DECLARE_LIST(kest_dependent);
@@ -36,7 +41,7 @@ DECLARE_LIST(kest_dependent);
 kest_dependent kest_dependent_scope_entry(const char *key);
 kest_dependent kest_dependent_bound_parameter(struct kest_parameter *param);
 kest_dependent kest_dependent_driven_parameter(struct kest_parameter *param);
-kest_dependent kest_dependent_block_reg(int block, int reg, int format);
+kest_dependent kest_dependent_block_reg(int block, int reg, kest_numeric_format format);
 kest_dependent kest_dependent_filter_coef(int block, int reg, int format);
 
 int kest_string_append_dependent(kest_string *str, kest_dependent dep);

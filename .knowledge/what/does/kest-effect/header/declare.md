@@ -1,13 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:22+10:00"
-scope: "local"
-source: "components/core/kest_effect.h"
+status: green
+revised_at: "2026-10-04T05:03:02+11:00"
 ---
-Status: Green
 
-`components/core/kest_effect.h` declares API names: `kest_effect_update_fpga`, `kest_fpga_transfer_batch_append_effect`, `kest_effect_is_updated`, `kest_effect_create_scope`, `kest_effect_set_parameter`, `kest_effect_set_setting`, `kest_effect_update_reps`, `kest_effect_preset_rep_update`, `kest_effect_page_rep_update`, `kest_effect_activate_dma`, `kest_effect_deactivate_dma`, `kest_effect_activate_dma_async`, `kest_effect_deactivate_dma_async`, `kest_effect_activate_lfos`, `kest_effect_deactivate_lfos`, `kest_effect_activate_lfos_async`, `kest_effect_deactivate_lfos_async`, `kest_effect_enable`, `kest_effect_disable`, `kest_effect_init_view_page`, `kest_effect_handle_updates`, `kest_effect_handle_updates_inc_ui`, `kest_effect_update_sync`, `kest_effect_update_sync_no_pw`, `kest_effect_update_pws`, `kest_effect_clear_updates`, `kest_effect_update_position`; named types: `kest_effect`; configuration symbols: `KEST_INT_EFFECT_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/core/kest_effect.h declares instance initialization/cloning, parameter/settings access, FPGA compilation/updates, scope creation, LFO activation, enable/disable, view initialization and update handlers. The instance stores resources, blocks/drivers, scope, parameters/settings, an atomic alive flag and intrusive retirement/SPI-completion fields.
 
-Source: components/core/kest_effect.h
+free_effect marks an instance and its resource payloads for control-loop retirement. kest_effect_free_retired(void *) is the final cleanup callback, scheduled on the UI task when enabled after control/SPI borrowers have finished. It is not a general immediate-free API. how/does/a/preset/pipeline/manage/effects.md owns lifetime and release details.
 
-Source: components/core/kest_effect.h
+Source: components/core/kest_effect.[ch].

@@ -1,11 +1,10 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:07+10:00"
-scope: "local"
-source: "tests/ inventory; Makefile"
+status: green
+revised_at: "2026-10-04T09:34:51+11:00"
 ---
-Status: Green
 
-tests/core contains C tests for arena, dictionary, pool, block, string and list; tests/ui contains a parameter-widget test. The Makefile has a tests target building kest_tests.
+tests/core contains arena, dictionary, pool, block, string/list, numeric encoding/policy, updater readback/retirement, resource-clone failure, preset-save null and preset/state persistence coverage. tests/ui covers parameter widgets. tests/parser/kest_readback_effect_test.c checks the readback and SVF fixtures, explicit shift syntax and rejection of three expression operands for two registers; tests/fixtures contains their .eff inputs.
 
-Source: tests/ inventory; Makefile
+From the Interface directory run make tests and ./kest_tests. The current suite passes 152 tests. Test objects depend on tests/kest_test.h, main/kest_int.h and application headers, so ordinary make tests rebuilds them after production-header changes; forced rebuilds are no longer required for that case.
+
+Sources: tests inventory, Makefile test rule and executed suite. Detailed coverage and limits belong to what/do/interface/unit/tests/cover.md.

@@ -4,6 +4,45 @@
 
 static const char *FNAME = "kest_fixed_point.c";
 
+int kest_numeric_format_bounds(kest_numeric_format format, int width,
+	float *minimum, float *maximum)
+{
+	if (!minimum || !maximum)
+		return ERR_NULL_PTR;
+	if (width < 1 || width > 24 ||
+		format.fractional_bits > width - !format.is_unsigned ||
+		format.overflow > KEST_NUMERIC_REJECT)
+		return ERR_BAD_ARGS;
+
+	int magnitude_bits = width - !format.is_unsigned;
+	float scale = ldexpf(1.0f, format.fractional_bits);
+	*minimum = format.is_unsigned ? 0.0f : -ldexpf(1.0f, magnitude_bits) / scale;
+	*maximum = (ldexpf(1.0f, magnitude_bits) - 1.0f) / scale;
+	return NO_ERROR;
+}
+
+int kest_encode_numeric(float value, kest_numeric_format format, int width,
+	uint32_t *word)
+{
+	if (!word)
+		return ERR_NULL_PTR;
+	float minimum, maximum;
+	int result = kest_numeric_format_bounds(format, width, &minimum, &maximum);
+	if (result != NO_ERROR)
+		return result;
+	if (isnan(value))
+		return ERR_VALUE_OUT_OF_BOUNDS;
+	if (value < minimum || value > maximum)
+	{
+		if (format.overflow == KEST_NUMERIC_REJECT)
+			return ERR_VALUE_OUT_OF_BOUNDS;
+		value = fminf(maximum, fmaxf(minimum, value));
+	}
+	int64_t encoded = llrintf(ldexpf(value, format.fractional_bits));
+	*word = (uint32_t)encoded & ((UINT32_C(1) << width) - 1);
+	return NO_ERROR;
+}
+
 int32_t float_to_q_nminus1_filter_width(float x, int shift)
 {
 	if (shift < 0 || shift > KEST_FPGA_FILTER_WIDTH - 1) return 0;

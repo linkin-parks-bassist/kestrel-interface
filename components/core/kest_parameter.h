@@ -66,12 +66,6 @@ typedef struct kest_parameter
 	struct kest_parameter_widget *pw;
 	#endif
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation widget_rep;
-	kest_representation effect_rep;
-	
-	kest_representation_ptr_list reps;
-	#endif
 } kest_parameter;
 
 float kest_parameter_evaluate(kest_parameter *param);
@@ -133,10 +127,6 @@ typedef struct kest_setting
 	
 	int group;
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_ptr_list reps;
-	kest_representation effect_rep;
-	#endif
 } kest_setting;
 
 DECLARE_LINKED_PTR_LIST(kest_parameter);
@@ -157,7 +147,6 @@ int init_parameter_wni(kest_parameter *param, const char *name, const char *name
 int kest_parameters_assign_ids(kest_parameter_pll *list);
 int kest_settings_assign_ids(kest_setting_pll *list);
 
-void kest_parameter_widget_rep_update(void *representer, void *representee);
 
 kest_parameter *new_m_parameter_wni(const char *name, const char *name_internal, float level, float min, float max);
 
@@ -184,8 +173,6 @@ struct kest_interval kest_parameter_get_range(kest_parameter *param);
 struct kest_interval kest_parameter_get_range_rec(kest_parameter *param, int depth);
 #endif
 
-void kest_parameter_effect_rep_update(void *representer, void *representee);
-void kest_setting_effect_rep_update(void *representer, void *representee);
 
 struct kest_scope;
 

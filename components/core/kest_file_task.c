@@ -61,7 +61,7 @@ void kest_file_task(void *)
 
 int kest_init_file_task()
 {
-	xTaskCreate(kest_file_task, "kest_param_update_task", 4096, NULL, 8, NULL);
+	xTaskCreate(kest_file_task, "kest_file_task", 4096, NULL, 8, NULL);
 	return NO_ERROR;
 }
 

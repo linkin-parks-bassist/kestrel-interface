@@ -481,7 +481,9 @@ int kest_parser_compute_formats(kest_eff_parsing_state *ps)
 	if (!ps)
 		return ERR_NULL_PTR;
 	
-	kest_compute_register_formats(ps->blocks, ps->scope);
+	int format_result = kest_compute_register_formats(ps->blocks, ps->scope);
+	if (format_result != NO_ERROR)
+		return format_result;
 	
 	kest_dsp_resource_pll *res = ps->resources;
 	kest_filter *filter;
@@ -605,9 +607,14 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 		return NULL;
 	}
 	
-	kest_parser_compute_formats(&ps);
+	ret_val = kest_parser_compute_formats(&ps);
+	if (ret_val != NO_ERROR)
+	{
+		kest_parser_error_at(&ps, ps.current_token, "No permissible numeric formats: %s", kest_error_code_to_string(ret_val));
+		return NULL;
+	}
 	
-	result = kest_allocator_alloc(&kest_effect_desc_allocator, 1);
+	result = kest_allocator_alloc(&kest_effect_desc_allocator, sizeof(kest_effect_desc));
 	
 	if (result)
 	{

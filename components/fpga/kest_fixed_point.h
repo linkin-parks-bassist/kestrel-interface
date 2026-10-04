@@ -1,6 +1,8 @@
 #ifndef KEST_FIXED_POINT_H_
 #define KEST_FIXED_POINT_H_
 
+#include "kest_numeric_format.h"
+
 // Floating point -> fixed point format conversion
 kest_fpga_sample_t float_to_q_nminus1(float x, int shift);
 int16_t float_to_q15(float x);

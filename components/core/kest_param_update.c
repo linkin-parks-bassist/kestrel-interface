@@ -256,7 +256,6 @@ void kest_param_update_task(void *arg)
 				continue;
 			}
 			
-			//kest_representation_ptr_list_queue_updates_(&update_array[i].p->reps);
 			
 			if (update_array[i].p->value == update_array[i].target)
 			{

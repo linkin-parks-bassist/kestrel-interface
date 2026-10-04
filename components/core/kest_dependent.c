@@ -34,13 +34,13 @@ kest_dependent kest_dependent_driven_parameter(kest_parameter *param)
 	return dep;
 }
 
-kest_dependent kest_dependent_block_reg(int block, int reg, int format)
+kest_dependent kest_dependent_block_reg(int block, int reg, kest_numeric_format format)
 {
 	kest_dependent dep = {0};
 	dep.type = KEST_DEPENDENT_BLOCK_REG;
 	dep.data.block_reg.block = block;
 	dep.data.block_reg.reg = reg;
-	dep.format = format;
+	dep.encoding = format;
 	return dep;
 }
 

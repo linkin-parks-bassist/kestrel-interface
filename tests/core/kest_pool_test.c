@@ -308,14 +308,39 @@ KEST_TEST(test_pool_allocator_alloc_basic)
     pool_dummy_pool_reserve(&pool, 1);
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
 
     assert(x != NULL);
     assert(x == &pool.entries[0]);
     assert(pool.free_count == 0);
+
+    /* The same production constructor must work with either strategy. */
+    kest_allocator saved = kest_parameter_allocator;
+    kest_parameter_pool parameters;
+    assert(kest_parameter_pool_init(&parameters) == NO_ERROR);
+    assert(kest_parameter_pool_reserve(&parameters, 1) == NO_ERROR);
+    assert(kest_parameter_pool_init_allocator(&parameters, &kest_parameter_allocator) == NO_ERROR);
+    kest_parameter *param = new_m_parameter_wni("Gain", "gain", 0.5f, 0.0f, 1.0f);
+    assert(param == parameters.entries);
+    assert(param->value == 0.5f && param->max == 1.0f);
+    kest_parameter_free(param);
+    assert(parameters.free_count == 1);
+
+    assert(kest_allocator_init(&kest_parameter_allocator) == NO_ERROR);
+    param = new_m_parameter_wni("Gain", "gain", 0.5f, 0.0f, 1.0f);
+    assert(param != NULL);
+    assert(param->value == 0.5f && param->max == 1.0f);
+    kest_parameter *clone = kest_parameter_make_clone(param);
+    assert(clone != NULL && clone != param);
+    assert(clone->value == param->value && clone->max == param->max);
+    kest_parameter_free(clone);
+    kest_parameter_free(param);
+    kest_parameter_allocator = saved;
+    kest_free(parameters.buffer);
+    kest_free(parameters.entries);
 }
 
-KEST_TEST(test_pool_allocator_alloc_bad_count)
+KEST_TEST(test_pool_allocator_alloc_bad_size)
 {
     pool_dummy_pool pool;
     kest_allocator alloc;
@@ -337,7 +362,7 @@ KEST_TEST(test_pool_allocator_free_basic)
     pool_dummy_pool_reserve(&pool, 1);
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
 
     kest_allocator_free(&alloc, x);
 
@@ -353,12 +378,12 @@ KEST_TEST(test_pool_allocator_realloc_basic_memcpy_fallback)
     pool_dummy_pool_reserve(&pool, 2);
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
     x->value = 777;
     x->init_count = 3;
     x->deinit_count = 4;
 
-    pool_dummy *y = kest_allocator_realloc(&alloc, x, 1);
+    pool_dummy *y = kest_allocator_realloc(&alloc, x, sizeof(pool_dummy));
 
     assert(y != NULL);
     assert(y != x);
@@ -381,12 +406,12 @@ KEST_TEST(test_pool_allocator_realloc_copy_function)
 
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
     x->value = 555;
     x->init_count = 6;
     x->deinit_count = 7;
 
-    pool_dummy *y = kest_allocator_realloc(&alloc, x, 1);
+    pool_dummy *y = kest_allocator_realloc(&alloc, x, sizeof(pool_dummy));
 
     assert(y != NULL);
     assert(y != x);
@@ -397,7 +422,7 @@ KEST_TEST(test_pool_allocator_realloc_copy_function)
     assert(pool.free_count == 1);
 }
 
-KEST_TEST(test_pool_allocator_realloc_bad_count)
+KEST_TEST(test_pool_allocator_realloc_bad_size)
 {
     pool_dummy_pool pool;
     kest_allocator alloc;
@@ -406,7 +431,7 @@ KEST_TEST(test_pool_allocator_realloc_bad_count)
     pool_dummy_pool_reserve(&pool, 2);
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
 
     assert(kest_allocator_realloc(&alloc, x, 2) == NULL);
 }
@@ -420,10 +445,10 @@ KEST_TEST(test_pool_allocator_realloc_full_pool_fails)
     pool_dummy_pool_reserve(&pool, 1);
     pool_dummy_pool_init_allocator(&pool, &alloc);
 
-    pool_dummy *x = kest_allocator_alloc(&alloc, 1);
+    pool_dummy *x = kest_allocator_alloc(&alloc, sizeof(pool_dummy));
     x->value = 42;
 
-    pool_dummy *y = kest_allocator_realloc(&alloc, x, 1);
+    pool_dummy *y = kest_allocator_realloc(&alloc, x, sizeof(pool_dummy));
 
     assert(y == NULL);
     assert(pool.free_count == 0);

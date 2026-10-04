@@ -18,7 +18,6 @@ typedef struct kest_preset_view_str
 	
 	kest_active_button_array *array;
 	
-	kest_representation rep;
 } kest_preset_view_str;
 
 kest_ui_page *create_preset_view_for(kest_preset *preset);
@@ -44,6 +43,5 @@ int preset_view_refresh_save_button(kest_ui_page *page);
 
 int preset_view_set_left_button_mode(kest_ui_page *page, int mode);
 
-void preset_view_rep_update(void *representer, void *representee);
 
 #endif

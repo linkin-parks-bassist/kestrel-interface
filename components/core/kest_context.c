@@ -495,12 +495,6 @@ int set_active_preset(kest_preset *preset)
 	return NO_ERROR;
 }
 
-int activate_active_preset_dma()
-{
-	KEST_PRINTF("activate_active_preset_dma\n");
-	return kest_preset_activate_dma(global_cxt.active_preset);
-}
-
 int activate_active_preset_lfos()
 {
 	KEST_PRINTF("activate_active_preset_lfos\n");
@@ -716,17 +710,6 @@ int kest_cxt_release_mutex(kest_context *cxt)
 	return NO_ERROR;
 }
 
-int kest_cxt_queue_save_state(kest_context *cxt)
-{
-	if (!cxt)
-		return ERR_NULL_PTR;
-	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	queue_representation_list_update(&cxt->state_rep_lstub);
-	#endif
-	
-	return NO_ERROR;
-}
 
 kest_preset *cxt_get_preset_by_fname(kest_context *cxt, const char *fname)
 {

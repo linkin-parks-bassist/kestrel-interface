@@ -207,9 +207,6 @@ void *kest_allocator_alloc(kest_allocator *a, size_t n)
 {
 	if (a)
 	{
-		if ((a->flags & KEST_ALLOCATOR_FLAG_SINGULAR) && n > 1)
-			return NULL;
-		
 		if (a->alloc)
 		{
 			return a->alloc(a->data, n);

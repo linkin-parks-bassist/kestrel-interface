@@ -136,8 +136,6 @@ int kest_mem_slot_set_effective_addr(kest_mem_slot *mem, int addr)
 	
 	mem->effective_addr = addr;
 	
-	mem->read.spec.addr[0] = (addr & 0xFF00) >> 8;
-	mem->read.spec.addr[1] = (addr & 0x00FF) >> 0;
 	
 	return NO_ERROR;
 }
@@ -201,6 +199,7 @@ int kest_filter_init(kest_filter *filter)
 	if (!filter)
 		return ERR_NULL_PTR;
 	
+	atomic_init(&filter->delete_requested, 0);
 	filter->feed_forward = 0;
 	filter->feed_back = 0;
 	filter->format = 0;
@@ -217,6 +216,7 @@ kest_filter *kest_filter_create(kest_allocator *alloc)
 	if (!filter)
 		return NULL;
 	
+	atomic_init(&filter->delete_requested, 0);
 	filter->feed_forward = 0;
 	filter->feed_back = 0;
 	filter->format = 0;
@@ -232,6 +232,7 @@ int kest_filter_clone(kest_filter *dest, kest_filter *src)
 	if (!dest || !src)
 		return ERR_NULL_PTR;
 	
+	atomic_init(&dest->delete_requested, 0);
 	dest->feed_forward = src->feed_forward;
 	dest->feed_back = src->feed_back;
 	dest->format = src->format;
@@ -283,9 +284,21 @@ kest_mem_slot *kest_mem_slot_create(kest_allocator *alloc)
 	
 	memset(mem_slot, 0, sizeof(kest_mem_slot));
 	
-	kest_fpga_periodic_read_init_mem(&mem_slot->read);
+	atomic_init(&mem_slot->delete_requested, 0);
+	atomic_init(&mem_slot->value, 0);
+	atomic_init(&mem_slot->updated, 0);
+	mem_slot->read_period_ms = 10;
 	
 	return mem_slot;
+}
+
+// A failed read leaves the stream's last good sample untouched.
+void kest_mem_slot_read_cb(void *data, int64_t result)
+{
+	kest_mem_slot *mem = data;
+	if (!mem || result < 0 || atomic_load(&mem->delete_requested)) return;
+	atomic_store_explicit(&mem->value, (kest_fpga_sample_t)result, memory_order_relaxed);
+	atomic_store_explicit(&mem->updated, 1, memory_order_release);
 }
 
 kest_delay *kest_delay_create(kest_allocator *alloc)
@@ -296,6 +309,7 @@ kest_delay *kest_delay_create(kest_allocator *alloc)
 		return NULL;
 	
 	memset(delay, 0, sizeof(kest_delay));
+	atomic_init(&delay->delete_requested, 0);
 	
 	return delay;
 }
@@ -306,6 +320,7 @@ int kest_delay_init(kest_delay *delay)
 		return ERR_NULL_PTR;
 	
 	memset(delay, 0, sizeof(kest_delay));
+	atomic_init(&delay->delete_requested, 0);
 	
 	delay->units = KEST_DELAY_UNITS_MS;
 	
@@ -318,6 +333,7 @@ int kest_lfo_init(kest_lfo *lfo)
 		return ERR_NULL_PTR;
 	
 	memset(lfo, 0, sizeof(kest_lfo));
+	atomic_init(&lfo->delete_requested, 0);
 	
 	return NO_ERROR;
 }
@@ -542,8 +558,13 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 		if (src->data)
 		{
 			kest_mem_slot *mem = (kest_mem_slot*)src->data;
-			memcpy(dest->data, src->data, sizeof(kest_mem_slot));
-			KEST_PRINTF("mem->read_enable = %d, mem->read.period_ms = %d\n", mem->read_enable, mem->read.period_ms);
+			kest_mem_slot *clone = dest->data;
+			clone->addr = mem->addr;
+			clone->effective_addr = mem->effective_addr;
+			atomic_store_explicit(&clone->value, atomic_load_explicit(&mem->value, memory_order_relaxed), memory_order_relaxed);
+			clone->read_enable = mem->read_enable;
+			clone->read_period_ms = mem->read_period_ms;
+			KEST_PRINTF("mem->read_enable = %d, mem->read_period_ms = %d\n", mem->read_enable, mem->read_period_ms);
 		}
 	}
 	else if (dest->type == KEST_DSP_RESOURCE_LFO)
@@ -559,6 +580,10 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 		{
 			kest_lfo *lfo = (kest_lfo*)src->data;
 			memcpy(dest->data, src->data, sizeof(kest_lfo));
+			atomic_init(&((kest_lfo*)dest->data)->delete_requested, 0);
+#ifdef KEST_ENABLE_UI
+			((kest_lfo*)dest->data)->timer = NULL;
+#endif
 		}
 	}
 	else if (dest->type == KEST_DSP_RESOURCE_DELAY)
@@ -574,6 +599,7 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 		{
 			kest_delay *del = (kest_delay*)src->data;
 			memcpy(dest->data, src->data, sizeof(kest_delay));
+			atomic_init(&((kest_delay*)dest->data)->delete_requested, 0);
 		}
 	}
 	else if (dest->type == KEST_DSP_RESOURCE_FILTER)
@@ -611,9 +637,11 @@ kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *sr
 {
 	kest_dsp_resource *result = kest_dsp_resource_make_clone(src);
 	
+	if (!result) return NULL;
+
 	result->effect = effect;
 	
-	if (result && result->data)
+	if (result->data)
 	{
 		switch (result->type)
 		{
@@ -629,4 +657,39 @@ kest_dsp_resource *kest_dsp_resource_make_clone_for_effect(kest_dsp_resource *sr
 	}
 	
 	return result;
+}
+
+static atomic_int *kest_dsp_resource_deletion_marker(kest_dsp_resource *res)
+{
+	if (!res || !res->data) return NULL;
+	switch (res->type)
+	{
+		case KEST_DSP_RESOURCE_MEM: return &((kest_mem_slot*)res->data)->delete_requested;
+		case KEST_DSP_RESOURCE_LFO: return &((kest_lfo*)res->data)->delete_requested;
+		case KEST_DSP_RESOURCE_DELAY: return &((kest_delay*)res->data)->delete_requested;
+		case KEST_DSP_RESOURCE_FILTER: return &((kest_filter*)res->data)->delete_requested;
+	}
+	return NULL;
+}
+
+void kest_dsp_resource_mark_for_deletion(kest_dsp_resource *res)
+{
+	atomic_int *marker = kest_dsp_resource_deletion_marker(res);
+	if (marker) atomic_store(marker, 1);
+}
+
+int kest_dsp_resource_delete_requested(kest_dsp_resource *res)
+{
+	atomic_int *marker = kest_dsp_resource_deletion_marker(res);
+	return marker && atomic_load(marker);
+}
+
+// Instance clones own the payload/container, but borrow descriptor expressions and names.
+void kest_dsp_resource_free(kest_dsp_resource *res)
+{
+	if (!res) return;
+	if (res->type == KEST_DSP_RESOURCE_FILTER && res->data)
+		kest_expression_ptr_list_destroy(&((kest_filter*)res->data)->coefs);
+	kest_free(res->data);
+	kest_free(res);
 }

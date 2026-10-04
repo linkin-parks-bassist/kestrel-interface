@@ -76,7 +76,7 @@ int kest_expr_init_const(kest_expression *expr, float v)
 
 kest_expression *kest_expr_new_const(float v)
 {
-	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
+	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 	
 	if (!result) return NULL;
 	
@@ -103,7 +103,7 @@ kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs)
 {
 	if (!rhs) return NULL;
 	
-	kest_expression *lhs = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
+	kest_expression *lhs = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 	
 	if (!lhs) return NULL;
 	
@@ -135,7 +135,7 @@ kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, k
 {
 	if (!arg_1 || !arg_2) return NULL;
 	
-	kest_expression *bin = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
+	kest_expression *bin = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 	
 	if (!bin) return NULL;
 	
@@ -172,7 +172,7 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 {
 	if (!ref_name) return NULL;
 	
-	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, 1);
+	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 	
 	if (!result) return NULL;
 	
@@ -1037,6 +1037,7 @@ float kest_expression_compute_min_rec(kest_expression *expr, kest_scope *scope, 
 				expr->type == KEST_EXPR_MAX
 			);
 		y_max_needed = (
+				expr->type == KEST_EXPR_SUB ||
 				expr->type == KEST_EXPR_MUL ||
 				expr->type == KEST_EXPR_DIV ||
 				expr->type == KEST_EXPR_POW
@@ -1697,11 +1698,11 @@ float kest_expression_compute_max_rec(kest_expression *expr, kest_scope *scope, 
 			goto expr_int_ret;
 			
 		case KEST_EXPR_ERF:
-			ret = log10(x_max);
+			ret = erf(x_max);
 			goto expr_int_ret;
 			
 		case KEST_EXPR_LOG10:
-			ret = erf(x_max);
+			ret = log10(x_max);
 			goto expr_int_ret;
 			
 		case KEST_EXPR_TANH:
@@ -2831,7 +2832,7 @@ int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 13; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 		
 		if (!exprs[i])
 		{
@@ -2896,7 +2897,7 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 14; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 		
 		if (!exprs[i])
 		{
@@ -2961,7 +2962,7 @@ int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 14; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, 1);
+		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
 		
 		if (!exprs[i])
 		{

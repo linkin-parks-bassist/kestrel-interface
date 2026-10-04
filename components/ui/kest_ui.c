@@ -1410,17 +1410,19 @@ void kest_ui_unlock()
 	#endif
 }
 
-void kest_ui_async_call(void (*f)(void*), void *arg)
+int kest_ui_async_call(void (*f)(void*), void *arg)
 {
-#if ASYNC_NEEDS_LOCK
-	if (kest_ui_lock())
-	{
-#endif
-		lv_async_call(f, arg);
-#if ASYNC_NEEDS_LOCK
-		kest_ui_unlock();
-	}
-#endif
+	if (!kest_ui_lock()) return ERR_CURRENTLY_EXHAUSTED;
+	int result = lv_async_call(f, arg) == LV_RESULT_OK ? NO_ERROR : ERR_ALLOC_FAIL;
+	kest_ui_unlock();
+	return result;
+}
+
+void kest_ui_page_cancel_async(kest_ui_page *page)
+{
+	lv_async_call_cancel(enter_ui_page_async_wrapper, page);
+	lv_async_call_cancel(enter_ui_page_forwards_async_wrapper, page);
+	lv_async_call_cancel(enter_ui_page_backwards_async_wrapper, page);
 }
 
 void kest_async_call_void_wrapper(void *arg)
@@ -1431,13 +1433,5 @@ void kest_async_call_void_wrapper(void *arg)
 
 void kest_ui_async_call_void(void (*f)(void))
 {
-#if ASYNC_NEEDS_LOCK
-	if (kest_ui_lock())
-	{
-#endif
-		lv_async_call(kest_async_call_void_wrapper, (void*)f);
-#if ASYNC_NEEDS_LOCK
-		kest_ui_unlock();
-	}
-#endif
+	kest_ui_async_call(kest_async_call_void_wrapper, (void*)f);
 }

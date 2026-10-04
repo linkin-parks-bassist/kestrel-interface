@@ -1,6 +1,8 @@
 #ifndef KEST_FPGA_COMMAND_H_
 #define KEST_FPGA_COMMAND_H_
 
+#include "kest_numeric_format.h"
+
 #define COMMAND_BEGIN_PROGRAM	 	1
 #define COMMAND_WRITE_BLOCK_INSTR 	2
 #define COMMAND_WRITE_BLOCK_REG_0 	3
@@ -22,6 +24,11 @@
 #define COMMAND_CLEAR_CMD_ERR_FLAG	37
 #define COMMAND_READ				38
 #define COMMAND_ENABLE_TAIL			39
+#define COMMAND_READ32               40
+#define KEST_FPGA_MAGIC               UINT32_C(0x4b455354)
+#define KEST_FPGA_CAP_FILTER          UINT32_C(1)
+#define KEST_FPGA_CAP_POLYNOMIAL      UINT32_C(2)
+#define KEST_FPGA_CAP_SVF             UINT32_C(4)
 
 typedef struct {
 	int type;
@@ -41,7 +48,10 @@ typedef struct {
 	} data_2;
 	
 	float val;
-	int format;
+	union {
+		int format;
+		kest_numeric_format encoding;
+	};
 } kest_fpga_command;
 
 DECLARE_LIST(kest_fpga_command);
@@ -51,10 +61,10 @@ kest_fpga_command kest_fpga_command_end_program();
 
 kest_fpga_command kest_fpga_command_write_block_instr(int block, uint32_t instr);
 
-kest_fpga_command kest_fpga_command_write_block_reg_0 (int block, float val, int format);
-kest_fpga_command kest_fpga_command_write_block_reg_1 (int block, float val, int format);
-kest_fpga_command kest_fpga_command_update_block_reg_0(int block, float val, int format);
-kest_fpga_command kest_fpga_command_update_block_reg_1(int block, float val, int format);
+kest_fpga_command kest_fpga_command_write_block_reg_0 (int block, float val, kest_numeric_format format);
+kest_fpga_command kest_fpga_command_write_block_reg_1 (int block, float val, kest_numeric_format format);
+kest_fpga_command kest_fpga_command_update_block_reg_0(int block, float val, kest_numeric_format format);
+kest_fpga_command kest_fpga_command_update_block_reg_1(int block, float val, kest_numeric_format format);
 
 kest_fpga_command kest_fpga_command_commit_reg_updates();
 

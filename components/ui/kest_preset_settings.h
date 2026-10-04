@@ -17,7 +17,6 @@ typedef struct
 	lv_obj_t *save_button;
 	lv_obj_t *save_button_label;
 	
-	kest_representation rep;
 } kest_preset_settings_str;
 
 int init_preset_settings_page(kest_ui_page *page);

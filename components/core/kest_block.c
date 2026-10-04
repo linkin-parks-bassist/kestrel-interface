@@ -52,18 +52,17 @@ int kest_init_block(kest_block *block)
 	
 	block->dest = 0;
 	
-	block->reg_0.format = 0;
+	block->reg_0.format = (kest_numeric_format){KEST_FPGA_DATA_WIDTH - 1, false, KEST_NUMERIC_SATURATE};
 	block->reg_0.active = 0;
 	block->reg_0.expr = NULL;
 	
-	block->reg_1.format = 0;
+	block->reg_1.format = block->reg_0.format;
 	block->reg_1.active = 0;
 	block->reg_1.expr = NULL;
 	
 	block->shift = 0;
-	block->shift_set = 0;
 	block->saturate_disable = 0;
-	block->shift_policy = SHIFT_POLICY_0;
+	block->desc = NULL;
 	
 	block->res = NULL;
 	
@@ -71,7 +70,7 @@ int kest_init_block(kest_block *block)
 }
 
 
-int kest_init_block_from_instr_desc(kest_block *block, kest_asm_instr_desc *desc)
+int kest_init_block_from_instr_desc(kest_block *block, const kest_asm_instr_desc *desc)
 {
 	if (!desc)
 		return ERR_NULL_PTR;
@@ -82,7 +81,7 @@ int kest_init_block_from_instr_desc(kest_block *block, kest_asm_instr_desc *desc
 		return ERR_BAD_ARGS;
 	
 	block->instr = desc->opcode;
-	block->shift_policy = desc->shift_policy;
+	block->desc = desc;
 	
 	return NO_ERROR;
 }

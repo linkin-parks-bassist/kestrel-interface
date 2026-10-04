@@ -28,10 +28,6 @@ typedef struct kest_sequence
 	int unsaved_changes;
 	int main_sequence;
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_representation_pll *representations;
-	kest_representation file_rep;
-	#endif
 } kest_sequence;
 
 DECLARE_LINKED_PTR_LIST(kest_sequence);
@@ -62,10 +58,6 @@ int kest_sequence_stop_from_preset(kest_sequence *sequence);
 
 int kest_sequence_activate_at(kest_sequence *sequence, kest_preset *preset);
 
-int kest_sequence_add_representation(kest_sequence *sequence, kest_representation *rep);
-int kest_sequence_update_representations(kest_sequence *sequence);
-
-void kest_sequence_file_rep_update(void *representer, void *representee);
 
 DECLARE_POOL(kest_sequence);
 extern kest_allocator kest_sequence_allocator;

@@ -69,34 +69,6 @@ int kest_state_save(kest_state state)
 	return ret_val;
 }
 
-void kest_state_representation_update(void *representer, void *representee)
-{
-	KEST_PRINTF("kest_state_representation_update\n");
-	
-	if (!representee)
-		return;
-	
-	kest_context *cxt = (kest_context*)representee;
-	kest_state state;
-	
-	memset(&state, 0, sizeof(kest_state));
-	
-	int ret_val;
-	
-	if ((ret_val = kest_cxt_clone_state(cxt, &state)) != NO_ERROR)
-	{
-		KEST_PRINTF("Failed to clone state; aborting\n");
-		return;
-	}
-	
-	KEST_PRINTF("Cloned state\n");
-	
-	safe_file_write((int (*)(void*, const char*))save_state_to_file, &state, SETTINGS_FNAME);
-	KEST_PRINTF("kest_state_representation_update done\n");
-	
-	return;
-}
-
 
 int kest_cxt_restore_state(kest_context *cxt, kest_state *state)
 {

@@ -1,9 +1,26 @@
 ---
-status: "unverified"
-created_at: "2026-09-20T00:08:53+10:00"
-scope: "local"
-source: "tests/core/*.c; tests/ui/*.c; Makefile"
+status: green
+revised_at: "2026-10-04T09:34:51+11:00"
 ---
-Status: Green
 
-The desktop C test tree exercises block defaults/constants, bump arena lifecycle/alignment/exhaustion, dictionary and list operations, pool allocation/reuse/failure, string operations, and parameter/setting widget configuration and labels. It does not by itself cover parser-to-FPGA program generation, persistence, real SPI/codec hardware or full UI flows. Source: tests/core/*.c; tests/ui/*.c; Makefile
+The desktop C suite passes 152 tests. It exercises block defaults/constants, bump arena lifecycle/alignment/exhaustion, dictionary/list operations, pool allocation/reuse/failure, byte-size pool/heap compatibility through the production parameter constructor and heap cloning, string operations, parameter/setting widget configuration and labels, and latest-value scratchpad readback.
+
+Four updater/readback tests cover signed sample publication, transport errors preserving the latest sample, lock-free concurrent publication, coalesced arrivals, cadence/disable/reprogram behavior, unstarted queue failure, repeated programming submission rejection retaining batch/state and independent cloning. They invoke completion/control handlers directly and do not establish successful SPI delivery or physical streaming.
+
+A resource-clone failure regression verifies that a null source or filter without a payload returns NULL from the effect-linked factory without dereferencing a failed clone.
+
+Two retirement regressions verify that marked payloads ignore arrivals/control dependencies, clones clear deletion markers, repeated marking does not duplicate the handoff, and retired owners survive REPROGRAM, active-cache clear and failed SPI enqueue. SPI completion is modeled explicitly, then the LVGL timer handler executes final UI reclamation. The unit display refresh timer is paused during that call because the harness has no FreeRTOS drawing scheduler. These tests do not execute the SPI FIFO or full task loops.
+
+Widget retirement coverage verifies cancellation of a queued refresh and its animation timer and clearing the parameter backlink. The embedded settings-page regression creates cutoff containers on backstage, exercises pending refresh/timer cancellation, repeats UI cleanup and completes page release without freeing embedded structs. Setting-widget initialization is tested on dirty memory, including container/label/pad fields.
+
+The parser regression compiles tests/fixtures/readback.eff into an enabled memory resource and two blocks. It verifies that the first block loads channel 1 from an active register expression evaluating to 0.25 through the descriptor scope constructor, and that mem_write reads channel 1 and references the declared resource. The source leaves channel 0 unchanged. An exact copy is present on the carrier SD as KTPROBE.EFF, verified through UART file readback; carrier HIL activates it through the normal UI and verifies live memory values following Level changes. The focused compiled-fixture Core test verifies MOV and scratchpad readback; this is not a full controller/resource simulation. The UART procedure owns transfer evidence; what/is/the/status/of/periodic/fpga/memory/reads.md owns physical stream qualification.
+
+The preset-save null regression verifies save_preset(NULL) returns ERR_NULL_PTR. The same test crashes with SIGSEGV before the guard is applied; it does not qualify queued-save ownership or filesystem behavior.
+
+Two persistence round-trip regressions use isolated temporary host files. Empty-preset save/load checks an explicit name and the unnamed fallback, empty pipeline, file identity and clean-save flags. State save/load checks gains, all three 31-character filenames, empty filenames and page type/ID. Corrupt magic/unfinished status, all 114 truncated prefixes of the valid fixture and overlong filenames in each field are rejected without modifying the destination. These checks do not cover populated preset/sequence round trips, their malformed-input handling, queued-save/deletion concurrency or interrupted SD writes.
+
+Numeric tests cover signed/unsigned wire words, 16/24-bit endpoints and rejection; compatible format tuples and shared-register constraints; alias constant scales; transformed expression ranges, dependencies and initial/queued live-write equivalence; saturation fallback; explicit fields and the four-bit hardware limit; rejected conversions propagating through block/updater encoding; ERF/LOG10 upper bounds; subtraction's right-hand upper-bound dependency and downstream format resolution; and SVF cutoff encoding independent of declared range. Parser fixtures verify descriptor send transforms, expression/channel SVF inputs, all three explicit shift syntaxes and rejection of three expressions for two registers. Separate superproject scripts execute the compiled readback and SVF fixtures in actual-core Verilator modes; their Core owners specify coverage.
+
+The suite does not establish every descriptor/resource combination, complete persistence, real SPI/codec hardware or full UI flows.
+
+Sources: tests/core/*.c, tests/ui/*.c, tests/parser/*.c, tests/fixtures/readback.eff, Makefile and executed kest_tests suite; /tmp/kestrel-files-final-hil.log for the SD fixture copy.

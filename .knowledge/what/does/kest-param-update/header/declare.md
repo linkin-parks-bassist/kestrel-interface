@@ -1,13 +1,8 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:24+10:00"
-scope: "local"
-source: "components/core/kest_param_update.h"
+status: green
+revised_at: "2026-10-04T05:55:35+11:00"
 ---
-Status: Green
 
-`components/core/kest_param_update.h` declares API names: `kest_init_parameter_updater`, `kest_param_update_task`, `kest_parameter_trigger_update`; configuration symbols: `KEST_INT_PARAM_UPDATE_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/core/kest_param_update.h declares kest_init_parameter_updater, kest_param_update_task and kest_parameter_trigger_update, with MAX_CONCURRENT_PARAM_UPDATES=16. kest_parameter_update contains a parameter ID, parameter and effect pointers, float target and integer send flag. Initialization starts the separate smoothing task.
 
-Source: components/core/kest_param_update.h
-
-Source: components/core/kest_param_update.h
+Source: components/core/kest_param_update.h. how/are/smooth/parameter/targets/applied.md owns behavior, scheduling direction and lifetime limits.

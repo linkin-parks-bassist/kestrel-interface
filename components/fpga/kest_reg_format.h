@@ -2,5 +2,6 @@
 #define KEST_REG_FORMAT_H_
 
 int kest_compute_register_formats(kest_block_pll *blocks, kest_scope *scope);
+int kest_resolve_block_formats(kest_block *block, kest_scope *scope);
 
 #endif

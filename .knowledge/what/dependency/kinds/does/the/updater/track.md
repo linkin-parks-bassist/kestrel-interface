@@ -1,9 +1,8 @@
 ---
-status: "unverified"
-created_at: "2026-09-20T00:07:11+10:00"
-scope: "local"
-source: "components/core/kest_dependent.c:8-99; components/core/kest_update.c"
+status: green
+revised_at: "2026-10-04T08:59:12+11:00"
 ---
-Status: Green
 
-`kest_dependent.c` constructs dependent records for scope entries, bounded or driven parameters, block registers and filter coefficients. These identify what needs recomputation or FPGA writes when a scope value changes. Source: components/core/kest_dependent.c:8-99; components/core/kest_update.c
+kest_dependent.c constructs records for scope entries, bounded/driven parameters, block registers and filter coefficients. These identify recomputation or FPGA writes after a scope value changes. Block-register records carry the resolved kest_numeric_format encoding, while filter-coefficient records retain their legacy integer format. kest_fpga_write and kest_fpga_command preserve the appropriate member through queued conversion.
+
+Sources: components/core/kest_dependent.[ch], kest_expr_scope.[ch], kest_update.[ch] and components/fpga/kest_fpga_cmd.[ch].

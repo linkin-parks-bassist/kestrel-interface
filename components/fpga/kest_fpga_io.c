@@ -303,6 +303,20 @@ int kest_fpga_batch_append_32(kest_fpga_transfer_batch *seq, uint32_t x)
 }
 
 
+int kest_fpga_batch_append_numeric(kest_fpga_transfer_batch *batch, float value,
+    kest_numeric_format format)
+{
+    if (!batch) return ERR_NULL_PTR;
+    uint32_t word;
+    int result = kest_encode_numeric(value, format, KEST_FPGA_DATA_WIDTH, &word);
+    if (result != NO_ERROR) return result;
+    #if KEST_FPGA_DATA_WIDTH == 16
+    return kest_fpga_batch_append_16(batch, word);
+    #else
+    return kest_fpga_batch_append_24(batch, word);
+    #endif
+}
+
 int kest_fpga_batch_append_float(kest_fpga_transfer_batch *seq, float x, int format)
 {
 	if (!seq)
@@ -603,7 +617,7 @@ int64_t kest_fpga_req_data(int req, int n_bytes, kest_fpga_status_flags *flags)
 	do {
 		kest_fpga_get_status_flags(flags);
 		if (flags->cmd_err) return -4;
-		#ifdef ENABLE_FREERTOS
+		#ifdef KEST_USE_FREERTOS
 		if (!flags->data_ready)
 			vTaskDelay(1);
 		#endif
@@ -631,7 +645,7 @@ int64_t kest_fpga_req_data(int req, int n_bytes, kest_fpga_status_flags *flags)
 	return data;
 }
 
-int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_status_flags *flags)
+static int64_t request_data(uint8_t command, uint8_t req, uint8_t *p, int n, int m, kest_fpga_status_flags *flags)
 {
 	if (!p)
 		return -1;
@@ -641,8 +655,8 @@ int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_st
 	if (!flags)
 		flags = &_flags;
 	
-	kest_fpga_send_byte_get_flags(COMMAND_READ, flags);
-	kest_fpga_send_byte_get_flags(req, flags);
+	kest_fpga_send_byte_get_flags(command, flags);
+	if (command == COMMAND_READ) kest_fpga_send_byte_get_flags(req, flags);
 	
 	if (flags->cmd_err)
 		return -2;
@@ -660,7 +674,7 @@ int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_st
 	do {
 		kest_fpga_get_status_flags(flags);
 		if (flags->cmd_err) return -4;
-		#ifdef ENABLE_FREERTOS
+		#ifdef KEST_USE_FREERTOS
 		if (!flags->data_ready)
 			vTaskDelay(1);
 		#endif
@@ -686,6 +700,18 @@ int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_st
 	kest_fpga_send_byte_get_flags(COMMAND_CLEAR_CMD_ERR_FLAG, flags);
 	
 	return data;
+}
+
+int64_t kest_fpga_req_data_p(uint8_t req, uint8_t *p, int n, int m, kest_fpga_status_flags *flags)
+{
+    return request_data(COMMAND_READ, req, p, n, m, flags);
+}
+
+int64_t kest_fpga_read32(uint32_t address, kest_fpga_status_flags *flags)
+{
+    if (address > 0xffffff || (address & 3)) return -1;
+    uint8_t bytes[3] = {address >> 16, address >> 8, address};
+    return request_data(COMMAND_READ32, 0, bytes, 3, 4, flags);
 }
 
 

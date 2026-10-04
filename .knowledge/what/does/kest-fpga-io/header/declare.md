@@ -1,13 +1,14 @@
 ---
-status: "unverified"
-created_at: "2026-09-19T23:57:28+10:00"
-scope: "local"
-source: "components/fpga/kest_fpga_io.h"
+status: green
+revised_at: "2026-10-04T09:02:50+11:00"
 ---
-Status: Green
 
-`components/fpga/kest_fpga_io.h` declares API names: `kest_new_fpga_transfer_batch`, `kest_free_fpga_transfer_batch`, `kest_fpga_txrx`, `kest_send_bytes_to_fpga`, `kest_send_byte_to_fpga`, `kest_fpga_send_byte`, `kest_fpga_read_byte`, `kest_fpga_readout`, `kest_fpga_set_input_gain`, `kest_fpga_set_output_gain`, `kest_fpga_commit_reg_updates`, `kest_fpga_transfer_batch_init`, `kest_fpga_batch_append`, `kest_fpga_batch_append_16`, `kest_fpga_batch_append_24`, `kest_fpga_batch_append_32`, `kest_fpga_batch_drain`, `kest_fpga_batch_append_float`, `kest_fpga_batch_append_float_filter_width`, `kest_fpga_batch_append_bytes`, `kest_fpga_transfer_batch_send`, `kest_fpga_transfer_batch_send_careful`, `kest_fpga_program_batch_send_careful`, `kest_fpga_program_batch_send`, `kest_fpga_spi_init`, `kest_fpga_decode_status_flags`, `kest_fpga_send_byte_get_flags`, `kest_fpga_get_status_flags`, `kest_fpga_status_flags_print`, `kest_fpga_status_flags_sprint`, `kest_fpga_req_data_p`, `kest_fpga_get_n_blocks`, `kest_fpga_get_block_instr`, `kest_fpga_get_block_reg`, `kest_fpga_get_n_delay_buffers` (and more); configuration symbols: `KEST_INT_FPGA_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
+components/fpga/kest_fpga_io.h declares SPI initialization/byte transfers, input/output gain and register commits, transfer-batch creation/encoding/draining/sending (including kest_fpga_batch_append_numeric for resolved signed/unsigned register conversion), program-batch sending, status decoding/printing, generic data requests and typed block/delay queries.
 
-Source: components/fpga/kest_fpga_io.h
+The carrier implementation uses SPI2 mode 0 at 10 MHz with MISO14, MOSI6, SCK5 and CS4. Desktop simulation substitutes fixed receive bytes and reports the feature disabled; it is not DSP simulation.
 
-Source: components/fpga/kest_fpga_io.h
+Generic data requests issue READ, the request ID and address bytes, then poll status for data_ready before issuing READOUT. Negative results distinguish null input (-1), command errors at successive phases (-2, -3, -4, -6) and no data_ready observed within the polling bound (-5). The parameterized reader uses a 32-try bound. Both generic read loops now guard their existing vTaskDelay(1) with KEST_USE_FREERTOS, matching firmware configuration; the obsolete ENABLE_FREERTOS guard omitted the intended wait. This correction builds with pinned ESP-IDF 5.3.3, is flashed and boots on the carrier. Two subsequent address-0 reads still return -5, so restoring the wait did not resolve the observed failure.
+
+Physical qualification and installed-image evidence belong to how/to/build/and/run/the/interface.md and what/is/the/status/of/periodic/fpga/memory/reads.md. SPI error propagation/status reliability still require source and hardware review; a negative result alone does not locate the physical fault.
+
+Source: components/fpga/kest_fpga_io.[ch], main/kest_int.h and executed desktop/embedded builds.

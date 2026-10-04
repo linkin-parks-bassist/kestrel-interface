@@ -1,6 +1,8 @@
 #ifndef BLOCK_H_
 #define BLOCK_H_
 
+#include "kest_numeric_format.h"
+
 #define BLOCK_INSTR_NOP 			0
 #define BLOCK_INSTR_MADD			1
 #define BLOCK_INSTR_ARSH 			2
@@ -50,12 +52,12 @@ kest_block_operand operand_const_minus_one();
 
 typedef struct
 {
-	int format;
+	kest_numeric_format format;
 	int active;
 	kest_expression *expr;
 } kest_block_reg_val;
 
-typedef struct {
+typedef struct kest_block {
 	int instr;
 	
 	kest_block_operand arg_a;
@@ -68,10 +70,9 @@ typedef struct {
 	kest_block_reg_val reg_1;
 	
 	int shift;
-	int shift_set;
 	int saturate_disable;
 	
-	int shift_policy;
+	const struct kest_asm_instr_desc *desc;
 	
 	kest_dsp_resource *res;
 } kest_block;
@@ -82,7 +83,7 @@ int kest_block_clone_no_res(kest_block *dest, kest_block *src);
 
 struct kest_asm_instr_desc;
 
-int kest_init_block_from_instr_desc(kest_block *block, struct kest_asm_instr_desc *desc);
+int kest_init_block_from_instr_desc(kest_block *block, const struct kest_asm_instr_desc *desc);
 
 DECLARE_LINKED_PTR_LIST(kest_block);
 DECLARE_PTR_LIST(kest_block);

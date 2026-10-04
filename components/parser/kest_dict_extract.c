@@ -647,7 +647,7 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 	res->data = mem;
 	
 	mem->read_enable = 1;
-	mem->read.period_ms = 7;
+	mem->read_period_ms = 7;
 	
 	KEST_PRINTF("Extracting mem slot \"%s\"...\n", res->name);
 	
@@ -679,7 +679,7 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 			goto mem_extract_abort;
 		}
 		
-		mem->read.period_ms = kest_const_num_dictionary_entry_evaluate(entry);
+		mem->read_period_ms = kest_const_num_dictionary_entry_evaluate(entry);
 		mem->read_enable = 1;
 	}
 	
@@ -687,7 +687,7 @@ int kest_extract_mem_from_dict(kest_eff_parsing_state *ps, kest_ast_node *dict_n
 	KEST_PRINTF("Extracted a mem slot;\n");
 	KEST_PRINTF("\tres->mem_size: \"%d\"\n", res->mem_size);
 	KEST_PRINTF("\t((kest_mem_slot*)res->data)->read_enable: \"%d\"\n", ((kest_mem_slot*)res->data)->read_enable);
-	KEST_PRINTF("\t((kest_mem_slot*)res->data)->read.period_ms: \"%d\"\n", ((kest_mem_slot*)res->data)->read.period_ms);
+	KEST_PRINTF("\t((kest_mem_slot*)res->data)->read_period_ms: \"%d\"\n", ((kest_mem_slot*)res->data)->read_period_ms);
 	
 	return NO_ERROR;
 	

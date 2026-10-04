@@ -28,6 +28,8 @@ int init_effect(kest_effect *effect)
 		return ERR_NULL_PTR;
 	
 	memset(effect, 0, sizeof(kest_effect));
+	atomic_init(&effect->alive, 1);
+	atomic_init(&effect->spi_retirement, 0);
 	
 	effect->id = 0;
 	effect->type = 0;
@@ -91,16 +93,6 @@ int init_effect(kest_effect *effect)
 	effect->mutex = xSemaphoreCreateMutex();
 	#endif
 	
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	effect->reps = NULL;
-	effect->preset_rep.representer = NULL;
-	effect->preset_rep.representee = effect;
-	effect->preset_rep.update = kest_effect_preset_rep_update;
-	effect->page_rep.representer = NULL;
-	effect->page_rep.representee = effect;
-	effect->page_rep.update = kest_effect_page_rep_update;
-	kest_representation_pll_safe_append(&effect->reps, &effect->preset_rep);
-	#endif
 	
 	kest_effect_fpga_position_init(&effect->position_);
 	
@@ -575,7 +567,6 @@ void gut_effect(kest_effect *effect)
 	effect->type 	 = 0;
 	effect->position = 0;
 	
-	kest_mem_slot *mem = NULL;
 	kest_lfo *lfo = NULL;
 	
 	if (!effect->resources.entries)
@@ -588,16 +579,6 @@ void gut_effect(kest_effect *effect)
 		
 		switch (effect->resources.entries[i]->type)
 		{
-			case KEST_DSP_RESOURCE_MEM:
-				mem = (kest_mem_slot*)effect->resources.entries[i]->data;
-#ifdef KEST_ENABLE_UI
-				if (mem->read.timer)
-				{
-					lv_timer_del(mem->read.timer);
-					mem->read.timer = NULL;
-				}
-#endif
-				break;
 			
 			case KEST_DSP_RESOURCE_LFO:
 				lfo = (kest_lfo*)effect->resources.entries[i]->data;
@@ -616,18 +597,58 @@ void gut_effect(kest_effect *effect)
 
 void free_effect(kest_effect *effect)
 {
-	if (!effect)
-		return;
-	
-	effect->alive = 0;
-	
+	if (!effect || !atomic_exchange(&effect->alive, 0)) return;
+
+	for (int i = 0; i < effect->resources.count; i++)
+		kest_dsp_resource_mark_for_deletion(effect->resources.entries[i]);
+	// The control task still borrows the effect, scope and parameters this tick.
+	kest_updater_retire_effect(effect);
+}
+
+static void kest_effect_scope_entry_destroy(kest_scope_entry *entry)
+{
+	kest_dependent_list_destroy(&entry->dependents);
+}
+
+void kest_effect_free_retired(void *effect_)
+{
+	kest_effect *effect = effect_;
+	if (!effect) return;
+#ifdef KEST_ENABLE_UI
+	lv_async_call_cancel(kest_effect_update_sync, effect);
+	lv_async_call_cancel(kest_effect_update_sync_no_pw, effect);
+	free_effect_view(effect->view_page);
+	effect->view_page = NULL;
+	for (int i = 0; i < effect->resources.count; i++)
+	{
+		kest_dsp_resource *res = effect->resources.entries[i];
+		if (res && res->type == KEST_DSP_RESOURCE_LFO && res->data)
+		{
+			kest_lfo *lfo = res->data;
+			lv_async_call_cancel(kest_lfo_activate_sync, lfo);
+			lv_async_call_cancel(kest_lfo_deactivate_sync, lfo);
+			if (lfo->timer) lv_timer_del(lfo->timer);
+		}
+	}
+#endif
 	kest_parameter_pll_destroy(effect->parameters, kest_parameter_free);
 	kest_setting_pll_destroy(effect->settings, kest_setting_free);
-	
-	#ifdef KEST_ENABLE_UI
-	free_effect_view(effect->view_page);
-	#endif
-	
+	gut_setting(&effect->band_mode);
+	for (int i = 0; i < effect->resources.count; i++)
+		kest_dsp_resource_free(effect->resources.entries[i]);
+	kest_dsp_resource_ptr_list_destroy(&effect->resources);
+	kest_block_list_destroy(&effect->blocks);
+	for (int i = 0; i < effect->drivers.count; i++)
+		kest_free(effect->drivers.entries[i].data);
+	kest_driver_list_destroy(&effect->drivers);
+	if (effect->scope)
+	{
+		kest_scope_entry_dict_destroy(&effect->scope->dict, kest_effect_scope_entry_destroy);
+		kest_free(effect->scope);
+	}
+#ifdef KEST_USE_FREERTOS
+	if (effect->mutex) vSemaphoreDelete(effect->mutex);
+#endif
 	kest_allocator_free(&kest_effect_allocator, effect);
 }
 
@@ -819,16 +840,7 @@ int kest_effect_create_scope(kest_effect *effect)
 		if (!effect->resources.entries[i])
 			continue;
 		
-		if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_MEM)
-		{
-			mem = (kest_mem_slot*)effect->resources.entries[i]->data;
-			
-			if (!mem) continue;
-			
-			mem->read.spec.data = kest_scope_lookup(scope, effect->resources.entries[i]->name);
-			if (!mem->read.spec.data) goto create_scope_disaster_recovery;
-		}
-		else if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_LFO)
+		if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_LFO)
 		{
 			lfo = (kest_lfo*)effect->resources.entries[i]->data;
 			
@@ -899,219 +911,6 @@ int kest_effect_set_setting(kest_effect *effect, const char *name, int value)
 	return ERR_BAD_ARGS;
 }
 
-
-void kest_effect_preset_rep_update(void *representer, void *representee)
-{
-	KEST_PRINTF("kest_effect_preset_rep_update\n");
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_preset *preset = (kest_preset*)representer;
-	kest_effect *effect = (kest_effect*)representee;
-	
-	if (!representee)
-		return;
-	
-	if (!representee)
-		representee = effect->preset;
-	
-	if (!representee)
-		return;
-	
-	save_preset(preset);
-	#endif
-	
-	KEST_PRINTF("kest_effect_preset_rep_update done\n");
-	return;
-}
-
-void kest_effect_page_rep_update(void *representer, void *representee)
-{
-	KEST_PRINTF("kest_effect_preset_rep_update\n");
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	kest_ui_page *page = (kest_ui_page*)representer;
-	kest_effect *effect = (kest_effect*)representee;
-	
-	if (!page || !effect)
-		return;
-	
-	kest_effect_view_str *str = page->data_struct;
-	
-	if (!str)
-		return;
-	
-	kest_parameter_pll *current_param = effect->parameters;
-	kest_parameter *param;
-	
-	while (current_param)
-	{
-		param = current_param->data;
-		
-		if (param)
-		{
-			if (param->widget_rep.representee)
-				kest_representation_queue_update(&param->widget_rep);
-		}
-		
-		current_param = current_param->next;
-	}
-	
-	#endif
-	
-	KEST_PRINTF("kest_effect_preset_rep_update done\n");
-	return;
-}
-
-int kest_effect_update_reps(kest_effect *effect)
-{
-	KEST_PRINTF("kest_effect_update_reps(effect = %p)\n", effect);
-	#ifdef KEST_ENABLE_REPRESENTATIONS
-	if (!effect) return ERR_NULL_PTR;
-	
-	queue_representation_list_update(effect->reps);
-	#endif
-	
-	KEST_PRINTF("kest_effect_update_reps done\n");
-	return NO_ERROR;
-}
-
-int kest_effect_activate_dma(kest_effect *effect)
-{
-	if (!effect)
-		return ERR_NULL_PTR;
-	
-	if (!effect->alive)
-		return NO_ERROR;
-	
-	kest_dsp_resource *res = NULL;
-	kest_mem_slot *mem = NULL;
-	
-	for (size_t i = 0; i < effect->resources.count; i++)
-	{
-		res = effect->resources.entries[i];
-		
-		if (!res)
-			continue;
-		
-		if (res->type == KEST_DSP_RESOURCE_MEM)
-		{
-			mem = res->data;
-			
-			if (!mem) continue;
-			
-			if (mem->read_enable)
-			{
-				kest_fpga_periodic_read_activate(&mem->read);
-			}
-		}
-	}
-	
-	return NO_ERROR;
-}
-
-int kest_effect_activate_dma_async(kest_effect *effect)
-{
-	KEST_PRINTF("kest_effect_activate_dma_async(effect = %p)\n", effect);
-	
-	if (!effect)
-		return ERR_NULL_PTR;
-	
-	if (!effect->alive)
-		return NO_ERROR;
-	
-	kest_dsp_resource *res = NULL;
-	kest_mem_slot *mem = NULL;
-	
-	KEST_PRINTF("effect->resources.count = %d\n", effect->resources.count);
-	
-	for (size_t i = 0; i < effect->resources.count; i++)
-	{
-		res = effect->resources.entries[i];
-		
-		if (!res)
-			continue;
-		
-		KEST_PRINTF("res = effect->resources.entries[%d] = %p, res->type = %d, res->data = %p\n",
-			i, effect->resources.entries[i], res->type, res->data);
-		
-		if (res->type == KEST_DSP_RESOURCE_MEM)
-		{
-			mem = res->data;
-			
-			if (!mem) continue;
-			
-			KEST_PRINTF("mem->read_ms = %d, mem->read_enable = %d\n", mem->read.period_ms, mem->read_enable);
-			
-			//if (mem->read_enable)
-			//{
-				kest_fpga_periodic_read_activate_async(&mem->read);
-			//}
-		}
-	}
-	
-	return NO_ERROR;
-}
-
-int kest_effect_deactivate_dma(kest_effect *effect)
-{
-	if (!effect)
-		return ERR_NULL_PTR;
-	
-	if (!effect->alive)
-		return NO_ERROR;
-	
-	kest_dsp_resource *res = NULL;
-	kest_mem_slot *mem = NULL;
-	
-	for (size_t i = 0; i < effect->resources.count; i++)
-	{
-		res = effect->resources.entries[i];
-		
-		if (!res)
-			continue;
-		
-		if (res->type == KEST_DSP_RESOURCE_MEM)
-		{
-			mem = res->data;
-			
-			if (!mem) continue;
-			
-			kest_fpga_periodic_read_deactivate(&mem->read);
-		}
-	}
-	
-	return NO_ERROR;
-}
-
-
-int kest_effect_deactivate_dma_async(kest_effect *effect)
-{
-	if (!effect)
-		return ERR_NULL_PTR;
-	
-	if (!effect->alive)
-		return NO_ERROR;
-	
-	kest_dsp_resource *res = NULL;
-	kest_mem_slot *mem = NULL;
-	
-	for (size_t i = 0; i < effect->resources.count; i++)
-	{
-		res = effect->resources.entries[i];
-		
-		if (!res)
-			continue;
-		
-		if (res->type == KEST_DSP_RESOURCE_MEM)
-		{
-			mem = res->data;
-			
-			if (!mem) continue;
-			
-			kest_fpga_periodic_read_deactivate_async(&mem->read);
-		}
-	}
-	
-	return NO_ERROR;
-}
 
 int kest_effect_activate_lfos(kest_effect *effect)
 {
@@ -1429,7 +1228,6 @@ int kest_effect_disable(kest_effect *effect)
 	
 	kest_dsp_resource *res = NULL;
 	
-	kest_mem_slot *mem = NULL;
 	kest_lfo 	  *lfo = NULL;
 	
 	for (size_t i = 0; i < effect->resources.count; i++)
@@ -1441,22 +1239,6 @@ int kest_effect_disable(kest_effect *effect)
 		
 		switch (res->type)
 		{
-			case KEST_DSP_RESOURCE_MEM:
-				mem = (kest_mem_slot*)res->data;
-				
-				if (!mem)
-					break;
-				
-				mem->read.active = 0;
-#ifdef KEST_ENABLE_UI
-				if (mem->read.timer)
-				{
-					lv_timer_del(mem->read.timer);
-					mem->read.timer = NULL;
-				}
-#endif
-				
-				break;
 			
 			case KEST_DSP_RESOURCE_LFO:
 				lfo = (kest_lfo*)res->data;

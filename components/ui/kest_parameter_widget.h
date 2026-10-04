@@ -66,7 +66,6 @@ typedef struct kest_parameter_widget
 	
 	int32_t last_refresh_ms;
 	
-	kest_representation rep;
 } kest_parameter_widget;
 
 int nullify_parameter_widget(kest_parameter_widget *pw);
@@ -87,6 +86,7 @@ void parameter_widget_refresh(kest_parameter_widget *pw);
 
 void parameter_widget_change_cb_inner(kest_parameter_widget *pw);
 
+void gut_parameter_widget(kest_parameter_widget *pw);
 void free_parameter_widget(kest_parameter_widget *pw);
 
 int kest_parameter_widget_align_nominal_value(kest_parameter_widget *pw);
@@ -127,7 +127,6 @@ typedef struct
 	
 	char *saved_field_text;
 	
-	kest_representation rep;
 } kest_setting_widget;
 
 int nullify_setting_widget(kest_setting_widget *pw);
@@ -143,13 +142,12 @@ void setting_widget_update_value_label(kest_setting_widget *pot);
 void setting_widget_change_cb_inner(kest_setting_widget *pw);
 void setting_widget_refresh_cb(lv_event_t *event);
 
+void gut_setting_widget(kest_setting_widget *pw);
 void free_setting_widget(kest_setting_widget *pw);
 
 void format_parameter_widget_value_label_v(kest_parameter_widget *pw, float v);
 void parameter_widget_update_value_label_v(kest_parameter_widget *pw, float v);
 
-void param_widget_rep_update(void *representer, void *representee);
-void setting_widget_rep_update(void *representer, void *representee);
 
 DECLARE_LINKED_PTR_LIST(kest_setting_widget);
 
