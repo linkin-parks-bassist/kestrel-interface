@@ -205,7 +205,7 @@ $(app_objdir)/%.o: %.c $(app_hdrs) | $(app_objdir)
 $(app_objdir)/%.o : components/%.c | $(app_objdir)
 	gcc $(CFLAGS_APP) -c $< -o $@
 
-$(app_objdir)/desktop/%.o : desktop/%.c | $(app_objdir)/desktop
+$(app_objdir)/desktop/%.o : desktop/%.c $(app_hdrs) | $(app_objdir)/desktop
 	gcc $(CFLAGS_APP) -c $< -o $@
 
 $(app_objdir)/lvgl/%.o: $(LVGL_DIR)/src/%.c | $(app_objdir)
