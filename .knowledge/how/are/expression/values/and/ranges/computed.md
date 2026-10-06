@@ -1,9 +1,11 @@
 ---
 status: green
-revised_at: "2026-10-05T19:11:08+11:00"
+revised_at: "2026-10-06T18:09:05+11:00"
 ---
 
 kest_expression.c builds constant, reference, unary and binary expression nodes; recursively evaluates expressions against a scope; tests constantness and parameter references; computes min/max/interval bounds; and prints expressions. Depth is bounded by KEST_EXPR_REC_MAX_DEPTH.
+
+The borrowed t expression samples host/MCU time once at kest_expression_evaluate entry. UI/firmware evaluation returns seconds since global_cxt.epoch_start_ms; library builds have no context and use their clock value (currently zero). Scope dependency propagation treats the exact key t as updatable. The updater visits each active effect's t entry each control iteration; successful program queue submission advances the epoch. Rejected submission preserves epoch/state. The merged source retains these main-branch hooks; installed firmware predates them. A two-second reference/dependency host check and queue-rejection epoch checks pass; continuous modulation, epoch timing against actual FPGA commit and physical performance remain unqualified.
 
 Evaluation writes cached/cached_val on its return path. Only constant-and-cached nodes bypass recursive evaluation; ordinary references resolve through the supplied scope. Recognized pi/e/sample_rate references become constant during evaluation. Shared descriptor graphs therefore contain mutable cache state even when dynamic expressions are reevaluated per scope. Parameter bounds can use a dependent node's last cached value without an associated effect; the dynamic-bounds owner specifies that fallback.
 

@@ -1,9 +1,9 @@
 ---
 status: green
-revised_at: "2026-10-05T05:02:43+11:00"
+revised_at: "2026-10-06T18:09:06+11:00"
 ---
 
-kest_scope_init creates a 32-bucket dictionary and inserts pi, tau, e, sample_rate and data_width as borrowed global expressions. Any insertion failure destroys dictionary keys/storage, resets count and returns the error. make test-parser-allocation fails all ten allocations individually, checks complete direct-scope reclamation, then separately checks three rejected descriptors and recovery. Whole-descriptor rollback remains incomplete. Evidence: /tmp/kestrel-scope-init-after.log; the old destructor failed the reclamation assertion.
+kest_scope_init creates a 32-bucket dictionary and inserts pi, tau, e, sample_rate, data_width and t as borrowed global expressions. Any insertion failure destroys dictionary keys/storage, resets count and returns the error. make test-parser-allocation fails all twelve allocations individually, checks direct-scope reclamation, then rejected descriptors/recovery. /tmp/kestrel-mainline-qualified-build.log binds current checks. Whole-descriptor rollback remains incomplete. Context initialization uses the same checked initializer for its global_scope. The six-entry source retains main's time reference; installed firmware predates this merge.
 
 kest_effect_create_scope adds parameters, settings, named definitions, memory and LFO entries, links LFO backlinks and detects dependencies. Memory evaluation loads the atomically published latest sample; the updater consumes a coalesced arrival flag.
 

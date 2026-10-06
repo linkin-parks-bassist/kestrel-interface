@@ -173,11 +173,14 @@ KEST_TEST(kest_test_readback_best_effort_cadence_and_disabled_reads)
     assert(kest_updater_handle_resource_updates(&state) == NO_ERROR);
     assert(kest_fpga_batch_append(&state.batch, COMMAND_CLEAR_CMD_ERR_FLAG) == NO_ERROR);
     uint8_t *retained = state.batch.buf;
+    int epoch = global_cxt.epoch;
+    int64_t epoch_start = global_cxt.epoch_start_ms;
     for (int i = 0; i < 3; i++)
     {
         assert(kest_updater_send(&state) == ERR_QUEUE_SEND_FAILED);
         assert(state.state == KEST_UPDATER_STATE_REPROGRAM);
         assert(state.batch.buf == retained && state.batch.len == 1);
+        assert(global_cxt.epoch == epoch && global_cxt.epoch_start_ms == epoch_start);
         assert(state.batch.buf[0] == COMMAND_CLEAR_CMD_ERR_FLAG);
     }
     kest_updater_state_destroy(&state);

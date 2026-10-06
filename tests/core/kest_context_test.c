@@ -407,3 +407,20 @@ KEST_TEST(test_effect_add_members_uses_typed_allocators)
     vSemaphoreDelete(settings.mutex);
 #endif
 }
+
+KEST_TEST(test_time_reference_survives_mainline_merge)
+{
+    int64_t saved_epoch = global_cxt.epoch_start_ms;
+    global_cxt.epoch_start_ms = kest_system_time_ms() - 2000;
+    kest_scope scope = {0};
+    assert(kest_scope_init(&scope) == NO_ERROR);
+    kest_expression ref = { .type = KEST_EXPR_REF, .val.ref_name = "t" };
+    float elapsed = kest_expression_evaluate(&ref, &scope);
+    assert(elapsed >= 2.0f && elapsed < 2.1f);
+    kest_dependent dep = { .type = KEST_DEPENDENT_SCOPE_ENTRY, .data.entry_key = "t" };
+    assert(kest_dependent_is_updatable(dep));
+    dep.data.entry_key = "tau";
+    assert(!kest_dependent_is_updatable(dep));
+    kest_scope_entry_dict_destroy(&scope.dict, NULL);
+    global_cxt.epoch_start_ms = saved_epoch;
+}

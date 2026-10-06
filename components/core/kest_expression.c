@@ -73,6 +73,15 @@ void kest_expression_capture_destroy(kest_expression_ptr_list *owner)
 	.cached_val = (float)(x)			\
 };
 
+#define KEST_EXPRESSION_REF(x) { 		\
+	.type = KEST_EXPR_REF,				\
+	.val = {.ref_name = x},				\
+	.constant = 0,						\
+	.cached = 0,						\
+};
+
+int64_t t = 0;
+
 void max_depth_bp(const char *string)
 {
 	return;
@@ -98,6 +107,7 @@ kest_expression kest_expression_freq_max 			= KEST_EXPRESSION_CONST((float)KEST_
 kest_expression kest_expression_nyquist 			= KEST_EXPRESSION_CONST((float)KEST_FPGA_SAMPLE_RATE / 2);
 kest_expression kest_expression_2pi_over_fs 		= KEST_EXPRESSION_CONST((2 * M_PI) / (float)KEST_FPGA_SAMPLE_RATE);
 kest_expression kest_expression_root_2_over_2 		= KEST_EXPRESSION_CONST(sqrt(2.0) / 2.0);
+kest_expression kest_expression_t			 		= KEST_EXPRESSION_REF("t");
 
 kest_expression kest_expression_const(float v)
 {
@@ -546,6 +556,15 @@ float kest_expression_evaluate_rec(kest_expression *expr, kest_scope *scope, int
 		return 0.0;
 	}
 	
+	if (expr == &kest_expression_t)
+	{
+		#ifdef KEST_ENABLE_GLOBAL_CONTEXT
+        return 0.001 * (float)(t - global_cxt.epoch_start_ms);
+        #else
+        return 0.001 * (float)t;
+        #endif
+	}
+	
 	if (expr->constant && expr->cached)
 	{
 		ret_val = expr->cached_val;
@@ -747,6 +766,8 @@ expr_compute_return:
 
 float kest_expression_evaluate(kest_expression *expr, kest_scope *scope)
 {
+	t = kest_system_time_ms();
+	
 	float ret_val = kest_expression_evaluate_rec(expr, scope, 0);
 	//KEST_PRINTF("Evaluated expression %p = %s = %.04f (scope: %p)\n", expr, kest_expression_to_string(expr), ret_val, scope);
 	return ret_val;

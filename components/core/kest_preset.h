@@ -83,6 +83,7 @@ int kest_preset_update_positions(kest_preset *preset);
 
 
 kest_effect *kest_preset_get_effect_by_id(kest_preset *preset, int id);
+kest_effect *kest_preset_get_effect_by_index(kest_preset *preset, int n);
 
 
 int kest_preset_activate_lfos(kest_preset *preset);

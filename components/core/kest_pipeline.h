@@ -20,6 +20,7 @@ int kest_pipeline_remove_effect(kest_pipeline *pipeline, uint16_t id);
 int kest_pipeline_get_n_effects(kest_pipeline *pipeline);
 
 kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id);
+kest_effect *kest_pipeline_get_effect_by_index(kest_pipeline *pipeline, int n);
 
 void kest_pipeline_discard_staged(kest_pipeline *pipeline);
 int kest_pipeline_stage_reload(kest_pipeline *dest, const kest_pipeline *src,

@@ -75,7 +75,8 @@ int main(int argc, char **argv)
     armed = 1;
     assert(kest_scope_init(&scope) == NO_ERROR);
     int allocations = calls;
-    assert(scope.count == 5);
+    assert(scope.count == 6);
+    assert(kest_scope_lookup(&scope, "t")->val.expr == &kest_expression_t);
     kest_scope_entry_dict_destroy(&scope.dict, NULL);
     assert(live == 0);
     armed = 0;

@@ -1,9 +1,9 @@
 ---
 status: green
-revised_at: "2026-10-06T17:20:26+11:00"
+revised_at: "2026-10-06T18:09:07+11:00"
 ---
 
-what/is/the/spec.md governs. Next: qualify the installed horizontal-band driver-cache rounded renderer across physical populated-list scrolling, appearance, sustained dials and broader clipping, registration/allocation failure and partial-DMA/timeout handling before normal-build adoption. Use measured fill/label/arc costs to choose further reductions; preserve separate smoothing and avoid responsiveness regressions. Then quality effects preserving David's UI. Full graphs are V2.0; infrastructure acceptance remains partial.
+what/is/the/spec.md governs. Next: qualify the installed horizontal-band driver-cache rounded renderer across physical populated-list scrolling, appearance, sustained dials and broader clipping, registration/allocation failure and partial-DMA/timeout handling before normal-build adoption. Use measured fill/label/arc costs to choose further reductions; preserve separate smoothing and avoid responsiveness regressions. Qualify mainline time-expression/control hooks and epoch timing before deployment, preserving current physical responsiveness. Then quality effects preserving David's UI. Full graphs are V2.0; infrastructure acceptance remains partial.
 
 1. Establish shared physical audio verification, then qualify RHYTHM resource rebuilding/timing, physical dropdown migrations, broader reload/schema populations, concurrent targets/settings navigation, peak memory/queue failure and persistence.
 2. Qualify expression capture/retirement across parsing/generated graphs/rejection/faults. Review payload/static/scope borrows/caches; arena storage remains unselected. Extend malformed operand, populated-loading, dependency/driver/heap coverage. Retain pinned SDK.
