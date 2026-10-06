@@ -606,6 +606,8 @@ int64_t kest_fpga_req_data(int req, int n_bytes, kest_fpga_status_flags *flags)
 {
 	if (!flags) return -1;
 	
+	/* Do not mistake a previous request's sticky error for this request's error. */
+	kest_fpga_send_byte(COMMAND_CLEAR_CMD_ERR_FLAG);
 	kest_fpga_send_byte_get_flags(COMMAND_READ, flags);
 	kest_fpga_send_byte_get_flags(req, flags);
 	
@@ -655,6 +657,8 @@ static int64_t request_data(uint8_t command, uint8_t req, uint8_t *p, int n, int
 	if (!flags)
 		flags = &_flags;
 	
+	/* Clear before the command: after it, bytes belong to its payload. */
+	kest_fpga_send_byte(COMMAND_CLEAR_CMD_ERR_FLAG);
 	kest_fpga_send_byte_get_flags(command, flags);
 	if (command == COMMAND_READ) kest_fpga_send_byte_get_flags(req, flags);
 	

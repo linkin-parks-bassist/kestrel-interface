@@ -49,6 +49,7 @@ typedef struct kest_eff_parsing_state {
 	kest_scope *scope;
 	
 	kest_ast_node *ast;
+	kest_ast_node *info;
 	
 	int errors;
 } kest_eff_parsing_state;
@@ -58,24 +59,25 @@ extern const char *ver_str;
 struct kest_dictionary;
 
 int kest_parse_dictionary(kest_eff_parsing_state *ps, kest_dictionary **result, const char *name);
+int kest_parse_tokens(kest_eff_parsing_state *ps);
 
 kest_effect_desc *kest_read_eff_desc_from_file(char *fname);
 
-void kest_parser_print_info (kest_eff_parsing_state *ps, const char *error_msg, ...);
-void kest_parser_warn		(kest_eff_parsing_state *ps, const char *error_msg, ...);
-void kest_parser_error  	(kest_eff_parsing_state *ps, const char *error_msg, ...);
+void kest_parser_print_info (kest_eff_parsing_state *ps, const char *error_msg, ...) __attribute__((format(printf, 2, 3)));
+void kest_parser_warn		(kest_eff_parsing_state *ps, const char *error_msg, ...) __attribute__((format(printf, 2, 3)));
+void kest_parser_error  	(kest_eff_parsing_state *ps, const char *error_msg, ...) __attribute__((format(printf, 2, 3)));
 
-void kest_parser_print_info_at  (kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
-void kest_parser_warn_at		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
-void kest_parser_error_at  		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...);
+void kest_parser_print_info_at  (kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_warn_at		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_error_at  		(kest_eff_parsing_state *ps, kest_token_ll *token, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
 
-void kest_parser_print_info_at_line(kest_eff_parsing_state *ps, int line, const char *error_msg, ...);
-void kest_parser_warn_at_line		(kest_eff_parsing_state *ps, int line, const char *error_msg, ...);
-void kest_parser_error_at_line  	(kest_eff_parsing_state *ps, int line, const char *error_msg, ...);
+void kest_parser_print_info_at_line(kest_eff_parsing_state *ps, int line, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_warn_at_line		(kest_eff_parsing_state *ps, int line, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_error_at_line  	(kest_eff_parsing_state *ps, int line, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
 
-void kest_parser_print_info_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...);
-void kest_parser_warn_at_node		(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...);
-void kest_parser_error_at_node  	(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...);
+void kest_parser_print_info_at_node(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_warn_at_node		(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
+void kest_parser_error_at_node  	(kest_eff_parsing_state *ps, kest_ast_node *node, const char *error_msg, ...) __attribute__((format(printf, 3, 4)));
 
 int kest_eff_parser_init_mempool();
 int kest_eff_parser_reset_mempool();

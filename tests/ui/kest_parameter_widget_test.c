@@ -1,4 +1,81 @@
 #include "kest_test.h"
+#include <limits.h>
+extern void sw_field_save_cb(lv_event_t *e);
+
+KEST_TEST(test_numeric_setting_validates_whole_integer_without_mutating_on_rejection)
+{
+    lv_display_t *display = lv_display_get_default();
+    int32_t width = lv_display_get_horizontal_resolution(display);
+    int32_t height = lv_display_get_vertical_resolution(display);
+    lv_display_set_resolution(display, 720, 1280);
+    kest_setting setting = { .type = EFFECT_SETTING_INT, .widget_type = SETTING_WIDGET_FIELD,
+        .value = 120, .min = INT_MIN, .max = INT_MAX, .name = "Tempo", .units = "BPM" };
+    kest_preset preset = {0};
+    kest_setting_widget widget;
+    lv_obj_t *screen = lv_obj_create(NULL);
+    nullify_setting_widget(&widget);
+    configure_setting_widget(&widget, &setting, &preset, NULL);
+    assert(setting_widget_create_ui(&widget, screen) == NO_ERROR);
+    lv_obj_add_event_cb(widget.obj, sw_field_save_cb, LV_EVENT_READY, &widget);
+    const char *invalid[] = {"", "-", "120.5", "1a20", "120BPM", " 120", "2147483648",
+        "-2147483649", "999999999999999999999999999999999999999999"};
+    for (size_t i = 0; i < sizeof(invalid) / sizeof(invalid[0]); i++)
+    {
+        lv_textarea_set_text(widget.obj, invalid[i]);
+        lv_obj_send_event(widget.obj, LV_EVENT_READY, NULL);
+        assert(setting.value == 120 && !setting.updated && !preset.unsaved_changes);
+        assert(strcmp(lv_textarea_get_text(widget.obj), "120") == 0);
+    }
+    const char *valid[] = {"-2147483648", "2147483647", "+90", "-12"};
+    const int expected[] = {INT_MIN, INT_MAX, 90, -12};
+    for (size_t i = 0; i < sizeof(valid) / sizeof(valid[0]); i++)
+    {
+        lv_textarea_set_text(widget.obj, valid[i]);
+        lv_obj_send_event(widget.obj, LV_EVENT_READY, NULL);
+        assert(setting.value == expected[i] && setting.updated && preset.unsaved_changes);
+    }
+    setting.min = 30;
+    setting.max = 300;
+    lv_textarea_set_text(widget.obj, "900");
+    lv_obj_send_event(widget.obj, LV_EVENT_READY, NULL);
+    assert(setting.value == 300);
+    lv_obj_delete(screen);
+    lv_display_set_resolution(display, width, height);
+}
+
+KEST_TEST(test_dropdown_changes_request_active_rebuild_only_when_changed)
+{
+    extern QueueHandle_t event_queue;
+    QueueHandle_t saved_queue = event_queue;
+    event_queue = xQueueCreate(4, sizeof(kest_event));
+    assert(event_queue);
+    kest_setting_option options[] = {{ .value = 4, .name = "Quarter" }, { .value = 9, .name = "Dotted eighth" }};
+    kest_setting setting = { .type = EFFECT_SETTING_ENUM, .widget_type = SETTING_WIDGET_DROPDOWN,
+        .value = 4, .min = 0, .max = 9, .name = "Subdivision", .n_options = 2, .options = options };
+    kest_preset preset = { .active = 1 };
+    kest_setting_widget widget;
+    lv_obj_t *screen = lv_obj_create(NULL);
+    assert(nullify_setting_widget(&widget) == NO_ERROR);
+    assert(configure_setting_widget(&widget, &setting, &preset, NULL) == NO_ERROR);
+    assert(setting_widget_create_ui(&widget, screen) == NO_ERROR);
+    lv_dropdown_set_selected(widget.obj, 1);
+    lv_obj_send_event(widget.obj, LV_EVENT_VALUE_CHANGED, NULL);
+    assert(setting.value == 9 && setting.old_value == 4 && setting.updated && preset.unsaved_changes);
+    kest_event event;
+    assert(xQueueReceive(event_queue, &event, 0) == pdTRUE);
+    assert(event.type == KEST_EVENT_SETTING_CHANGE && event.val_ptr == &preset);
+    lv_obj_send_event(widget.obj, LV_EVENT_VALUE_CHANGED, NULL);
+    assert(xQueueReceive(event_queue, &event, 0) == pdFALSE);
+    preset.active = 0;
+    preset.unsaved_changes = 0;
+    lv_dropdown_set_selected(widget.obj, 0);
+    lv_obj_send_event(widget.obj, LV_EVENT_VALUE_CHANGED, NULL);
+    assert(setting.value == 4 && setting.old_value == 9 && preset.unsaved_changes);
+    assert(xQueueReceive(event_queue, &event, 0) == pdFALSE);
+    lv_obj_delete(screen);
+    vQueueDelete(event_queue);
+    event_queue = saved_queue;
+}
 
 KEST_TEST(kest_test_format_float_negative)
 {
@@ -217,4 +294,45 @@ KEST_TEST(test_effect_settings_teardown_releases_backstage_widgets)
     kest_block_list_destroy(&effect.blocks);
     kest_driver_list_destroy(&effect.drivers);
     kest_dsp_resource_ptr_list_destroy(&effect.resources);
+}
+
+KEST_TEST(test_preset_settings_initializes_gain_widget)
+{
+    kest_ui_page page;
+    memset(&page, 0xa5, sizeof(page));
+    assert(init_preset_settings_page(&page) == NO_ERROR);
+    kest_preset_settings_str *str = page.data_struct;
+    assert(str && str->volume_widget.timer == NULL);
+    assert(str->volume_widget.container == NULL);
+    assert(str->volume_widget.nominal_value == 0.0f);
+    assert(str->save_button == NULL && str->default_button == NULL);
+    kest_preset preset = {0};
+    init_parameter(&preset.volume, "Gain", -2.5f, -12.0f, 12.0f);
+    preset.name = "Fixture";
+    assert(configure_preset_settings_page(&page, &preset) == NO_ERROR);
+    assert(str->volume_widget.parent == &page);
+    assert(str->volume_widget.nominal_value == -2.5f);
+    assert(preset.volume.pw == &str->volume_widget);
+    assert(str->volume_widget.driven == 0);
+    kest_interval range = kest_parameter_get_range(&preset.volume);
+    assert(range.a == -12.0f && range.b == 12.0f);
+    parameter_widget_update_value_label(&str->volume_widget);
+    assert(strcmp(str->volume_widget.val_label_text, "-2.50") == 0);
+    gut_parameter_widget(&str->volume_widget);
+    kest_free((void*)page.panel->text);
+    kest_free(page.panel);
+    kest_free(str);
+}
+
+KEST_TEST(test_parameter_range_mixes_literal_and_expression_bounds)
+{
+    kest_parameter param;
+    init_parameter(&param, "Gain", 0.0f, -12.0f, 12.0f);
+    param.min_expr = &kest_expression_standard_gain_min;
+    kest_interval range = kest_parameter_get_range(&param);
+    assert(range.a == KEST_STANDARD_GAIN_MIN && range.b == 12.0f);
+    param.min_expr = NULL;
+    param.max_expr = &kest_expression_standard_gain_max;
+    range = kest_parameter_get_range(&param);
+    assert(range.a == -12.0f && range.b == KEST_STANDARD_GAIN_MAX);
 }

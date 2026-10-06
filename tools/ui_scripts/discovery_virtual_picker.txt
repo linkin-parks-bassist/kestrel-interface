@@ -1,0 +1,56 @@
+# Keyword picker scroll, selection, Back, Cancel/reopen and Apply.
+wait 1000
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+click 200 120
+wait 300
+click 500 120
+wait 300
+click 300 273
+wait 250
+click 300 476
+wait 250
+tree
+screenshot picker-top.bmp
+touch down 300 750
+touch move 300 550
+touch move 300 350
+touch up
+wait 600
+tree
+screenshot picker-scroll.bmp
+click 300 400
+wait 250
+tree
+screenshot selected.bmp
+click 300 273
+wait 250
+click 300 476
+wait 250
+tree
+click 300 189
+wait 250
+tree
+click 300 273
+wait 250
+click 300 476
+wait 250
+click 300 885
+wait 250
+tree
+click 500 120
+wait 250
+click 300 273
+wait 250
+click 300 476
+wait 250
+tree
+click 130 885
+wait 250
+tree
+screenshot applied-empty.bmp
+quit

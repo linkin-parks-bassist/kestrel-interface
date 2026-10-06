@@ -1,34 +1,57 @@
 ---
 status: green
-revised_at: "2026-10-04T13:51:18+11:00"
+revised_at: "2026-10-06T15:57:33+11:00"
 ---
 
-The carrier firmware builds with pinned ESP-IDF 5.3.3 for esp32p4. Source that exact SDK's export.sh in Bash and run idf.py build from the Interface checkout. .gitignore restricts generated build output to /build/ so the knowledge tree's how/to/build procedure remains trackable. SDK installation is owned by global:where/is/esp-idf/installed.md; portable setup is in README.md. This build uses the SDK environment's CMake 3.30.9 and Ninja 1.11.1.4.
+Run commands from kestrel_interface.
 
-main/idf_component.yml pins the SDK/direct components; dependencies.lock retains transitive versions. The direct baseline is esp_lcd_touch 1.2.1, esp_lcd_touch_gt911 1.2.1, Waveshare esp_lcd_hx8394 2.1.0, esp32_p4_nano 2.0.0, LVGL 9.6.0~1 and esp_tinyusb 2.3.0. Upgrade deliberately with lockfile/configuration review.
+Carrier firmware uses pinned ESP-IDF 5.3.3 for esp32p4. On this workstation:
 
-sdkconfig is tracked in Git and preserves David's menuconfig tuning. The committed and current files agree on 1000 Hz FreeRTOS ticks, 360 MHz CPU, 200 MHz PSRAM, 128 KB L2 cache with 64-byte lines, LVGL 1 ms refresh period, 16-bit color and 64-byte draw-buffer alignment. The generated build/config/sdkconfig.h confirms 1000 Hz, 360 MHz, 200 MHz and the 1 ms refresh period. David's canary is a 300 Hz or 1000 Hz tick rate; 1000 Hz passes it. No shared pre-existing CONFIG_LV_* value changed in the checked regeneration, although the newer component's Kconfig adds/reorganizes/removes symbols. Config agreement does not independently verify David's reported 100fps+ interaction performance; preserve it and measure runtime before claiming that rate for a new build.
+```bash
+source /home/david/tools/esp-idf-v5.3.3/export.sh
+idf.py build
+```
 
-The installed carrier image includes the accepted Danger Button footer adjustment, deprecated representation removal, byte-sized allocator requests, callback latest-sample scratchpad handoff, programming-queue rejection handling, payload-marker retirement/final UI cleanup and the separate 100-Hz smoothing task retained at David's direction. It also includes staged 8.3-compatible UART effect-file controls, phantom UI input, dsp/fpga-status diagnostics, bounded streaming state decode, save_preset(NULL) guard, corrected file-task name and descriptor-driven numeric policies/shared register conversion. Subtraction range calculation requests the right-hand upper bound; carrier Auto-Wah, Compressor and Gate load after that correction.
+Image: build/kestrel-interface.bin. Global:where/is/esp-idf/installed.md owns SDK setup; README.md gives portable installation. Preserve sdkconfig, main/idf_component.yml and dependencies.lock. CMake optimizes LVGL alone with -O2; firmware retains -Og. sdkconfig enables LVGL's existing PPA backend for opaque rectangular fills; images remain software. The display-init owner governs buffering/performance. Carrier uses 1000-Hz ticks, 360-MHz CPU, 200-MHz PSRAM and LVGL 1-ms refresh. Pinned P4 Kconfig gates 200-MHz PSRAM on CONFIG_IDF_EXPERIMENTAL_FEATURES=y; fresh probe defaults silently fall back to 20 MHz without it. Verify resolved sdkconfig. Rev-B migration remains separate.
 
-The prior paired Q15 image was 0x123c00 bytes with 22% app-partition space free. Prior ELF SHA-256 is e0bde3926f00f053098b395a75e745d7622690addd3ccbf3f2ba4a0ff7d6a4b4. /tmp/kestrel-svf-range-firmware-flash.log records hash-verified flashing. /tmp/kestrel-svf-active-hil.log observes its boot SHA prefix e0bde3926, app version 7f23ac81-dirty, compile identity October 3 2026, IDF 5.3.3, 1000-Hz ticks, P4 v1.3, 32-MB PSRAM, SD and SGTL5000 initialization. Compile identity is retained by the IDF build and is not the installation time. Application/LVGL deprecation, display swap/mirror and physical-flash/image-header warnings remain. The 2-MB carrier backup at /tmp/kestrel-carrier-before-uart.bin is not the whole physical flash.
+For the isolated rounded-fill experiment, copy sdkconfig to /tmp/kestrel-rounded-ppa-sdkconfig and build with idf.py -B /tmp/kestrel-rounded-ppa-build -D SDKCONFIG=/tmp/kestrel-rounded-ppa-sdkconfig -D KEST_ROUNDED_FILL_PREVIEW=ON build. For the corner-split candidate, use separate /tmp/kestrel-rounded-corners-{sdkconfig,build} paths and additionally pass -D KEST_ROUNDED_CORNERS_PREVIEW=ON. Both options default OFF; normal build/ remains separate. Add -D KEST_DRAW_PROFILE_PREVIEW=ON only for draw-path diagnosis with both previews; how/to/profile/carrier/drawing/paths.md owns the counters and interpretation. KEST_ROUNDED_CACHE_PREVIEW=ON additionally tests pinned-driver cache handling; its cache owner governs qualification. All preview options default OFF and are cached: explicitly disable diagnostic/cache variants when reusing a build for baseline comparison. Display/installed-image owners govern results and qualification.
 
-The installed image includes read32 through the existing queued callback/fpga-read32 command, polynomial-resource typing for allocation/coefficient programming, and token-diagnostic guards. ESP-IDF rebuild/flash succeeds in /tmp/kestrel-flange-poly-firmware-flash.log with hash verification. Current ELF SHA-256 is 335bb1a3f4bb52247317c6baad17f52bb9db08f36310a0267176d02fdaeea025; /tmp/kestrel-flange-poly-live-hil.log confirms boot SHA prefix 335bb1a3f, app version 0a10c284, IDF 5.3.3, SD/codec startup and the polynomial Bass Flange's 27 blocks and wave resource. FPGA status is clean 0x01. The superproject example-effects owner holds its descriptor transfer and David's audible modulation feedback. The FPGA remains the earlier polynomial/SVF/read32 image with missing LUT initialization; Core's build owner governs that defect and the unflashed corrected image. Polynomial instructions do not require those tables. Compiled polynomial/malformed-list regressions pass in the 154-test host suite.
+Close UART before flashing:
 
-Earlier read32 firmware bdb20270635d37f60fbc7d44d7b13dac92b2307c4c8f8e7f591d3747ada40948 has verified flash/read32 evidence in /tmp/kestrel-timing-read32-firmware-flash.log and /tmp/kestrel-timing-read32-hil.log. Magic 0x4b455354 and mask 0x00000006 establish addressed-read transport, not ROM contents or complete hardware qualification. The shared protocol owner specifies that contract.
+```bash
+idf.py -p /dev/serial/by-id/usb-1a86_USB_Single_Serial_5B5F091047-if00 flash
+python3 tools/uart_console.py --port /dev/serial/by-id/usb-1a86_USB_Single_Serial_5B5F091047-if00 --log /tmp/new-kestrel-console.log
+```
 
-idf.py -p PORT flash writes a connected device. Close the UART console before flashing, wait for successful hash verification, then reopen it. Connection-state operations commonly reset this setup; keep a persistent UART session during HIL. how/to/control/the/interface/over/uart.md owns access/commands. SVF requires the paired Q15 FPGA image, owned by the Core build/programming leaf.
+Wait for hash-verified flash before opening the 115200-baud console. Firmware boots automatically; help/info inspect it. Keep one connection during HIL because opening can reset the carrier. Re-enumerate absent ports. UART/installed-image owners govern commands, identity and boot evidence.
 
-The prior paired Q15 HIL transfers the exact 275-byte effects/SVFLP.EFF to SD, loads it at startup, adds it to Preset 13 and invokes ordinary playback. Its Cutoff/Resonance view opens at 1000 Hz/0.71; FPGA status is 0x01 with initialized=1 and timeout/programming/bad/cmd_err/swapping=0. Transfer evidence is /tmp/kestrel-svf-upload-hil.log; activation/boot evidence is /tmp/kestrel-svf-active-hil.log. David confirms that the prior paired Q15 SVF sounds clean at low cutoff and moves smoothly. This is qualitative listening evidence; instrumented response, modulation and overload qualification remain separate.
+POSIX desktop needs SDL2 development tooling (Ubuntu libsdl2-dev and pkg-config):
 
-Earlier callback-readback HIL verifies signed live memory values and normal Level interaction for KTPROBE.EFF, plus active deletion/re-add and settings-page deletion without observed panic/reboot or wedge. The periodic-read owner holds that evidence and limits. Those earlier images' lifecycle/control observations do not requalify every concurrent path in this image. The older SD descriptors, including Variable Delay and KTPROBE, were removed at David's request after backup; the superproject example-effects owner records the current verified library and backup. Existing preset files were not deleted, but references to removed descriptors may not load as before.
+```bash
+make
+./kest
+```
 
-The USB serial adapter enumerated as VID:PID 1a86:55d3, serial 5B5F091047 at /dev/ttyACM0; re-enumerate before use. The read-only capture at /tmp/kestrel-esp32-console.log used pyserial with DTR/RTS false before opening and sent no data. A full boot log still appeared. David reports that connection-state operations commonly reboot this setup; the exact electrical/reset cause is not established. Keep one persistent serial connection for HIL commands rather than repeatedly opening/closing it, and distinguish those induced boots from spontaneous crashes.
+FPGA communications are simulated; desktop does not run DSP audio. Desktop UI owner governs interaction and isolated SD copies.
 
-This is the Waveshare/MIPI/SGTL5000 carrier configuration. Rev-B requires the separately specified SDK/silicon/display/audio migration.
+C tests:
 
-The desktop app builds with make and runs as ./kest. SDL2 2.30.0 development tooling, libsdl2-dev and pkg-config are installed. make tests and ./kest_tests pass 154 tests; where/are/interface/tests.md covers header-change rebuilds. how/to/inspect/the/desktop/ui.md owns isolated UI captures. FPGA communications are simulated, not DSP audio.
+```bash
+make tests && ./kest_tests
+make test-parser-allocation
+```
 
-make lib builds bin/lib/libkest.so with libm and unresolved-symbol rejection. make compile-eff builds bin/lib/compile_eff; run it with INPUT.eff OUTPUT.bin [PARAMETER=VALUE ...] to compile one effect through the production parser, constructor and encoder. Optional overrides use internal parameter names and the existing effect setter before programming-body generation; malformed/nonfinite values and unknown names are rejected. Library default/corner programs exercise them with the actual core and sample model. Its $ORIGIN runpath finds the adjacent library. The output is a programming body including tail-enable, excluding transport begin/end framing. The readback fixture emits the checked 20-byte body with register value 8192. Usage, missing input and failed output writes are checked. The compiled readback and SVF fixtures pass their actual-core Verilator modes through superproject tools/test_eff_readback.sh and tools/test_eff_svf.sh; full controller/mixer/SPI and all-resource execution remain unqualified. make lib_install is a separate system install target; no installation was performed.
+Test-location and coverage owners govern details.
 
-Sources: README.md, Makefile, tracked/current sdkconfig comparison and generated header, component manifest/lockfile, executed builds/tests, observed console output and David's menuconfig-canary/connection-reset guidance.
+Host library/compiler:
+
+```bash
+make lib
+make compile-eff
+bin/lib/compile_eff tests/fixtures/readback.eff /tmp/readback.bin
+bin/lib/compile_eff ../effects/experimental/RHYTHM.EFF /tmp/rhythm.bin setting.tempo=90 setting.division=24
+```
+
+Outputs: bin/lib/libkest.so and adjacent bin/lib/compile_eff. Compiler accepts INPUT.eff OUTPUT.bin [PARAMETER=VALUE ...] [setting.NAME=INTEGER ...] using internal names. Setting overrides require integral int-representable values inside declared bounds; enums require an existing choice. Normal output is a programming body with tail-enable, excluding transport framing. --update UPDATE.bin before parameter overrides writes default programming plus a separate production live-update body; settings are rejected in this mode because they require complete reprogramming. Compilation alone does not verify DSP/audio. make lib_install installs library/headers into system directories and requires write access; local use does not need it.
+
+Sources: Makefile, README.md, tools/compile_eff.c, SDK/build configuration and carrier procedure. Compiler setting boundary/rejection probes passed; RHYTHM's owner governs model/RTL qualification.

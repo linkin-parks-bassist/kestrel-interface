@@ -91,6 +91,21 @@ static void desktop_control(int *running)
             control_resume_at = now + 180;
         }
     }
+    else if (sscanf(line, "touch down %d %d", &x, &y) == 2 ||
+             sscanf(line, "touch move %d %d", &x, &y) == 2) {
+        if (x < 0 || y < 0 || x >= DISPLAY_HRES || y >= DISPLAY_VRES)
+            fprintf(stderr, "Touch outside display: %d %d\n", x, y);
+        else {
+            pointer_x = x; pointer_y = y; pointer_down = 1;
+            pointer_release_at = 0;
+            control_resume_at = now + 30;
+        }
+    }
+    else if (strcmp(line, "touch up") == 0) {
+        pointer_down = 0;
+        pointer_release_at = 0;
+        control_resume_at = now + 30;
+    }
     else if (strncmp(line, "screenshot ", 11) == 0 && line[11]) {
         if (strlen(line + 11) >= sizeof(screenshot_path))
             fprintf(stderr, "Screenshot path too long\n");

@@ -21,10 +21,15 @@ int kest_pipeline_get_n_effects(kest_pipeline *pipeline);
 
 kest_effect *kest_pipeline_get_effect_by_id(kest_pipeline *pipeline, int id);
 
+void kest_pipeline_discard_staged(kest_pipeline *pipeline);
+int kest_pipeline_stage_reload(kest_pipeline *dest, const kest_pipeline *src,
+                              kest_effect_desc *previous, kest_effect_desc *replacement);
+
 int clone_pipeline(kest_pipeline *dest, kest_pipeline *src);
 void gut_pipeline(kest_pipeline *pipeline);
 
 int kest_pipeline_create_fpga_transfer_batch(kest_pipeline *pipeline, kest_fpga_transfer_batch *batch);
+int kest_pipeline_check_capacity(const kest_pipeline *pipeline, unsigned int extra_blocks);
 
 int kest_pipeline_rectify_ids(kest_pipeline *pipeline, int id);
 

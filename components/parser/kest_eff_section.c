@@ -63,15 +63,35 @@ int kest_parameters_section_extract(kest_eff_parsing_state *ps, kest_parameter_p
 		if (entry->type != KEST_EFF_ENTRY_TYPE_SUBDICT)
 		{
 			kest_parser_error_at_node(ps, sect, "Syntax error at entry \"%s\"", key);
+			return ERR_BAD_ARGS;
 		}
 		
+		size_t initial_driver_count = ps->drivers.count;
+		int had_driver_storage = ps->drivers.entries != NULL;
 		parameter = kest_extract_parameter(ps, entry->value.val_dict, key);
 		
 		if (!parameter)
+		{
+			// Failed extraction retired its driver borrows; these values remain unshared.
+			for (size_t j = i; j < n; j++)
+				kest_free_parsed_eff_entry(kest_eff_entry_dict_index(dict, j));
 			return ERR_BAD_ARGS;
+		}
 		
-		if (parameter)
-			kest_parameter_pll_safe_append(list, parameter);
+		int ret_val = kest_parameter_pll_safe_append(list, parameter);
+		if (ret_val != NO_ERROR)
+		{
+			// The unattached parameter owns metadata; expressions retain their current lifetime.
+			while (ps->drivers.count > initial_driver_count)
+				kest_free(ps->drivers.entries[--ps->drivers.count].data);
+			if (!had_driver_storage)
+				kest_driver_list_destroy(&ps->drivers);
+			kest_free(parameter->name_internal);
+			kest_free(parameter->name);
+			kest_free(parameter->units);
+			kest_parameter_free(parameter);
+			return ret_val;
+		}
 	}
 	
 	return NO_ERROR;
@@ -93,7 +113,9 @@ int kest_settings_section_extract(kest_eff_parsing_state *ps, kest_setting_pll *
 	
 	size_t n = kest_eff_entry_dict_count(dict);
 	
-	for (size_t i = 0; i < n; i++)
+	int ret_val = NO_ERROR;
+	size_t i;
+	for (i = 0; i < n; i++)
 	{
 		entry = kest_eff_entry_dict_index(dict, i);
 		key = kest_eff_entry_dict_index_key(dict, i);
@@ -104,18 +126,34 @@ int kest_settings_section_extract(kest_eff_parsing_state *ps, kest_setting_pll *
 		if (entry->type != KEST_EFF_ENTRY_TYPE_SUBDICT)
 		{
 			kest_parser_error_at_node(ps, sect, "Syntax error at entry \"%s\"", key);
+			ret_val = ERR_BAD_ARGS;
+			break;
 		}
 		
 		setting = kest_extract_setting(ps, entry->value.val_dict, key);
 		
 		if (!setting)
-			return ERR_BAD_ARGS;
-		
-		if (setting)
-			kest_setting_pll_safe_append(list, setting);
+		{
+			ret_val = ERR_BAD_ARGS;
+			break;
+		}
+		ret_val = kest_setting_pll_safe_append(list, setting);
+		if (ret_val != NO_ERROR)
+		{
+			kest_free(setting->name_internal);
+			kest_free(setting->name);
+			kest_free(setting->units);
+			gut_setting(setting);
+			kest_allocator_free(&kest_setting_allocator, setting);
+			break;
+		}
+		// Settings copy strings and evaluate bounds; they retain no parser expressions.
+		kest_free_parsed_eff_entry(entry);
 	}
 	
-	return NO_ERROR;
+	for (; i < n; i++)
+		kest_free_parsed_eff_entry(kest_eff_entry_dict_index(dict, i));
+	return ret_val;
 }
 
 int kest_resources_section_extract(kest_eff_parsing_state *ps, kest_dsp_resource_pll **list, kest_ast_node *sect)
@@ -145,6 +183,7 @@ int kest_resources_section_extract(kest_eff_parsing_state *ps, kest_dsp_resource
 		if (entry->type != KEST_EFF_ENTRY_TYPE_SUBDICT)
 		{
 			kest_parser_error_at_node(ps, sect, "Syntax error at entry \"%s\"", key);
+			return ERR_BAD_ARGS;
 		}
 		
 		res = kest_extract_resource(ps, entry->value.val_dict, key);
@@ -152,8 +191,17 @@ int kest_resources_section_extract(kest_eff_parsing_state *ps, kest_dsp_resource
 		if (!res)
 			return ERR_BAD_ARGS;
 		
-		if (res)
-			kest_dsp_resource_pll_safe_append(list, res);
+		int ret_val = kest_dsp_resource_pll_safe_append(list, res);
+		if (ret_val != NO_ERROR)
+		{
+			// The unattached resource owns metadata/payload containers, not its expressions.
+			if (res->type == KEST_DSP_RESOURCE_FILTER && res->data)
+				kest_expression_ptr_list_destroy(&((kest_filter *)res->data)->coefs);
+			kest_free(res->data);
+			kest_free(res->name);
+			kest_allocator_free(&kest_dsp_resource_allocator, res);
+			return ret_val;
+		}
 	}
 	
 	return NO_ERROR;
@@ -167,7 +215,7 @@ int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_scope *scope, str
 	
 	kest_eff_desc_file_section *sec = (kest_eff_desc_file_section*)sect->data;
 	
-	KEST_PRINTF("sec = %p\n");
+	KEST_PRINTF("sec = %p\n", sec);
 	
 	if (!sec)
 	{
@@ -203,6 +251,11 @@ int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_scope *scope, str
 				return ERR_ALLOC_FAIL;
 			
 			nexpr->name = kest_strndup(entry->name, 64);
+			if (!nexpr->name)
+			{
+				kest_free(nexpr);
+				return ERR_ALLOC_FAIL;
+			}
 			nexpr->expr = entry->value.val_expr;
 			
 			ret_val = kest_named_expression_pll_safe_append(&ps->def_exprs, nexpr);
@@ -210,10 +263,14 @@ int kest_defs_section_extract(kest_eff_parsing_state *ps, kest_scope *scope, str
 			if (ret_val != NO_ERROR)
 			{
 				KEST_PRINTF("Error adding to defs: %s\n", kest_error_code_to_string(ret_val));
+				kest_free((void *)nexpr->name);
+				kest_free(nexpr);
 				return ret_val;
 			}
 			
-			ret_val = kest_scope_add_expr(ps->scope, entry->name, entry->value.val_expr);
+			ret_val = kest_scope_add_expr(scope, entry->name, entry->value.val_expr);
+			if (ret_val != NO_ERROR)
+				return ret_val;
 		}
 		else
 		{
@@ -333,6 +390,12 @@ int kest_parse_entry_section(kest_eff_parsing_state *ps, kest_ast_node *section)
 		return ret_val;
 	
 	ret_val = kest_parse_eff_entries(ps, &sec->dict_);
+	if (ret_val != NO_ERROR)
+	{
+		for (size_t i = 0; i < sec->dict_.count; i++)
+			kest_free_parsed_eff_entry(&sec->dict_.entries[i]);
+		sec->dict_.count = 0;
+	}
 	
 	KEST_PRINTF("Parsed section. Result:\n");
 	

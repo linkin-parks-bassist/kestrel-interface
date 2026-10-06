@@ -29,247 +29,6 @@ static const char *instrs [] = {
 
 static const int n_instrs = sizeof(instrs) / sizeof(instrs[0]);
 
-static const kest_arg_format arg_format_std_0 = {
-	.n_args = 0,
-	
-	.arg_a_pos = KEST_ARG_POS_NONE,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.dest_pos  = KEST_ARG_POS_NONE,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_std_1 = {
-	.n_args = 2,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 1,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_std_2 = {
-	.n_args = 3,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = 1,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 2,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_mac = {
-	.n_args = 2,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = 1,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = KEST_ARG_POS_NONE,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_add = {
-	.n_args = 3,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = 1,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 2,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_std_3 = {
-	.n_args = 4,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = 1,
-	.arg_c_pos = 2,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 3,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-static const kest_arg_format arg_format_shift = {
-	.n_args = 3,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = 1,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 3,
-	.shift_pos = 2
-};
-
-static const kest_arg_format arg_format_read = {
-	.n_args = 1,
-	
-	.arg_a_pos = KEST_ARG_POS_NONE,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = 0,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-/*
-static const kest_arg_format arg_format_write = {
-	.n_args = 1,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = KEST_ARG_POS_NONE,
-	.dest_pos  = KEST_ARG_POS_NONE,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-*/
-static const kest_arg_format arg_format_res_read = {
-	.n_args = 2,
-	
-	.arg_a_pos = KEST_ARG_POS_NONE,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 0,
-	.dest_pos  = 1,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-/*
-static const kest_arg_format arg_format_res_read_2 = {
-	.n_args = 3,
-	
-	.arg_a_pos = 1,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 0,
-	.dest_pos  = 2,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-*/
-static const kest_arg_format arg_format_res_read_3 = {
-	.n_args = 4,
-	
-	.arg_a_pos = 1,
-	.arg_b_pos = 2,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 0,
-	.dest_pos  = 3,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-static const kest_arg_format arg_format_res_write = {
-	.n_args = 2,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 1,
-	.dest_pos  = KEST_ARG_POS_NONE,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-/*
-static const kest_arg_format arg_format_res_write_2 = {
-	.n_args = 3,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = 1,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 2,
-	.dest_pos  = KEST_ARG_POS_NONE,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-*/
-static const kest_arg_format arg_format_res_rw = {
-	.n_args = 3,
-	
-	.arg_a_pos = 0,
-	.arg_b_pos = KEST_ARG_POS_NONE,
-	.arg_c_pos = KEST_ARG_POS_NONE,
-	.res_pos   = 1,
-	.dest_pos  = 2,
-	.shift_pos = KEST_ARG_POS_NONE
-};
-
-const kest_arg_format *kest_instr_arg_format(const char *instr)
-{
-	if (!instr) return NULL;
-	
-	if (strcmp(instr, "nop"         ) == 0) return &arg_format_std_0;
-	if (strcmp(instr, "mov"         ) == 0) return &arg_format_std_1;
-	if (strcmp(instr, "add"         ) == 0) return &arg_format_add;
-	if (strcmp(instr, "sub"         ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "mul"         ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "madd"        ) == 0) return &arg_format_std_3;
-	if (strcmp(instr, "arsh"        ) == 0) return &arg_format_shift;
-	if (strcmp(instr, "lsh"         ) == 0) return &arg_format_shift;
-	if (strcmp(instr, "rsh"         ) == 0) return &arg_format_shift;
-	if (strcmp(instr, "abs"         ) == 0) return &arg_format_std_1;
-	if (strcmp(instr, "min"         ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "max"         ) == 0) return &arg_format_std_2;
-	if (strcmp(instr, "clamp"       ) == 0) return &arg_format_std_3;
-	if (strcmp(instr, "mov_acc"     ) == 0) return &arg_format_read;
-	if (strcmp(instr, "mov_lacc"    ) == 0) return &arg_format_read;
-	if (strcmp(instr, "mov_uacc"    ) == 0) return &arg_format_read;
-	if (strcmp(instr, "macz"        ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "umacz"       ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "mac"         ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "umac"        ) == 0) return &arg_format_mac;
-	if (strcmp(instr, "delay_read"  ) == 0) return &arg_format_res_read;
-	if (strcmp(instr, "delay_mread" ) == 0) return &arg_format_res_read_3;
-	if (strcmp(instr, "delay_write" ) == 0) return &arg_format_res_write;
-	if (strcmp(instr, "mem_read"    ) == 0) return &arg_format_res_read;
-	if (strcmp(instr, "mem_write"   ) == 0) return &arg_format_res_write;
-	if (strcmp(instr, "filter"      ) == 0) return &arg_format_res_rw;
-	if (strcmp(instr, "fcasc"       ) == 0) return &arg_format_res_read;
-	if (strcmp(instr, "tanh4"       ) == 0) return &arg_format_std_1;
-	if (strcmp(instr, "sin2pi"      ) == 0) return &arg_format_std_1;
-	
-	return NULL;
-}
-
-int kest_instr_opcode(const char *instr)
-{
-	if (!instr)
-	{
-		KEST_PRINTF_FORCE("kest_instr_opcode(instr = %p)\n", instr);
-		return BLOCK_INSTR_NOP;
-	}
-	
-	if (strcmp(instr, "nop"         ) == 0) return BLOCK_INSTR_NOP;
-	if (strcmp(instr, "mov"         ) == 0) return BLOCK_INSTR_MADD;
-	if (strcmp(instr, "add"         ) == 0) return BLOCK_INSTR_MADD;
-	if (strcmp(instr, "sub"         ) == 0) return BLOCK_INSTR_MADD;
-	if (strcmp(instr, "mul"         ) == 0) return BLOCK_INSTR_MADD;
-	if (strcmp(instr, "madd"        ) == 0) return BLOCK_INSTR_MADD;
-	if (strcmp(instr, "arsh"        ) == 0) return BLOCK_INSTR_ARSH;
-	if (strcmp(instr, "lsh"         ) == 0) return BLOCK_INSTR_LSH;
-	if (strcmp(instr, "rsh"         ) == 0) return BLOCK_INSTR_RSH;
-	if (strcmp(instr, "abs"         ) == 0) return BLOCK_INSTR_ABS;
-	if (strcmp(instr, "min"         ) == 0) return BLOCK_INSTR_MIN;
-	if (strcmp(instr, "max"         ) == 0) return BLOCK_INSTR_MAX;
-	if (strcmp(instr, "clamp"       ) == 0) return BLOCK_INSTR_CLAMP;
-	if (strcmp(instr, "mov_acc"     ) == 0) return BLOCK_INSTR_MOV_ACC;
-	if (strcmp(instr, "mov_lacc"    ) == 0) return BLOCK_INSTR_MOV_LACC;
-	if (strcmp(instr, "mov_uacc"    ) == 0) return BLOCK_INSTR_MOV_UACC;
-	if (strcmp(instr, "macz"        ) == 0) return BLOCK_INSTR_MACZ;
-	if (strcmp(instr, "umacz"       ) == 0) return BLOCK_INSTR_UMACZ;
-	if (strcmp(instr, "mac"         ) == 0) return BLOCK_INSTR_MAC;
-	if (strcmp(instr, "umac"        ) == 0) return BLOCK_INSTR_UMAC;
-	if (strcmp(instr, "delay_read"  ) == 0) return BLOCK_INSTR_DELAY_READ;
-	if (strcmp(instr, "delay_mread" ) == 0) return BLOCK_INSTR_DELAY_READ;
-	if (strcmp(instr, "delay_write" ) == 0) return BLOCK_INSTR_DELAY_WRITE;
-	if (strcmp(instr, "mem_read"    ) == 0) return BLOCK_INSTR_MEM_READ;
-	if (strcmp(instr, "mem_write"   ) == 0) return BLOCK_INSTR_MEM_WRITE;
-	if (strcmp(instr, "filter"      ) == 0) return BLOCK_INSTR_FILTER;
-	if (strcmp(instr, "fcasc"       ) == 0) return BLOCK_INSTR_FCASC;
-	if (strcmp(instr, "tanh4"       ) == 0) return BLOCK_INSTR_LUT_READ;
-	if (strcmp(instr, "sin2pi"      ) == 0) return BLOCK_INSTR_LUT_READ;
-	
-	return BLOCK_INSTR_NOP;
-}
-
 int kest_parse_asm_arg(kest_eff_parsing_state *ps, kest_asm_operand *arg)
 {
 	if (!ps)
@@ -322,7 +81,7 @@ int kest_parse_asm_arg(kest_eff_parsing_state *ps, kest_asm_operand *arg)
 			
 			if (!valid)
 			{
-				kest_parser_error_at(ps, current, "Invalid argument \"%s\"");
+				kest_parser_error_at(ps, current, "Invalid argument \"%s\"", current->data);
 				ret_val = ERR_BAD_ARGS;
 				goto asm_parse_arg_fin;
 			}
@@ -438,7 +197,6 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 	kest_token_ll *current = ps->current_token;
 	kest_token_ll *tok;
 	
-	kest_expression *expr;
 	
 	kest_dsp_resource_pll *current_res;
 	int resource_found;
@@ -486,7 +244,7 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 			
 			if (!valid)
 			{
-				kest_parser_error_at(ps, current, "Invalid argument \"%s\"");
+				kest_parser_error_at(ps, current, "Invalid argument \"%s\"", current->data);
 				ret_val = ERR_BAD_ARGS;
 				goto asm_parse_arg_fin;
 			}
@@ -545,10 +303,9 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 			goto asm_parse_arg_fin;
 		}
 		
-		expr = kest_expr_new_reference(current->data);
 		if (arg)
 		{
-			arg->expr = expr;
+			arg->expr = kest_expr_new_reference(current->data);
 		}
 	}
 	else if (token_is_int(current->data))
@@ -566,6 +323,12 @@ int kest_parse_asm_arg_2(kest_eff_parsing_state *ps, kest_asm_arg *arg)
 		goto asm_parse_arg_fin;
 	}
 	
+	if (arg && !arg->expr)
+	{
+		kest_parser_error_at(ps, current, "Allocation failed");
+		ret_val = ERR_ALLOC_FAIL;
+	}
+
 asm_parse_arg_fin:
 
 	if (current)
@@ -600,13 +363,6 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 	if (!current->data)
 		return ERR_BAD_ARGS;
 	
-	kest_block *block = kest_alloc(sizeof(kest_block));
-	
-	if (!block)
-		return ERR_ALLOC_FAIL;
-	
-	memset(block, 0, sizeof(kest_block));
-	
 	int line_number = current->line;
 	
 	KEST_PRINTF("Parsing asm line, line %d: \"%s\"\n", line_number, ps->lines[line_number - 1]);
@@ -634,7 +390,7 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 	
 	if (!line)
 	{
-		kest_parser_error_at(ps, current, "Allocation failed", current->data);
+		kest_parser_error_at(ps, current, "Allocation failed");
 		ret_val = ERR_ALLOC_FAIL;
 		goto asm_line_parse_fin;
 	}
@@ -645,7 +401,7 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 	
 	if (!line->instr)
 	{
-		kest_parser_error_at(ps, current, "Allocation failed", current->data);
+		kest_parser_error_at(ps, current, "Allocation failed");
 		ret_val = ERR_ALLOC_FAIL;
 		goto asm_line_parse_fin;
 	}
@@ -708,7 +464,7 @@ int kest_parse_asm_line(kest_eff_parsing_state *ps)
 	
 	KEST_PRINTF("Line has %d args\n", line->n_args);
 	
-	kest_asm_line_pll_safe_append(&ps->asm_lines, line);
+	ret_val = kest_asm_line_pll_safe_aappend(&ps->asm_lines, line, kest_parser_alloc);
 
 asm_line_parse_fin:
 	
@@ -819,7 +575,8 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			if (arg.type != KEST_ASM_ARG_CHANNEL)
 			{
 				kest_parser_error_at_line(ps, line_number, "Destination must be a channel");
-				return ERR_BAD_ARGS;
+				ret_val = ERR_BAD_ARGS;
+				goto fail;
 			}
 			
 			KEST_PRINTF("Evaluating destination; \"%s\"\n", kest_expression_to_string(line->args[i].expr));
@@ -831,24 +588,28 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			if (arg.type != KEST_ASM_ARG_RES)
 			{
 				kest_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be a resource", i + 1, line->instr);
-				return ERR_BAD_ARGS;
+				ret_val = ERR_BAD_ARGS;
+				goto fail;
 			}
 			
 			if (!arg.expr)
 			{
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			if (arg.expr->type != KEST_EXPR_REF)
 			{
 				// tbh.... 
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			if (!arg.expr->val.ref_name)
 			{
 				kest_parser_error_at_line(ps, line_number, "Resource has no name!");
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			resource = kest_resource_get_by_name(ps->resources, arg.expr->val.ref_name);
@@ -856,7 +617,8 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			if (!resource)
 			{
 				kest_parser_error_at_line(ps, line_number, "Could not find resource \"%s\"", arg.expr->val.ref_name);
-				return ERR_BAD_ARGS;
+				ret_val = ERR_BAD_ARGS;
+				goto fail;
 			}
 			
 			block->res = resource;
@@ -881,18 +643,21 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			if (arg.type != KEST_ASM_ARG_INT)
 			{
 				kest_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be an integer", i + 1, line->instr);
-				return ERR_BAD_ARGS;
+				ret_val = ERR_BAD_ARGS;
+				goto fail;
 			}
 			
 			if (!arg.expr)
 			{
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			if (arg.expr->type != KEST_EXPR_CONST)
 			{
 				// tbh.... 
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			block->shift = (int)roundf(kest_expression_evaluate(arg.expr, NULL));
@@ -909,7 +674,8 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 			if (!op)
 			{
 				kest_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" does not correspond to anything (this is a bug!!)", i + 1, line->instr);
-				return ERR_UNKNOWN_ERR;
+				ret_val = ERR_UNKNOWN_ERR;
+				goto fail;
 			}
 			
 			switch (arg.type)
@@ -923,7 +689,8 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 					if (block->reg_0.active && block->reg_1.active)
 					{
 						kest_parser_error_at_line(ps, line_number, "Instruction \"%s\" has only two expression registers", line->instr);
-						return ERR_BAD_ARGS;
+						ret_val = ERR_BAD_ARGS;
+						goto fail;
 					}
 					if (desc->numeric)
 					{
@@ -931,7 +698,11 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 						if (desc->numeric->args[index].send_expression)
 						{
 							arg.expr = desc->numeric->args[index].send_expression(arg.expr);
-							if (!arg.expr) return ERR_ALLOC_FAIL;
+							if (!arg.expr)
+							{
+								ret_val = ERR_ALLOC_FAIL;
+								goto fail;
+							}
 						}
 					}
 					op->type = BLOCK_OPERAND_TYPE_R;
@@ -956,7 +727,8 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 				
 				default:
 					kest_parser_error_at_line(ps, line_number, "Argument %d of instruction \"%s\" must be either a channel or an expression", i + 1, line->instr);
-					return ERR_BAD_ARGS;
+					ret_val = ERR_BAD_ARGS;
+					goto fail;
 			}
 		}
 	}
@@ -997,7 +769,11 @@ int kest_process_asm_line(kest_eff_parsing_state *ps, kest_asm_line *line)
 		block->res = &tanh_lut;
 	}
 	
-	kest_block_pll_safe_append(&ps->blocks, block);
+	ret_val = kest_block_pll_safe_append(&ps->blocks, block);
+
+fail:
+	if (ret_val != NO_ERROR)
+		kest_free(block);
 	
 	return ret_val;
 }

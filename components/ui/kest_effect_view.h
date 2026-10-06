@@ -42,6 +42,5 @@ int enter_effect_view_forward(kest_ui_page *page);
 int enter_effect_view_back(kest_ui_page *page);
 int refresh_effect_view(kest_ui_page *page);
 
-int effect_view_request_parameter_values(kest_ui_page *page);
 
 #endif

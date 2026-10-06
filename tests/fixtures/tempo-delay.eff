@@ -1,0 +1,15 @@
+v1.0
+.INFO
+name: "Tempo Delay Test"
+.SETTINGS
+tempo: (name: "Tempo", type: "int", default: 120, min: 30, max: 300, units: "BPM", page: "main")
+division: (name: "Subdivision", type: "enum", default: 24, min: 18, max: 24, page: "main", options: (
+  quarter: (name: "Quarter", value: 24),
+  dotted: (name: "Dotted eighth", value: 18)
+))
+.RESOURCES
+echo: (type: "delay", delay_samples: sample_rate*60/tempo*division/24, size: 4)
+.CODE
+delay_read $echo c1
+delay_write c0 $echo
+mov c0 c0

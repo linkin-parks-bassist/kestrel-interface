@@ -1,10 +1,10 @@
 ---
 status: green
-revised_at: "2026-09-19T23:57:21+10:00"
+revised_at: "2026-10-05T04:59:51+11:00"
 ---
 
-`components/core/kest_dict.h` declares API names: `kest_allocator_free`; named types: `X`; configuration symbols: `KEST_DICT_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
+kest_dict.h supplies value and pointer dictionary macros, allocator-aware initialization, insertion/lookup/indexing and destruction.
 
-Source: components/core/kest_dict.h
+Value dictionaries copy each inserted key with their allocator. All three value insertion variants release that copy if bucket append fails. Value destruction frees stored keys, bucket arrays and the bucket table, invoking an optional destructor only for values. Borrowed expression globals remain borrowed when that destructor is null.
 
-Source: components/core/kest_dict.h
+The scope allocation probe covers normal value-key reclamation and every allocation in the five-symbol scope initializer; pointer-dictionary ownership and arbitrary insertion variants are separate qualification. Sources: components/core/kest_dict.h and tools/test_parser_allocation.c.

@@ -1,0 +1,10 @@
+v1.0
+.INFO
+name: "Enum Settings Test"
+.SETTINGS
+division: (name: "Subdivision", type: "enum", default: 4, min: 0, max: 9, page: "main", options: (
+  dotted: (name: "Dotted eighth", value: 9),
+  quarter: (name: "Quarter", value: 4)
+))
+.CODE
+mov [division/16] c0

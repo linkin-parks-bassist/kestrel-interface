@@ -1,0 +1,7 @@
+v1.0
+.INFO
+name: "Parameter Rejection"
+.PARAMETERS
+level: (name: "Level", default: 0.5, min: 0, max: 1, units: "gain")
+.CODE
+unknown c0 c0

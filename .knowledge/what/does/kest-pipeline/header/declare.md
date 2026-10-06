@@ -1,10 +1,6 @@
 ---
 status: green
-revised_at: "2026-10-04T00:29:24+10:00"
+revised_at: "2026-10-05T22:43:21+11:00"
 ---
 
-`components/core/kest_pipeline.h` declares API names: `kest_pipeline_move_effect`, `kest_pipeline_remove_effect`, `kest_pipeline_get_n_effects`, `kest_pipeline_create_fpga_transfer_batch`, `kest_pipeline_rectify_ids`, `kest_pipeline_activate_lfos`, `kest_pipeline_deactivate_lfos`, `kest_pipeline_update_fpga`, `kest_pipeline_update_positions`, `kest_effect_ptr_list_update_positions`; configuration symbols: `KEST_INT_PIPELINE_H_`. This is a declaration map; consult the C implementation for behavior and ownership.
-
-Source: components/core/kest_pipeline.h
-
-Source: components/core/kest_pipeline.h
+components/core/kest_pipeline.h declares pipeline initialization, effect append/move/remove/count/lookup, cloning, private reload staging/discard, capacity preflight, transfer compilation, ID rectification, LFO activation/deactivation and FPGA/position updates. kest_pipeline_check_capacity accepts a pipeline and additional block count, returning an error if existing or proposed blocks exceed capacity. The pipeline implementation owner governs behavior and ownership. KEST_INT_PIPELINE_H_ is the include guard.

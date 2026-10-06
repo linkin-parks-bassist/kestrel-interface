@@ -294,13 +294,18 @@ int kest_scope_init(kest_scope *scope)
 	if (ret_val != NO_ERROR)
 		return ret_val;
 	
-	kest_scope_add_expr(scope, "pi", &kest_expression_pi);
-	kest_scope_add_expr(scope, "tau", &kest_expression_2pi);
-	kest_scope_add_expr(scope, "e", &kest_expression_e);
-	kest_scope_add_expr(scope, "sample_rate", &kest_expression_sample_rate);
-	kest_scope_add_expr(scope, "data_width", &kest_expression_data_width);
+	if ((ret_val = kest_scope_add_expr(scope, "pi", &kest_expression_pi)) != NO_ERROR) goto init_bail;
+	if ((ret_val = kest_scope_add_expr(scope, "tau", &kest_expression_2pi)) != NO_ERROR) goto init_bail;
+	if ((ret_val = kest_scope_add_expr(scope, "e", &kest_expression_e)) != NO_ERROR) goto init_bail;
+	if ((ret_val = kest_scope_add_expr(scope, "sample_rate", &kest_expression_sample_rate)) != NO_ERROR) goto init_bail;
+	if ((ret_val = kest_scope_add_expr(scope, "data_width", &kest_expression_data_width)) != NO_ERROR) goto init_bail;
 	
 	return NO_ERROR;
+
+init_bail:
+	kest_scope_entry_dict_destroy(&scope->dict, NULL);
+	scope->count = 0;
+	return ret_val;
 }
 
 int kest_scope_add_entry(kest_scope *scope, const char *name, kest_scope_entry entry)

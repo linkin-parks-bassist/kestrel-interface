@@ -11,6 +11,7 @@ typedef struct {
 
 int get_section_start_score(char *str, int current_score);
 
+// Consumes fresh parser-owned setting values; successful settings retain copies only.
 int kest_settings_section_extract  (kest_eff_parsing_state *ps, kest_setting_pll      **list, struct kest_ast_node *sect);
 int kest_parameters_section_extract(kest_eff_parsing_state *ps, kest_parameter_pll    **list, struct kest_ast_node *sect);
 int kest_resources_section_extract (kest_eff_parsing_state *ps, kest_dsp_resource_pll **list, struct kest_ast_node *sect);

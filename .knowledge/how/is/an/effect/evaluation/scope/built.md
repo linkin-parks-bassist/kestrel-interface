@@ -1,10 +1,14 @@
 ---
 status: green
-revised_at: "2026-10-04T01:58:18+10:00"
+revised_at: "2026-10-05T05:02:43+11:00"
 ---
 
-kest_effect_create_scope inserts parameters, settings, named definitions, then memory and LFO return entries; links LFO scope-entry pointers and detects dependencies. Memory scope entries point to slots whose latest sample is atomically published by SPI read callbacks. Evaluation atomically loads that sample; the control-loop updater consumes a coalesced arrival flag to propagate dependencies. There is no queued token/result reply or stored periodic-read scope-entry pointer.
+kest_scope_init creates a 32-bucket dictionary and inserts pi, tau, e, sample_rate and data_width as borrowed global expressions. Any insertion failure destroys dictionary keys/storage, resets count and returns the error. make test-parser-allocation fails all ten allocations individually, checks complete direct-scope reclamation, then separately checks three rejected descriptors and recovery. Whole-descriptor rollback remains incomplete. Evidence: /tmp/kestrel-scope-init-after.log; the old destructor failed the reclamation assertion.
 
-The function sets effect->scope only on success. The failure path explicitly has a TODO for cleanup, and its comment warns that calling it when a scope already exists leaks memory.
+kest_effect_create_scope adds parameters, settings, named definitions, memory and LFO entries, links LFO backlinks and detects dependencies. Memory evaluation loads the atomically published latest sample; the updater consumes a coalesced arrival flag.
 
-Sources: components/core/kest_effect.c, kest_expr_scope.c, kest_resource.c and kest_update.c.
+The function publishes effect->scope only on success. Insertion/failed LFO lookup returns an error; failure clears LFO backlinks, destroys temporary dictionary/dependency lists and frees the scope. Other unpublished members belong to caller rollback. Replacing an existing scope remains unsupported and leaks its former owner.
+
+The memory-resource regression checks three failed appends without a name, no publication and returned effect/resource slots; restoring the name permits construction/lookup/reclamation. Other insertion/dependency failures and physical pressure remain unqualified. The repair is installed; smoke/flanger lifecycle passes with baseline pool restoration. The installed-firmware owner records identity and physical evidence.
+
+Sources: components/core/{kest_effect,kest_expr_scope,kest_resource,kest_update,kest_dict}, tests/core/kest_context_test.c and tools/test_parser_allocation.c.

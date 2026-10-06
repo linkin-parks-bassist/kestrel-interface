@@ -232,6 +232,7 @@ int clone_setting(kest_setting *dest, kest_setting *src)
 	init_setting_str(dest);
 	
 	dest->id = src->id;
+	dest->type = src->type;
 	
 	dest->value = src->value;
 	dest->min = src->min;
@@ -385,10 +386,13 @@ kest_interval kest_parameter_get_range_rec(kest_parameter *param, int depth)
 	
 	if (!param || depth > KEST_EXPR_REC_MAX_DEPTH)
 	{
-		max_depth_bp(param->name);
+		max_depth_bp(param ? param->name : NULL);
 		return i;
 	}
 	
+	i.a = param->min;
+	i.b = param->max;
+
 	kest_effect *effect = param->effect;
 	
 	if (effect && !effect->scope)

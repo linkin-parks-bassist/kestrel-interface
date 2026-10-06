@@ -1,5 +1,81 @@
 #include "kest_test.h"
 
+KEST_TEST(test_tempo_settings_rebuild_delay_allocations_from_current_instance_values)
+{
+    kest_effect_desc *desc = kest_read_eff_desc_from_file("tests/fixtures/tempo-delay.eff");
+    assert(desc);
+    kest_preset preset = {0};
+    kest_effect *effect = kest_pipeline_append_effect_eff(&preset.pipeline, desc);
+    assert(effect);
+    kest_setting *tempo = NULL, *division = NULL;
+    for (kest_setting_pll *s = effect->settings; s; s = s->next)
+    {
+        if (strcmp(s->data->name_internal, "tempo") == 0) tempo = s->data;
+        if (strcmp(s->data->name_internal, "division") == 0) division = s->data;
+    }
+    assert(tempo && division);
+    kest_updater_state state;
+    assert(kest_updater_state_init(&state) == NO_ERROR);
+    const int values[][4] = {{120, 24, 22050, 22056}, {90, 24, 29400, 29408},
+        {60, 18, 33075, 33080}, {30, 24, 88200, 88208}, {120, 24, 22050, 22056}};
+    for (size_t i = 0; i < sizeof(values)/sizeof(values[0]); i++)
+    {
+        tempo->value = values[i][0];
+        division->value = values[i][1];
+        assert(kest_scope_fetch(effect->scope, "tempo")->val.setting == tempo);
+        kest_update update = { .type = KEST_UPDATE_PRESET, .data.preset = &preset };
+        assert(kest_updater_handle_update(&state, update) == NO_ERROR);
+        assert(state.state == KEST_UPDATER_STATE_REPROGRAM && state.allocs.count == 1);
+        assert(state.allocs.entries[0].size_2 == values[i][2]);
+        assert(state.allocs.entries[0].size_1 == values[i][3]);
+        assert(kest_updater_generate_command_list(&state) == NO_ERROR);
+        /* The real updater leaves REPROGRAM after submitting the batch. */
+        state.state = KEST_UPDATER_STATE_READY;
+    }
+    assert(desc->settings->data->value == 120 && desc->settings->next->data->value == 24);
+    kest_updater_state_destroy(&state);
+    kest_pipeline_discard_staged(&preset.pipeline);
+    kest_effect_desc_retire(desc);
+}
+
+KEST_TEST(test_live_polynomial_coefficients_share_one_commit)
+{
+    kest_effect_desc *desc = kest_read_eff_desc_from_file("tests/fixtures/polynomial-live.eff");
+    assert(desc);
+    kest_pipeline pipeline = {0};
+    kest_effect *effect = kest_pipeline_append_effect_eff(&pipeline, desc);
+    assert(effect && effect->parameters);
+    kest_parameter *param = effect->parameters->data;
+    const float values[] = {0.125f, -0.25f, 0.5f};
+    for (int pass = 0; pass < 3; pass++)
+    {
+        kest_updater_state state;
+        assert(kest_updater_state_init(&state) == NO_ERROR);
+        assert(kest_parameter_set(param, values[pass]) == NO_ERROR);
+        kest_update update = { .type = KEST_UPDATE_PARAM, .data.param = param };
+        assert(kest_updater_handle_update(&state, update) == NO_ERROR);
+        assert(state.filter_writes.count == 3);
+        assert(state.reg_writes.count == 0 && state.instr_writes.count == 0 && state.allocs.count == 0);
+        assert(kest_updater_generate_command_list(&state) == NO_ERROR);
+        assert(state.cmds.count == 4);
+        int seen = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            kest_fpga_command *cmd = &state.cmds.entries[i];
+            assert(cmd->type == COMMAND_UPDATE_FILTER_COEF && cmd->data_1.handle == 0);
+            assert(cmd->data_2.coef >= 0 && cmd->data_2.coef <= 2);
+            seen |= 1 << cmd->data_2.coef;
+            assert(cmd->val == (cmd->data_2.coef == 0 ? values[pass] : cmd->data_2.coef == 1 ? 0.25f : -values[pass]));
+        }
+        assert(seen == 7);
+        assert(state.cmds.entries[3].type == COMMAND_COMMIT_FILTER_COEF);
+        assert(state.cmds.entries[3].data_1.handle == 0);
+        kest_updater_state_destroy(&state);
+    }
+    kest_effect_free_retired(effect);
+    kest_free(pipeline.effects);
+}
+
 KEST_TEST(test_resource_clone_for_effect_failure)
 {
     kest_effect effect = {0};
@@ -175,4 +251,37 @@ KEST_TEST(test_retired_effect_survives_reprogram_clear_and_spi_queue_rejection)
     lv_timer_handler();
     lv_timer_resume(refresh);
     kest_updater_state_destroy(&state);
+}
+
+KEST_TEST(test_resource_clones_use_and_reclaim_typed_pool)
+{
+    kest_allocator saved = kest_dsp_resource_allocator;
+    kest_dsp_resource_pool pool;
+    assert(kest_dsp_resource_pool_init(&pool) == NO_ERROR);
+    assert(kest_dsp_resource_pool_reserve(&pool, 1) == NO_ERROR);
+    kest_dsp_resource_pool_init_allocator(&pool, &kest_dsp_resource_allocator);
+    kest_mem_slot mem = {0};
+    mem.value = -123;
+    kest_dsp_resource src = { .type = KEST_DSP_RESOURCE_MEM, .data = &mem };
+    for (int pass = 0; pass < 3; pass++)
+    {
+        assert(kest_dsp_resource_make_clone(NULL) == NULL);
+        assert(pool.free_count == 1);
+        kest_dsp_resource invalid = { .type = KEST_DSP_RESOURCE_FILTER };
+        assert(kest_dsp_resource_make_clone(&invalid) == NULL);
+        assert(pool.free_count == 1);
+        kest_dsp_resource *clone = kest_dsp_resource_make_clone(&src);
+        assert(clone == pool.entries && pool.free_count == 0);
+        assert(clone->data != &mem);
+        assert(((kest_mem_slot*)clone->data)->value == -123);
+        assert(kest_dsp_resource_make_clone(&src) == NULL);
+        kest_dsp_resource_free(clone);
+        assert(pool.free_count == 1);
+    }
+    kest_dsp_resource_allocator = saved;
+    kest_free(pool.entries);
+    kest_free(pool.buffer);
+#ifdef KEST_USE_FREERTOS
+    vSemaphoreDelete(pool.mutex);
+#endif
 }

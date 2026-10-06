@@ -383,13 +383,28 @@ int kest_updater_add_filter_coef_update(kest_updater_state *state, kest_dependen
 		return ret_val;
 	}
 	
-	for (int i = 0; i < state->filter_writes.count; i++)
+	// Commit flips the whole bank; unchanged coefficients must travel too.
+	kest_filter *filter = NULL;
+	for (size_t i = 0; i < effect->resources.count; i++)
 	{
-		if (state->filter_writes.entries[i].addr_1 == write.addr_1 && state->filter_writes.entries[i].addr_2 == write.addr_2)
-			return NO_ERROR;
+		kest_dsp_resource *res = effect->resources.entries[i];
+		if (res && res->type == KEST_DSP_RESOURCE_FILTER && res->handle == dep->data.filter_coef.filter)
+			filter = res->data;
 	}
-	
-	ret_val = kest_fpga_write_list_append(&state->filter_writes, write);
+	if (!filter) return ERR_BAD_ARGS;
+	for (size_t coefficient = 0; coefficient < filter->coefs.count; coefficient++)
+	{
+		int found = 0;
+		for (size_t i = 0; i < state->filter_writes.count; i++)
+			if (state->filter_writes.entries[i].addr_1 == write.addr_1 && state->filter_writes.entries[i].addr_2 == coefficient)
+				found = 1;
+		if (found) continue;
+		write.addr_2 = coefficient;
+		write.expr = filter->coefs.entries[coefficient];
+		if (!write.expr) return ERR_BAD_ARGS;
+		ret_val = kest_fpga_write_list_append(&state->filter_writes, write);
+		if (ret_val != NO_ERROR) return ret_val;
+	}
 	
 	return ret_val;
 }

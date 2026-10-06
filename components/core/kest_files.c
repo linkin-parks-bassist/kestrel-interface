@@ -19,30 +19,6 @@ static const char *FNAME = "kest_files.c";
 	do {if (x) {for (int a = 0; x[a] != 0; a++) {fputc(x[a], file); POS++;}} fputc(0, file); POS++;} while (0)
 
 #define read_byte(x)   x = fgetc(file);
-#define read_short(x)  fread(&x, sizeof(uint16_t), 1, file);
-#define read_int32(x)  fread(&x, sizeof(int32_t),  1, file);
-#define read_uint32(x) fread(&x, sizeof(uint32_t), 1, file);
-#define read_float(x)  fread(&x, sizeof(float),    1, file);
-#define read_string() \
-	do {\
-		for (int i = 0; i < IO_BUFFER_SIZE; i++)\
-		{\
-			string_read_buffer[i] = fgetc(file);\
-			if (!string_read_buffer[i])\
-				break;\
-		}\
-	} while (0);
-#define read_and_strndup_string(x) \
-	do {\
-		for (int i = 0; i < IO_BUFFER_SIZE; i++)\
-		{\
-			string_read_buffer[i] = fgetc(file);\
-			if (!string_read_buffer[i])\
-				break;\
-		}\
-		x = kest_strndup(string_read_buffer, IO_BUFFER_SIZE);\
-	} while (0);
-
 //#define DUMP_PRESET_SAVE
 //#define DUMP_PRESET_READ
 
@@ -314,7 +290,7 @@ int save_state_to_file(kest_state *state, const char *fname)
 	return NO_ERROR;
 }
 
-static int read_state_filename(FILE *file, char *dest, size_t capacity)
+static int read_file_string(FILE *file, char *dest, size_t capacity)
 {
 	for (size_t i = 0; i < capacity; i++)
 	{
@@ -346,11 +322,11 @@ int load_state_from_file(kest_state *state, const char *fname)
 		&& fgetc(file) == KEST_WRITE_FINISHED_BYTE
 		&& fread(&decoded.input_gain, sizeof(float), 1, file) == 1
 		&& fread(&decoded.output_gain, sizeof(float), 1, file) == 1
-		&& read_state_filename(file, decoded.active_preset_fname, sizeof(decoded.active_preset_fname))
-		&& read_state_filename(file, decoded.active_sequence_fname, sizeof(decoded.active_sequence_fname))
+		&& read_file_string(file, decoded.active_preset_fname, sizeof(decoded.active_preset_fname))
+		&& read_file_string(file, decoded.active_sequence_fname, sizeof(decoded.active_sequence_fname))
 		&& fread(&page_type, sizeof(page_type), 1, file) == 1
 		&& fread(&page_id, sizeof(page_id), 1, file) == 1
-		&& read_state_filename(file, decoded.current_page.fname, sizeof(decoded.current_page.fname));
+		&& read_file_string(file, decoded.current_page.fname, sizeof(decoded.current_page.fname));
 	if (fclose(file) != 0) valid = 0;
 	if (!valid)
 		return ERR_MANGLED_FILE;
@@ -383,6 +359,9 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 	}
 	
 	
+	kest_preset *destination = preset;
+	kest_preset staged = {0};
+	preset = &staged;
 	KEST_PRINTF("Reading preset from %s\n", fname);
 	
 	uint8_t byte;
@@ -418,11 +397,14 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		goto preset_read_bail;
 	}
 	
-	read_and_strndup_string(name);
+	if (!read_file_string(file, string_read_buffer, sizeof(string_read_buffer)))
+    { ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
+    name = kest_strndup(string_read_buffer, sizeof(string_read_buffer));
 	
 	if (!name)
 	{
 		KEST_PRINTF("Allocation fail allocating string of length %d for preset name from file %s\n", (int)byte, fname);
+		ret_val = ERR_ALLOC_FAIL;
 		goto preset_read_bail;
 	}
 	
@@ -430,7 +412,8 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 	
 	KEST_PRINTF("Loaded preset name: %s\n", preset->name);
 	
-	read_short(n_effects);
+	if (fread(&n_effects, sizeof(uint16_t), 1, file) != 1)
+        { ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
 	
 	kest_effect_desc *eff = NULL;
 	
@@ -438,7 +421,8 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 	{
 		KEST_PRINTF("Preset professes to contain %d effects\n", n_effects);
 		//Get effect type
-		read_string();
+		if (!read_file_string(file, string_read_buffer, sizeof(string_read_buffer)))
+        { ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
 		
 		eff = kest_cxt_get_effect_desc_from_cname(&global_cxt, string_read_buffer);
 		
@@ -451,7 +435,7 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		
 		KEST_PRINTF("Encountered %s in position %d\n", eff->name, (int)i);
 		
-		effect = kest_preset_append_effect_eff(preset, eff);
+		effect = kest_pipeline_append_effect_eff(&preset->pipeline, eff);
 		
 		if (!effect)
 		{
@@ -461,7 +445,8 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		}
 		
 		// Get effect ID
-		read_short(arg16);
+		if (fread(&arg16, sizeof(uint16_t), 1, file) != 1)
+        { ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
 		
 		
 		KEST_PRINTF("Effect ID: %d\n", (int)arg16);
@@ -472,7 +457,8 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		{
 			if (current_param->data)
 			{
-				read_float(current_param->data->value);
+				if (fread(&current_param->data->value, sizeof(float), 1, file) != 1)
+                { ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
 			}
 			
 			current_param = current_param->next;
@@ -482,7 +468,11 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 		while (current_setting)
 		{
 			if (current_setting->data)
-				read_float(current_setting->data->value);
+			{
+				if (fread(&arg32, sizeof(arg32), 1, file) != 1)
+				{ ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
+				current_setting->data->value = arg32;
+			}
 			
 			current_setting = current_setting->next;
 		}
@@ -491,141 +481,103 @@ int read_preset_from_file(kest_preset *preset, const char *fname)
 	}
 	
 	KEST_PRINTF("File done! closing...\n");
-	fclose(file);
+	if (fclose(file) != 0)
+	{ file = NULL; ret_val = ERR_MANGLED_FILE; goto preset_read_bail; }
 	KEST_PRINTF("Closed. Returning\n");
 	
-	for (int k = 0; k < KEST_FILENAME_LEN; k++)
+	destination->name = preset->name;
+	kest_effect_pll **tail = &destination->pipeline.effects;
+	while (*tail) tail = &(*tail)->next;
+	*tail = preset->pipeline.effects;
+	for (kest_effect_pll *node = preset->pipeline.effects; node; node = node->next)
 	{
-		if (!fname[k])
-		{
-			preset->fname[k] = 0;
-			break;
-		}
-		
-		preset->fname[k] = fname[k];
+		node->data->preset = destination;
+		effect_rectify_param_ids(node->data);
 	}
-	
-	preset->has_fname = 1;
-	
-	
-	
-	preset->unsaved_changes = 0;
-	
+	snprintf(destination->fname, sizeof(destination->fname), "%s", fname);
+	destination->has_fname = 1;
+	destination->unsaved_changes = 0;
+
 	return ret_val;
 	
 preset_read_bail:
 	//kest_printf("BAILING\n");
-	fclose(file);
-	
+	if (file) fclose(file);
+	kest_free(preset->name);
+	while (preset->pipeline.effects)
+	{
+		kest_effect_pll *node = preset->pipeline.effects;
+		preset->pipeline.effects = node->next;
+		// File-loaded instances have never been published to task borrowers.
+		kest_effect_free_retired(node->data);
+		kest_free(node);
+	}
 	//kest_printf("BAILED\n");
 	return ret_val;
 }
 
 int read_sequence_from_file(kest_sequence *sequence, const char *fname)
 {
-	KEST_PRINTF("read_sequence_from_file\n");
-	if (!fname || !sequence)
-	{
-		return ERR_NULL_PTR;
-	}
-	
-	#ifdef DUMP_SEQUENCE_READ
-	dump_file_contents(fname);
-	#endif
-	
-	FILE *file = fopen(fname, "r");
-	
-	if (!file)
-	{
-		KEST_PRINTF("Could not open file \"%s\"\n", fname);
-		return ERR_FOPEN_FAIL;
-	}
-	
-	KEST_PRINTF("Reading sequence from %s\n", fname);
-	
+	if (!fname || !sequence) return ERR_NULL_PTR;
+	FILE *file = fopen(fname, "rb");
+	if (!file) return ERR_FOPEN_FAIL;
 	uint8_t byte;
-	uint16_t arg16;
-	uint16_t n_presets;
-	char string_read_buffer[IO_BUFFER_SIZE];
+	int validity = file_validity_check(file, KEST_SEQUENCE_MAGIC_BYTE, &byte);
+	int ret_val = validity == 1 ? ERR_BAD_ARGS :
+	              validity == 2 ? ERR_UNFINISHED_WRITE : NO_ERROR;
+	char buffer[IO_BUFFER_SIZE];
 	char *name = NULL;
-	char *preset_fname = NULL;
-	
-	int ret_val = NO_ERROR;
-	
-	switch (file_validity_check(file, KEST_SEQUENCE_MAGIC_BYTE, &byte))
+	seq_kest_preset_pll *head = NULL, **tail = &head;
+	seq_kest_preset_pll *previous = NULL;
+	uint16_t count;
+	if (ret_val != NO_ERROR) goto sequence_read_bail;
+	if (!read_file_string(file, buffer, sizeof(buffer)))
+	{ ret_val = ERR_MANGLED_FILE; goto sequence_read_bail; }
+	name = kest_strndup(buffer, sizeof(buffer));
+	if (!name) { ret_val = ERR_ALLOC_FAIL; goto sequence_read_bail; }
+	if (fread(&count, sizeof(count), 1, file) != 1)
+	{ ret_val = ERR_MANGLED_FILE; goto sequence_read_bail; }
+	for (unsigned i = 0; i < count; i++)
 	{
-		case 0:
-			break;
-		
-		case 1:
-			KEST_PRINTF("Attempted load of sequence from file \"%s\", whose first byte 0x%02x is not the sequence magic byte 0x%02x",
-				fname, byte, KEST_PRESET_MAGIC_BYTE);
-			ret_val = ERR_BAD_ARGS;
-			goto sequence_read_bail;
-		
-		case 2:
-			KEST_PRINTF("Attempted load of sequence from file \"%s\", whose second byte 0x%02x indicates that its write was unfinishedn",
-				fname, byte);
-			ret_val = ERR_UNFINISHED_WRITE;
-			goto sequence_read_bail;
+		if (!read_file_string(file, buffer, sizeof(buffer)))
+		{ ret_val = ERR_MANGLED_FILE; goto sequence_read_bail; }
+		kest_preset *preset = cxt_get_preset_by_fname(&global_cxt, buffer);
+		if (!preset) continue;
+		seq_kest_preset_pll *node = kest_alloc(sizeof(*node));
+		if (!node) { ret_val = ERR_ALLOC_FAIL; goto sequence_read_bail; }
+		*node = (seq_kest_preset_pll){ .data = preset, .prev = previous };
+		*tail = node;
+		tail = &node->next;
+		previous = node;
 	}
-	
-	read_and_strndup_string(name);
-	
-	if (!name)
-	{
-		KEST_PRINTF("Allocation fail allocating string of length %d for sequence name from file %s", (int)byte, fname);
-		goto sequence_read_bail;
-	}
-	
+	if (fclose(file) != 0)
+	{ file = NULL; ret_val = ERR_MANGLED_FILE; goto sequence_read_bail; }
 	sequence->name = name;
-	
-	KEST_PRINTF("Loaded sequence name: %s\n", sequence->name);
-	
-	read_short(n_presets);
-	
-	kest_preset *preset;
-	
-	for (int i = 0; i < n_presets; i++)
+	seq_kest_preset_pll **dest = &sequence->presets;
+	previous = NULL;
+	while (*dest)
 	{
-		read_string();
-		
-		KEST_PRINTF("Sequence contains preset %s...\n", string_read_buffer);
-		preset = cxt_get_preset_by_fname(&global_cxt, string_read_buffer);
-		
-		if (preset)
-		{
-			sequence_append_preset(sequence, preset);
-		}
-		else
-		{
-			KEST_PRINTF("Error: sequence %s contains preset %s, but no such preset found!\n", fname, string_read_buffer);
-		}
+		previous = *dest;
+		dest = &(*dest)->next;
 	}
-	
-	KEST_PRINTF("File done! closing...\n");
-	fclose(file);
-	KEST_PRINTF("Closed. Returning\n");
-	
-	for (int k = 0; k < KEST_FILENAME_LEN; k++)
-	{
-		if (!fname[k])
-		{
-			sequence->fname[k] = 0;
-			break;
-		}
-		
-		sequence->fname[k] = fname[k];
-	}
-	
+	if (head) head->prev = previous;
+	*dest = head;
+	for (seq_kest_preset_pll *node = head; node; node = node->next)
+		node->data->sequence = sequence;
+	snprintf(sequence->fname, sizeof(sequence->fname), "%s", fname);
 	sequence->has_fname = 1;
 	sequence->unsaved_changes = 0;
-	
-	return ret_val;
-	
+	return NO_ERROR;
+
 sequence_read_bail:
-	fclose(file);
-	
+	if (file) fclose(file);
+	kest_free(name);
+	while (head)
+	{
+		seq_kest_preset_pll *next = head->next;
+		kest_free(head);
+		head = next;
+	}
 	return ret_val;
 }
 
@@ -900,7 +852,8 @@ int save_sequence(kest_sequence *sequence)
 int load_saved_presets(kest_context *cxt)
 {
 	KEST_PRINTF("load_saved_presets...\n");
-	string_ll *current_file = list_files_in_directory(KEST_PRESETS_DIR);
+	string_ll *files = list_files_in_directory(KEST_PRESETS_DIR);
+	string_ll *current_file = files;
 	
 	string_ll *cf = current_file;
 	
@@ -930,7 +883,10 @@ int load_saved_presets(kest_context *cxt)
 		preset = kest_allocator_alloc(&kest_preset_allocator, sizeof(kest_preset));
 		
 		if (!preset)
+		{
+			char_pll_free(files);
 			return ERR_ALLOC_FAIL;
+		}
 		
 		init_m_preset(preset);
 		ret_val = read_preset_from_file(preset, current_file->data);
@@ -944,6 +900,7 @@ int load_saved_presets(kest_context *cxt)
 			if (!nl)
 			{
 				free_preset(preset);
+				char_pll_free(files);
 				return ERR_ALLOC_FAIL;
 			}
 			cxt->presets = nl;
@@ -958,6 +915,7 @@ int load_saved_presets(kest_context *cxt)
 		current_file = current_file->next;
 	}
 	
+	char_pll_free(files);
 	global_cxt.saved_presets_loaded = 1;
 	
 	return NO_ERROR;
@@ -969,7 +927,8 @@ int load_saved_sequences(kest_context *cxt)
 	
 	read_sequence_from_file(&cxt->main_sequence, MAIN_SEQUENCE_FNAME);
 	
-	string_ll *current_file = list_files_in_directory(KEST_SEQUENCES_DIR);
+	string_ll *files = list_files_in_directory(KEST_SEQUENCES_DIR);
+	string_ll *current_file = files;
 	
 	kest_sequence *sequence;
 	
@@ -980,7 +939,10 @@ int load_saved_sequences(kest_context *cxt)
 		sequence = kest_allocator_alloc(&kest_sequence_allocator, sizeof(kest_sequence));
 		
 		if (!sequence)
+		{
+			char_pll_free(files);
 			return ERR_ALLOC_FAIL;
+		}
 		
 		init_m_sequence(sequence);
 		ret_val = read_sequence_from_file(sequence, current_file->data);
@@ -992,6 +954,7 @@ int load_saved_sequences(kest_context *cxt)
 			if (!nl)
 			{
 				free_sequence(sequence);
+				char_pll_free(files);
 				return ERR_ALLOC_FAIL;
 			}
 			cxt->sequences = nl;
@@ -1006,6 +969,7 @@ int load_saved_sequences(kest_context *cxt)
 		current_file = current_file->next;
 	}
 	
+	char_pll_free(files);
 	global_cxt.saved_sequences_loaded = 1;
 	
 	return NO_ERROR;
@@ -1016,7 +980,8 @@ int load_effects(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	string_ll *current = list_files_in_directory(KEST_EFFECT_DESC_DIR);
+	string_ll *files = list_files_in_directory(KEST_EFFECT_DESC_DIR);
+	string_ll *current = files;
 	
 	kest_effect_desc *eff = NULL;
 	int ret_val = NO_ERROR;
@@ -1026,6 +991,7 @@ int load_effects(kest_context *cxt)
 		ret_val = kest_eff_parser_deinit_mempool();
 		if (ret_val != NO_ERROR)
 		{
+			char_pll_free(files);
 			return ret_val;
 		}
 	}
@@ -1056,6 +1022,7 @@ int load_effects(kest_context *cxt)
 	
 	kest_eff_parser_deinit_mempool();
 	
+	char_pll_free(files);
 	return NO_ERROR;
 }
 
@@ -1101,7 +1068,7 @@ string_ll *list_files_in_directory(char *dir)
 		if (!fname)
 		{
 			KEST_PRINTF("Error: couldn't allocate string to list directory entry %s/%s", dir, directory_entry->d_name);
-			return list;
+			break;
 		}
 		
 		sprintf(fname, "%s%s", dir, directory_entry->d_name);
@@ -1115,12 +1082,14 @@ string_ll *list_files_in_directory(char *dir)
 		else
 		{
 						KEST_PRINTF("Error: couldn't append linked list to list directory entry %s/%s", dir, directory_entry->d_name);
-			return list;
+			kest_free(fname);
+			break;
 		}
 		
 		directory_entry = readdir(directory);
 	}
 	
+	closedir(directory);
 	return list;
 }
 

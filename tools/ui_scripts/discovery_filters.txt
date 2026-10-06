@@ -1,0 +1,54 @@
+wait 1000
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+click 200 120
+wait 300
+click 500 120
+wait 300
+click 300 273
+wait 250
+click 300 333
+wait 250
+click 300 260
+wait 250
+click 300 345
+wait 250
+click 300 250
+wait 250
+click 100 334
+wait 250
+click 300 345
+wait 250
+click 300 260
+wait 250
+click 300 330
+wait 250
+click 300 345
+wait 250
+click 300 260
+wait 250
+click 300 260
+wait 250
+tree
+screenshot nested.bmp
+click 130 885
+wait 250
+tree
+screenshot union.bmp
+click 500 120
+wait 250
+click 260 535
+wait 250
+click 100 294
+wait 250
+tree
+screenshot negated-draft.bmp
+click 130 885
+wait 250
+tree
+screenshot negated.bmp
+quit

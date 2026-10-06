@@ -84,6 +84,14 @@ int refresh_effect_selector(kest_ui_page *page)
 
 #define PRINTLINES_ALLOWED 1
 
+static void effect_add_error(const char *message)
+{
+	lv_obj_t *popup = lv_msgbox_create(NULL);
+	lv_msgbox_add_title(popup, "Cannot add effect");
+	lv_msgbox_add_text(popup, message);
+	lv_msgbox_add_close_button(popup);
+}
+
 void add_effect_from_menu_eff(lv_event_t *e)
 {
 	kest_effect_selector_button *button = lv_event_get_user_data(e);
@@ -101,6 +109,20 @@ void add_effect_from_menu_eff(lv_event_t *e)
 	kest_preset *preset = global_cxt.working_preset;
 	
 	kest_effect_desc *eff = button->eff;
+	if (!preset || !eff) return;
+	int result = kest_pipeline_check_capacity(&preset->pipeline, eff->res_rpt.blocks);
+	if (result != NO_ERROR)
+	{
+		effect_add_error(result == ERR_PIPELINE_FULL ?
+			"This preset is full. Remove an effect to make room." : "This preset could not be updated.");
+		return;
+	}
+	effect = kest_preset_append_effect_eff(preset, eff);
+	if (!effect)
+	{
+		effect_add_error("This effect could not be added.");
+		return;
+	}
 	
 	KEST_PRINTF("User wishes to add a \"%s\"\n", button->name);
 	
@@ -114,7 +136,6 @@ void add_effect_from_menu_eff(lv_event_t *e)
 		pv = preset->view_page;
 	}
 	
-	effect = kest_preset_append_effect_eff(preset, eff);
 	if (pv) preset_view_append_effect(pv, effect);
 	
 	kest_effect_init_view_page(effect, preset->view_page);

@@ -1,0 +1,16 @@
+v1.0
+
+.INFO
+name: "Live Polynomial Fixture"
+
+.PARAMETERS
+shape: (name: "Shape", default: 0.125, min: -0.5, max: 0.5)
+
+.RESOURCES
+curve: (type: "polynomial", coefs: {shape, 0.25, -shape})
+constant: (type: "polynomial", coefs: {-0.25})
+
+.CODE
+poly c0 $curve c1
+poly c0 $constant c2
+add c1 c2 c0

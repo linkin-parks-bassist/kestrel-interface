@@ -504,13 +504,19 @@ int kest_tokenize_content(kest_eff_parsing_state *ps)
 	if (!ps)
 		return ERR_NULL_PTR;
 	
-	char buf[256];
+	if (!ps->content || ps->file_size < 4)
+	{
+		kest_parser_error_at_line(ps, 1, "Version string v1.0 required at start of file");
+		return ERR_BAD_ARGS;
+	}
+	char buf[5]; // Version/error text only; tokens are copied directly from source spans.
 		
 	int line = 1;
 	int line_char = 4;
 	int token_index = 0;
 	int new_line = 0;
 	int buf_pos = 0;
+	int token_start = 0;
 	char c;
 	int C;
 	int policy;
@@ -553,31 +559,33 @@ int kest_tokenize_content(kest_eff_parsing_state *ps)
 			case TOKENIZER_POLICY_DISCARD:
 				break;
 			case TOKENIZER_POLICY_ACCEPT:
-				buf[buf_pos++] = c;
+				if (!buf_pos) token_start = file_pos - 1;
+				buf_pos++;
 				break;
 				
 			case TOKENIZER_POLICY_SINGULAR:
 				if (buf_pos)
 				{
-					buf[buf_pos++] = 0;
-					kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(buf, buf_pos), line, token_index);
+					kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(ps->content + token_start, buf_pos), line, token_index);
+					buf_pos++;
 					token_index += buf_pos;
 					buf_pos = 0;
 				}
 				buf[0] = c;
 				buf[1] = 0;
-				kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(buf, 1), line, token_index);
+				kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(ps->content + file_pos - 1, 1), line, token_index);
 				token_index += 1;
 				break;
 			case TOKENIZER_POLICY_BEGIN:
+				token_start = file_pos - 1;
 				buf_pos = 0;
-				buf[buf_pos++] = c;
+				buf_pos++;
 				break;
 			case TOKENIZER_POLICY_END_ACCEPT:
-				buf[buf_pos++] = c;
+				buf_pos++;
 			case TOKENIZER_POLICY_END_DISCARD:
-				buf[buf_pos++] = 0;
-				kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(buf, buf_pos), line, token_index);
+				kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(ps->content + token_start, buf_pos), line, token_index);
+				buf_pos++;
 				token_index += buf_pos;
 				buf_pos = 0;
 				break;
@@ -611,8 +619,7 @@ int kest_tokenize_content(kest_eff_parsing_state *ps)
 	
 	if (buf_pos)
 	{
-		buf[buf_pos++] = 0;
-		kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(buf, buf_pos), line, token_index);
+		kest_token_ll_safe_aappend(&ps->tokens, kest_parser_strndup(ps->content + token_start, buf_pos), line, token_index);
 	}
 	
 	ps->n_lines = line;

@@ -327,9 +327,6 @@ int create_effect_view_ui(kest_ui_page *page)
 
 int enter_effect_view(kest_ui_page *page)
 {
-	#ifdef USE_TEENSY
-	effect_view_request_parameter_values(page);
-	#endif
 	return NO_ERROR;
 }
 

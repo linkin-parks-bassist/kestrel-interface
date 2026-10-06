@@ -80,6 +80,8 @@ int kest_driver_clone(kest_driver *dest, kest_driver *src)
 {
 	if (!dest || !src)
 		return ERR_NULL_PTR;
+	if (src->type == KEST_DRIVER_SCOPE_ENTRY && !src->data)
+		return ERR_BAD_ARGS;
 	
 	memcpy(dest, src, sizeof(kest_driver));
 	
@@ -114,7 +116,11 @@ kest_driver *kest_driver_make_clone(kest_driver *src)
 	
 	if (!result) return NULL;
 	
-	kest_driver_clone(result, src);
+	if (kest_driver_clone(result, src) != NO_ERROR)
+	{
+		kest_free(result);
+		return NULL;
+	}
 	
 	return result;
 }

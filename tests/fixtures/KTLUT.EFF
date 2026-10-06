@@ -1,0 +1,20 @@
+v1.0
+
+.INFO
+name: "ROM Probe"
+cname: "kt_lut_probe"
+
+.PARAMETERS
+phase: (name: "Phase", default: 0.25, min: -0.5, max: 0.5)
+
+.RESOURCES
+sine: (type: "mem")
+tanh: (type: "mem")
+
+.CODE
+mov [phase] c1
+sin2pi c1 c2
+tanh4 c1 c3
+mem_write c2 $sine
+mem_write c3 $tanh
+mov [0] c0

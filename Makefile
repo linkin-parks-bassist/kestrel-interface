@@ -224,8 +224,15 @@ lib: $(lib_objdir)/libkest.so
 
 compile-eff: $(lib_objdir)/compile_eff
 
+.PHONY: test-parser-allocation
+test-parser-allocation: $(lib_objdir)/test_parser_allocation
+	./$(lib_objdir)/test_parser_allocation tests/fixtures/scope-allocation.eff
+
+$(lib_objdir)/test_parser_allocation: tools/test_parser_allocation.c $(lib_objdir)/libkest.so $(lib_hdrs)
+	gcc $(CFLAGS_LIB) -o $@ $< -L$(lib_objdir) -lkest -ldl -Wl,--export-dynamic -Wl,-rpath,'$$ORIGIN'
+
 $(lib_objdir)/compile_eff: tools/compile_eff.c $(lib_objdir)/libkest.so $(lib_hdrs)
-	gcc $(CFLAGS_LIB) -o $@ $< -L$(lib_objdir) -lkest -Wl,-rpath,'$$ORIGIN'
+	gcc $(CFLAGS_LIB) -o $@ $< -L$(lib_objdir) -lkest -lm -Wl,-rpath,'$$ORIGIN'
 
 $(lib_objdir)/libkest.so: $(lib_objs)
 	gcc -shared -Wl,-z,defs -o $@ $^ -lm

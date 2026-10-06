@@ -23,6 +23,33 @@ static const int update_period_ticks = (pdMS_TO_TICKS((int)UPDATE_PERIOD_MS) == 
 int queue_initd = 0;
 QueueHandle_t update_rtos_queue;
 
+/* Caller holds the UI/model lock, also held by the smoothing pass. */
+void kest_parameter_cancel_preset_updates(uint16_t preset_id)
+{
+	for (int i = n_updates - 1; i >= 0; i--)
+		if (update_array[i].id.preset_id == preset_id)
+		{
+			for (int j = i; j + 1 < n_updates; j++) update_array[j] = update_array[j + 1];
+			n_updates--;
+		}
+	int write = update_queue_head;
+	for (int read = update_queue_head; read != update_queue_tail; read = (read + 1) % UPDATE_QUEUE_LENGTH)
+		if (update_queue[read].id.preset_id != preset_id)
+		{
+			update_queue[write] = update_queue[read];
+			write = (write + 1) % UPDATE_QUEUE_LENGTH;
+		}
+	update_queue_tail = write;
+	if (update_rtos_queue)
+	{
+		kest_parameter_update retained[16], current;
+		int count = 0;
+		while (xQueueReceive(update_rtos_queue, &current, 0) == pdPASS)
+			if (current.id.preset_id != preset_id && count < 16) retained[count++] = current;
+		for (int i = 0; i < count; i++) xQueueSend(update_rtos_queue, &retained[i], 0);
+	}
+}
+
 int kest_init_parameter_updater()
 {
 	xTaskCreate(kest_param_update_task, "kest_param_update_task", 4096, NULL, 8, NULL);
@@ -89,6 +116,7 @@ void kest_param_update_task(void *arg)
 	
 	while (1)
 	{
+		if (!kest_ui_lock()) { xTaskDelayUntil(&last_wake, update_period_ticks); continue; }
 		wake_fpga_updater = 0;
 		while ((update_queue_tail + 1) % UPDATE_QUEUE_LENGTH != update_queue_head && xQueueReceive(update_rtos_queue, &current, 0) == pdPASS)
 		{
@@ -281,6 +309,7 @@ void kest_param_update_task(void *arg)
 			//kest_fpga_updater_wake();
 		}
 		
+		kest_ui_unlock();
 		xTaskDelayUntil(&last_wake, update_period_ticks);
 	}
 }

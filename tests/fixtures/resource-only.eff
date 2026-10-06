@@ -1,0 +1,6 @@
+v1.0
+.INFO
+name: "Memory Rejection"
+.RESOURCES
+cell: (type: "mem")
+.CODE

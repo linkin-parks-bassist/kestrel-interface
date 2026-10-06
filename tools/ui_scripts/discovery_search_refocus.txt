@@ -1,0 +1,43 @@
+# Keyboard dismissal, repeat tap, Filters round trip and query typing.
+wait 1000
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+click 200 120
+wait 300
+screenshot focused.bmp
+click 550 975
+wait 300
+screenshot dismissed.bmp
+click 200 120
+wait 300
+screenshot refocused.bmp
+click 500 120
+wait 300
+click 300 885
+wait 300
+click 200 120
+wait 300
+screenshot after-filters.bmp
+click 220 730
+click 406 730
+click 380 895
+click 290 815
+wait 300
+tree
+screenshot ring.bmp
+click 48 40
+wait 300
+click 200 120
+wait 300
+click 48 40
+wait 300
+click 300 940
+wait 300
+click 200 120
+wait 300
+screenshot returned.bmp
+quit

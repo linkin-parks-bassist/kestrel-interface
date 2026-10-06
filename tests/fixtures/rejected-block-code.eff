@@ -1,0 +1,6 @@
+v1.0
+.INFO
+name: "Rejected Block"
+.CODE
+mov c0 c0
+mov c0 1

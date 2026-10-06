@@ -94,7 +94,7 @@ int kest_context_add_preset(kest_context *cxt)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	kest_preset *preset = kest_alloc(sizeof(kest_preset));
+	kest_preset *preset = kest_allocator_alloc(&kest_preset_allocator, sizeof(kest_preset));
 	
 	if (!preset)
 		return ERR_ALLOC_FAIL;
@@ -123,7 +123,7 @@ kest_preset *kest_context_add_preset_rp(kest_context *cxt)
 	
 	KEST_PRINTF("kest_context_add_preset_rp\n");
 	
-	kest_preset *preset = kest_alloc(sizeof(kest_preset));
+	kest_preset *preset = kest_allocator_alloc(&kest_preset_allocator, sizeof(kest_preset));
 	
 	if (!preset)
 		return NULL;
@@ -155,7 +155,7 @@ kest_sequence *kest_context_add_sequence_rp(kest_context *cxt)
 	if (!cxt)
 		return NULL;
 	
-	kest_sequence *sequence = kest_alloc(sizeof(kest_sequence));
+	kest_sequence *sequence = kest_allocator_alloc(&kest_sequence_allocator, sizeof(kest_sequence));
 	
 	if (!sequence)
 		return NULL;
@@ -392,10 +392,6 @@ int cxt_remove_preset(kest_context *cxt, kest_preset *preset)
 	{
 		if (current->data == preset)
 		{
-			#ifdef USE_TEENSY
-			queue_msg_to_teensy(create_m_message(KEST_MESSAGE_DELETE_PRESET, "s", preset->id));
-			#endif
-			
 			if (!prev)
 			{
 				cxt->presets = current->next;
@@ -460,22 +456,16 @@ int cxt_remove_effect(kest_context *cxt, uint16_t pid, uint16_t tid)
 	if (!cxt)
 		return ERR_NULL_PTR;
 	
-	int ret_val = kest_preset_remove_effect(cxt_get_preset_by_id(cxt, pid), tid);
-	
-	if (ret_val == NO_ERROR)
-	{
-		#ifdef USE_TEENSY
-		queue_msg_to_teensy(create_m_message(KEST_MESSAGE_REMOVE_EFFECT, "ss", pid, tid));
-		#endif
-	}
-	
-	return ret_val;
+	return kest_preset_remove_effect(cxt_get_preset_by_id(cxt, pid), tid);
 }
 
 int set_active_preset(kest_preset *preset)
 {
 	if (preset)
-		kest_preset_set_active(preset);
+	{
+		int result = kest_preset_set_active(preset);
+		if (result != NO_ERROR) return result;
+	}
 	
 	if (preset == global_cxt.active_preset)
 		return NO_ERROR;
@@ -507,7 +497,10 @@ int set_active_preset_from_sequence(kest_preset *preset)
 {
 	KEST_PRINTF("set_active_preset_from_sequence, preset = %p\n", preset);
 	if (preset)
-		kest_preset_set_active(preset);
+	{
+		int result = kest_preset_set_active(preset);
+		if (result != NO_ERROR) return result;
+	}
 	
 	if (preset == global_cxt.active_preset)
 		return NO_ERROR;

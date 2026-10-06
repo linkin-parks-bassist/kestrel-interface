@@ -1,0 +1,38 @@
+# Desktop-only proposal, against a disposable authored-library fixture.
+wait 1000
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+screenshot browse.bmp
+click 300 230
+wait 300
+tree
+screenshot types.bmp
+click 300 230
+wait 300
+tree
+screenshot chorus.bmp
+click 48 40
+wait 300
+click 48 40
+wait 300
+click 200 120
+wait 300
+screenshot keyboard.bmp
+click 220 730
+click 406 730
+click 380 895
+click 290 815
+wait 300
+tree
+screenshot search.bmp
+click 550 975
+wait 300
+click 300 210
+wait 300
+tree
+screenshot selected.bmp
+quit

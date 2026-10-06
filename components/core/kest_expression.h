@@ -58,6 +58,13 @@ typedef struct kest_expression
 
 DECLARE_PTR_LIST(kest_expression);
 
+// Serialized descriptor parsing records allocations, including shared children.
+int kest_expression_capture_begin(kest_expression_ptr_list *owner);
+void kest_expression_capture_end(void);
+void kest_expression_capture_destroy(kest_expression_ptr_list *owner);
+kest_expression *kest_expression_alloc(void);
+void kest_expression_free_node(kest_expression *expr);
+
 int kest_expr_init_const(kest_expression *expr, float v);
 
 kest_expression kest_expression_const(float v);

@@ -11,16 +11,22 @@ int init_preset_settings_page(kest_ui_page *page)
 	if (!page)
 		return ERR_NULL_PTR;
 	
-	kest_preset_settings_str *str = malloc(sizeof(kest_preset_settings_str));
+	kest_preset_settings_str *str = kest_alloc(sizeof(kest_preset_settings_str));
 	
 	if (!str)
 		return ERR_ALLOC_FAIL;
 	
+	memset(str, 0, sizeof(*str));
+	nullify_parameter_widget(&str->volume_widget);
+
 	init_ui_page(page);
 	page->panel = new_panel();
 	
 	if (!page->panel)
-		return ERR_NULL_PTR;
+	{
+		kest_free(str);
+		return ERR_ALLOC_FAIL;
+	}
 	
 	page->data_struct = str;
 	
@@ -34,10 +40,6 @@ int init_preset_settings_page(kest_ui_page *page)
 	page->enter_page			= NULL;//enter_preset_settings_page;
 	page->refresh				= refresh_preset_settings_page;
 	
-	page->panel = new_panel();
-	
-	if (!page->panel)
-		return ERR_ALLOC_FAIL;
 	
 	return NO_ERROR;
 }
@@ -69,8 +71,7 @@ int configure_preset_settings_page(kest_ui_page *page, void *data)
 	if (!str)
 		return ERR_BAD_ARGS;
 	
-	str->volume_widget.preset = preset;
-	str->volume_widget.param = &preset->volume;
+	configure_parameter_widget(&str->volume_widget, &preset->volume, preset, page);
 	str->volume_widget.id = preset->volume.id;
 	
 	str->preset = preset;

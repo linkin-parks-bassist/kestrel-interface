@@ -1,0 +1,5 @@
+v1.0
+.INFO
+name: "Allocation Probe"
+.CODE
+mov c0 c0

@@ -1,0 +1,26 @@
+wait 1500
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+click 300 445
+wait 300
+tree
+screenshot keywords.bmp
+touch down 300 800
+wait 80
+touch move 300 600
+wait 80
+touch move 300 400
+wait 80
+touch up
+wait 400
+tree
+screenshot scrolled.bmp
+click 300 210
+wait 300
+tree
+screenshot selected.bmp
+quit

@@ -1,0 +1,66 @@
+wait 1000
+click 300 940
+wait 300
+click 300 185
+wait 300
+click 300 940
+wait 300
+click 200 120
+wait 300
+click 500 120
+wait 300
+click 300 273
+wait 250
+click 300 260
+wait 250
+click 300 260
+wait 250
+click 130 885
+wait 250
+tree
+click 500 120
+wait 250
+click 250 440
+wait 250
+click 300 885
+wait 250
+tree
+click 500 120
+wait 250
+click 250 440
+wait 250
+click 130 885
+wait 250
+tree
+click 500 120
+wait 250
+click 470 440
+wait 250
+click 130 885
+wait 250
+tree
+click 500 120
+wait 250
+click 300 180
+wait 250
+click 100 262
+wait 250
+click 130 885
+wait 250
+tree
+click 500 120
+wait 250
+click 100 222
+wait 250
+click 130 885
+wait 250
+tree
+click 500 120
+wait 250
+click 470 885
+wait 250
+click 130 885
+wait 250
+tree
+screenshot cleared.bmp
+quit

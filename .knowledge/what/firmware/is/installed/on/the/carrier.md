@@ -1,0 +1,22 @@
+---
+status: green
+revised_at: "2026-10-06T16:23:52+11:00"
+---
+
+Installed experimental horizontal-band Interface app d9f26836d16fc3ee9b2a65568cb12b438fa5f59660e6ee80f9fc3c527e3cdff1; ELF 463771355dad17b31fa17699aa2f901967b238781dae0a12124f0258f42a32f0. /tmp/kestrel-rounded-horizontal-artifact preserves binaries/source identities. Rounded fill/corners/cache previews ON, draw profiling OFF; pinned IDF5.3.3, CPU360 MHz/PSRAM200 MHz. /tmp/kestrel-dial-horizontal-restore.log verifies restoration after comparison; /tmp/kestrel-horizontal-restore-check.log verifies reboot, pixels, original controls/pools and clear FPGA status. /tmp/kestrel-horizontal-candidate.log retains initial magic/mask checks. Two normal512-case oracles pass with113 hardware calls/zero errors; one rejection oracle passes with57 successes/56 injected errors. One matched scrolling trace reduces render cost about8.8%; this does not establish sustained physical acceptance. Cache/display owners govern geometry/evidence. Previous driver-cache rollback:/tmp/kestrel-rounded-driver-cache-artifact, app60126a9f6034f41394d283be3c71a23ec4f7104404f4297f8bf9525377eaf5ec.
+
+Strip rollback: /tmp/kestrel-rounded-ppa-build/kestrel-interface.bin, app SHA-256 94ef65fb17b5e45788ae80b875a55abe89fb0f3cb1f2ef78358d388a6b8fa4e8, 1265552 bytes. The normal build/ image remains e9294642ad8ab348b651b75666db11ecba54c293fe4257fa553264ad19103d78, also saved as /tmp/kestrel-before-rounded-ppa.bin. Preview options default OFF. ui-profile remains opt-in. Prior vertical-split carrier checks pass512 comparisons/112 successful PPA calls/zero errors, including after scrolling/dials. Current horizontal checks and limits are stated above.
+
+Software-rendered rollback is /tmp/kestrel-scroll-software-fullbuffer/kestrel-interface.bin (a2c13dc4eff44fcdfe7230447f1f9c0d0244aef2f5794fa611dcaa454d012444, 1241568 bytes). Isolated full-buffer PPA and rejected 200-row PPA artifacts are separate from this installed build.
+
+Preset 9 is active Bass Ring, 15 blocks, Carrier 57.9973946/Mix 0.781000018. Pools: 89 resources, 27 descriptors, 3521 expressions, 107 parameters, 5 settings, 4 effects, 9 presets, 0 sequences. Main-list members are 1/2/8/9; cleanup persists after reboot. The temporary ROM descriptor/preset are removed; KTPOLY/KTSTR/SQLite probes remain absent. Idle snapshot: 200 FPS/2% displayed CPU, not sustained interaction qualification.
+
+All 27 SD descriptors retain authored descriptions, keywords, bass instrument and type labels; genres empty. Original 25 reload/readback, UNDERTOW startup/21 host-matching rows and SPIRAL's 4669-byte publication/startup/18 rows are verified. Metadata edge fixtures cover missing fields, long description, case/order/duplicates, empty lists and malformed-field rejection; repeated active Bass Ring/Swamp reloads preserve controls. Discovery and experiment owners retain bounded evidence; this renderer change does not rerun their complete suites.
+
+Separate 100-Hz smoothing and unlocked asynchronous SD saves remain. David accepted the prior performance rollback, with physical dial snapshots 180–200 FPS/6–8% CPU. David reports catastrophic populated-list scrolling; David finds the PPA full-buffer result decidedly better but not amazing. Comparative traces improve render cost without establishing final acceptance. UART tree dumps stall drawing; opening commonly resets.
+
+Rollback app: /tmp/kestrel-before-scroll-profile.bin, 1208240 bytes, SHA-256 00b37c079626b28e045ee93f6316a91eaf88ec98924a588ac41403eb584961f0; read from the device before profiling. Older backups /tmp/kestrel-before-retained-metadata.bin and /tmp/kestrel-before-state-save-fps.bin remain available. File-task owner governs the rejected SD/render lock and deferred maintained buffers.
+
+The paired FPGA is the ROM-staged polynomial/SVF/read32 image with minimum-one final-delay taps. Powered boot, magic0x4b455354/mask6/status0x01 and fourteen physical sine/tanh targets pass under Core's build/LUT owners. Physical audio/SDRAM qualification remains open. SGTL ADC 0 dB resolves David's accepted clipping; power-cycle pops remain unresolved. Seamless dual-pipeline transitions/deliberate tails are his established work.
+
+Prior 211 host tests/allocation probes and pinned builds pass; the current experimental renderer/console build and 20,256 desktop pixel comparisons pass. Broad schema/persistence/concurrency/queue-failure/sample-time/physical-audio acceptance remains open. Focused effect/selector/reload/read owners retain their prior scope and limits.

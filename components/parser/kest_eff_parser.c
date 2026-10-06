@@ -90,6 +90,8 @@ char *kest_cname_from_name(char *name)
 	return cname;
 }
 
+static int kest_validate_discovery_info(kest_eff_parsing_state *ps, kest_ast_node *info);
+
 int kest_parse_tokens(kest_eff_parsing_state *ps)
 {
 	if (!ps)
@@ -106,6 +108,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 	*root_ptr = root;
 	
 	root->type  = KEST_AST_NODE_ROOT;
+	root->line  = 1;
 	root->data  = NULL;
 	root->child = NULL;
 	root->next  = NULL;
@@ -151,6 +154,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 						return ERR_ALLOC_FAIL;
 					
 					next_section->type  = KEST_AST_NODE_SECTION;
+					next_section->line  = current_token->line;
 					next_section->data  = NULL;
 					next_section->next  = NULL;
 					next_section->child = NULL;
@@ -170,6 +174,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 					}
 					
 					ns->dict = NULL;
+					ns->dict_ = (kest_eff_entry_dict){0};
 					
 					next_section->data = (void*)ns;
 					
@@ -243,7 +248,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		{
 			if ((ret_val = kest_parse_entry_section(ps, current_section)) != NO_ERROR)
 			{
-				return ret_val;
+				goto parse_fresh_sections_fail;
 			}
 			info_section = current_section;
 		}
@@ -251,7 +256,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		{
 			if ((ret_val = kest_parse_entry_section(ps, current_section)) != NO_ERROR)
 			{
-				return ret_val;
+				goto parse_fresh_sections_fail;
 			}
 			resources_section = current_section;
 		}
@@ -259,7 +264,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		{
 			if ((ret_val = kest_parse_entry_section(ps, current_section)) != NO_ERROR)
 			{
-				return ret_val;
+				goto parse_fresh_sections_fail;
 			}
 			parameters_section = current_section;
 		}
@@ -267,7 +272,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		{
 			if ((ret_val = kest_parse_entry_section(ps, current_section)) != NO_ERROR)
 			{
-				return ret_val;
+				goto parse_fresh_sections_fail;
 			}
 			settings_section = current_section;
 		}
@@ -275,7 +280,7 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		{
 			if ((ret_val = kest_parse_entry_section(ps, current_section)) != NO_ERROR)
 			{
-				return ret_val;
+				goto parse_fresh_sections_fail;
 			}
 			defs_section = current_section;
 		}
@@ -287,11 +292,12 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		else
 		{
 			kest_parser_error(ps, "Invalid section name \"%s\"", sect->name);
-			return ERR_BAD_ARGS;
+			ret_val = ERR_BAD_ARGS;
+			goto parse_fresh_sections_fail;
 		}
 	
 		if (ret_val != NO_ERROR)
-			return ret_val;
+			goto parse_fresh_sections_fail;
 		current_section = current_section->next;
 	}
 	
@@ -299,17 +305,22 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 	
 	if (info_section)
 	{
+		ret_val = kest_validate_discovery_info(ps, info_section);
+		if (ret_val != NO_ERROR) goto parse_fresh_sections_fail;
+		ps->info = info_section;
 		entry = kest_eff_section_lookup(info_section, "name");
 		
 		if (!entry)
 		{
 			kest_parser_error(ps, "Effect name missing");
-			return ERR_BAD_ARGS;
+			ret_val = ERR_BAD_ARGS;
+			goto parse_fresh_sections_fail;
 		}
 		else if (entry->type != KEST_EFF_ENTRY_TYPE_STR)
 		{
 			kest_parser_error(ps, "Effect name must be a string");
-			return ERR_BAD_ARGS;
+			ret_val = ERR_BAD_ARGS;
+			goto parse_fresh_sections_fail;
 		}
 		else
 		{
@@ -322,7 +333,8 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 		if (entry && entry->type != KEST_EFF_ENTRY_TYPE_STR)
 		{
 			kest_parser_error(ps, "Effect cname must be a string");
-			return ERR_BAD_ARGS;
+			ret_val = ERR_BAD_ARGS;
+			goto parse_fresh_sections_fail;
 		}
 		else if (entry)
 		{
@@ -338,14 +350,19 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 	else
 	{
 		kest_parser_error(ps, "INFO section missing");
-		return ERR_BAD_ARGS;
+		ret_val = ERR_BAD_ARGS;
+		goto parse_fresh_sections_fail;
 	}
 	
 	ps->scope = kest_parser_alloc(sizeof(kest_scope));
-	kest_scope_init(ps->scope);
 	
 	if (!ps->scope)
-		return ERR_ALLOC_FAIL;
+	{
+		ret_val = ERR_ALLOC_FAIL;
+		goto parse_fresh_sections_fail;
+	}
+	if ((ret_val = kest_scope_init(ps->scope)) != NO_ERROR)
+		goto parse_fresh_sections_fail;
 	
 	if (resources_section)
 	{
@@ -393,13 +410,81 @@ int kest_parse_tokens(kest_eff_parsing_state *ps)
 	{
 		if ((ret_val = kest_parse_code_section(ps, code_section)) != NO_ERROR)
 		{
-			kest_parser_error_at(ps, ps->current_token, "Failed to parse .CODE section: %s", ret_val);
+			kest_parser_error_at(ps, ps->current_token, "Failed to parse .CODE section: %s", kest_error_code_to_string(ret_val));
 			return ret_val;
 		}
 		
 		KEST_PRINTF("Sucessfully parsed .CODE section\n");
 	}
 	
+	return NO_ERROR;
+
+parse_fresh_sections_fail:
+	// Extraction has not begun; every section value is still a fresh parser tree.
+	for (kest_ast_node *node = root->child; node; node = node->next)
+	{
+		kest_eff_desc_file_section *sec = node->data;
+		if (!sec) continue;
+		for (size_t i = 0; i < sec->dict_.count; i++)
+			kest_free_parsed_eff_entry(&sec->dict_.entries[i]);
+		sec->dict_.count = 0;
+	}
+	return ret_val;
+}
+
+static const char *discovery_list_names[] = { "keywords", "instruments", "types", "genres" };
+
+static int kest_validate_discovery_info(kest_eff_parsing_state *ps, kest_ast_node *info)
+{
+	kest_eff_entry *entry = kest_eff_section_lookup(info, "description");
+	if (entry && entry->type != KEST_EFF_ENTRY_TYPE_STR)
+	{
+		kest_parser_error_at_line(ps, entry->line, "Effect description must be a string");
+		return ERR_BAD_ARGS;
+	}
+	for (size_t i = 0; i < sizeof(discovery_list_names) / sizeof(*discovery_list_names); i++)
+	{
+		entry = kest_eff_section_lookup(info, discovery_list_names[i]);
+		if (!entry) continue;
+		if (entry->type != KEST_EFF_ENTRY_TYPE_LIST || !entry->value.val_list)
+			goto bad_list;
+		for (size_t j = 0; j < entry->value.val_list->count; j++)
+			if (entry->value.val_list->entries[j].type != KEST_EFF_ENTRY_TYPE_STR)
+				goto bad_list;
+		continue;
+	bad_list:
+		kest_parser_error_at_line(ps, entry->line, "Effect %s must be a string list", discovery_list_names[i]);
+		return ERR_BAD_ARGS;
+	}
+	return NO_ERROR;
+}
+
+static int kest_copy_discovery_info(kest_effect_desc *desc, kest_ast_node *info)
+{
+	kest_eff_entry *entry = kest_eff_section_lookup(info, "description");
+	if (entry)
+	{
+		desc->description = kest_strndup(entry->value.val_string, strlen(entry->value.val_string));
+		if (!desc->description) return ERR_ALLOC_FAIL;
+	}
+	string_list *lists[] = { &desc->keywords, &desc->instruments, &desc->types, &desc->genres };
+	for (size_t i = 0; i < sizeof(lists) / sizeof(*lists); i++)
+	{
+		entry = kest_eff_section_lookup(info, discovery_list_names[i]);
+		if (!entry) continue;
+		for (size_t j = 0; j < entry->value.val_list->count; j++)
+		{
+			const char *text = entry->value.val_list->entries[j].value.val_string;
+			char *copy = kest_strndup(text, strlen(text));
+			if (!copy) return ERR_ALLOC_FAIL;
+			int ret = char_ptr_list_append(lists[i], copy);
+			if (ret != NO_ERROR)
+			{
+				kest_free(copy);
+				return ret;
+			}
+		}
+	}
 	return NO_ERROR;
 }
 
@@ -416,6 +501,7 @@ int init_parsing_state(kest_eff_parsing_state *ps)
 	ps->blocks = NULL;
 	ps->cname = NULL;
 	ps->name = NULL;
+	ps->info = NULL;
 	
 	ps->asm_lines = NULL;
 	ps->def_exprs = NULL;
@@ -515,6 +601,8 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 	
 	kest_effect_desc *result = NULL;
 	kest_eff_parsing_state ps;
+	kest_expression_ptr_list expressions;
+	int capturing = 0;
 	
 	int ret_val;
 	
@@ -570,25 +658,15 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 	}
 	
 	kest_parser_lineize_content(&ps);
+	if (kest_expression_capture_begin(&expressions) != NO_ERROR) return NULL;
+	capturing = 1;
 	
 	ret_val = kest_parse_tokens(&ps);
 	
-	if (ps.errors != 0)
+	if (ps.errors != 0 || ret_val != NO_ERROR)
 	{
 		KEST_PRINTF("File \"%s\" ignored due to errors.\n", fname);
-		if (ps.parameters)
-		{
-			kest_parameter_pll_free(ps.parameters);
-		}
-		if (ps.resources)
-		{
-			kest_dsp_resource_pll_free(ps.resources);
-		}
-		if (ps.blocks)
-		{
-			kest_block_pll_free(ps.blocks);
-		}
-		return NULL;
+		goto read_eff_done;
 	}
 	
 	if (ret_val == NO_ERROR)
@@ -604,36 +682,106 @@ kest_effect_desc *kest_read_eff_desc_from_file(char *fname)
 	
 	if (ret_val != NO_ERROR)
 	{
-		return NULL;
+		goto read_eff_done;
 	}
 	
 	ret_val = kest_parser_compute_formats(&ps);
 	if (ret_val != NO_ERROR)
 	{
 		kest_parser_error_at(&ps, ps.current_token, "No permissible numeric formats: %s", kest_error_code_to_string(ret_val));
-		return NULL;
+		goto read_eff_done;
 	}
 	
+	char *name = kest_strndup(ps.name, 128);
+	char *cname = kest_strndup(ps.cname, 128);
+	if (!name || !cname)
+	{
+		kest_free(name);
+		kest_free(cname);
+		goto read_eff_done;
+	}
 	result = kest_allocator_alloc(&kest_effect_desc_allocator, sizeof(kest_effect_desc));
+	if (!result)
+	{
+		kest_free(name);
+		kest_free(cname);
+	}
 	
 	if (result)
 	{
 		kest_init_effect_desc(result);
 		
+		result->cname = cname;
+		result->name = name;
+		if (kest_copy_discovery_info(result, ps.info) != NO_ERROR)
+		{
+			kest_effect_desc_retire(result);
+			result = NULL;
+			goto read_eff_done;
+		}
 		result->parameters = ps.parameters;
 		result->resources = ps.resources;
 		result->settings = ps.settings;
 		result->blocks = ps.blocks;
 		result->drivers = ps.drivers;
 		
-		result->cname = kest_strndup(ps.cname, 128);
-		result->name = kest_strndup(ps.name, 128);
+		result->expressions = expressions;
 		
 		result->def_exprs = ps.def_exprs;
 		
 		kest_effect_desc_generate_res_rpt(result);
 	}
 	
+read_eff_done:
+	// INFO is never extracted into the scope; copied discovery strings no longer borrow it.
+	if (ps.info)
+	{
+		kest_eff_desc_file_section *info = ps.info->data;
+		for (size_t i = 0; i < info->dict_.count; i++)
+			kest_free_parsed_eff_entry(&info->dict_.entries[i]);
+		info->dict_.count = 0;
+	}
+	if (ps.scope)
+		kest_scope_entry_dict_destroy(&ps.scope->dict, NULL);
+	if (!result)
+	{
+		kest_block_pll_free(ps.blocks);
+		// Parameter metadata is owned here; bounds and driver keys borrow expression graphs.
+		for (kest_parameter_pll *current = ps.parameters; current; current = current->next)
+		{
+			kest_free((void *)current->data->name_internal);
+			kest_free((void *)current->data->name);
+			kest_free((void *)current->data->units);
+		}
+		kest_parameter_pll_destroy(ps.parameters, kest_parameter_free);
+		for (size_t i = 0; i < ps.drivers.count; i++)
+			kest_free(ps.drivers.entries[i].data);
+		kest_driver_list_destroy(&ps.drivers);
+		// No descriptor received these resource containers; expressions remain separately owned.
+		for (kest_dsp_resource_pll *current = ps.resources; current; current = current->next)
+		{
+			kest_dsp_resource *resource = current->data;
+			kest_free(resource->name);
+		}
+		kest_dsp_resource_pll_destroy(ps.resources, kest_dsp_resource_free);
+		// Definition metadata owns names/wrappers; expression graphs need separate ownership.
+		for (kest_named_expression_pll *current = ps.def_exprs; current; current = current->next)
+			kest_free((void *)current->data->name);
+		kest_named_expression_pll_free(ps.def_exprs);
+		// Parser-created settings own copied strings; no descriptor received this list.
+		for (kest_setting_pll *current = ps.settings; current; current = current->next)
+		{
+			kest_free((void *)current->data->name_internal);
+			kest_free((void *)current->data->name);
+			kest_free((void *)current->data->units);
+		}
+		kest_setting_pll_destroy(ps.settings, kest_setting_free);
+	}
+	if (capturing)
+	{
+		kest_expression_capture_end();
+		if (!result) kest_expression_capture_destroy(&expressions);
+	}
 	return result;
 }
 

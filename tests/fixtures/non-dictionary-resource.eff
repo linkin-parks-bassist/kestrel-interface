@@ -1,0 +1,7 @@
+v1.0
+.INFO
+name: "Invalid Resource"
+.RESOURCES
+probe: "invalid"
+.CODE
+mov c0 c0

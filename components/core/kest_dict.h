@@ -89,7 +89,9 @@ int X##_dict_insert(X##_dict *dict, const char *key, X x)\
 	if (!entry.key)\
 		return ERR_ALLOC_FAIL;\
 	\
-	return X##_dict_entry_list_append(&dict->buckets[bucket], entry);\
+	int result = X##_dict_entry_list_append(&dict->buckets[bucket], entry);\
+	if (result != NO_ERROR) kest_allocator_free(&dict->alloc, (void*)entry.key);\
+	return result;\
 }\
 \
 X *X##_dict_insert_return_ptr(X##_dict *dict, const char *key, X x)\
@@ -114,7 +116,7 @@ X *X##_dict_insert_return_ptr(X##_dict *dict, const char *key, X x)\
 	\
 	X##_dict_entry *entry_ptr = X##_dict_entry_list_append_return_ptr(&dict->buckets[bucket], entry);\
 	\
-	if (!entry_ptr) return NULL;\
+	if (!entry_ptr) { kest_allocator_free(&dict->alloc, (void*)entry.key); return NULL; }\
 	\
 	return &entry_ptr->data;\
 }\
@@ -139,7 +141,9 @@ X##_dict_entry *X##_dict_insert_return_entry_ptr(X##_dict *dict, const char *key
 	if (!entry.key)\
 		return NULL;\
 	\
-	return X##_dict_entry_list_append_return_ptr(&dict->buckets[bucket], entry);\
+	X##_dict_entry *result = X##_dict_entry_list_append_return_ptr(&dict->buckets[bucket], entry);\
+	if (!result) kest_allocator_free(&dict->alloc, (void*)entry.key);\
+	return result;\
 }\
 X *X##_dict_lookup(X##_dict *dict, const char *key)\
 {\
@@ -252,6 +256,7 @@ void X##_dict_destroy(X##_dict *dict, void (*destructor)(X *x))\
 			{\
 				if (destructor)\
 					destructor(&dict->buckets[i].entries[j].data); \
+				kest_allocator_free(&dict->alloc, (void*)dict->buckets[i].entries[j].key); \
 			}\
 			\
 			kest_allocator_free(&dict->buckets[i].alloc, dict->buckets[i].entries); \

@@ -104,6 +104,27 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
     int min_binding_power,
     int depth);
 
+// Only unpublished Pratt trees: parsed nodes are fresh and never borrow
+// compiler-generated shared graphs or global expression constants.
+void kest_free_parsed_expression(kest_expression *expr)
+{
+    if (!expr) return;
+    if (expr->type == KEST_EXPR_REF)
+        kest_free(expr->val.ref_name);
+    else if (expr->type != KEST_EXPR_CONST)
+    {
+        kest_free_parsed_expression(expr->sub_exprs[0]);
+        switch (expr->type)
+        {
+            case KEST_EXPR_ADD: case KEST_EXPR_SUB: case KEST_EXPR_MUL:
+            case KEST_EXPR_DIV: case KEST_EXPR_POW:
+            case KEST_EXPR_MIN: case KEST_EXPR_MAX:
+                kest_free_parsed_expression(expr->sub_exprs[1]);
+        }
+    }
+    kest_expression_free_node(expr);
+}
+
 kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
     kest_token_ll *function_token,
     kest_token_ll **next_token,
@@ -118,16 +139,17 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 	kest_expression *args[KEST_EXPR_MAX_ARITY];
 	int argc = 0;
 	int function_type = 0;
+	kest_expression *result = NULL;
 
 	if (!token_is_char(current->data, '('))
-		return NULL;
+		goto function_bail;
 
 	current = current->next;
 
 	if (!current || current == tokens_end)
 	{
 		kest_parser_error_at(ps, function_token, "Malformed function call");
-		return NULL;
+		goto function_bail;
 	}
 
 	while (current && current != tokens_end)
@@ -138,7 +160,7 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 		if (argc >= KEST_EXPR_MAX_ARITY)
 		{
 			kest_parser_error_at(ps, current, "Too many arguments to \"%s\"", function_token->data);
-			return NULL;
+			goto function_bail;
 		}
 
 		args[argc] = kest_parse_expression_rec_pratt(ps,
@@ -149,7 +171,7 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 				depth + 1);
 
 		if (!args[argc])
-			return NULL;
+			goto function_bail;
 
 		argc++;
 		current = nt;
@@ -157,7 +179,7 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 		if (!current || current == tokens_end)
 		{
 			kest_parser_error_at(ps, function_token, "Malformed function call");
-			return NULL;
+			goto function_bail;
 		}
 
 		if (token_is_char(current->data, ','))
@@ -167,7 +189,7 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 			if (!current || current == tokens_end || token_is_char(current->data, ')'))
 			{
 				kest_parser_error_at(ps, function_token, "Malformed function call");
-				return NULL;
+				goto function_bail;
 			}
 
 			continue;
@@ -177,13 +199,13 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 			break;
 
 		kest_parser_error_at(ps, current, "Expected \",\" or \")\"");
-		return NULL;
+		goto function_bail;
 	}
 
 	if (!current || current == tokens_end || !token_is_char(current->data, ')'))
 	{
 		kest_parser_error_at(ps, function_token, "Malformed function call");
-		return NULL;
+		goto function_bail;
 	}
 
 	function_type = kest_expression_token_function_type(function_token->data, argc);
@@ -191,7 +213,7 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 	if (!function_type)
 	{
 		kest_parser_error_at(ps, function_token, "Unknown function \"%s\" with arity %d", function_token->data, argc);
-		return NULL;
+		goto function_bail;
 	}
 
 	if (next_token)
@@ -199,10 +221,14 @@ kest_expression *kest_parse_expression_function_call(kest_eff_parsing_state *ps,
 
 	switch (argc)
 	{
-		case 1: return kest_expr_new_unary(function_type, args[0]);
-		case 2: return kest_expr_new_binary(function_type, args[0], args[1]);
+		case 1: result = kest_expr_new_unary(function_type, args[0]); break;
+		case 2: result = kest_expr_new_binary(function_type, args[0], args[1]); break;
 	}
 
+	if (result) return result;
+
+function_bail:
+	for (int i = 0; i < argc; i++) kest_free_parsed_expression(args[i]);
 	return NULL;
 }
 
@@ -293,6 +319,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 		lhs = kest_expr_new_unary(unary_type, rhs);
 		
 		if (!lhs) goto pratt_bail;
+		rhs = NULL;
 		
 		current = nt;
 	}
@@ -336,6 +363,7 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 		if (!bin) goto pratt_bail;
 		
 		lhs = bin;
+		rhs = NULL;
 		current = nt;
 	}
 	
@@ -345,17 +373,15 @@ kest_expression *kest_parse_expression_rec_pratt(kest_eff_parsing_state *ps,
 	return lhs;
 
 pratt_bail:
-	// free anything allocated .. ?
+	kest_free_parsed_expression(lhs);
+	kest_free_parsed_expression(rhs);
 	return NULL;
 }
 
 kest_expression *kest_parse_expression(kest_eff_parsing_state *ps, kest_token_ll *tokens, kest_token_ll *tokens_end)
 {
-	kest_token_ll *next_token;
+	kest_token_ll *next_token = tokens;
 	kest_expression *expr = kest_parse_expression_rec_pratt(ps, tokens, &next_token, tokens_end, 0, 0);
-	
-	int anything = 0;
-	kest_token_ll *check = next_token;
 	
 	if (expr)
 	{

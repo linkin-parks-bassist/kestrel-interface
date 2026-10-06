@@ -614,7 +614,7 @@ int kest_dsp_resource_clone(kest_dsp_resource *dest, kest_dsp_resource *src)
 
 kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src)
 {
-	kest_dsp_resource *result = kest_alloc(sizeof(kest_dsp_resource));
+	kest_dsp_resource *result = kest_allocator_alloc(&kest_dsp_resource_allocator, sizeof(kest_dsp_resource));
 	
 	if (!result)
 		return NULL;
@@ -626,7 +626,7 @@ kest_dsp_resource *kest_dsp_resource_make_clone(kest_dsp_resource *src)
 		/* The only way it can fail (see above) is an alloc fail
 		 * so, no need to free any owned memory, just free the 
 		 * whole thing and bail */
-		kest_free(result);
+		kest_allocator_free(&kest_dsp_resource_allocator, result);
 		return NULL;
 	}
 	
@@ -691,5 +691,5 @@ void kest_dsp_resource_free(kest_dsp_resource *res)
 	if (res->type == KEST_DSP_RESOURCE_FILTER && res->data)
 		kest_expression_ptr_list_destroy(&((kest_filter*)res->data)->coefs);
 	kest_free(res->data);
-	kest_free(res);
+	kest_allocator_free(&kest_dsp_resource_allocator, res);
 }

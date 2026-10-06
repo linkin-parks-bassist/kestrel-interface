@@ -16,16 +16,6 @@ typedef struct {
 #define KEST_ARG_POS_NONE -1
 
 typedef struct {
-	int n_args;
-	int arg_a_pos;
-	int arg_b_pos;
-	int arg_c_pos;
-	int dest_pos;
-	int res_pos;
-	int shift_pos;
-} kest_arg_format;
-
-typedef struct {
 	int type;
 	int addr;
 	int val;

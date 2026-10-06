@@ -20,6 +20,51 @@ IMPLEMENT_POOL(kest_expression);
 kest_allocator kest_expression_allocator;
 kest_expression_pool kest_expression_mem_pool;
 
+static kest_expression_ptr_list *expression_owner;
+
+int kest_expression_capture_begin(kest_expression_ptr_list *owner)
+{
+	if (!owner || expression_owner) return ERR_BAD_ARGS;
+	kest_expression_ptr_list_init(owner);
+	expression_owner = owner;
+	return NO_ERROR;
+}
+
+void kest_expression_capture_end(void) { expression_owner = NULL; }
+
+kest_expression *kest_expression_alloc(void)
+{
+	kest_expression *expr = kest_allocator_alloc(&kest_expression_allocator, sizeof(*expr));
+	if (!expr) return NULL;
+	memset(expr, 0, sizeof(*expr));
+	if (expression_owner && kest_expression_ptr_list_append(expression_owner, expr) != NO_ERROR)
+	{
+		kest_allocator_free(&kest_expression_allocator, expr);
+		return NULL;
+	}
+	return expr;
+}
+
+void kest_expression_free_node(kest_expression *expr)
+{
+	if (expression_owner)
+		for (int i = 0; i < expression_owner->count; i++)
+			if (expression_owner->entries[i] == expr) expression_owner->entries[i] = NULL;
+	kest_allocator_free(&kest_expression_allocator, expr);
+}
+
+void kest_expression_capture_destroy(kest_expression_ptr_list *owner)
+{
+	for (int i = 0; i < owner->count; i++)
+	{
+		kest_expression *expr = owner->entries[i];
+		if (!expr) continue;
+		if (expr->type == KEST_EXPR_REF) kest_free(expr->val.ref_name);
+		kest_expression_free_node(expr);
+	}
+	kest_expression_ptr_list_destroy(owner);
+}
+
 #define KEST_EXPRESSION_CONST(x) { 		\
 	.type = KEST_EXPR_CONST,			\
 	.val = {.val_float = (float)(x)},	\
@@ -76,7 +121,7 @@ int kest_expr_init_const(kest_expression *expr, float v)
 
 kest_expression *kest_expr_new_const(float v)
 {
-	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+	kest_expression *result = kest_expression_alloc();
 	
 	if (!result) return NULL;
 	
@@ -103,7 +148,7 @@ kest_expression *kest_expr_new_unary(int unary_type, kest_expression *rhs)
 {
 	if (!rhs) return NULL;
 	
-	kest_expression *lhs = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+	kest_expression *lhs = kest_expression_alloc();
 	
 	if (!lhs) return NULL;
 	
@@ -135,7 +180,7 @@ kest_expression *kest_expr_new_binary(int binary_type, kest_expression *arg_1, k
 {
 	if (!arg_1 || !arg_2) return NULL;
 	
-	kest_expression *bin = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+	kest_expression *bin = kest_expression_alloc();
 	
 	if (!bin) return NULL;
 	
@@ -172,7 +217,7 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 {
 	if (!ref_name) return NULL;
 	
-	kest_expression *result = (kest_expression*)kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+	kest_expression *result = kest_expression_alloc();
 	
 	if (!result) return NULL;
 	
@@ -181,7 +226,7 @@ kest_expression *kest_expr_new_reference(char *ref_name)
 	
 	if (!result->val.ref_name)
 	{
-		kest_allocator_free(&kest_expression_allocator, result);
+		kest_expression_free_node(result);
 		return NULL;
 	}
 	
@@ -2832,12 +2877,12 @@ int kest_expr_create_lpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 13; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+		exprs[i] = kest_expression_alloc();
 		
 		if (!exprs[i])
 		{
 			for (int j = 0; j < i; j++)
-				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+				kest_expression_free_node(exprs[j]);
 			
 			return ERR_ALLOC_FAIL;
 		}
@@ -2897,12 +2942,12 @@ int kest_expr_create_hpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 14; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+		exprs[i] = kest_expression_alloc();
 		
 		if (!exprs[i])
 		{
 			for (int j = 0; j < i; j++)
-				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+				kest_expression_free_node(exprs[j]);
 			
 			return ERR_ALLOC_FAIL;
 		}
@@ -2962,12 +3007,12 @@ int kest_expr_create_bpf_coefficients(kest_expression **array, kest_expression *
 	
 	for (int i = 0; i < 14; i++)
 	{
-		exprs[i] = kest_allocator_alloc(&kest_expression_allocator, sizeof(kest_expression));
+		exprs[i] = kest_expression_alloc();
 		
 		if (!exprs[i])
 		{
 			for (int j = 0; j < i; j++)
-				kest_allocator_free(&kest_expression_allocator, exprs[j]);
+				kest_expression_free_node(exprs[j]);
 			
 			return ERR_ALLOC_FAIL;
 		}

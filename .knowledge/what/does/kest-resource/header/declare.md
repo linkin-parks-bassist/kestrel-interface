@@ -1,12 +1,14 @@
 ---
 status: green
-revised_at: "2026-10-04T04:52:14+11:00"
+revised_at: "2026-10-06T00:40:57+11:00"
 ---
 
 components/core/kest_resource.h declares resource initialization/cloning/type mapping/handle assignment, deletion marking/query and instance-clone release, filter creation/cloning, memory-slot creation/address setters/completion callback, delay types, LFO initialization/activation/evaluation and resource reporting. Resource types are LUT, MEM, DELAY, FILTER and LFO; delay units are milliseconds, seconds and samples.
 
 MEM, LFO, DELAY and FILTER payloads contain atomic delete_requested markers, explicitly initialized clear by constructors and clones. Marking does not free anything; the existing control loop owns retirement. kest_dsp_resource_free releases an instance clone's payload and wrapper, including a filter's coefficient pointer container, while preserving borrowed descriptor names/expressions. It must run only after task borrowers have finished; how/does/a/preset/pipeline/manage/effects.md owns that ordering.
 
+Instance wrappers and source parser templates use kest_dsp_resource_allocator with matching release. Descriptor templates free owned names before the payload/wrapper destructor; expression graphs remain separately captured. Resource-template integration passes 205 host tests and is installed; three Swamp reloads retain 46 resource slots (/tmp/kestrel-resource-template-live.log). One-slot tests cover retention, exhaustion, rejection and partial polynomial cleanup. Payloads retain their existing heap allocation/release. Startup installs the reserved typed wrapper pool; a zero-initialized allocator uses the tracked heap. Do not switch the global strategy while its wrappers are alive. The focused host regression uses one slot across three cycles and verifies exact membership, independent signed memory payload copies, exhaustion and slot recovery after null-source or invalid-filter failures. The 158-test host suite and pinned embedded build pass. The resource-pool image is flashed and boots with clean FPGA status; its exact identity and logs belong to the Interface build owner. /tmp/kestrel-resource-live-hil.log verifies Bass Flange activation with two live scratchpad reads, polynomial filter and delay handles, active deletion and fresh re-add with clean FPGA status 0x01 and changing signed-stream samples. Talking Vowel is restored and temporary Preset 5 removed without observed panic/reboot. This is focused lifecycle/readback evidence, not physical audio or all-resource qualification.
+
 kest_mem_slot stores addresses, atomic integer sample and arrival flag, read_enable/read_period_ms and an effect pointer. kest_mem_slot_read_cb publishes a signed sample and marks arrival; a negative transport error or deletion marker leaves both untouched. Creation initializes the atomics and defaults read_period_ms to 10. Cloning copies the sample and metadata but starts with no pending arrival or deletion request. LFO clones do not inherit a timer. There is no polling timer, request token or outstanding-read record.
 
-Sources: components/core/kest_resource.[ch].
+Sources: components/core/kest_resource.[ch] and tests/core/kest_update_test.c.

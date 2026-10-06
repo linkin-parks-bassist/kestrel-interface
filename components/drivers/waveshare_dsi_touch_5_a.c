@@ -25,11 +25,11 @@ int waveshare_dsi_touch_5_a_init(lv_disp_t **disp)
 {
 	bsp_display_cfg_t cfg = {
         .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
-        .buffer_size = BSP_LCD_DRAW_BUFF_SIZE,
+        .buffer_size = BSP_LCD_H_RES * BSP_LCD_V_RES,
         .double_buffer = BSP_LCD_DRAW_BUFF_DOUBLE,
         .flags = {
-            .buff_dma = true,
-            .buff_spiram = false,
+            .buff_dma = false,
+            .buff_spiram = true,
             .sw_rotate = false,
         }
     };

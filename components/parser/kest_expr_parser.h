@@ -8,4 +8,7 @@
 
 kest_expression *kest_parse_expression(kest_eff_parsing_state *ps, kest_token_ll *tokens, kest_token_ll *tokens_end);
 
+// Fresh parser-owned trees only; never compiled/shared graphs or borrowed nodes.
+void kest_free_parsed_expression(kest_expression *expr);
+
 #endif

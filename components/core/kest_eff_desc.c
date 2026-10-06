@@ -12,17 +12,70 @@ int kest_init_effect_desc(kest_effect_desc *eff)
 {
 	if (!eff) return ERR_NULL_PTR;
 	
-	eff->parameters = NULL;
-	eff->resources = NULL;
-	eff->settings = NULL;
-	eff->blocks  = NULL;
-	eff->scope  = NULL;
-	eff->cname = NULL;
-	eff->name = NULL;
-	
-	eff->def_exprs = NULL;
+	*eff = (kest_effect_desc){0};
 	
 	return NO_ERROR;
+}
+
+static void kest_effect_desc_destroy(kest_effect_desc *eff)
+{
+	kest_block_pll_free(eff->blocks);
+	for (kest_parameter_pll *p = eff->parameters; p; p = p->next)
+	{
+		kest_free((void *)p->data->name_internal);
+		kest_free((void *)p->data->name);
+		kest_free((void *)p->data->units);
+	}
+	kest_parameter_pll_destroy(eff->parameters, kest_parameter_free);
+	for (kest_setting_pll *s = eff->settings; s; s = s->next)
+	{
+		kest_free((void *)s->data->name_internal);
+		kest_free((void *)s->data->name);
+		kest_free((void *)s->data->units);
+	}
+	kest_setting_pll_destroy(eff->settings, kest_setting_free);
+	for (kest_dsp_resource_pll *r = eff->resources; r; r = r->next)
+	{
+		kest_free(r->data->name);
+	}
+	kest_dsp_resource_pll_destroy(eff->resources, kest_dsp_resource_free);
+	for (kest_named_expression_pll *d = eff->def_exprs; d; d = d->next)
+		kest_free((void *)d->data->name);
+	kest_named_expression_pll_free(eff->def_exprs);
+	for (int i = 0; i < eff->drivers.count; i++) kest_free(eff->drivers.entries[i].data);
+	kest_driver_list_destroy(&eff->drivers);
+	if (eff->scope)
+	{
+		kest_scope_entry_dict_destroy(&eff->scope->dict, NULL);
+		kest_free(eff->scope);
+	}
+	kest_expression_capture_destroy(&eff->expressions);
+	kest_free((void *)eff->name);
+	kest_free((void *)eff->cname);
+	kest_free((void *)eff->description);
+	char_ptr_list_destroy_all(&eff->keywords, NULL);
+	char_ptr_list_destroy_all(&eff->instruments, NULL);
+	char_ptr_list_destroy_all(&eff->types, NULL);
+	char_ptr_list_destroy_all(&eff->genres, NULL);
+	kest_allocator_free(&kest_effect_desc_allocator, eff);
+}
+
+void kest_effect_desc_retain(kest_effect_desc *eff)
+{
+	if (eff) eff->instance_refs++;
+}
+
+void kest_effect_desc_release(kest_effect_desc *eff)
+{
+	if (!eff || !eff->instance_refs) return;
+	if (!--eff->instance_refs && eff->retired) kest_effect_desc_destroy(eff);
+}
+
+void kest_effect_desc_retire(kest_effect_desc *eff)
+{
+	if (!eff) return;
+	eff->retired = 1;
+	if (!eff->instance_refs) kest_effect_desc_destroy(eff);
 }
 
 int kest_effect_desc_generate_res_rpt(kest_effect_desc *eff)

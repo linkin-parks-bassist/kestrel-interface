@@ -114,6 +114,8 @@ int kest_preset_set_active(kest_preset *preset)
 {
 	if (!preset)
 		return ERR_NULL_PTR;
+	int result = kest_pipeline_check_capacity(&preset->pipeline, 0);
+	if (result != NO_ERROR) return result;
 	
 	preset->active = 1;
 	preset->pending = 1;
@@ -186,7 +188,7 @@ int kest_preset_set_default_name_from_id(kest_preset *preset)
 
 kest_effect *kest_preset_append_effect_eff(kest_preset *preset, kest_effect_desc *eff)
 {
-	if (!preset)
+	if (!preset || !eff || kest_pipeline_check_capacity(&preset->pipeline, eff->res_rpt.blocks) != NO_ERROR)
 		return NULL;
 	
 	KEST_PRINTF("kest_preset_append_effect_eff(preset = %p, eff = %p)\n", eff);

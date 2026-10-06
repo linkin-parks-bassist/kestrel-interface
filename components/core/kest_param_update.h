@@ -11,6 +11,7 @@ typedef struct {
 	int send;
 } kest_parameter_update;
 
+void kest_parameter_cancel_preset_updates(uint16_t preset_id);
 int kest_init_parameter_updater();
 void kest_param_update_task(void *arg);
 

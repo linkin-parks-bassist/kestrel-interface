@@ -1,0 +1,7 @@
+v1.0
+.INFO
+name: "Rejected Settings"
+.SETTINGS
+mode: (name: "Mode", default: 1, min: 0, max: 2, type: "int", units: "steps")
+bad: (name: "Bad", default: 0, min: 0, max: 1, type: "int", bogus: 1)
+.CODE

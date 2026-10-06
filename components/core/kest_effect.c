@@ -132,6 +132,7 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	if (ret_val != NO_ERROR) goto init_effect_from_desc_disaster_recovery;
 	
 	effect->eff = eff;
+	kest_effect_desc_retain(eff);
 	
 	/* Clone over the resources */
 	kest_dsp_resource_pll *cr = eff->resources;
@@ -149,7 +150,7 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 			}
 			
 			ret_val = kest_dsp_resource_ptr_list_append(&effect->resources, res);
-			
+			if (ret_val != NO_ERROR) kest_dsp_resource_free(res);
 			if (ret_val != NO_ERROR) goto init_effect_from_desc_disaster_recovery;
 		}
 		
@@ -185,8 +186,10 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	
 	while (current_param)
 	{
-		ret_val = kest_parameter_pll_safe_append(&effect->parameters,
-			kest_parameter_make_clone_for_effect(current_param->data, effect));
+		param = kest_parameter_make_clone_for_effect(current_param->data, effect);
+		if (!param) { ret_val = ERR_ALLOC_FAIL; goto init_effect_from_desc_disaster_recovery; }
+		ret_val = kest_parameter_pll_safe_append(&effect->parameters, param);
+		if (ret_val != NO_ERROR) kest_parameter_free(param);
 		if (ret_val != NO_ERROR) goto init_effect_from_desc_disaster_recovery;
 		current_param = current_param->next;
 	}
@@ -195,8 +198,10 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	
 	while (current_setting)
 	{
-		ret_val = kest_setting_pll_safe_append(&effect->settings,
-			kest_setting_make_clone_for_effect(current_setting->data, effect));
+		setting = kest_setting_make_clone_for_effect(current_setting->data, effect);
+		if (!setting) { ret_val = ERR_ALLOC_FAIL; goto init_effect_from_desc_disaster_recovery; }
+		ret_val = kest_setting_pll_safe_append(&effect->settings, setting);
+		if (ret_val != NO_ERROR) kest_setting_free(setting);
 		if (ret_val != NO_ERROR) goto init_effect_from_desc_disaster_recovery;
 		current_setting = current_setting->next;
 	}
@@ -289,7 +294,13 @@ int init_effect_from_effect_desc(kest_effect *effect, kest_effect_desc *eff)
 	for (size_t i = 0; i < eff->drivers.count; i++)
 	{
 		ret_val = kest_driver_clone_for(&driver, &eff->drivers.entries[i], effect);
+		if (ret_val != NO_ERROR) goto init_effect_from_desc_disaster_recovery;
 		ret_val = kest_driver_list_append(&effect->drivers, driver);
+		if (ret_val != NO_ERROR)
+		{
+			kest_free(driver.data);
+			goto init_effect_from_desc_disaster_recovery;
+		}
 		
 		current_param = effect->parameters;
 	
@@ -411,7 +422,7 @@ kest_parameter *effect_add_parameter(kest_effect *effect)
 	
 	int ret_val;
 	
-	kest_parameter *param = kest_alloc(sizeof(kest_parameter));
+	kest_parameter *param = kest_allocator_alloc(&kest_parameter_allocator, sizeof(kest_parameter));
 	
 	if (!param)
 		return NULL;
@@ -422,7 +433,7 @@ kest_parameter *effect_add_parameter(kest_effect *effect)
 	
 	if (!nl)
 	{
-		kest_free(param);
+		kest_parameter_free(param);
 		return NULL;
 	}
 	
@@ -438,7 +449,7 @@ kest_setting *effect_add_setting(kest_effect *effect)
 	
 	int ret_val;
 	
-	kest_setting *setting = kest_alloc(sizeof(kest_setting));
+	kest_setting *setting = kest_allocator_alloc(&kest_setting_allocator, sizeof(kest_setting));
 	
 	if (!setting)
 		return NULL;
@@ -449,7 +460,7 @@ kest_setting *effect_add_setting(kest_effect *effect)
 	
 	if (!nl)
 	{
-		kest_free(setting);
+		kest_setting_free(setting);
 		return NULL;
 	}
 	
@@ -546,55 +557,6 @@ int clone_effect(kest_effect *dest, kest_effect *src)
 }
 
 
-void gut_effect(kest_effect *effect)
-{
-	if (!effect)
-		return;
-	
-	kest_parameter_pll_free(effect->parameters);
-	kest_setting_pll_destroy(effect->settings, gut_setting);
-	effect->parameters = NULL;
-	effect->settings = NULL;
-	
-	gut_setting(&effect->band_mode);
-	
-	#ifdef KEST_ENABLE_UI
-	free_effect_view(effect->view_page);
-	effect->view_page = NULL;
-	#endif
-	
-	effect->id 		 = 0;
-	effect->type 	 = 0;
-	effect->position = 0;
-	
-	kest_lfo *lfo = NULL;
-	
-	if (!effect->resources.entries)
-		return;
-	
-	for (int i = 0; i < effect->resources.count; i++)
-	{
-		if (!effect->resources.entries[i])
-			continue;
-		
-		switch (effect->resources.entries[i]->type)
-		{
-			
-			case KEST_DSP_RESOURCE_LFO:
-				lfo = (kest_lfo*)effect->resources.entries[i]->data;
-#ifdef KEST_ENABLE_UI
-				if (lfo->timer)
-				{
-					lv_timer_del(lfo->timer);
-					lfo->timer = NULL;
-				}
-#endif
-				break;
-		}
-	}
-}
-
-
 void free_effect(kest_effect *effect)
 {
 	if (!effect || !atomic_exchange(&effect->alive, 0)) return;
@@ -649,6 +611,7 @@ void kest_effect_free_retired(void *effect_)
 #ifdef KEST_USE_FREERTOS
 	if (effect->mutex) vSemaphoreDelete(effect->mutex);
 #endif
+	kest_effect_desc_release(effect->eff);
 	kest_allocator_free(&kest_effect_allocator, effect);
 }
 
@@ -822,7 +785,7 @@ int kest_effect_create_scope(kest_effect *effect)
 					mem, mem->addr, mem->effective_addr, mem->value, mem->read_enable);
 			
 			entry_ptr = kest_scope_add_mem_return_entry(scope, effect->resources.entries[i]->name, mem);
-			if (!entry_ptr) goto create_scope_disaster_recovery;
+			if (!entry_ptr) { ret_val = ERR_ALLOC_FAIL; goto create_scope_disaster_recovery; }
 		}
 		else if (effect->resources.entries[i]->type == KEST_DSP_RESOURCE_LFO)
 		{
@@ -831,7 +794,7 @@ int kest_effect_create_scope(kest_effect *effect)
 			if (!lfo) continue;
 			
 			entry_ptr = kest_scope_add_lfo_return_entry(scope, effect->resources.entries[i]->name, lfo);
-			if (!entry_ptr) goto create_scope_disaster_recovery;
+			if (!entry_ptr) { ret_val = ERR_ALLOC_FAIL; goto create_scope_disaster_recovery; }
 		}
 	}
 	
@@ -847,7 +810,7 @@ int kest_effect_create_scope(kest_effect *effect)
 			if (!lfo) continue;
 			
 			lfo->scope_entry = kest_scope_lookup(scope, effect->resources.entries[i]->name);
-			if (!lfo->scope_entry) goto create_scope_disaster_recovery;
+			if (!lfo->scope_entry) { ret_val = ERR_UNKNOWN_ERR; goto create_scope_disaster_recovery; }
 		}
 	}
 	
@@ -858,8 +821,14 @@ int kest_effect_create_scope(kest_effect *effect)
 	return NO_ERROR;
 
 create_scope_disaster_recovery:
-	
-	// TODO: implement cleanup. lol
+	for (int i = 0; i < effect->resources.count; i++)
+	{
+		kest_dsp_resource *res = effect->resources.entries[i];
+		if (res && res->type == KEST_DSP_RESOURCE_LFO && res->data)
+			((kest_lfo*)res->data)->scope_entry = NULL;
+	}
+	kest_scope_entry_dict_destroy(&scope->dict, kest_effect_scope_entry_destroy);
+	kest_free(scope);
 	
 	KEST_PRINTF("kest_effect_create_scope FAILED!! Error code %s\n", kest_error_code_to_string(ret_val));
 	return ret_val;

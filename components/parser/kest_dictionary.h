@@ -78,6 +78,9 @@ kest_string *kest_eff_entry_to_string_nice(kest_eff_entry *entry);
 
 struct kest_eff_parsing_state;
 
+// Fresh parser values only; never extracted/shared descriptor graphs.
+void kest_free_parsed_eff_entry(kest_eff_entry *entry);
+
 int kest_parse_eff_entry(struct kest_eff_parsing_state *ps, kest_eff_entry *result);
 int kest_parse_eff_entries(struct kest_eff_parsing_state *ps, kest_eff_entry_dict *dict);
 

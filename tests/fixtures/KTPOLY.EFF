@@ -1,0 +1,21 @@
+v1.0
+
+.INFO
+name: "Polynomial Probe"
+cname: "kt_poly_probe"
+
+.PARAMETERS
+shape: (name: "Shape", default: 0.125, min: -0.5, max: 0.5)
+
+.RESOURCES
+curve: (type: "polynomial", coefs: {shape, 0.25, -shape})
+constant: (type: "polynomial", coefs: {-0.25})
+probe: (type: "mem")
+
+.CODE
+mov [0.5] c1
+poly c1 $curve c2
+poly c1 $constant c3
+add c2 c3 c4
+mem_write c4 $probe
+mov [0] c0

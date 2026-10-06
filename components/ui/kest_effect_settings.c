@@ -131,11 +131,6 @@ void band_control_value_changed_cb(lv_event_t *e)
 	
 	refresh_effect_settings_page(page);
 	
-	#ifdef USE_TEENSY
-	kest_message msg = create_m_message(KEST_MESSAGE_SET_SETTING_VALUE, "ssss", setting->id.preset_id, setting->id.effect_id, setting->id.setting_id, value);
-	
-	queue_msg_to_teensy(msg);
-	#endif
 }
 
 int create_effect_settings_page_ui(kest_ui_page *page)

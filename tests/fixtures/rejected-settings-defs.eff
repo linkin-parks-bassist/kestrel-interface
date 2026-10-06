@@ -1,0 +1,8 @@
+v1.0
+.INFO
+name: "Rejected Settings"
+.SETTINGS
+mode: (name: "Mode", default: 1, min: 0, max: 2, type: "int", units: "steps")
+.DEFS
+broken: "not an expression"
+.CODE

@@ -249,19 +249,20 @@ int kest_sequence_remove_preset(kest_sequence *sequence, kest_preset *preset)
 
 int kest_sequence_delete_preset(kest_sequence *sequence, kest_preset *preset)
 {
-	if (!sequence)
+	if (!sequence || !preset)
 		return ERR_NULL_PTR;
 	
 	int ret_val = kest_sequence_remove_preset(sequence, preset);
 	
-	if (preset && ret_val == NO_ERROR)
-	{
-		kest_free_preset(preset);
-	}
+	if (ret_val != NO_ERROR)
+		return ret_val;
 	
-	kest_queue_sequence_save(sequence);
-	
+	#ifdef KEST_ENABLE_GLOBAL_CONTEXT
+	return cxt_remove_preset(&global_cxt, preset);
+	#else
+	kest_free_preset(preset);
 	return NO_ERROR;
+	#endif
 }
 
 void free_sequence(kest_sequence *sequence)
@@ -301,10 +302,10 @@ int kest_sequence_begin(kest_sequence *sequence)
 		return NO_ERROR;
 	}
 	
+	int result = set_active_preset_from_sequence(sequence->presets->data);
+	if (result != NO_ERROR) return result;
 	global_cxt.sequence = sequence;
 	sequence->active = 1;
-	
-	set_active_preset_from_sequence(sequence->presets->data);
 	
 	sequence->position = sequence->presets;
 	
@@ -322,9 +323,6 @@ int kest_sequence_begin_at(kest_sequence *sequence, kest_preset *preset)
 		return NO_ERROR;
 	}
 	
-	global_cxt.sequence = sequence;
-	sequence->active = 1;
-	
 	seq_kest_preset_pll *current = sequence->presets;
 	int found = 0;
 	
@@ -339,7 +337,10 @@ int kest_sequence_begin_at(kest_sequence *sequence, kest_preset *preset)
 	if (!found)
 		return ERR_BAD_ARGS;
 	
-	set_active_preset_from_sequence(current->data);
+	int result = set_active_preset_from_sequence(current->data);
+	if (result != NO_ERROR) return result;
+	global_cxt.sequence = sequence;
+	sequence->active = 1;
 	
 	sequence->position = current;
 	
@@ -372,11 +373,9 @@ int kest_sequence_regress(kest_sequence *sequence)
 		return NO_ERROR;
 	}
 	
-	sequence->position = sequence->position->prev;
-	
-	set_active_preset_from_sequence(sequence->position->data);
-	
-	return NO_ERROR;
+	int result = set_active_preset_from_sequence(sequence->position->prev->data);
+	if (result == NO_ERROR) sequence->position = sequence->position->prev;
+	return result;
 }
 
 int kest_sequence_advance(kest_sequence *sequence)
@@ -410,12 +409,14 @@ int kest_sequence_advance(kest_sequence *sequence)
 	
 	KEST_PRINTF("sequence->position->next = %p\n", sequence->position->next);
 	
+	int result = set_active_preset_from_sequence(sequence->position->next->data);
+	if (result != NO_ERROR) return result;
 	sequence->position = sequence->position->next;
 	
 	KEST_PRINTF("New sequence->position: %p. sequence->position->data: %p\n", 
 		sequence->position, (sequence->position) ? sequence->position->data : NULL);
 	
-	return set_active_preset_from_sequence(sequence->position->data);
+	return NO_ERROR;
 }
 
 int kest_sequence_stop(kest_sequence *sequence)

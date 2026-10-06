@@ -1,0 +1,7 @@
+v1.0
+.INFO
+name: "Unnamed Resource"
+.RESOURCES
+(type: "mem")
+.CODE
+mov c0 c0

@@ -115,7 +115,7 @@ int init_preset_view(kest_ui_page *page)
 	
 	memset(str, 0, sizeof(kest_preset_view_str));
 	
-	str->settings_page = malloc(sizeof(kest_ui_page));
+	str->settings_page = kest_alloc(sizeof(kest_ui_page));
 	
 	if (!str->settings_page)
 	{
@@ -304,13 +304,21 @@ void preset_view_play_button_cb(lv_event_t *e)
 		return;
 	}
 	
+	int result;
 	if (str->preset->sequence)
 	{
-		kest_sequence_begin_at(str->preset->sequence, str->preset);
+		result = kest_sequence_begin_at(str->preset->sequence, str->preset);
 	}
 	else
 	{
-		set_active_preset(str->preset);
+		result = set_active_preset(str->preset);
+	}
+	if (result == ERR_PIPELINE_FULL)
+	{
+		lv_obj_t *popup = lv_msgbox_create(NULL);
+		lv_msgbox_add_title(popup, "Cannot play preset");
+		lv_msgbox_add_text(popup, "This preset has too many effects. Remove an effect to play it.");
+		lv_msgbox_add_close_button(popup);
 	}
 }
 
@@ -417,7 +425,7 @@ int create_preset_view_ui(kest_ui_page *page)
 		return ERR_BAD_ARGS;
 	
 	if (preset->sequence)
-		page->parent = preset->view_page;
+		page->parent = preset->sequence->view_page;
 	
 	if (page->panel->text)
 	{

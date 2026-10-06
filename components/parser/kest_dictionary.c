@@ -12,6 +12,25 @@ static const char *FNAME = "kest_dictionary.c";
 IMPLEMENT_LIST(kest_dictionary_entry);
 IMPLEMENT_LIST(kest_eff_entry);
 
+// Fresh parser values only, after temporary extraction borrows are retired.
+void kest_free_parsed_eff_entry(kest_eff_entry *entry)
+{
+	if (!entry) return;
+	if (entry->type == KEST_EFF_ENTRY_TYPE_EXPR)
+		kest_free_parsed_expression(entry->value.val_expr);
+	else if (entry->type == KEST_EFF_ENTRY_TYPE_SUBDICT && entry->value.val_dict)
+	{
+		kest_eff_entry_dict *dict = entry->value.val_dict;
+		for (size_t i = 0; i < dict->count; i++)
+			kest_free_parsed_eff_entry(&dict->entries[i]);
+		dict->count = 0;
+	}
+	else if (entry->type == KEST_EFF_ENTRY_TYPE_LIST && entry->value.val_list)
+		kest_eff_entry_list_destroy_all(entry->value.val_list, kest_free_parsed_eff_entry);
+	// Strings, keys and container wrappers remain in the parser arena.
+	entry->type = KEST_EFF_ENTRY_TYPE_NOTHING;
+}
+
 const char *kest_dict_entry_type_to_string(int type)
 {
 	switch (type)
@@ -740,6 +759,7 @@ void print_dict_entry(kest_dictionary_entry *entry)
 
 void print_dict(kest_dictionary *dict)
 {
+	if (!PRINTLINES_ALLOWED) return;
 	KEST_PRINTF("Dictionary ");
 	if (!dict)
 	{
@@ -1017,13 +1037,14 @@ parse_dict_val_fin:
 	
 	ps->current_token = current;
 	
-	if (result && ret_val == NO_ERROR)
+	if (PRINTLINES_ALLOWED && result && ret_val == NO_ERROR)
 	{
 		string = kest_dict_entry_to_string(result);
 		str = kest_string_to_native(string);
 		KEST_PRINTF("Obtained entry %s\n", str);
 		kest_free(str);
 		kest_string_destroy(string);
+		kest_free(string);
 	}
 	
 	KEST_PRINTF("kest_parse_dict_val done\n");
@@ -1359,6 +1380,7 @@ kest_string *kest_eff_entry_to_string(kest_eff_entry *entry)
 
 void kest_eff_entry_dict_print(kest_eff_entry_dict *dict)
 {
+	if (!PRINTLINES_ALLOWED) return;
 	KEST_PRINTF_("Dictionary ");
 	if (!dict)
 	{
@@ -1403,25 +1425,13 @@ int kest_parse_eff_list(kest_eff_parsing_state *ps, kest_eff_entry *result)
 	if (!ps || !result)
 		return ERR_NULL_PTR;
 	
-	char *str;
-	
-	kest_eff_entry item;
-	
 	kest_token_ll *current = ps->current_token;
 	
 	if (!current)
 		return ERR_BAD_ARGS;
 	
-	if (!result->name)
-		return ERR_BAD_ARGS;
-	int name_len = strlen(result->name);
-	
-	if (name_len > LIST_ENTRY_NAME_BUF_LEN - 4)
-		return ERR_BAD_ARGS;
-
+	result->type = KEST_EFF_ENTRY_TYPE_LIST;
 	result->line = current->line;
-
-	int base_len;
 	
 	kest_eff_entry entry;
 	
@@ -1434,13 +1444,11 @@ int kest_parse_eff_list(kest_eff_parsing_state *ps, kest_eff_entry *result)
 	
 	kest_eff_entry_list_init(result->value.val_list);
 	
-	kest_string *s;
-	
 	kest_token_ll_skip_ws(&current);
 	
 	int i = 0;
 	
-	while (current)
+	while (current && strcmp(current->data, "}") != 0)
 	{
 		KEST_PRINTF("Current entry: %d, current token: \"%s\"\n", i, current->data);
 		
@@ -1449,7 +1457,11 @@ int kest_parse_eff_list(kest_eff_parsing_state *ps, kest_eff_entry *result)
 		if ((ret_val = kest_parse_eff_entry(ps, &entry)) != NO_ERROR)
 			goto parse_eff_list_fin;
 
-		kest_eff_entry_list_append(result->value.val_list, entry);
+		if ((ret_val = kest_eff_entry_list_append(result->value.val_list, entry)) != NO_ERROR)
+		{
+			kest_free_parsed_eff_entry(&entry);
+			goto parse_eff_list_fin;
+		}
 		
 		current = ps->current_token;
 		
@@ -1465,7 +1477,9 @@ int kest_parse_eff_list(kest_eff_parsing_state *ps, kest_eff_entry *result)
 
 parse_eff_list_fin:
 
-	kest_token_ll_skip_ws(&current);
+	if (ret_val != NO_ERROR)
+		kest_free_parsed_eff_entry(result);
+	 kest_token_ll_skip_ws(&current);
 	
 	ps->current_token = current;
 	
@@ -1479,6 +1493,8 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 	
 	if (!ps || !result)
 		return ERR_NULL_PTR;
+
+	*result = (kest_eff_entry){ .type = KEST_EFF_ENTRY_TYPE_NOTHING };
 	
 	kest_token_ll *current = ps->current_token;
 	
@@ -1523,7 +1539,7 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 				break;
 		}
 		
-		if (paren_cnt == 0 && token_is_dict_entry_seperator(end->data))
+		if (paren_cnt == 0 && (token_is_dict_entry_seperator(end->data) || strcmp(end->data, "}") == 0))
 			break;
 		
 		end = end->next;
@@ -1543,6 +1559,11 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 		}
 		
 		result->value.val_string = kest_parser_strndup(&current->data[1], len);
+		if (!result->value.val_string)
+		{
+			ret_val = ERR_ALLOC_FAIL;
+			goto parse_entry_fin;
+		}
 		
 		kest_token_ll_advance(&current);
 		
@@ -1553,15 +1574,25 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 		result->type = KEST_EFF_ENTRY_TYPE_SUBDICT;
 		ps->current_token = current->next;
 		result->value.val_dict = kest_allocator_alloc(kest_parser_allocator, sizeof(kest_eff_entry_dict));
-		kest_eff_entry_dict_init(result->value.val_dict);
+		if (!result->value.val_dict)
+		{
+			ret_val = ERR_ALLOC_FAIL;
+			goto parse_entry_fin;
+		}
+		if ((ret_val = kest_eff_entry_dict_init(result->value.val_dict)) != NO_ERROR)
+			goto parse_entry_fin;
 		
 		ret_val = kest_parse_eff_entries(ps, result->value.val_dict);
 		
 		current = ps->current_token;
+		if (ret_val != NO_ERROR)
+			goto parse_entry_fin;
 		
-		if (current && strcmp(current->data, ")") != 0)
+		if (!current || strcmp(current->data, ")") != 0)
 		{
-			kest_parser_error_at(ps, current, "Expected \")\", got \"%s\"", (current->data[0] == '\n') ? "\\n" : current->data);
+			kest_parser_error_at(ps, current, "Expected \")\"");
+			ret_val = ERR_BAD_ARGS;
+			goto parse_entry_fin;
 		}
 		
 		kest_token_ll_advance(&current);
@@ -1575,10 +1606,14 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 		ret_val = kest_parse_eff_list(ps, result);
 		
 		current = ps->current_token;
+		if (ret_val != NO_ERROR)
+			goto parse_entry_fin;
 		
-		if (current && strcmp(current->data, "}") != 0)
+		if (!current || strcmp(current->data, "}") != 0)
 		{
-			kest_parser_error_at(ps, current, "Expected \"}\", got \"%s\"", (current->data[0] == '\n') ? "\\n" : current->data);
+			kest_parser_error_at(ps, current, "Expected \"}\"");
+			ret_val = ERR_BAD_ARGS;
+			goto parse_entry_fin;
 		}
 		
 		kest_token_ll_advance(&current);
@@ -1603,15 +1638,18 @@ int kest_parse_eff_entry(kest_eff_parsing_state *ps, kest_eff_entry *result)
 	
 parse_entry_fin:
 	
+	if (ret_val != NO_ERROR)
+		kest_free_parsed_eff_entry(result);
 	ps->current_token = current;
 	
-	if (result && ret_val == NO_ERROR)
+	if (PRINTLINES_ALLOWED && result && ret_val == NO_ERROR)
 	{
 		string = kest_eff_entry_to_string(result);
 		str = kest_string_to_native(string);
 		KEST_PRINTF("Obtained entry %s\n", str);
 		kest_free(str);
 		kest_string_destroy(string);
+		kest_free(string);
 	}
 	
 	KEST_PRINTF("kest_parse_eff_entry done\n");
@@ -1689,7 +1727,10 @@ int kest_parse_eff_entries(kest_eff_parsing_state *ps, kest_eff_entry_dict *dict
 			}
 			else
 			{
-				KEST_PRINTF("Failed to add to dict: %s\n", kest_error_code_to_string(ret_val));
+				kest_parser_error_at(ps, current, "Error inserting attribute %s: %s", name, kest_error_code_to_string(ret_val));
+				kest_free_parsed_eff_entry(&entry);
+				current = ps->current_token;
+				goto parse_entries_fin;
 			}
 		}
 		

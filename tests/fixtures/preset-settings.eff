@@ -1,0 +1,18 @@
+v1.0
+
+.INFO
+name: "Preset Settings Test"
+
+.PARAMETERS
+level: (name: "Level", default: 0.25, min: -0.5, max: 0.5)
+
+.SETTINGS
+positive: (name: "Positive", type: "int", default: 0, min: 0, max: 2000000000)
+negative: (name: "Negative", type: "int", default: 0, min: -2000000000, max: 0)
+
+.RESOURCES
+probe: (type: "mem")
+
+.CODE
+mov [level] c1
+mem_write c1 $probe

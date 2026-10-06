@@ -1,0 +1,11 @@
+v1.0
+.INFO
+name: "String list syntax"
+cname: "string_list_syntax"
+description: "Optional metadata syntax probe."
+keywords: {"one", "two", "three"}
+instruments: {"bass"}
+types: {"delay", "modulation"}
+genres: {"ambient", "noise"}
+.CODE
+mov c0 c0

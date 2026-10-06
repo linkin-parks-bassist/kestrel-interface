@@ -3,6 +3,8 @@
 #define PRINTLINES_ALLOWED 0
 
 #include "kest_param_update.h"
+#include <errno.h>
+#include <limits.h>
 
 static const char *FNAME = "kest_parameter_widget.c";
 
@@ -813,7 +815,22 @@ void sw_field_reject(kest_setting_widget *sw)
 	if (!sw)
 		return;
 	
-	sw_field_display_value_with_units(sw);
+	sw_field_display_bare_value(sw);
+}
+
+static void setting_widget_accept_value(kest_setting_widget *sw, int value)
+{
+	if (!sw || !sw->setting || sw->setting->value == value) return;
+	sw->setting->old_value = sw->setting->value;
+	sw->setting->value = value;
+	sw->setting->updated = 1;
+	kest_preset *preset = sw->preset ? sw->preset :
+		cxt_get_preset_by_id(&global_cxt, sw->setting->id.preset_id);
+	if (preset)
+	{
+		preset->unsaved_changes = 1;
+		if (preset->active) kest_event_log(kest_event_setting_change(preset));
+	}
 }
 
 void sw_field_save_cb(lv_event_t *e)
@@ -826,49 +843,19 @@ void sw_field_save_cb(lv_event_t *e)
 	if (!sw->setting)
 		return;
 	
-	// Parse an int!
-	kest_preset *preset;
-	
-	char *content = kest_strndup(lv_textarea_get_text(sw->obj), 32);
-	
-	if (!content)
-	{
-		return;
-	}
-	
-	KEST_PRINTF("Field contains the text \"%s\"...\n", content);
-	
-	int read_int = 0;
-	int valid_string = 0;
-	
-	// ... tbh just delete anything not a number
-	for (int i = 0; content[i]; i++)
-	{
-		if (content[i] < '0' || content[i] > '9')
-		{
-			if (content[i] == '.')
-			{
-				content[i] = 0;
-				break;
-			}
-			
-			for (int j = i; content[j]; j++)
-			{
-				content[j] = content[j + 1];
-			}
-		}
-	}
-	
-	if (!content[0])
+	const char *content = lv_textarea_get_text(sw->obj);
+	const char *digits = content;
+	if (*digits == '+' || *digits == '-') digits++;
+	char *end;
+	errno = 0;
+	long value = strtol(content, &end, 10);
+	if (*digits < '0' || *digits > '9' || *end || errno == ERANGE ||
+		value < INT_MIN || value > INT_MAX)
 	{
 		sw_field_reject(sw);
 		return;
 	}
-	
-	for (int i = 0; content[i]; i++)
-	{
-		read_int = read_int * 10 + (int)((uint8_t)content[i] - (uint8_t)'0');
-	}
+	int read_int = (int)value;
 	
 	KEST_PRINTF("Read in the int %d\n", read_int);
 	
@@ -876,15 +863,7 @@ void sw_field_save_cb(lv_event_t *e)
 		read_int, sw->setting->min, sw->setting->max, binary_max(read_int, sw->setting->min), sw->setting->max, binary_min(binary_max(read_int, sw->setting->min), sw->setting->max));
 	read_int = binary_min(binary_max(read_int, sw->setting->min), sw->setting->max);
 	
-	if (sw->setting->value != read_int)
-	{
-		sw->setting->old_value = sw->setting->value;
-		
-		sw->setting->value = read_int;
-		sw->setting->updated = 1;
-	}
-	
-	kest_free(content);
+	setting_widget_accept_value(sw, read_int);
 	
 	sw_field_display_value_with_units(sw);
 	
@@ -893,12 +872,6 @@ void sw_field_save_cb(lv_event_t *e)
 	
 	KEST_PRINTF("sw_field_save_cb done\n");
 	
-	preset = cxt_get_preset_by_id(&global_cxt, sw->setting->id.preset_id);
-	
-	if (preset && preset->active)
-	{
-		kest_event_log(kest_event_setting_change(preset));
-	}
 }
 
 void sw_field_cancel_cb(lv_event_t *e)
@@ -963,22 +936,10 @@ void setting_widget_change_cb_inner(kest_setting_widget *sw)
 		return;
 	}
 	
-	if (sw->setting)
-	{
-		sw->setting->value = value;
-		sw->setting->updated = 1;
-	}
+	setting_widget_accept_value(sw, value);
 	
 	KEST_PRINTF("setting_widget_change_cb_inner. value = %d\n", value);
 	
-	if (sw->preset)
-	{
-		sw->preset->unsaved_changes = 1;
-	}
-	else
-	{
-		// do something
-	}
 }
 
 void setting_widget_change_cb(lv_event_t *event)

@@ -31,6 +31,72 @@ This is the control system, graphical user interface and compiler for Kestrel. I
 
 The Kestrel interface includes a parser and assembler for .eff files. These "effect descriptor" files are simple, small files containing metadata and descriptions of parameters and resource requirements as well as assembly code for the Kestrel core, in an intuitive syntax. For example, here is a biquad low-pass filter.
 
+Optional `.INFO` discovery metadata is retained on descriptors: `description` is a string; `keywords`, `instruments`, `types`, and `genres` are string lists, such as `keywords: {"feedback", "rhythmic"}`. Existing descriptors need no changes. The search/filter UI remains planned.
+
+A desktop discovery proposal reuses the current widgets for categories, keyboard
+search, nested all/any/NOT filter groups and effect selection. From a superproject checkout, run
+`python3 tools/discovery_preview.py --headless --output /tmp/new-discovery-preview`.
+It uses a disposable library fixture and leaves carrier firmware unchanged.
+Add `--script tools/ui_scripts/discovery_filters.txt` to capture the group editor.
+Its title shows live draft match counts within the current search/category,
+before Apply; Cancel preserves the applied filters.
+Set `KEST_DISCOVERY_VIRTUAL_ROWS=1` and use
+`tools/ui_scripts/discovery_virtual_rows.txt` to review bounded row recycling
+through native scrolling and effect selection. Main category views also reuse
+rows; exact duplicate tags are removed while case-distinct spellings remain.
+Filter-value pickers use independent reusable rows and release their tag table
+on Back, selection or dialog closure. Full descriptors and result/tag pointer
+tables are still loaded; this is a desktop proposal.
+`discovery_virtual_search.txt` and `discovery_virtual_filters.txt` check changing
+results after scrolling, including selection, cancellation and clearing filters.
+For row-clipping observation, set `KEST_DISCOVERY_TRACE_DRAW=1` and use
+`tools/ui_scripts/discovery_draw_clip.txt`; this logs drawn rows and is unsuitable
+for timing measurements.
+Device integration and the production catalogue remain planned.
+
+The isolated host metadata reader builds with
+`make -f Makefile -f tools/info_reader_preview.mk bin/lib/info-reader-preview`.
+Run `bin/lib/info-reader-preview FILE.eff ...` for the existing metadata records
+without constructing effect graphs. It still tokenizes each complete file and
+uses the global parser arena; executable code is not validated by this probe.
+
+`tools/ui_scripts/discovery_search_refocus.txt` checks keyboard dismissal and
+reopening by tapping search again, returning from Filters, and typing a query.
+
+An isolated rounded-fill experiment builds with
+`make -f Makefile -f tools/discovery_preview.mk bin/discovery-rounded-preview`.
+Select that executable with `tools/desktop_ui.py --binary`; it splits rounded
+fills into software edge strips and a software rectangular middle for pixel
+comparison. It does not enable PPA or change firmware.
+Build `bin/rounded-fill-check` with the same makefiles and run it to compare
+20,256 seeded clipped/offset/radius/fallback fills with the original LVGL path
+in RGB565 and XRGB8888.
+The isolated `bin/rounded-corners-check` target tests an alternative RGB565
+split into three flat rectangles and four software corners for widths of at
+least 400 pixels, including after clipping. Smaller fills and XRGB8888 retain
+the strip path because masked blending preserves its unused byte differently.
+The rectangles are horizontal bands: the pinned PPA driver synchronizes full
+picture-width rows, so this avoids repeatedly synchronizing overlapping rows.
+This passes the same pixel oracle. Isolated carrier builds enable both
+`KEST_ROUNDED_FILL_PREVIEW` and `KEST_ROUNDED_CORNERS_PREVIEW`; both default OFF.
+Carrier comparison and physical acceptance are separate from the desktop oracle.
+An additional OFF-by-default `KEST_ROUNDED_CACHE_PREVIEW` option requires both
+rounded options and relies on the pinned IDF PPA driver's cache synchronization,
+omitting the wrapper's extra flush/invalidate. This remains an isolated carrier
+experiment; other SDK versions and physical performance require qualification.
+Fresh isolated carrier builds also accept `rounded-fill-check reject`: alternate
+PPA submissions fail before DMA while the UI lock holds the pixel oracle. It
+checks software fallback alongside successful hardware fills. Reported errors
+must equal `injected`; an ordinary check afterwards must return zero errors.
+This does not inject partial DMA or timeouts, and the mode is cleared on return.
+For carrier draw-path diagnosis, additionally enable `KEST_DRAW_PROFILE_PREVIEW`
+in a separate IDF build with both rounded preview options. It defaults OFF and
+requires those options. `ui-profile start/stop` then also reports call counts and
+microseconds for software fill, border, label, arc, image and shadow paths.
+The fill counter includes the experimental PPA interior. These instrumented
+timings exclude unwrapped drawing and carry measurement overhead; they are not
+an uninstrumented FPS comparison. Reporting occurs outside the UI lock.
+
 ```
 v1.0
 
@@ -141,14 +207,56 @@ open during a test session; connection-state changes can reboot the carrier:
 python3 tools/uart_console.py --port PORT --log /path/to/new-capture.log
 ```
 
-Use `help`, `info`, `heap`, `uptime` and `ui-tree` for inspection. `tap X Y` and
+Use `help`, `info`, `heap`, `pools`, `uptime` and `ui-tree` for inspection.
+For redraw timing, run `ui-profile start`, perform the interaction, then
+`ui-profile stop`. It reports rendered frames, flush count/pixels and accumulated
+render, flush-call and flush-wait microseconds. Flush times are included in render
+time; do not add them. Counters are opt-in and results print outside the UI lock.
+Avoid `ui-tree` dumps during the measurement because they stall drawing.
+`pools` reports capacity, free and used slots for each reserved typed pool.
+`eff-info CNAME` reports the loaded descriptor's names and optional discovery
+metadata. Text rows use `field=... index=N hex=...`; list headers include
+`count=N`. A missing description has no text row; empty lists have count zero.
+The command retains the immutable descriptor while printing outside the UI lock,
+then releases it. `KEST eff-info result=0` marks completion; unknown cnames return
+`ERR_NOT_FOUND`. This inspects loaded memory, not the SD file.
+
+`eff-reload NAME.eff` reparses a published SD file and replaces the loaded descriptor
+with the same `cname`, rebuilding every affected preset. It preserves effect IDs,
+order and compatible named controls, refreshes UI bindings and reprograms the active
+preset without rebooting or reinitializing the codec. DSP state restarts. Parse or
+staging failure leaves the running model intact; incompatible bounds reject reload.
+The reply is `KEST eff-reload result=0 affected=N` on acceptance; use `dsp`,
+`fpga-status` and `pools` to inspect completion. New identities require startup discovery.
+Each row is a locked snapshot; rows are sampled separately. `tap X Y` and
 `touch down X Y`, `touch move X Y`, `touch up` feed a separate LVGL pointer through
 normal UI input handling. `fpga-read ADDRESS` queues an asynchronous memory read.
 `fpga-read32 ADDRESS` reads a word-aligned 24-bit byte address and prints four bytes
 as a hexadecimal word. With the matching FPGA image, address 0 is `0x4b455354`
 ("KEST") and address 4 is the build mask: filter/polynomial/SVF in bits 0/1/2.
 `fpga-status` reads and decodes the status byte through the SPI task.
-`dsp` lists the active preset's effects and DSP resource addresses.
+`dsp` lists the active preset's effects, parameter IDs/current values/effective ranges
+and driven/override flags, integer setting IDs/names/values/bounds/choice labels,
+plus DSP resource addresses. Values can change between rows. Setting rows report
+firmware state, not independently measured FPGA delay timing.
+`parameter-target PRESET_ID EFFECT_ID PARAMETER_ID VALUE` queues a target through
+the normal smoothing path. It rejects malformed/nonfinite/out-of-range values and
+driven parameters without an override. A queued result is acceptance, not completion;
+use `dsp` to observe convergence. Accepted edits mark the preset dirty.
+`tools/hil_parameter_target.py --port PORT --log NEW_LOG PRESET EFFECT PARAMETER VALUE`
+checks rejection/convergence and restores the captured value; it requires that effect
+to be active and leaves accepted edits dirty.
+The staged KTPOLY fixture can also use `tools/hil_scripts/carrier_polynomial_targets.json`
+with `hil_interface.py` to check exact live FPGA scratchpad results and clean up the
+temporary preset/file. Its seven-preset, temporary ID 8 and UI coordinates are fixture-specific.
+With the current SD collection including TREMOLO and CHORUS, its probe label guard is
+`(242, 964)` and selection taps `(360, 978)`; review after collection/layout changes.
+`presets` lists the loaded preset collection. `sequences` snapshots the main
+sequence and loaded sequences, their ordered preset IDs and current positions.
+`sequence-step next` and `sequence-step prev` invoke normal navigation on the
+active sequence and report the result and active preset ID. They do not start a
+sequence; movement at either end is a no-op.
+Sequence index 0 is the main sequence; indices are snapshot ordinals, not IDs.
 `eff-file list`, `eff-file read NAME.eff`, `eff-file move OLD.eff NEW.eff` and
 `eff-file delete NAME.eff` operate in the SD effect directory. Upload with
 `eff-file write NAME.eff OFFSET HEX`: start at offset 0, then append consecutive
@@ -187,13 +295,17 @@ python3 tools/desktop_ui.py --headless --script tools/ui_scripts/danger_button.t
 
 Choose a fresh output directory. The runner writes `control.log` and BMP screenshots,
 plus PNG copies when Pillow is available. Omit `--headless` for a visible window.
-Scripts accept `wait MS`, `click X Y`, `tree`, `screenshot NAME.bmp` and `quit`;
+Scripts accept `wait MS`, `click X Y`, `touch down X Y`, `touch move X Y`,
+`touch up`, `tree`, `screenshot NAME.bmp` and `quit`;
 the current desktop coordinates are 600×1024. `tree` reports visible LVGL objects,
 labels and bounds so subsequent clicks can be chosen from the actual UI.
 The sample opens the erase confirmation without confirming it. This exercises UI
 code with simulated FPGA communications; it does not simulate DSP audio.
 
 Run the C suite with `make tests && ./kest_tests`.
+Run `make test-parser-allocation` for host-library scope, parameter and setting
+failure/recovery checks, plus section/list rollback. It interposes the tracked allocator in the test executable;
+firmware has no test hooks.
 
 There is an additional makefile target to compile the non-GUI/hardware components (preset library, .eff assembler) as a shared object library. To build the library,
 
@@ -209,12 +321,22 @@ make compile-eff
 bin/lib/compile_eff tests/fixtures/readback.eff /tmp/readback.bin
 # Optional parameter overrides use the descriptor's internal names:
 bin/lib/compile_eff ../effects/SVFHP.EFF /tmp/highpass.bin cutoff=2000 Q=0.7
+# Configuration overrides use internal setting names and integral values:
+bin/lib/compile_eff ../effects/experimental/RHYTHM.EFF /tmp/rhythm.bin setting.tempo=90 setting.division=24
+# Default program plus a separate production parameter-update body:
+bin/lib/compile_eff tests/fixtures/polynomial-live.eff /tmp/poly.bin --update /tmp/poly-update.bin shape=-0.25
+# Inspect parser-retained discovery metadata without encoding a program:
+bin/lib/compile_eff --info ../effects/BASSRING.EFF
 ```
 
 The executable finds `libkest.so` beside itself. It uses the production parser,
 effect constructor and pipeline encoder. The output includes the tail-enable
 command but excludes the begin/end-program framing supplied by the transport.
 Compilation alone does not verify DSP execution or audio results.
+`--info` emits the same hex-text fields/counts as UART `eff-info`, using the
+production parser without constructing an effect or writing a programming body.
+Setting overrides require declared bounds and an existing enum choice. They are
+available for complete programs; `--update` accepts parameter overrides only.
 
 and to install the libkest.so to /usr/lib/ and the headers to /usr/include/libkest, run 
 

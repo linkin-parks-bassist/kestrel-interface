@@ -10,10 +10,12 @@ import tempfile
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--script", type=Path, help="Commands: wait MS, click X Y, tree, screenshot NAME.bmp, quit")
+    parser.add_argument("--script", type=Path, help="Commands: wait MS, click X Y, touch down/move X Y, touch up, tree, screenshot NAME.bmp, quit")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--headless", action="store_true", help="Use SDL's dummy display and software renderer")
     parser.add_argument("--timeout", type=float, default=30)
+    parser.add_argument("--binary", type=Path, help="Alternate desktop build to inspect")
+    parser.add_argument("--sdcard", type=Path, help="SD fixture to copy instead of the checkout fixture")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     output = args.output.resolve()
@@ -38,9 +40,9 @@ def main():
     if args.headless:
         env.update(SDL_VIDEODRIVER="dummy", SDL_RENDER_DRIVER="software")
     with tempfile.TemporaryDirectory(prefix="kestrel-ui-") as fixture:
-        shutil.copytree(root / "sdcard", Path(fixture) / "sdcard")
+        shutil.copytree(args.sdcard or root / "sdcard", Path(fixture) / "sdcard")
         try:
-            result = subprocess.run([str(root / "kest"), "--control"],
+            result = subprocess.run([str(args.binary.resolve() if args.binary else root / "kest"), "--control"],
                                     input="\n".join(lines) + "\n", text=True,
                                     cwd=fixture, env=env, capture_output=True,
                                     timeout=args.timeout)

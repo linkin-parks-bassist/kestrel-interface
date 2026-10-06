@@ -331,7 +331,7 @@ void kest_sgtl5000_init(void *param)
 		goto sgtl_init_exit;
 	}
 	
-	sgtl5000_line_in_level(7);
+	sgtl5000_line_in_level(0);
 	sgtl5000_line_out_level(31);
 	
 	#if PRINTLINES_ALLOWED == 1
